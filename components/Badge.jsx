@@ -1,43 +1,44 @@
 import React from "react";
-import {cn} from "@/lib/utils";
+import { cn } from "@/lib/utils";
 
-export default function Badge({children, variant = "teal", className}) {
-    const variants ={
-        teal: "bg-[#e8f3f1] text-[#0f4c5c]",
-        coral: "bg-[#fff5f2] text-[#b14a25]",
-        lavender: "bg-[#d8d1f3] text-[#5a4a9e]",
+export default function Badge({ children, variant = "teal", styleType = "soft", className }) {
+    // Memisahkan variant berdasarkan 2 versi (soft dan white)
+    const variants = {
+        soft: {
+            teal: "bg-[#cdece7] text-[#0f4c5c]",
+            coral: "bg-[#ffded4] text-[#b14a25]",
+            lavender: "bg-[#d8d1f3] text-[#5a4a9e]",
+        },
+        white: {
+            teal: "bg-white text-[#0f4c5c]",
+            coral: "bg-white text-[#b14a25]",
+            lavender: "bg-white text-[#5a4a9e]",
+        }
     };
 
-    //Jika variant yang dimasukkan salah/kosong akan default ke teal
-    const selectedVariant = variants[variant] || variants.teal;
+    // Jika styleType yang dimasukkan salah/kosong, akan default ke "soft"
+    const selectedStyleType = variants[styleType] || variants.soft;
+    
+    // Jika variant yang dimasukkan salah/kosong, akan default ke "teal"
+    const selectedVariant = selectedStyleType[variant] || selectedStyleType.teal;
 
     return (
         <span 
-        className={cn(
-            "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider",
-            selectedVariant,
-            className
-        )}
+            className={cn(
+                "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider",
+                selectedVariant,
+                className
+            )}
         >
             {children}
         </span>
     );
 }
 
-//Contoh penggunaan
-/*import Badge from "@/components/Badge";
+/*Contoh penggunaan badge untuk styleType "white"
 
-export default function ContohPenggunaan() {
-  return (
-    <div className="flex gap-4 p-8">
-      {/* Badge warna Dark Teal */
-     /*<Badge variant="teal">Preventif</Badge>
+<Badge variant="lavender" styleType="white">LANGKAH 1 • PAHAMI HAKMU</Badge>*/
 
-      {/* Badge warna Coral */
-      /*<Badge variant="coral">Kuratif</Badge>
+/*Contoh penggunaan badge untuk styleType "soft"
 
-      {/* Badge warna Lavender */
-      /*<Badge variant="lavender">Rehabilitatif</Badge>
-    </div>
-  );
-}*/
+<Badge variant="teal">Preventif</Badge>*/
