@@ -26,22 +26,22 @@ export default function RootLayout({ children }) {
   return (
     <html lang="id" className="h-full">
       <body
-        className={`${lora.variable} ${publicSans.variable} font-sans bg-cream text-teal antialiased h-full overflow-x-hidden`}
+        className={`${lora.variable} ${publicSans.variable} font-sans bg-svarati-cream text-svarati-teal antialiased h-full overflow-x-hidden`}
       >
         <a
           href="#konten-utama"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[70] focus:bg-white focus:text-teal focus:px-4 focus:py-2 focus:rounded-full focus:font-bold"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[70] focus:bg-white focus:text-svarati-teal focus:px-4 focus:py-2 focus:rounded-full focus:font-bold"
         >
           Lewati ke konten utama
         </a>
 
         <div className="flex flex-col min-h-screen w-full">
           <Navbar />
-          
+
           <main id="konten-utama" className="flex-1 w-full">
             {children}
           </main>
-          
+
           <Footer />
         </div>
       </body>
