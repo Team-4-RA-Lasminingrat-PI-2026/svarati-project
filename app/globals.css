@@ -5,129 +5,195 @@
 @custom-variant dark (&:is(.dark *));
 
 /* ============================================================
-   PALET WARNA SVARATI & THEME CONFIGURATION (TAILWIND V4)
+   1. PALET SVARATI (sumber nilai warna mentah)
    ============================================================ */
 @theme {
-  /* Font Family */
+  /* Font */
   --font-sans: var(--font-public-sans), ui-sans-serif, system-ui, sans-serif;
   --font-heading: var(--font-lora), Georgia, serif;
 
-  /* Palet Warna Svarati - Dark Teal (Utama / Primary) */
+  /* Dark Teal (Utama) */
   --color-svarati-teal: #0F4C5C;
   --color-svarati-teal-light: #1D6577;
   --color-svarati-teal-dark: #0B3B47;
   --color-svarati-teal-soft: #E8F3F1;
 
-  /* Palet Warna Svarati - Coral (Aksen / Accent) */
+  /* Coral (Aksen) */
   --color-svarati-coral: #E07A5F;
   --color-svarati-coral-dark: #B14A25;
   --color-svarati-coral-darker: #9A3A1A;
   --color-svarati-coral-soft: #FFF5F2;
 
-  /* Palet Warna Svarati - Lavender (Sekunder / Secondary) */
+  /* Lavender (Sekunder) */
   --color-svarati-lavender: #9D8FD6;
   --color-svarati-lavender-light: #D8D1F3;
   --color-svarati-lavender-hover: #C6BCEB;
   --color-svarati-lavender-dark: #5A4A9E;
   --color-svarati-lavender-darker: #463A7C;
+  /* Garis field form: kontras >= 3:1 terhadap putih/cream (WCAG 1.4.11) */
+  --color-svarati-lavender-border: #7E70BE;
 
-  /* Palet Warna Svarati - Cream (Latar Belakang / Surface) */
+  /* Cream (Surface) */
   --color-svarati-cream: #FAF8F5;
 
-  /* Palet Warna Svarati - Danger (Tombol Darurat & Keluar Cepat) */
+  /* Danger (Tombol Darurat & Keluar Cepat) */
   --color-svarati-danger: #C0392B;
   --color-svarati-danger-dark: #A02A1F;
   --color-svarati-danger-darker: #7F2218;
   --color-svarati-danger-soft: #FBEAE8;
 
-  /* Utility Mapping untuk Tailwind v4 (Memutus Error border-border & ring) */
-  --color-border: var(--color-svarati-lavender-light);
-  --color-input: var(--color-svarati-lavender-light);
-  --color-ring: var(--color-svarati-lavender-dark);
-  --color-background: var(--color-svarati-cream);
-  --color-foreground: var(--color-svarati-teal);
-
-  /* Alias Semantik Svarati */
-  --color-primary: var(--color-svarati-teal);
-  --color-secondary: var(--color-svarati-lavender-dark);
-  --color-accent: var(--color-svarati-coral);
-  --color-surface: var(--color-svarati-cream);
-
-  /* Border Radius Extensions */
+  /* Radius tambahan */
   --radius-2xl: 1rem;
   --radius-3xl: 1.5rem;
+
+  /* Animasi tombol darurat: hanya 3 kali (tidak berdenyut terus-menerus).
+     Dipakai lewat class: motion-safe:animate-darurat-glow */
+  --animate-darurat-glow: darurat-glow 2s ease-in-out 3;
+
+  @keyframes darurat-glow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(192, 57, 43, 0.5); }
+    50%      { box-shadow: 0 0 0 8px rgba(192, 57, 43, 0); }
+  }
 }
 
 /* ============================================================
-   SHADCN / CSS VARIABLES INTEGRATION
+   2. VARIABEL SEMANTIK SHADCN (light & dark)
    ============================================================ */
 :root {
   --background: var(--color-svarati-cream);
   --foreground: var(--color-svarati-teal);
+
   --card: #FFFFFF;
   --card-foreground: var(--color-svarati-teal);
   --popover: #FFFFFF;
   --popover-foreground: var(--color-svarati-teal);
+
   --primary: var(--color-svarati-teal);
   --primary-foreground: #FFFFFF;
+
   --secondary: var(--color-svarati-lavender-light);
   --secondary-foreground: var(--color-svarati-lavender-dark);
+
   --muted: var(--color-svarati-lavender-light);
   --muted-foreground: var(--color-svarati-lavender-dark);
+
   --accent: var(--color-svarati-lavender-light);
   --accent-foreground: var(--color-svarati-teal);
+
   --destructive: var(--color-svarati-danger);
+  --destructive-foreground: #FFFFFF;
+
   --border: var(--color-svarati-lavender-light);
-  --input: var(--color-svarati-lavender-light);
+  --input: var(--color-svarati-lavender-border);
   --ring: var(--color-svarati-lavender-dark);
+
   --radius: 0.625rem;
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
+  --background: var(--color-svarati-teal-dark);
+  --foreground: var(--color-svarati-cream);
+
+  --card: var(--color-svarati-teal);
+  --card-foreground: var(--color-svarati-cream);
+  --popover: var(--color-svarati-teal);
+  --popover-foreground: var(--color-svarati-cream);
+
+  --primary: var(--color-svarati-cream);
+  --primary-foreground: var(--color-svarati-teal);
+
+  --secondary: var(--color-svarati-teal-light);
+  --secondary-foreground: var(--color-svarati-cream);
+
+  --muted: var(--color-svarati-teal-light);
+  --muted-foreground: var(--color-svarati-lavender-light);
+
+  --accent: var(--color-svarati-teal-light);
+  --accent-foreground: var(--color-svarati-cream);
+
+  --destructive: #E0695A;
+  --destructive-foreground: #FFFFFF;
+
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 18%);
+  --ring: var(--color-svarati-lavender);
 }
 
+/* ============================================================
+   3. MAPPING KE UTILITY TAILWIND (@theme inline)
+   Utility seperti bg-primary dan text-muted-foreground membaca
+   variabel :root / .dark, sehingga dark mode ikut berfungsi.
+   ============================================================ */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+/* ============================================================
+   4. BASE LAYER
+   ============================================================ */
 @layer base {
   * {
-    border-color: var(--color-border);
+    border-color: var(--border);
   }
-  html, body {
+
+  html,
+  body {
     @apply h-full;
   }
+
   body {
     @apply bg-background text-foreground font-sans;
   }
-  h1, h2, h3, h4 {
+
+  h1,
+  h2,
+  h3,
+  h4 {
     font-family: var(--font-heading);
+  }
+
+  /* Dalam layer agar bisa dioverride utility (misalnya outline-none pada Button) */
+  :focus-visible {
+    outline: 3px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  /* Latar footer teal: outline lavender gelap tidak terlihat, pakai putih */
+  footer :focus-visible {
+    outline-color: #FFFFFF;
   }
 }
 
-/* Aksesibilitas Fokus Keyboard */
-:focus-visible {
-  outline: 3px solid var(--color-svarati-lavender-dark);
-  outline-offset: 2px;
-}
-
-/* Reduced Motion Optimization */
+/* ============================================================
+   5. REDUCED MOTION
+   ============================================================ */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     animation: none !important;
     transition: none !important;
   }
