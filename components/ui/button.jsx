@@ -8,12 +8,12 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        // TODO: Nanti ubah hex ini ke variabel warna Tailwind dari Kak Lisa (RLA004) kalau sudah di-merge
-        primary: "bg-[#FFDAB9] text-gray-900 hover:bg-[#ffcba0]", // Peach
-        secondary: "bg-green-800 text-white hover:bg-green-900", // Hijau Tua
-        outline: "border-white bg-transparent text-white hover:bg-white/10", // Garis Putih
-        exit: "bg-orange-500 text-white hover:bg-orange-600", // Oranye
-        ghost: "border-gray-300 bg-transparent text-gray-700 hover:bg-gray-100", // Garis Tipis
+        // Done sesuaikan globals.css
+        primary: "bg-svarati-coral text-white hover:bg-svarati-coral-dark",
+        secondary: "bg-svarati-teal-dark text-white hover:bg-svarati-teal",
+        outline: "border-white bg-transparent text-white hover:bg-white/10",
+        exit: "bg-svarati-danger text-white hover:bg-svarati-danger-dark",
+        ghost: "border-svarati-lavender-border bg-transparent text-svarati-teal hover:bg-svarati-lavender-light",
       },
       size: {
         // Size disesuaikan dengan spek RLA005 (sm, md, lg)
