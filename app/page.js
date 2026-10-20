@@ -2,9 +2,14 @@
 
 import React, { useState } from 'react';
 import ToggleSwitch from '@/components/ToggleSwitch';
+//Tambah import Toast untuk menampilkan pesan notifikasi berhasil/gagal-Gaby-19Oct
+import Toast from '@/components/Toast';
+
 
 export default function TestToggle() {
   const [isOn, setIsOn] = useState(false);
+
+const [toast, setToast] = useState(false);
 
   return (
     <main className="min-h-screen bg-svarati-cream p-10 font-sans">
@@ -42,6 +47,16 @@ export default function TestToggle() {
           </div>
         </section>
       </div>
+
+      <button type="button" onClick={() => setToast(true)}>Tes toast</button>
+
+{/* Untuk test toast */}
+      <Toast
+        open={toast}
+        onClose={() => setToast(false)}
+        type="sukses"
+        message="Pesan: Test toast berhasil!"
+      />
     </main>
   );
 }
