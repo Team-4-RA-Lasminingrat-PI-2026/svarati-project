@@ -7,6 +7,8 @@ import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import QuickOutButton from "@/components/QuickOutButton";
 import { BRAND, DARURAT, MENU_UTAMA, NAVBAR } from "@/content/labels";
+//Tambahan import untuk EmergencyModal-Gaby19Oct
+import EmergencyModal from "@/components/modals/EmergencyModal";
 
 const isActive = (pathname, href) =>
   href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -164,6 +166,7 @@ export default function Navbar() {
   const togglePillar = (id) => setOpenPillarId(openPillarId === id ? null : id);
 
   return (
+    <>
     <header className="sticky top-3 z-40 overflow-x-clip px-2 pt-3 sm:px-3">
       <nav
         aria-label={NAVBAR.navigasiUtama}
@@ -248,6 +251,9 @@ export default function Navbar() {
           ))}
         </ul>
       )}
- </header>
+      </header>
+
+      <EmergencyModal open={emergencyOpen} onClose={() => setEmergencyOpen(false)} />
+    </>
   );
 }
