@@ -1,0 +1,452 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradients -->
+    <linearGradient id="bg-dawn" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fee2d5" />
+      <stop offset="45%" stop-color="#fcd5ce" />
+      <stop offset="80%" stop-color="#e8dff5" />
+      <stop offset="100%" stop-color="#ddc4ec" />
+    </linearGradient>
+
+    <linearGradient id="bg-night" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0b132b" />
+      <stop offset="50%" stop-color="#1c2541" />
+      <stop offset="85%" stop-color="#1f4068" />
+      <stop offset="100%" stop-color="#162447" />
+    </linearGradient>
+
+    <linearGradient id="bg-mint" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e8f5e9" />
+      <stop offset="55%" stop-color="#d8f3dc" />
+      <stop offset="100%" stop-color="#c7f9cc" />
+    </linearGradient>
+
+    <!-- Halo & Aura Gradients -->
+    <radialGradient id="aura-outer" cx="50%" cy="45%" r="52%">
+      <stop offset="0%" stop-color="#fff8db" stop-opacity="0.85" />
+      <stop offset="35%" stop-color="#ffecb3" stop-opacity="0.55" />
+      <stop offset="65%" stop-color="#ffe082" stop-opacity="0.25" />
+      <stop offset="100%" stop-color="#ffd54f" stop-opacity="0" />
+    </radialGradient>
+
+    <radialGradient id="aura-inner" cx="50%" cy="45%" r="38%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9" />
+      <stop offset="40%" stop-color="#fff9c4" stop-opacity="0.6" />
+      <stop offset="100%" stop-color="#fff176" stop-opacity="0" />
+    </radialGradient>
+
+    <radialGradient id="orb-glow" cx="40%" cy="38%" r="50%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="30%" stop-color="#fff9c4" />
+      <stop offset="70%" stop-color="#fbc02d" stop-opacity="0.75" />
+      <stop offset="100%" stop-color="#f57f17" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Trunk Gradients -->
+    <linearGradient id="trunk-base" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#4a3026" />
+      <stop offset="30%" stop-color="#5d3c30" />
+      <stop offset="70%" stop-color="#734a3b" />
+      <stop offset="100%" stop-color="#8a5a48" />
+    </linearGradient>
+
+    <linearGradient id="trunk-highlight" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#b08968" stop-opacity="0.8" />
+      <stop offset="50%" stop-color="#ddb892" stop-opacity="0.6" />
+      <stop offset="100%" stop-color="#ede0d4" stop-opacity="0" />
+    </linearGradient>
+
+    <linearGradient id="branch-gradient" x1="30%" y1="100%" x2="70%" y2="0%">
+      <stop offset="0%" stop-color="#5a382c" />
+      <stop offset="70%" stop-color="#7a4d3b" />
+      <stop offset="100%" stop-color="#93624e" />
+    </linearGradient>
+
+    <!-- Canopy Foliage Gradients -->
+    <linearGradient id="leaf-shadow" x1="20%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0%" stop-color="#588157" />
+      <stop offset="100%" stop-color="#3a5a40" />
+    </linearGradient>
+
+    <linearGradient id="leaf-sage" x1="25%" y1="0%" x2="75%" y2="100%">
+      <stop offset="0%" stop-color="#84a98c" />
+      <stop offset="60%" stop-color="#699273" />
+      <stop offset="100%" stop-color="#52796f" />
+    </linearGradient>
+
+    <linearGradient id="leaf-mint" x1="30%" y1="0%" x2="70%" y2="100%">
+      <stop offset="0%" stop-color="#b7e4c7" />
+      <stop offset="60%" stop-color="#95d5b2" />
+      <stop offset="100%" stop-color="#74c69d" />
+    </linearGradient>
+
+    <linearGradient id="leaf-lime" x1="20%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0%" stop-color="#e9f5db" />
+      <stop offset="45%" stop-color="#d8f3dc" />
+      <stop offset="100%" stop-color="#b5e48c" />
+    </linearGradient>
+
+    <linearGradient id="leaf-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fff3b0" />
+      <stop offset="50%" stop-color="#fde047" />
+      <stop offset="100%" stop-color="#eab308" />
+    </linearGradient>
+
+    <linearGradient id="leaf-amber" x1="10%" y1="0%" x2="90%" y2="100%">
+      <stop offset="0%" stop-color="#fed9b7" />
+      <stop offset="60%" stop-color="#f4a261" />
+      <stop offset="100%" stop-color="#e76f51" />
+    </linearGradient>
+
+    <!-- Ground Mound Gradient -->
+    <linearGradient id="ground-hill" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#8cb369" />
+      <stop offset="40%" stop-color="#6b9050" />
+      <stop offset="100%" stop-color="#4a6b36" />
+    </linearGradient>
+
+    <linearGradient id="ground-highlight" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#d8f3dc" stop-opacity="0.75" />
+      <stop offset="100%" stop-color="#95d5b2" stop-opacity="0" />
+    </linearGradient>
+
+    <!-- Blur Filter for Dreamy Halo -->
+    <filter id="soft-blur" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="14" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+
+    <filter id="gentle-glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="5" result="coloredBlur" />
+      <feMerge>
+        <feMergeNode in="coloredBlur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <style>
+    /* Subtle ambient animations */
+    @keyframes sway {
+      0%, 100% { transform: rotate(0deg); }
+      33% { transform: rotate(1.1deg); }
+      66% { transform: rotate(-0.9deg); }
+    }
+    @keyframes canopy-breathe {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.015); }
+    }
+    @keyframes aura-pulse {
+      0%, 100% { opacity: 0.65; transform: scale(0.97); }
+      50% { opacity: 0.92; transform: scale(1.03); }
+    }
+    @keyframes twinkle-a {
+      0%, 100% { opacity: 0.25; transform: scale(0.7); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+    @keyframes twinkle-b {
+      0%, 100% { opacity: 0.9; transform: scale(1.1); }
+      50% { opacity: 0.2; transform: scale(0.65); }
+    }
+    @keyframes float-mote {
+      0%, 100% { transform: translateY(0px) translateX(0px); }
+      50% { transform: translateY(-7px) translateX(3px); }
+    }
+    @keyframes float-mote-alt {
+      0%, 100% { transform: translateY(0px) translateX(0px); }
+      50% { transform: translateY(-9px) translateX(-2.5px); }
+    }
+
+    #canopy {
+      transform-origin: 200px 340px;
+      animation: sway 9s ease-in-out infinite;
+    }
+    .foliage-pulse {
+      transform-origin: 200px 200px;
+      animation: canopy-breathe 7s ease-in-out infinite;
+    }
+    .aura-layer {
+      transform-origin: 200px 210px;
+      animation: aura-pulse 8s ease-in-out infinite;
+    }
+    .twinkle-1 { animation: twinkle-a 3.2s ease-in-out infinite; transform-origin: center; transform-box: fill-box; }
+    .twinkle-2 { animation: twinkle-b 2.7s ease-in-out infinite 0.7s; transform-origin: center; transform-box: fill-box; }
+    .twinkle-3 { animation: twinkle-a 3.9s ease-in-out infinite 1.4s; transform-origin: center; transform-box: fill-box; }
+    .twinkle-4 { animation: twinkle-b 3.4s ease-in-out infinite 2.1s; transform-origin: center; transform-box: fill-box; }
+    .float-1 { animation: float-mote 5.4s ease-in-out infinite; }
+    .float-2 { animation: float-mote-alt 6.1s ease-in-out infinite 1.2s; }
+    .float-3 { animation: float-mote 4.8s ease-in-out infinite 2.5s; }
+
+    @media (prefers-reduced-motion: reduce) {
+      #canopy, .foliage-pulse, .aura-layer, .twinkle-1, .twinkle-2, .twinkle-3, .twinkle-4, .float-1, .float-2, .float-3 {
+        animation: none !important;
+      }
+    }
+    </style>
+  </defs>
+
+  <!-- Background: transparent by default (optional <rect> omitted) -->
+
+  <!-- Aura / Sunrise Glow behind the tree -->
+  <g id="glow" class="aura-layer">
+    <!-- Large diffused warmth aura -->
+    <circle cx="200" cy="205" r="175" fill="url(#aura-outer)" filter="url(#soft-blur)" />
+    <!-- Radiant inner core halo -->
+    <circle cx="200" cy="205" r="115" fill="url(#aura-inner)" />
+    <!-- Secondary soft celestial bloom -->
+    <ellipse cx="200" cy="180" rx="145" ry="125" fill="url(#aura-outer)" opacity="0.6" />
+  </g>
+
+  <!-- Ground Element: Gentle mound, delicate grass, sprouts, fallen petals -->
+  <g id="ground">
+    <!-- Soft shadow below mound -->
+    <ellipse cx="200" cy="460" rx="160" ry="14" fill="#2d3748" opacity="0.08" />
+
+    <!-- Main organic ground mound -->
+    <path d="M 30 464 C 95 440, 150 435, 200 435 C 255 435, 310 440, 370 464 C 330 478, 260 484, 200 484 C 135 484, 70 478, 30 464 Z" fill="url(#ground-hill)" />
+
+    <!-- Hilltop light reflection / dewy grass crest -->
+    <path d="M 60 458 C 115 440, 160 436, 200 436 C 245 436, 290 440, 340 458 C 295 448, 250 443, 200 443 C 150 443, 105 448, 60 458 Z" fill="url(#ground-highlight)" />
+
+    <!-- Tiny hope sprout on the left mound -->
+    <g id="sprout-left" class="float-1">
+      <path d="M 125 444 Q 123 433 120 426" stroke="#52796f" stroke-width="2" stroke-linecap="round" fill="none" />
+      <path d="M 120 426 C 114 425 110 428 112 432 C 115 435 120 432 120 426 Z" fill="url(#leaf-lime)" />
+      <path d="M 120 426 C 124 422 129 423 129 427 C 128 431 123 430 120 426 Z" fill="url(#leaf-mint)" />
+    </g>
+
+    <!-- Tiny hope sprout on the right mound -->
+    <g id="sprout-right" class="float-2">
+      <path d="M 285 446 Q 288 436 292 430" stroke="#52796f" stroke-width="2" stroke-linecap="round" fill="none" />
+      <path d="M 292 430 C 297 427 302 429 301 433 C 299 437 294 435 292 430 Z" fill="url(#leaf-gold)" />
+      <path d="M 292 430 C 288 426 284 428 285 432 C 287 435 291 433 292 430 Z" fill="url(#leaf-mint)" />
+    </g>
+
+    <!-- Tender grass tufts -->
+    <path d="M 152 441 Q 149 432 144 429 Q 148 435 152 441 Z" fill="#74c69d" />
+    <path d="M 155 442 Q 156 433 160 428 Q 158 436 155 442 Z" fill="#95d5b2" />
+    <path d="M 248 441 Q 251 433 256 429 Q 252 435 248 441 Z" fill="#74c69d" />
+
+    <!-- Fallen hope petals resting on the hill -->
+    <ellipse cx="140" cy="448" rx="4" ry="2.2" transform="rotate(-15 140 448)" fill="url(#leaf-gold)" opacity="0.9" />
+    <ellipse cx="170" cy="452" rx="4.5" ry="2" transform="rotate(20 170 452)" fill="url(#leaf-mint)" opacity="0.85" />
+    <ellipse cx="230" cy="453" rx="3.5" ry="1.8" transform="rotate(-10 230 453)" fill="url(#leaf-lime)" opacity="0.9" />
+    <ellipse cx="265" cy="450" rx="4.2" ry="2.2" transform="rotate(25 265 450)" fill="url(#leaf-gold)" opacity="0.85" />
+  </g>
+
+  <!-- Trunk: Organic, flowing trunk and graceful boughs with warm light highlight -->
+  <g id="trunk">
+    <!-- Gentle ground anchor shadow under roots -->
+    <ellipse cx="200" cy="440" rx="36" ry="6" fill="#3a251d" opacity="0.25" />
+
+    <!-- Main trunk silhouette with natural flared roots -->
+    <path d="M 172 442
+             C 178 437, 184 424, 187 395
+             C 189 360, 186 325, 182 295
+             C 179 270, 168 250, 150 232
+             C 142 224, 132 216, 122 212
+             C 126 215, 137 225, 145 236
+             C 156 250, 164 266, 168 285
+             C 172 300, 175 272, 180 252
+             C 184 235, 190 216, 194 196
+             C 197 182, 199 168, 200 158
+             C 201 168, 203 182, 206 196
+             C 211 216, 218 236, 222 254
+             C 226 270, 229 295, 232 284
+             C 236 268, 244 252, 255 238
+             C 264 227, 274 218, 280 214
+             C 269 219, 258 228, 250 236
+             C 233 252, 223 272, 219 296
+             C 215 325, 212 360, 214 395
+             C 216 424, 222 437, 228 442
+             C 218 443, 208 441, 200 441
+             C 192 441, 182 443, 172 442 Z"
+          fill="url(#trunk-base)" />
+
+    <!-- Secondary flowing branch left -->
+    <path d="M 174 274
+             C 162 260, 146 250, 132 246
+             C 138 251, 152 260, 162 276
+             C 168 285, 172 292, 174 296 Z"
+          fill="url(#branch-gradient)" />
+
+    <!-- Secondary flowing branch right -->
+    <path d="M 226 274
+             C 238 260, 254 250, 268 246
+             C 262 251, 248 260, 238 276
+             C 232 285, 228 292, 226 296 Z"
+          fill="url(#branch-gradient)" />
+
+    <!-- Trunk Warm Morning Highlight (graceful sun-kissed edge along the left) -->
+    <path d="M 174 440
+             C 180 434, 186 420, 189 392
+             C 191 360, 188 326, 185 298
+             C 182 276, 174 258, 162 242
+             C 152 228, 140 220, 130 215
+             C 134 219, 144 227, 152 238
+             C 162 252, 170 268, 174 286
+             C 177 308, 179 350, 177 385
+             C 175 410, 171 430, 174 440 Z"
+          fill="url(#trunk-highlight)" />
+
+    <!-- Heart-wood growth curve (subtle organic contour lines) -->
+    <path d="M 197 435 C 195 390 197 340 194 300" stroke="#7a4d3b" stroke-width="1.2" stroke-linecap="round" opacity="0.4" fill="none" />
+    <path d="M 204 434 C 205 385 204 335 208 290" stroke="#4a3026" stroke-width="1.2" stroke-linecap="round" opacity="0.35" fill="none" />
+  </g>
+
+  <!-- Canopy: Full rounded crown made of layered organic leaf clusters in sage, mint, warm lime, and golden hope accents -->
+  <g id="canopy">
+    <g class="foliage-pulse">
+      <!-- LAYER 1: Deep Sage foundation clusters (creates back depth) -->
+      <g id="canopy-deep">
+        <path d="M 140 180 C 110 170, 75 205, 85 240 C 92 268, 120 282, 148 275 C 158 240, 148 200, 140 180 Z" fill="url(#leaf-shadow)" opacity="0.9" />
+        <path d="M 260 180 C 290 170, 325 205, 315 240 C 308 268, 280 282, 252 275 C 242 240, 252 200, 260 180 Z" fill="url(#leaf-shadow)" opacity="0.9" />
+        <path d="M 180 120 C 140 115, 110 145, 120 180 C 145 185, 185 160, 180 120 Z" fill="url(#leaf-shadow)" opacity="0.75" />
+        <path d="M 220 120 C 260 115, 290 145, 280 180 C 255 185, 215 160, 220 120 Z" fill="url(#leaf-shadow)" opacity="0.75" />
+      </g>
+
+      <!-- LAYER 2: Middle Sage Green volume (main body of the canopy) -->
+      <g id="canopy-sage">
+        <path d="M 125 220 C 85 210, 65 250, 80 285 C 95 320, 140 325, 168 295 C 175 265, 155 228, 125 220 Z" fill="url(#leaf-sage)" />
+        <path d="M 275 220 C 315 210, 335 250, 320 285 C 305 320, 260 325, 232 295 C 225 265, 245 228, 275 220 Z" fill="url(#leaf-sage)" />
+        <path d="M 155 155 C 105 140, 80 190, 95 230 C 112 265, 160 260, 180 230 C 185 190, 175 160, 155 155 Z" fill="url(#leaf-sage)" />
+        <path d="M 245 155 C 295 140, 320 190, 305 230 C 288 265, 240 260, 220 230 C 215 190, 225 160, 245 155 Z" fill="url(#leaf-sage)" />
+        <path d="M 200 95 C 155 95, 135 135, 155 170 C 175 195, 225 195, 245 170 C 265 135, 245 95, 200 95 Z" fill="url(#leaf-sage)" />
+      </g>
+
+      <!-- LAYER 3: Fresh Mint & Tender Growth (illuminated mid-plane) -->
+      <g id="canopy-mint">
+        <path d="M 200 80 C 165 80, 148 110, 165 140 C 180 162, 220 162, 235 140 C 252 110, 235 80, 200 80 Z" fill="url(#leaf-mint)" />
+        <path d="M 145 125 C 115 120, 95 150, 110 180 C 125 205, 165 200, 175 175 C 180 145, 165 128, 145 125 Z" fill="url(#leaf-mint)" />
+        <path d="M 255 125 C 285 120, 305 150, 290 180 C 275 205, 235 200, 225 175 C 220 145, 235 128, 255 125 Z" fill="url(#leaf-mint)" />
+        <path d="M 200 145 C 160 145, 140 185, 160 220 C 178 245, 222 245, 240 220 C 260 185, 240 145, 200 145 Z" fill="url(#leaf-mint)" />
+        <path d="M 130 250 C 105 245, 95 275, 110 295 C 125 312, 160 305, 168 285 C 170 262, 148 252, 130 250 Z" fill="url(#leaf-mint)" />
+        <path d="M 270 250 C 295 245, 305 275, 290 295 C 275 312, 240 305, 232 285 C 230 262, 252 252, 270 250 Z" fill="url(#leaf-mint)" />
+      </g>
+
+      <!-- LAYER 4: Warm Lime Sunshine & New Life (front highlights) -->
+      <g id="canopy-lime">
+        <path d="M 195 75 C 175 75, 165 95, 178 115 C 190 130, 218 130, 228 115 C 238 95, 220 75, 195 75 Z" fill="url(#leaf-lime)" />
+        <path d="M 135 145 C 115 142, 105 165, 118 185 C 130 200, 155 195, 160 178 C 165 158, 150 146, 135 145 Z" fill="url(#leaf-lime)" />
+        <path d="M 265 145 C 285 142, 295 165, 282 185 C 270 200, 245 195, 240 178 C 235 158, 250 146, 265 145 Z" fill="url(#leaf-lime)" />
+        <path d="M 200 180 C 175 180, 162 205, 176 228 C 190 245, 218 245, 228 228 C 240 205, 225 180, 200 180 Z" fill="url(#leaf-lime)" />
+      </g>
+
+      <!-- LAYER 5: Golden Hope Accent Leaves (scattered points of warmth) -->
+      <g id="canopy-gold-accents">
+        <ellipse cx="202" cy="72" rx="7" ry="12" transform="rotate(15 202 72)" fill="url(#leaf-gold)" />
+        <ellipse cx="190" cy="76" rx="5.5" ry="10" transform="rotate(-25 190 76)" fill="url(#leaf-gold)" />
+
+        <ellipse cx="106" cy="158" rx="5" ry="9" transform="rotate(-40 106 158)" fill="url(#leaf-gold)" />
+        <ellipse cx="120" cy="135" rx="6" ry="11" transform="rotate(-18 120 135)" fill="url(#leaf-amber)" />
+
+        <ellipse cx="294" cy="158" rx="5" ry="9" transform="rotate(40 294 158)" fill="url(#leaf-gold)" />
+        <ellipse cx="280" cy="135" rx="6" ry="11" transform="rotate(18 280 135)" fill="url(#leaf-amber)" />
+
+        <ellipse cx="160" cy="210" rx="5.5" ry="10" transform="rotate(-20 160 210)" fill="url(#leaf-gold)" />
+        <ellipse cx="240" cy="210" rx="5.5" ry="10" transform="rotate(20 240 210)" fill="url(#leaf-gold)" />
+        <ellipse cx="200" cy="245" rx="6" ry="11" transform="rotate(5 200 245)" fill="url(#leaf-gold)" />
+
+        <ellipse cx="78" cy="265" rx="5" ry="9" transform="rotate(-55 78 265)" fill="url(#leaf-gold)" />
+        <ellipse cx="322" cy="265" rx="5" ry="9" transform="rotate(55 322 265)" fill="url(#leaf-gold)" />
+        <ellipse cx="178" cy="295" rx="5" ry="9" transform="rotate(-12 178 295)" fill="url(#leaf-gold)" />
+        <ellipse cx="222" cy="295" rx="5" ry="9" transform="rotate(12 222 295)" fill="url(#leaf-gold)" />
+      </g>
+    </g>
+  </g>
+
+  <!-- Sparkles & Hope Elements: Luminous orbs, fireflies, and twinkling hope stars -->
+  <g id="sparkles">
+    <!-- Star 1: Upper crown sparkle -->
+    <g class="twinkle-1" transform="translate(198, 48)">
+      <path d="M 0 -8 Q 0 0 8 0 Q 0 0 0 8 Q 0 0 -8 0 Z" fill="#fffde7" filter="url(#gentle-glow)" />
+      <circle cx="0" cy="0" r="2.2" fill="#ffffff" />
+    </g>
+
+    <!-- Star 2: High left branch sparkle -->
+    <g class="twinkle-2" transform="translate(92, 142)">
+      <path d="M 0 -7 Q 0 0 7 0 Q 0 0 0 7 Q 0 0 -7 0 Z" fill="#fff9c4" filter="url(#gentle-glow)" />
+      <circle cx="0" cy="0" r="1.8" fill="#ffffff" />
+    </g>
+
+    <!-- Star 3: High right crown sparkle -->
+    <g class="twinkle-3" transform="translate(308, 142)">
+      <path d="M 0 -7.5 Q 0 0 7.5 0 Q 0 0 0 7.5 Q 0 0 -7.5 0 Z" fill="#fff9c4" filter="url(#gentle-glow)" />
+      <circle cx="0" cy="0" r="2" fill="#ffffff" />
+    </g>
+
+    <!-- Star 4: Mid canopy heart sparkle -->
+    <g class="twinkle-4" transform="translate(200, 168)">
+      <path d="M 0 -6.5 Q 0 0 6.5 0 Q 0 0 0 6.5 Q 0 0 -6.5 0 Z" fill="#ffffff" filter="url(#gentle-glow)" />
+      <circle cx="0" cy="0" r="1.8" fill="#fffde7" />
+    </g>
+
+    <!-- Star 5: Outer left floating hope sparkle -->
+    <g class="twinkle-1" transform="translate(58, 225)">
+      <path d="M 0 -6 Q 0 0 6 0 Q 0 0 0 6 Q 0 0 -6 0 Z" fill="#ffe082" />
+      <circle cx="0" cy="0" r="1.5" fill="#ffffff" />
+    </g>
+
+    <!-- Star 6: Outer right floating hope sparkle -->
+    <g class="twinkle-2" transform="translate(342, 225)">
+      <path d="M 0 -6 Q 0 0 6 0 Q 0 0 0 6 Q 0 0 -6 0 Z" fill="#ffe082" />
+      <circle cx="0" cy="0" r="1.5" fill="#ffffff" />
+    </g>
+
+    <!-- Floating Luminous Orbs / Fireflies (warm gold & soft cream) -->
+    <!-- Orb Group A: Gently drifting left -->
+    <g class="float-1">
+      <circle cx="118" cy="188" r="9" fill="url(#orb-glow)" />
+      <circle cx="118" cy="188" r="3" fill="#ffffff" />
+    </g>
+
+    <g class="float-2">
+      <circle cx="75" cy="275" r="7" fill="url(#orb-glow)" />
+      <circle cx="75" cy="275" r="2.2" fill="#ffffff" />
+    </g>
+
+    <g class="float-3">
+      <circle cx="155" cy="315" r="6" fill="url(#orb-glow)" />
+      <circle cx="155" cy="315" r="2" fill="#fffde7" />
+    </g>
+
+    <!-- Orb Group B: Drifting right -->
+    <g class="float-2">
+      <circle cx="282" cy="188" r="9" fill="url(#orb-glow)" />
+      <circle cx="282" cy="188" r="3" fill="#ffffff" />
+    </g>
+
+    <g class="float-1">
+      <circle cx="325" cy="275" r="7" fill="url(#orb-glow)" />
+      <circle cx="325" cy="275" r="2.2" fill="#ffffff" />
+    </g>
+
+    <g class="float-3">
+      <circle cx="245" cy="315" r="6" fill="url(#orb-glow)" />
+      <circle cx="245" cy="315" r="2" fill="#fffde7" />
+    </g>
+
+    <!-- Orb Group C: Rising from tree base / ground -->
+    <g class="float-1">
+      <circle cx="168" cy="405" r="5" fill="url(#orb-glow)" />
+      <circle cx="168" cy="405" r="1.6" fill="#ffffff" />
+    </g>
+
+    <g class="float-2">
+      <circle cx="232" cy="405" r="5" fill="url(#orb-glow)" />
+      <circle cx="232" cy="405" r="1.6" fill="#ffffff" />
+    </g>
+
+    <g class="float-3">
+      <circle cx="200" cy="365" r="6.5" fill="url(#orb-glow)" />
+      <circle cx="200" cy="365" r="2.2" fill="#ffffff" />
+    </g>
+
+    <!-- Tiny luminous dust specks around canopy -->
+    <circle cx="140" cy="100" r="1.5" fill="#fffde7" opacity="0.8" class="twinkle-3" />
+    <circle cx="260" cy="100" r="1.5" fill="#fffde7" opacity="0.8" class="twinkle-4" />
+    <circle cx="175" cy="62" r="1.8" fill="#ffffff" opacity="0.9" class="twinkle-1" />
+    <circle cx="225" cy="62" r="1.8" fill="#ffffff" opacity="0.9" class="twinkle-2" />
+    <circle cx="100" cy="215" r="1.4" fill="#fff9c4" opacity="0.75" class="twinkle-3" />
+    <circle cx="300" cy="215" r="1.4" fill="#fff9c4" opacity="0.75" class="twinkle-4" />
+  </g>
+</svg>
