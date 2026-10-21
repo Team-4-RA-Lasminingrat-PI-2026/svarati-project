@@ -19,7 +19,7 @@ const cardVariants = cva(
         white: "bg-white border border-gray-100 shadow-sm",
         cream: "bg-svarati-cream border border-gray-200/60 shadow-sm",
         // Tinted — border tipis senada
-        lavender: "bg-[#EDE9F7] border border-svarati-lavender-light",
+        lavender: "bg-svarati-lavender/15 border border-svarati-lavender-light",
         teal: "bg-svarati-teal-soft border border-svarati-teal/15",
         coral: "bg-svarati-coral-soft border border-svarati-coral/20",
         danger: "bg-svarati-danger-soft border border-svarati-danger/20",
@@ -37,7 +37,6 @@ const cardVariants = cva(
         lavender: "border-t-[6px] border-t-svarati-lavender",
         coral: "border-t-[6px] border-t-svarati-coral",
         teal: "border-t-[6px] border-t-svarati-teal",
-        green: "border-t-[6px] border-t-[#6B9E78]",
       },
       interactive: {
         true: "cursor-pointer hover:-translate-y-1 hover:shadow-md",
