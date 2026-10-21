@@ -14,6 +14,7 @@ const buttonVariants = cva(
         outline: "border-white bg-transparent text-white hover:bg-white/10",
         exit: "bg-svarati-danger text-white hover:bg-svarati-danger-dark",
         ghost: "border-svarati-lavender-border bg-transparent text-svarati-teal hover:bg-svarati-lavender-light",
+        tertiary: "bg-transparent text-svarati-lavender-dark underline underline-offset-4 hover:bg-svarati-lavender-light/60 hover:text-svarati-teal",
       },
       size: {
         // Size disesuaikan dengan spek RLA005 (sm, md, lg)
