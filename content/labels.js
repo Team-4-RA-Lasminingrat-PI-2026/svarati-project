@@ -32,7 +32,7 @@ export const MENU_UTAMA = [
     deskripsi: "Penanganan & bantuan",
     submenu: [
       { id: "cek-kondisi", nama: "Cek Kondisimu", href: "/kuratif/selfassessment" },
-      { id: "cari-layanan", nama: "Cari Layanan Terdekat", href: "/kuratif/helpdirectory" },
+      { id: "cari-layanan", nama: "Cari Layanan Terdekat", href: "/kuratif/help-directory" },
       { id: "svarati-ai", nama: "Tanya Svarati AI", href: "/kuratif/AIsupport" },
     ],
   },
