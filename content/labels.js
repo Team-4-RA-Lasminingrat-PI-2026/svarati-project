@@ -19,7 +19,7 @@ export const MENU_UTAMA = [
     subtitle: "Preventif",
     deskripsi: "Edukasi & pencegahan",
     submenu: [
-      { id: "edukasi-hukum", nama: "Edukasi Hukum", href: "/preventif/edu" },
+      { id: "edukasi-hukum", nama: "Edukasi Hak", href: "/preventif/edu" },
       { id: "kuis-singkat", nama: "Kuis Singkat", href: "/preventif/quiz" },
       { id: "simulasi-batasan", nama: "Simulasi Batasan Diri", href: "/preventif/simulator" },
     ],
@@ -31,9 +31,9 @@ export const MENU_UTAMA = [
     subtitle: "Kuratif",
     deskripsi: "Penanganan & bantuan",
     submenu: [
-      { id: "cek-kondisi", nama: "Cek Kondisimu", href: "/kuratif/selfassessment" },
-      { id: "cari-layanan", nama: "Cari Layanan Terdekat", href: "/kuratif/helpdirectory" },
-      { id: "svarati-ai", nama: "Tanya Svarati AI", href: "/kuratif/AIsupport" },
+      { id: "cek-kondisi", nama: "Cek Kondisimu", href: "/kuratif/self-assessment" },
+      { id: "cari-layanan", nama: "Cari Layanan Terdekat", href: "/kuratif/help-directory" },
+      { id: "svarati-ai", nama: "Tanya Svarati AI", href: "/kuratif/svarati-ai" },
     ],
   },
   {
@@ -51,7 +51,7 @@ export const MENU_UTAMA = [
   {
     id: "tentang",
     nama: "Tentang Kami",
-    href: "/tentang",
+    href: "/profile",
   },
 ];
 
@@ -109,7 +109,7 @@ export const heroContent = {
   ],
 
   description:
-    "Svarati adalah ruang pribadi bagi perempuan Indonesia untuk memahami hak-haknya, menemukan bantuan terpercaya, dan melangkah menuju pemulihan secara aman.",
+    "Svarati adalah ruang aman bagi perempuan Indonesia untuk memahami hak-haknya, menemukan bantuan terpercaya, dan melangkah menuju pemulihan secara aman.",
 
   optionsLabel: "Apa yang kamu butuhkan saat ini?",
  options: [
@@ -215,7 +215,7 @@ export const svaratiAiContent = {
   judul: "Bingung dengan Apa yang Baru Saja Terjadi?",
   deskripsi:
     "Ceritakan secara anonim. Svarati AI hadir untuk memvalidasi ceritamu, menjelaskan hak hukummu dalam bahasa awam, dan memberikan checklist langkah pertama dengan aman tanpa menghakimi.",
-  cta: { label: "Mulai Cerita", href: "/AIsupport" },
+  cta: { label: "Mulai Cerita", href: "/svarati-ai" },
 };
 
 export const pemulihanContent = {
@@ -261,4 +261,215 @@ export const privasiContent = {
     { teks: "Keluar Cepat", tebal: true, tone: "danger" },
     { teks: " kapan saja untuk mengalihkan layar secara instan." },
   ],
+};
+
+// ===== KURATIF =====
+// Nama dan rute diambil dari MENU_UTAMA dan DARURAT. Di sini hanya teks pendukung.
+const MENU_PENDAMPINGAN = MENU_UTAMA.find((menu) => menu.id === "pendampingan");
+const MENU_PREVENTIF = MENU_UTAMA.find((menu) => menu.id === "pahami-hakmu");
+const EDU_HUKUM = MENU_PREVENTIF.submenu.find((sub) => sub.id === "edukasi-hukum");
+const SVARATI_AI = MENU_PENDAMPINGAN.submenu.find((sub) => sub.id === "svarati-ai");
+
+export const KURATIF = {
+  common: {
+    emergencyLabel: DARURAT.tombol,
+    back: "Kembali",
+    next: "Lanjut",
+    finish: "Lihat Hasil",
+    skip: "Lewati pertanyaan ini",
+    backToQuiz: "Kembali ke kuis",
+    restart: "Ulangi kuis",
+    lihatDaftar: "Lihat daftar layanan",
+    storageNote: "Kamu bisa berhenti kapan saja. Jawabanmu hanya tersimpan selama halaman ini terbuka.",
+    aiDisclaimer: "Ini bukan pengganti psikolog, pendamping, atau layanan hukum. Jika kamu dalam bahaya, gunakan Bantuan Darurat.",
+  },
+
+  menu: {
+    title: "Dukungan untuk Kasus yang Kamu Alami.",
+    intro: "Pilih langkah yang paling sesuai dengan kondisimu saat ini. Kamu bisa mulai dari mana saja.",
+    disclaimer: "Layanan di halaman ini membantu kamu memahami situasi. Hasilnya bukan diagnosis dan bukan penilaian hukum.",
+    hintCekKondisi: "±2 menit",
+    // Deskripsi per item, dicocokkan dengan id di submenu
+    desc: {
+      "cek-kondisi": "Enam pertanyaan singkat, satu per layar. Kamu bisa melewati atau kembali kapan saja.",
+      "svarati-ai": "Ceritakan apa yang kamu alami, atau tanyakan langkah berikutnya.",
+      "cari-layanan": "Daftar layanan pendampingan dan hukum yang sudah diverifikasi.",
+    },
+  },
+
+  selfAssessment: {
+    title: (step, total) => `Langkah ${step} dari ${total}`,
+    hint: "Boleh pilih lebih dari satu.",
+    panelKiri: {
+      judul: "Cek kondisimu",
+      judulKuis: "Pelan-pelan, mulai dari sini.",
+      dukungan:
+        "Jawab sesuai yang kamu rasakan. Tidak ada jawaban yang benar atau salah, dan kamu boleh melewati pertanyaan mana pun.",
+    },
+    darurat: {
+      judul: "Keselamatanmu adalah prioritas",
+      isi: "Kamu tampaknya masih berada dalam situasi berbahaya. Hubungi salah satu layanan di bawah ini sekarang.",
+      keluarCepatAwal: "Kamu juga bisa menggunakan tombol",
+      keluarCepatAkhir: "di bagian atas untuk segera meninggalkan halaman ini.",
+      hubungi: "Hubungi",
+    },
+    hasilDarurat: {
+      judul: "Dalam situasi darurat?",
+      isi: "Jangan tunggu daftar ini, hubungi langsung layanan darurat.",
+    },
+    education: {
+      judul: "Edukasi Hukum untuk Kamu",
+      isi: "Kamu memilih untuk memahami batasan hukum secara umum. Kamu akan diarahkan ke modul Edukasi untuk informasi yang relevan.",
+      tombol: "Ke Modul Edukasi",
+      route: EDU_HUKUM.href,
+    },
+    result: {
+      lead: "Tidak perlu memutuskan apa pun sekarang.",
+      leadRest: "Berikut beberapa langkah yang mungkin membantu.",
+      disclaimer: "Hasil ini berdasarkan jawabanmu dan bukan diagnosis atau penilaian hukum.",
+    },
+    cards: {
+      space: {
+        title: "Ruang bercerita",
+        body: `Kamu bisa menuliskan apa pun yang kamu rasakan di ${SVARATI_AI.nama}, dengan kecepatanmu sendiri.`,
+        cta: `Buka ${SVARATI_AI.nama}`,
+        route: SVARATI_AI.href,
+      },
+      digital: {
+        title: "Menyimpan bukti digital",
+        body: "Kamu punya bukti digital. Beberapa hal yang bisa dilakukan:",
+        list: [
+          "Jangan hapus pesan atau foto aslinya",
+          "Buat salinan di tempat lain yang kamu percaya",
+          "Catat tanggal dan jam kejadian selagi ingat",
+        ],
+      },
+      institution: {
+        title: "Pelaporan di institusi",
+        body: "Tempat kamu belajar atau bekerja biasanya punya jalur pengaduan. Kamu bisa bertanya dulu tanpa langsung melapor.",
+        list: [
+          "Cari tahu prosedur pengaduan di tempatmu",
+          "Kamu boleh membawa pendamping saat bertanya",
+        ],
+      },
+      threat: {
+        title: "Kamu tidak harus menghadapi ancaman sendirian",
+        body: "Ancaman atau tekanan seperti ini bisa sangat berat. Berbicara dengan pendamping bisa membantu memikirkan langkah yang aman.",
+        list: [
+          "Hubungi pendamping atau orang yang kamu percaya",
+          "Simpan bukti ancaman jika ada",
+        ],
+      },
+      emotional: {
+        title: "Dukungan emosional",
+        body: "Membeku, bingung, atau baru menyadari sesuatu setelah beberapa waktu itu wajar. Tidak ada cara yang benar untuk bereaksi.",
+        list: [
+          "Kamu boleh membahas ini dengan psikolog atau pendamping",
+          "Tidak perlu menceritakan semuanya sekaligus",
+        ],
+      },
+      noEvidence: {
+        title: "Kalau belum ada bukti",
+        body: "Tidak adanya bukti tidak membuat pengalamanmu kurang berarti. Pendamping bisa membantu melihat pilihan yang tersedia.",
+      },
+    },
+    questions: [
+      {
+        id: "q1",
+        text: "Bagaimana kondisimu sekarang?",
+        options: [
+          { id: "a", label: "Dalam bahaya (mengancam jiwa atau kesehatan)", flag: "darurat" },
+          { id: "b", label: "Aman, tapi bingung" },
+          { id: "c", label: "Aman, tapi masih trauma" },
+          { id: "d", label: "Aman, hanya ingin tahu soal hukum atau hak perempuan", flag: "edukasi" },
+        ],
+      },
+      {
+        id: "q2",
+        text: "Di mana kejadiannya?",
+        options: [
+          { id: "a", label: "Online (chat, medsos)" },
+          { id: "b", label: "Kampus, sekolah, magang, kos" },
+          { id: "c", label: "Kantor atau tempat kerja" },
+          { id: "d", label: "Tempat umum" },
+          { id: "e", label: "Rumah atau keluarga" },
+        ],
+      },
+      {
+        id: "q3",
+        text: "Siapa yang terlibat?",
+        options: [
+          { id: "a", label: "Atasan atau dosen" },
+          { id: "b", label: "Teman atau rekan" },
+          { id: "c", label: "Pacar, mantan, atau keluarga" },
+          { id: "d", label: "Orang yang baru dikenal" },
+        ],
+      },
+      {
+        id: "q4",
+        text: "Apa yang terjadi?",
+        multi: true,
+        options: [
+          { id: "a", group: "Kata-kata", label: "Ada candaan atau komentar bernuansa seksual" },
+          { id: "b", group: "Kata-kata", label: "Dikomentari soal tubuh" },
+          { id: "c", group: "Online", label: "Dikirimi foto atau video tanpa izin" },
+          { id: "d", group: "Online", label: "Diancam foto atau datanya disebar" },
+          { id: "e", group: "Online", label: "Diintip atau direkam diam-diam" },
+          { id: "f", group: "Fisik", label: "Disentuh tanpa izin" },
+          { id: "g", group: "Fisik", label: "Dipaksa berhubungan intim" },
+          { id: "h", group: "Ancaman", label: "Nilai atau kerja dikaitkan dengan permintaan intim" },
+        ],
+      },
+      {
+        id: "q5",
+        text: "Bagaimana reaksimu saat itu?",
+        options: [
+          { id: "a", label: "Sudah menolak, tapi tetap dilanjutkan" },
+          { id: "b", label: "Membeku atau takut" },
+          { id: "c", label: "Menurut karena takut diancam" },
+          { id: "d", label: "Baru sadar setelah beberapa waktu" },
+        ],
+      },
+      {
+        id: "q6",
+        text: "Ada bukti atau saksi?",
+        options: [
+          { id: "a", label: "Ada bukti digital" },
+          { id: "b", label: "Ada saksi" },
+          { id: "c", label: "Tidak ada, hanya ingatanku" },
+          { id: "d", label: "Belum tahu" },
+        ],
+      },
+    ],
+  },
+
+  ai: {
+    badge: SVARATI_AI.nama,
+    nama: "Svarati AI",
+    judulPanel: "Mau mulai dari mana?",
+    typing: "Svarati AI sedang mengetik",
+    headerJudul: "Teman cerita",
+    headerSub: "Asisten AI, bukan manusia",
+    greeting: "Hai. Kamu bisa memilih apa yang ingin dilakukan, atau langsung menulis sesuatu.",
+    inputLabel: "Tulis pesan",
+    inputPlaceholder: "Bagikan apa yang kamu rasa nyaman...",
+    send: "Kirim",
+    chips: [
+      { label: "Saya ingin cerita", key: "cerita" },
+      { label: "Apa langkah berikutnya?", key: "langkah" },
+      { label: "Saya ingin istirahat", key: "istirahat" },
+      { label: "Apa hak saya sebagai korban?", key: "hak" },
+    ],
+    // Balasan terkurasi. Nantinya diganti dengan jawaban RAG yang sudah diverifikasi.
+    replies: {
+      cerita: "Terima kasih sudah memilih untuk berbagi. Kamu boleh cerita sedikit demi sedikit, atau hanya bagian yang nyaman saja.",
+      langkah: "Kalau kamu ingin tahu langkah berikutnya, kita bisa mulai dari yang paling mendesak. Apakah kamu sedang merasa aman sekarang?",
+      istirahat: "Tidak apa-apa untuk berhenti dulu. Halaman ini akan tetap di sini saat kamu siap kembali.",
+      hak: "Sebagai korban, kamu memiliki hak untuk mendapatkan perlindungan, bantuan, dan keadilan. Kamu berhak melaporkan kejadian ini dan meminta bantuan dari pihak berwenang.",
+      urgent: "Aku mendengarmu, dan keselamatanmu yang paling penting sekarang. Kalau kamu dalam bahaya, tekan tombol Bantuan Darurat di bawah ini. Kamu tidak harus menghadapinya sendirian.",
+      default: "Terima kasih sudah menuliskan itu. Kamu boleh melanjutkan kapan saja, atau memilih langkah lain di atas.",
+    },
+    errorText: "Maaf, balasan belum bisa dikirim. Coba lagi sebentar lagi, atau gunakan tombol bantuan darurat jika kamu butuh bantuan sekarang.",
+    urgentNotice: "Kedengarannya situasimu mendesak. Kamu tidak harus menghadapinya sendiri. Hubungi layanan bantuan sekarang.",
+  },
 };
