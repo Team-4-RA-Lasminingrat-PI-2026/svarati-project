@@ -5,14 +5,14 @@ export default function Badge({ children, variant = "teal", styleType = "soft", 
     // Memisahkan variant berdasarkan 2 versi (soft dan white)
     const variants = {
         soft: {
-            teal: "bg-[#cdece7] text-[#0f4c5c]",
-            coral: "bg-[#ffded4] text-[#b14a25]",
-            lavender: "bg-[#d8d1f3] text-[#5a4a9e]",
+            teal: "bg-svarati-teal/20 text-svarati-teal",
+            coral: "bg-svarati-coral/25 text-svarati-coral-dark",
+            lavender: "bg-svarati-lavender-light text-svarati-lavender-dark",
         },
         white: {
-            teal: "bg-white text-[#0f4c5c]",
-            coral: "bg-white text-[#b14a25]",
-            lavender: "bg-white text-[#5a4a9e]",
+            teal: "bg-white text-svarati-teal",
+            coral: "bg-white text-svarati-coral-dark",
+            lavender: "bg-white text-svarati-lavender-dark",
         }
     };
 
