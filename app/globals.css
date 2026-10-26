@@ -198,3 +198,25 @@
     transition: none !important;
   }
 }
+
+/* ============================================================
+  6. Hero Image
+  =========================================================*/
+  /* Hero: di mobile/tablet gambar paling transparan di area teks (atas), makin jelas ke bawah */
+.hero-art {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.12) 45%, rgba(0,0,0,0.6) 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.12) 45%, rgba(0,0,0,0.6) 100%);
+}
+
+@media (min-width: 1024px) {
+  .hero-art {
+    -webkit-mask-image: url(/woman.svg);
+    mask-image: url(/woman.svg);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: cover;
+    mask-size: cover;
+    -webkit-mask-position: right top;
+    mask-position: right top;
+  }
+}
