@@ -7,7 +7,10 @@ import { DARURAT } from "@/content/labels";
 const QUICK_EXIT_URL = "https://www.google.com";
 
 export default function QuickOutButton({ className = "" }) {
-  const quickExit = () => window.location.replace(QUICK_EXIT_URL);
+  const quickExit = () => {
+    document.documentElement.style.display = "none";
+    window.location.replace("https://www.google.com");
+  };
 
   useEffect(() => {
     const onKeyDown = (e) => {
