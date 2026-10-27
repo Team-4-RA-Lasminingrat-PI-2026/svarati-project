@@ -10,13 +10,12 @@ export default function RuangPemulihan() {
   return (
     <section
       id="ruang-pemulihan"
-      className="overflow-hidden px-4 pb-12 pt-10 sm:px-6 lg:pb-16 lg:pt-12 bg-svarati-coral-soft"
+      className="overflow-hidden bg-svarati-coral-soft px-4 pb-12 pt-10 sm:px-6 lg:pb-16 lg:pt-12"
     >
       <div className="mx-auto grid w-full max-w-6xl items-center gap-8 lg:grid-cols-[1.15fr_1fr] lg:gap-6">
-        {/* KIRI: pohon + kartu melayang */}
-        <div className="relative mx-auto w-full max-w-2xl">
-          {/* Tinggi dibatasi mengikuti layar agar tidak melebihi 1 viewport */}
-          <div className="relative mx-auto aspect-square w-full max-w-md lg:h-[62vh] lg:max-h-[520px] lg:w-full lg:max-w-none lg:aspect-auto">
+        {/* KIRI: pohon + kartu melayang (mobile dan desktop) */}
+        <div className="relative order-2 mx-auto w-full max-w-2xl lg:order-1">          
+          <div className="relative mx-auto aspect-4/5 w-full max-w-md sm:aspect-[5/4] sm:max-w-2xl lg:aspect-auto lg:h-[62vh] lg:max-h-130 lg:max-w-none">
             <Image
               src={p.gambar.src}
               alt={p.gambar.alt}
@@ -25,29 +24,25 @@ export default function RuangPemulihan() {
               className="object-contain lg:scale-110"
             />
 
-            {/* Desktop: kartu melayang di atas pohon */}
-            <ul className="hidden lg:block">
+            <ul>
               {p.pesan.map((m) => (
-                <li key={m.id} className={`absolute w-60 ${m.posisi}`}>
+                <li
+                  key={m.id}
+                  className={`absolute w-[62%] max-w-60 sm:w-64 lg:w-60 ${m.posisi}`}
+                >
                   <PesanCard m={m} label={p.labelDukungan} />
                 </li>
               ))}
             </ul>
           </div>
-
-          {/* Mobile/tablet: kartu tersusun di bawah pohon */}
-          <ul className="mt-4 flex flex-col gap-3 lg:hidden">
-            {p.pesan.map((m) => (
-              <li key={m.id}>
-                <PesanCard m={m} label={p.labelDukungan} />
-              </li>
-            ))}
-          </ul>
         </div>
 
         {/* KANAN: teks */}
-        <div className="flex flex-col items-start lg:pl-8">
-          <Badge variant="coral" styleType="white" className="mb-4 gap-1.5 normal-case tracking-normal">
+          <div className="order-1 flex flex-col items-start lg:order-2 lg:pl-8">          <Badge
+            variant="coral"
+            styleType="white"
+            className="mb-4 gap-1.5 normal-case tracking-normal"
+          >
             <Heart className="size-3.5" aria-hidden="true" />
             {p.badge}
           </Badge>
@@ -79,15 +74,20 @@ export default function RuangPemulihan() {
 
 function PesanCard({ m, label }) {
   return (
-    <Card variant="white" size="sm" className="rounded-2xl p-3.5 shadow-lg">
-      <CardDescription className="text-xs italic leading-relaxed text-svarati-lavender-dark">
+    <Card
+      variant="white"
+      size="sm"
+      className="rounded-xl p-2.5 shadow-lg sm:rounded-2xl sm:p-3.5"
+    >
+      <CardDescription className="line-clamp-4 text-[10px] italic leading-snug text-svarati-lavender-dark sm:line-clamp-none sm:text-xs sm:leading-relaxed">
         “{m.teks}”
       </CardDescription>
-      <CardFooter className="mt-2.5 pt-2 text-[11px]">
-        <span className="text-svarati-lavender-dark">{m.penulis}</span>
-        <span className="flex items-center gap-1 font-bold text-svarati-coral-dark">
-          <Heart className="size-3 fill-current" aria-hidden="true" />
-          {m.dukungan} {label}
+      <CardFooter className="mt-1.5 gap-2 pt-1.5 text-[9px] sm:mt-2.5 sm:pt-2 sm:text-[11px]">
+        <span className="truncate text-svarati-lavender-dark">{m.penulis}</span>
+        <span className="flex shrink-0 items-center gap-1 font-bold text-svarati-coral-dark">
+          <Heart className="size-2.5 fill-current sm:size-3" aria-hidden="true" />
+          {m.dukungan}
+          <span className="hidden sm:inline">{label}</span>
         </span>
       </CardFooter>
     </Card>
