@@ -3,7 +3,7 @@
 const sizes = {
   sm: "max-w-sm",
   md: "max-w-md",
-  lg: "max-w-lg",
+  lg: "max-w-2xl",
 };
 
 export default function Modal({ open, onClose, size = "md", children }) {
