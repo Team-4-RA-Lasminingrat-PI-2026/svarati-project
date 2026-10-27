@@ -170,7 +170,7 @@ export default function Navbar() {
     <header className="fixed inset-x-0 top-3 z-40 overflow-x-clip px-2 sm:px-3">
       <nav
         aria-label={NAVBAR.navigasiUtama}
-        className="mx-auto flex max-w-6xl items-center justify-between gap-2 rounded-full border border-svarati-teal/20 bg-white px-4 py-1 shadow-xl sm:gap-3 sm:px-5 lg:gap-4 lg:px-6"
+        className="mx-auto flex max-w-6xl items-center justify-between gap-2 rounded-full border border-white/40 bg-white/40 px-4 py-1 shadow-lg backdrop-blur-md sm:gap-3 sm:px-5 lg:gap-4 lg:px-6"
       >
         {/* Brand */}
         <Link
