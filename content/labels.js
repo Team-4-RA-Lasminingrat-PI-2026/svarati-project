@@ -43,9 +43,9 @@ export const MENU_UTAMA = [
     subtitle: "Rehabilitatif",
     deskripsi: "Pemulihan & dukungan jangka panjang",
     submenu: [
-      { id: "jurnal-pemulihan", nama: "Jurnal Pemulihan", href: "/rehabilitatif/healingjourney" },
+      { id: "jurnal-pemulihan", nama: "Jurnal Pemulihan", href: "/rehabilitatif/healing-journey" },
       { id: "latihan-tenang", nama: "Latihan Tenang", href: "/rehabilitatif/training" },
-      { id: "cerita-dari-mereka", nama: "Cerita dari Mereka", href: "/rehabilitatif/treeofhope" },
+      { id: "cerita-dari-mereka", nama: "Cerita dari Mereka", href: "/rehabilitatif/tree-of-hope" },
     ],
   },
   {
