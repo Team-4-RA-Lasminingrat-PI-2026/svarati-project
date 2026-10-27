@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Badge from "@/components/Badge";
 import { Card, CardTitle, CardDescription, CardLink } from "@/components/Card";
-import { layananContent as s } from "@/content/labels";
+import { serviceContent as s } from "@/content/labels";
 
 const TONE_TEXT = {
   lavender: "text-svarati-lavender-dark",
@@ -10,16 +10,16 @@ const TONE_TEXT = {
   coral: "text-svarati-coral-dark",
 };
 
-export default function Layanan() {
+export default function Services() {
   return (
-    <section id="layanan" className="scroll-mt-24 px-4 pb-12 pt-6 sm:px-6 lg:pb-16">
+    <section id="services" className="scroll-mt-24 px-4 pb-12 pt-22 sm:px-6 lg:pb-16">
       <div className="mx-auto w-full max-w-6xl">
         <div className="mx-auto mb-6 max-w-4xl text-center">
           <h2 className="text-2xl font-bold text-svarati-teal md:text-3xl">
-            {s.judul}
+            {s.title}
           </h2>
           <p className="mt-1 text-sm text-svarati-lavender-dark">
-            {s.subjudul}
+            {s.subtitle}
           </p>
         </div>
 
@@ -38,7 +38,7 @@ export default function Layanan() {
                   {/* Gambar */}
                   <div className="relative h-40 w-full shrink-0 bg-white/60">
                     <Image
-                      src={item.gambar}
+                      src={item.image}
                       alt=""
                       fill
                       sizes="(min-width: 768px) 33vw, 100vw"
@@ -55,11 +55,11 @@ export default function Layanan() {
                     >
                       {item.badge}
                     </Badge>
-                    <CardTitle className="text-lg">{item.judul}</CardTitle>
+                    <CardTitle className="text-lg">{item.title}</CardTitle>
                     <CardDescription
                       className={`text-[13px] ${TONE_TEXT[item.variant]}`}
                     >
-                      {item.deskripsi}
+                      {item.description}
                     </CardDescription>
                     <CardLink
                       className={`mt-auto pt-4 ${TONE_TEXT[item.variant]}`}

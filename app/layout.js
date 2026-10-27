@@ -1,7 +1,7 @@
 import { Lora, Public_Sans } from "next/font/google";
 import "./globals.css";
-/*import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";*/
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 const lora = Lora({
   subsets: ["latin"],
@@ -37,11 +37,11 @@ export default function RootLayout({ children }) {
 
         <div className="flex flex-col min-h-screen w-full">
           <Navbar />
-          
+
           <main id="konten-utama" className="flex-1 w-full">
             {children}
           </main>
-          
+
           <Footer />
         </div>
       </body>

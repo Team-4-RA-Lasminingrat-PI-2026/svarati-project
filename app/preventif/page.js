@@ -1,8 +1,16 @@
-export default function Page() {
+import EducationBanner from "@/components/education/EducationBanner";
+import EducationList from "@/components/education/EducationList";
+import { educationContent as edu } from "@/content/labels";
+
+export const metadata = { title: edu.pageTitle };
+
+export default function EducationPage() {
+  const headlines = edu.articles.filter((a) => a.headline);
+
   return (
-    <main className="mx-auto max-w-4xl px-4 py-16">
-      <h1 className="text-3xl font-bold text-svarati-teal">Segera Hadir</h1>
-      <p className="mt-3 text-base text-svarati-teal/80">Halaman ini sedang dikerjakan.</p>
+    <main className="min-h-svh bg-svarati-cream pb-16 pt-24">
+      <EducationBanner headlines={headlines} />
+      <EducationList articles={edu.articles} />
     </main>
   );
 }

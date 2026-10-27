@@ -14,12 +14,17 @@ const buttonVariants = cva(
         outline: "border-white bg-transparent text-white hover:bg-white/10",
         exit: "bg-svarati-danger text-white hover:bg-svarati-danger-dark",
         ghost: "border-svarati-lavender-border bg-transparent text-svarati-teal hover:bg-svarati-lavender-light",
+        tertiary: "bg-transparent text-svarati-lavender-dark underline underline-offset-4 hover:bg-svarati-lavender-light/60 hover:text-svarati-teal",
+        // BARU: blok lavender untuk CTA rekomendasi (tombol ungu)
+        soft: "bg-svarati-lavender-light/50 text-svarati-lavender-dark font-bold hover:bg-svarati-lavender-light",
       },
       size: {
         // Size disesuaikan dengan spek RLA005 (sm, md, lg)
         sm: "h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem]",
         md: "h-9 gap-1.5 px-3",
         lg: "h-11 gap-1.5 px-5 text-base",
+        // BARU: CTA besar, tinggi 56px dengan sudut membulat
+        xl: "h-14 gap-2 rounded-2xl px-6 text-base",
       },
       fullWidth: {
         true: "w-full",
