@@ -1,12 +1,12 @@
 import Link from "next/link";
-import { MENU_UTAMA, KURATIF, layananContent } from "@/content/labels";
+import { MENU_UTAMA, KURATIF, serviceContent } from "@/content/labels";
 import Badge from "@/components/Badge";
 import { Card, CardIcon, CardTitle, CardDescription } from "@/components/Card";
 import { ClipboardCheck, MapPin, MessageCircle, ChevronRight, Info } from "lucide-react";
 
 const menuKuratif = KURATIF.menu;
 const daftarSubmenu = MENU_UTAMA.find((menu) => menu.id === "pendampingan").submenu;
-const badgeKuratif = layananContent.items.find((item) => item.id === "kuratif").badge;
+const badgeKuratif = serviceContent.items.find((item) => item.id === "kuratif").badge;
 
 // Warna deskripsi dan ikon mengikuti latar kartu. Judul tetap teal.
 // Class ditulis lengkap agar terdeteksi Tailwind.
