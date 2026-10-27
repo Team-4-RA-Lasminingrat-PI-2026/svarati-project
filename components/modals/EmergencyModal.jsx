@@ -21,7 +21,7 @@ function kirimSOS() {
 
 export default function EmergencyModal({ open, onClose }) {
   return (
-    <Modal open={open} onClose={onClose} size="md">
+    <Modal open={open} onClose={onClose} size="lg">
       <div className="max-h-[90vh] overflow-y-auto p-6">
         <div className="flex items-center justify-between border-b border-svarati-lavender-light pb-4">
           <div className="flex items-center gap-3">
@@ -72,7 +72,7 @@ export default function EmergencyModal({ open, onClose }) {
           <span className="flex-1">
             <span className="block font-bold">Kirim Pesan Darurat (Silent SOS)</span>
             <span className="block text-sm">
-              Membuka WhatsApp dengan pesan + lokasimu. Kamu tinggal memilih kontak dan menekan kirim.
+              Cara cepat buka Whatsapp dan kirim pesan "Saya butuh bantuan darurat" beserta lokasimu. Kamu hanya perlu memilih kontak penerima pesan dan menekan tombol kirim.
             </span>
           </span>
           <ArrowRight className="size-5 shrink-0" />
@@ -86,7 +86,7 @@ export default function EmergencyModal({ open, onClose }) {
           <Building2 className="size-6 shrink-0" />
           <span className="flex-1">
             <span className="block font-bold">Direktori Bantuan &amp; Rumah Aman</span>
-            <span className="block text-sm text-svarati-lavender-dark">
+            <span className="block text-sm text-svarati-teal-dark">
               Lihat lokasi layanan pendampingan terdekat
             </span>
           </span>
@@ -98,12 +98,8 @@ export default function EmergencyModal({ open, onClose }) {
           <ul className="list-disc space-y-1 pl-5">
             <li>Pindah ke area publik/keramaian jika situasi tidak aman.</li>
             <li>
-              Tekan tombol <strong className="underline">Esc 2x</strong> kapan saja untuk
-              mengalihkan layar ke Google secara instan.
-            </li>
-            <li>
-              Pesan SOS tersimpan di riwayat WhatsApp. Hapus chat-nya jika perangkatmu mungkin
-              dilihat orang lain.
+              Pesan Darurat (Silent SOS) tersimpan di riwayat WhatsApp. Hapus chat jika perangkatmu mungkin
+              dilihat orang lain dan membuatmu tidak aman.
             </li>
           </ul>
         </div>
