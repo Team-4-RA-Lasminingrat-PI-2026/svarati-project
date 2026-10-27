@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input"; // sesuaikan path jika berbeda
 import { Label } from "@/components/ui/label";
 import { Card, CardDescription, CardFooter } from "@/components/Card";
 import { pemulihanContent as p } from "@/content/labels";
+import Badge from "@/components/Badge";
 
 const DESKRIPSI =
   "Kamu tidak sendirian... Temukan harapan dan kekuatan baru dengan membaca pesan dukungan dari komunitas Svarati di Tree of Hope. Kamu juga bisa memberikan dukungan dan semangatmu kepada komunitas Svarati!";
@@ -128,6 +129,7 @@ export default function TreeOfHopePage() {
   const [arah, setArah] = useState(1);
   const [idBaru, setIdBaru] = useState(null); // pesan yang baru dikirim: tanda "Baru" + animasi masuk
   const [idPing, setIdPing] = useState(null); // isyarat saat pohon pertama muncul
+  const [disukai, setDisukai] = useState({}); // id pesan yang sudah kamu beri love
   const [modalOpen, setModalOpen] = useState(false);
   const [pesan, setPesan] = useState("");
   const [peran, setPeran] = useState("");
@@ -200,8 +202,13 @@ export default function TreeOfHopePage() {
     setError(false);
   }
 
+  // Love bisa dibatalkan: klik sekali memberi dukungan, klik lagi membatalkannya
   function suka(id) {
-    setDaftar((d) => d.map((m) => (m.id === id ? { ...m, dukungan: m.dukungan + 1 } : m)));
+    const sudah = !!disukai[id];
+    setDisukai((d) => ({ ...d, [id]: !sudah }));
+    setDaftar((d) =>
+      d.map((m) => (m.id === id ? { ...m, dukungan: m.dukungan + (sudah ? -1 : 1) } : m))
+    );
   }
 
   // Pesan baru masuk (dari formulir ini; nanti juga bisa dipanggil dari langganan realtime database)
@@ -251,6 +258,9 @@ export default function TreeOfHopePage() {
                 scrolled ? "top-0" : "top-[0%]"
               }`}
             >
+              <Badge variant="coral" styleType="soft" className="mb-3">
+                Dukungan Komunitas
+              </Badge>
               <h1
                 className={`text-balance font-bold leading-tight text-svarati-teal transition-all duration-700 ease-out ${
                   scrolled ? "text-3xl" : "text-4xl xl:text-5xl"
@@ -269,8 +279,8 @@ export default function TreeOfHopePage() {
 
             {/* Area pohon: awalnya mengintip separuh dari bawah, naik penuh saat discroll */}
             <div
-              className={`absolute inset-x-4 bottom-0 top-22 transition-transform duration-700 ease-out ${
-                scrolled ? "translate-y-0" : "translate-y-[15%]"
+              className={`absolute inset-x-4 bottom-0 top-40 transition-transform duration-700 ease-out ${
+                scrolled ? "translate-y-0" : "translate-y-[30%]"
               }`}
             >
               <Image
@@ -369,6 +379,7 @@ export default function TreeOfHopePage() {
                           )}
                           <PesanCard
                             m={m}
+                            liked={!!disukai[m.id]}
                             label={p.labelDukungan}
                             onSuka={suka}
                             onBuka={() => setAktif(awalHalaman + i)}
@@ -400,6 +411,9 @@ export default function TreeOfHopePage() {
       {/* MOBILE dan tablet: tanpa panggung, disusun ke bawah */}
       <div className="lg:hidden">
         <div className="text-center">
+          <Badge variant="coral" styleType="soft" className="mb-3">
+            Dukungan Komunitas
+          </Badge>
           <h1 className="text-balance text-3xl font-bold leading-tight text-svarati-teal">
             Mari Bangkit Bersama Komunitas Svarati
           </h1>
@@ -426,6 +440,7 @@ export default function TreeOfHopePage() {
               <li key={m.id}>
                 <PesanCard
                   m={m}
+                  liked={!!disukai[m.id]}
                   label={p.labelDukungan}
                   onSuka={suka}
                   onBuka={() => setAktif(awalHalaman + i)}
@@ -517,15 +532,14 @@ export default function TreeOfHopePage() {
                 </p>
                 <div className="mt-4 flex items-center justify-between gap-2 text-sm">
                   <span className="text-svarati-lavender-dark">{terpilih.penulis}</span>
-                  <button
-                    type="button"
+                  <TombolSuka
+                    liked={!!disukai[terpilih.id]}
+                    jumlah={terpilih.dukungan}
+                    label={p.labelDukungan}
+                    tampilLabel
+                    ikon="size-4"
                     onClick={() => suka(terpilih.id)}
-                    aria-label={`Beri dukungan. Saat ini ${terpilih.dukungan} ${p.labelDukungan}`}
-                    className="flex shrink-0 cursor-pointer items-center gap-1 font-bold text-svarati-coral-dark transition hover:scale-110 active:scale-95"
-                  >
-                    <Heart className="size-4 fill-current" aria-hidden="true" />
-                    {terpilih.dukungan} {p.labelDukungan}
-                  </button>
+                  />
                 </div>
               </div>
 
@@ -709,9 +723,33 @@ function Pager({ halaman, total, onChange }) {
   );
 }
 
+// Tombol love: berubah tampilan setelah di-love (hati terisi, merah, latar muda) dan bisa dibatalkan.
+function TombolSuka({ liked, jumlah, label, onClick, tampilLabel = false, ikon = "size-3", className = "" }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={liked}
+      aria-label={`${liked ? "Batalkan dukungan" : "Beri dukungan"}. Saat ini ${jumlah} ${label}`}
+      className={`flex shrink-0 cursor-pointer items-center gap-1 whitespace-nowrap rounded-full px-1.5 py-0.5 font-bold transition hover:scale-110 active:scale-95 ${
+        liked
+          ? "bg-svarati-danger-soft text-svarati-danger"
+          : "text-svarati-coral-dark hover:bg-svarati-coral-soft"
+      } ${className}`}
+    >
+      <Heart
+        aria-hidden="true"
+        className={`${ikon} ${liked ? "animate-in zoom-in-50 fill-current duration-300" : ""}`}
+      />
+      {jumlah}
+      {tampilLabel ? ` ${label}` : ""}
+    </button>
+  );
+}
+
 // Seluruh kartu bisa diklik (tombol transparan menutupi kartu); tombol love berada di atasnya.
 // pratinjau = ukuran dan potongan teks mengikuti level (besar, sedang, kecil); tanpa pratinjau = kartu penuh.
-function PesanCard({ m, label, onSuka, onBuka, level, pratinjau = false }) {
+function PesanCard({ m, label, onSuka, onBuka, level, pratinjau = false, liked = false }) {
   const l = level ?? LEVEL[0];
   return (
     <Card variant="white" size="sm" className={`rounded-2xl shadow-lg ${pratinjau ? l.pad : "p-3.5"}`}>
@@ -734,16 +772,14 @@ function PesanCard({ m, label, onSuka, onBuka, level, pratinjau = false }) {
         ) : (
           <span />
         )}
-        <button
-          type="button"
+        <TombolSuka
+          liked={liked}
+          jumlah={m.dukungan}
+          label={label}
+          tampilLabel={!pratinjau}
           onClick={() => onSuka(m.id)}
-          aria-label={`Beri dukungan. Saat ini ${m.dukungan} ${label}`}
-          className="relative z-10 flex shrink-0 cursor-pointer items-center gap-1 whitespace-nowrap font-bold text-svarati-coral-dark transition hover:scale-110 active:scale-95"
-        >
-          <Heart className="size-3 fill-current" aria-hidden="true" />
-          {m.dukungan}
-          {pratinjau ? "" : ` ${label}`}
-        </button>
+          className="relative z-10"
+        />
       </CardFooter>
     </Card>
   );
