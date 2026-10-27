@@ -258,7 +258,7 @@ export const privasiContent = {
   // Bagian bertanda "tebal" ditampilkan sebagai teks penekanan
   deskripsi: [
     { teks: "Seluruh penjelajahan di Svarati dibuat tanpa pelacakan riwayat identitas. Kamu dapat menekan " },
-    { teks: "Esc 2x", tebal: true, tone: "coral" },
+    { teks: "Esc", tebal: true, tone: "coral" },
     { teks: " atau tombol " },
     { teks: "Keluar Cepat", tebal: true, tone: "danger" },
     { teks: " kapan saja untuk mengalihkan layar secara instan." },
