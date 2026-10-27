@@ -21,7 +21,7 @@ export default function MythsFacts() {
           <h2 className="text-2xl font-bold text-svarati-teal md:text-3xl">
             {m.judul}
           </h2>
-          <p className="mt-2 text-sm text-svarati-lavender-dark">
+          <p className="mt-2 text-sm text-svarati-teal">
             {m.subjudul}
           </p>
         </div>
