@@ -47,16 +47,18 @@ const exercises = [
 
 export default function TrainingPage() {
     return (
-        <main
-            className="min-h-screen bg-svarati-cream px-4 pb-12 md:px-8 lg:px-12 font-sans"
-            style={{ paddingTop: "5rem" }}
-        >
+        // pt-28 / md:pt-36 memberi ruang untuk navbar yang melayang di atas
+        <main className="min-h-screen bg-svarati-cream px-4 pb-12 pt-28 font-sans md:px-8 md:pt-36 lg:px-12">
             <div className="mx-auto max-w-4xl space-y-8">
-                <div>
-                    <h1 className="text-4xl font-bold text-svarati-teal mb-4 font-heading">
+                {/* Header: badge + ajakan latihan */}
+                <div className="max-w-2xl">
+                    <Badge variant="coral" className="mb-5">
                         Latihan Pemulihan
+                    </Badge>
+                    <h1 className="mb-5 text-4xl font-bold leading-tight text-svarati-teal font-heading md:text-5xl">
+                        Yuk Berikan Ruang Tenang untuk Dirimu Hari Ini!
                     </h1>
-                    <p className="text-svarati-teal/80 text-lg leading-relaxed max-w-2xl">
+                    <p className="text-lg leading-relaxed text-svarati-coral">
                         Pilih latihan yang paling cocok dengan kondisimu saat ini. Kamu bisa
                         berhenti kapan saja, dan tidak ada yang salah dalam melakukannya.
                     </p>
