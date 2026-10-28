@@ -210,16 +210,21 @@ export default function PemulihanPage() {
     const hasUnsavedChange = noteDraft.trim() !== savedNote;
 
     return (
-        <main className="min-h-screen bg-svarati-cream p-4 md:p-8 lg:p-12 font-sans">
+        // pt-28 / md:pt-36 memberi ruang untuk navbar yang melayang di atas
+        <main className="min-h-screen bg-svarati-cream px-4 pb-8 pt-28 font-sans md:px-8 md:pb-12 md:pt-36 lg:px-12">
             <div className="mx-auto max-w-4xl space-y-8">
-                <div>
-                    <h1 className="text-4xl font-bold text-svarati-teal mb-4 font-heading">
-                        Pemulihan
+                {/* Header: badge + ajakan healing journey */}
+                <div className="max-w-2xl">
+                    <span className="mb-5 inline-block rounded-full bg-svarati-coral/15 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-svarati-coral">
+                        Healing Journey
+                    </span>
+                    <h1 className="mb-5 text-4xl font-bold leading-tight text-svarati-teal font-heading md:text-5xl">
+                        Mulai Healing Journey-mu, Selangkah Demi Selangkah
                     </h1>
-                    <p className="text-svarati-teal/80 text-lg mb-8 leading-relaxed max-w-2xl">
-                        Perjalanan pemulihanmu, sesuai pilihan dan ritmemu sendiri. Check-in
-                        emosi harianmu, temukan latihan yang sesuai, dan bergabung bersama
-                        komunitas untuk saling memberi dukungan antar penyintas.
+                    <p className="text-lg leading-relaxed text-svarati-coral">
+                        Kamu berhak pulih dengan ritmemu sendiri... Check-in emosi harianmu,
+                        temukan latihan yang sesuai, dan bergabung bersama komunitas untuk
+                        saling memberi dukungan antar penyintas.
                     </p>
                 </div>
 
