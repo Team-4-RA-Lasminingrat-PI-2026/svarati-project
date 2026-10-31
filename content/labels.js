@@ -20,11 +20,6 @@ export const MENU_UTAMA = [
     href: "/preventif",
     subtitle: "Preventif",
     deskripsi: "Edukasi & pencegahan",
-    submenu: [
-      { id: "edukasi-hukum", nama: "Edukasi Hak", href: "/preventif/edu" },
-      { id: "kuis-singkat", nama: "Kuis Singkat", href: "/preventif/quiz" },
-      { id: "simulasi-batasan", nama: "Simulasi Batasan Diri", href: "/preventif/simulator" },
-    ],
   },
   {
     id: "pendampingan",
@@ -34,8 +29,8 @@ export const MENU_UTAMA = [
     deskripsi: "Penanganan & bantuan",
     submenu: [
       { id: "cek-kondisi", nama: "Cek Kondisimu", href: "/kuratif/self-assessment" },
-      { id: "cari-layanan", nama: "Cari Layanan Terdekat", href: "/kuratif/help-directory" },
       { id: "svarati-ai", nama: "Tanya Svarati AI", href: "/kuratif/svarati-ai" },
+      { id: "cari-layanan", nama: "Cari Layanan Terdekat", href: "/kuratif/help-directory" },
     ],
   },
   {
@@ -128,7 +123,6 @@ export const heroContent = {
     src: "/image3.jpg",
     alt: "Perempuan",
     position: "50% 50%",
-    
   },
 };
 
@@ -217,7 +211,28 @@ export const svaratiAiContent = {
   judul: "Bingung dengan Apa yang Baru Saja Terjadi?",
   deskripsi:
     "Ceritakan secara anonim. Svarati AI hadir untuk memvalidasi ceritamu, menjelaskan hak hukummu dalam bahasa awam, dan memberikan checklist langkah pertama dengan aman tanpa menghakimi.",
-  cta: { label: "Mulai Cerita", href: "/svarati-ai" },
+  cta: { label: "Mulai Cerita", href: "/kuratif/svarati-ai" },
+  gambar: { src: "/cute-ai-robot-mascot.svg", alt: "Maskot robot Svarati AI" },
+  bubbles: [
+    {
+      id: 1,
+      teks: "Halo! Aku Svarati AI",
+      posisi: "-top-3 -left-4 sm:-top-5 sm:-left-8",
+      delay: "animate-float-slow",
+    },
+    {
+      id: 2,
+      teks: "Aku siap menjawab semua pertanyaanmu dengan ramah",
+      posisi: "top-1/4 -right-20 sm:-right-28",
+      delay: "animate-float-medium",
+    },
+    {
+      id: 3,
+      teks: "Tenang saja, semua rahasiamu aman terjaga denganku",
+      posisi: "-bottom-6 -left-8 sm:-bottom-8 sm:-left-12 lg:-left-16",
+      delay: "animate-float-fast",
+    },
+  ],
 };
 
 export const pemulihanContent = {
@@ -258,15 +273,14 @@ export const privasiContent = {
   // Bagian bertanda "tebal" ditampilkan sebagai teks penekanan
   deskripsi: [
     { teks: "Seluruh penjelajahan di Svarati dibuat tanpa pelacakan riwayat identitas. Kamu dapat menekan " },
-    { teks: "Esc", tebal: true, tone: "coral" },
-    { teks: " atau tombol " },
+    { teks: " tombol " },
     { teks: "Keluar Cepat", tebal: true, tone: "danger" },
     { teks: " kapan saja untuk mengalihkan layar secara instan." },
   ],
 };
 
 export const educationContent = {
-  pageTitle: "Edukasi | Svarati",
+  pageTitle: "Edukasi Svarati",
   intro: {
     badge: "Pusat Edukasi",
     title: "Pahami Hakmu, Mulai dari Sini",
@@ -413,11 +427,98 @@ export const educationContent = {
         { type: "p", text: <i>Sumber: UU Nomor 12 Tahun 2022 (Bab I, Pasal 1 - 3).</i> },
       ],
     },
-    { id: "a3", slug: "kenali-kekerasan-digital", headline: true, category: "safety", author: "Tim Keamanan Svarati",
+    { id: "a3", 
+      slug: "kenali-kekerasan-digital", 
+      headline: true, 
+      category: "safety", 
+      author: "Tim Keamanan Svarati",
       title: "Kekerasan Seksual Berbasis Elektronik: Kenali dan Lawan",
       summary: "Ancaman penyebaran foto atau video intim adalah kejahatan. Pelajari cara mengamankan bukti dan langkah pelaporannya.",
-      date: "3 Okt 2026", readTime: "7 menit baca", image: "/edukasi/artikel-3.jpg" },
-    {  
+      date: "3 Okt 2026", 
+      readTime: "7 menit baca", 
+      image: "/imagea3.jpg",
+      likes: 12,
+      body: [
+        {
+          type: "p",
+          text: "Kemajuan teknologi digital tidak hanya membawa kemudahan berkomunikasi, tetapi juga memicu hadirnya bentuk kejahatan baru, yaitu Kekerasan Seksual Berbasis Elektronik (KSBE) atau Kekerasan Berbasis Gender Online (KBGO). Salah satu bentuk ancaman yang paling sering terjadi adalah sextortion (pemerasan seksual) dan penyebaran foto atau video intim tanpa persetujuan. Tindakan ini sepenuhnya merupakan bentuk kejahatan pidana dan bukan kesalahan korban.",
+        },
+        {
+          type: "h2",
+          text: "Bentuk-Bentuk Kekerasan Seksual Berbasis Elektronik",
+        },
+        {
+          type: "p",
+          text: "KSBE dapat terjadi dalam beberapa modus manipulasi dan eksploitasi digital:",
+        },
+        {
+          type: "ul",
+          items: [
+            "Penyebaran atau Ancaman Penyebaran Konten Intim: Mengunggah, membagikan, atau mengancam akan menyebarkan foto atau video pribadi korban untuk mengintimidasi, memeras, atau memanipulasi.",
+            "Perekaman Ilegal: Mengambil atau merekam gambar/video bermuatan seksual tanpa sepengetahuan dan persetujuan (consent) dari korban.",
+            "Pelecehan Digital (Cyberstalking): Mengirimkan pesan, gambar, atau ajakan bermuatan seksual secara berulang dan memaksakan kehendak melalui platform perpesanan atau media sosial.",
+          ],
+        },
+        {
+          type: "h2",
+          text: "Payung Hukum Perlindungan Korban",
+        },
+        {
+          type: "p",
+          text: "Korban KSBE di Indonesia memiliki landasan hukum yang kuat untuk menuntut keadilan:",
+        },
+        {
+          type: "ul",
+          items: [
+            "Undang-Undang No. 12 Tahun 2022 tentang TPKS (Pasal 14): Secara khusus mengatur sanksi pidana bagi pelaku yang melakukan perekaman, transmisi, atau mengancam menyebarkan materi intim tanpa persetujuan. UU TPKS menempatkan hak perlindungan, penanganan, dan pemulihan korban sebagai prioritas utama.",
+            "Undang-Undang ITE (UU No. 1 Tahun 2024): Melarang distribusi dan transmisi dokumen elektronik yang melanggar kesusilaan tanpa hak.",
+          ],
+        },
+        {
+          type: "h2",
+          text: "Cara Mengamankan Bukti Digital",
+        },
+        {
+          type: "p",
+          text: "Jika Anda atau seseorang yang Anda kenal mengalami ancaman penyebaran konten intim, amankan bukti digital sesegera mungkin sebelum melakukan tindakan hukum:",
+        },
+        {
+          type: "ul",
+          items: [
+            "1. Jangan Langsung Menghapus Chat atau Akun: Walaupun ada dorongan rasa panik untuk menghapus jejak, riwayat percakapan dan profil pelaku merupakan bukti utama yang dibutuhkan penyidik.",
+            "2. Ambil Tangkapan Layar (Screenshot) Secara Utuh: Pastikan tangkapan layar memperlihatkan nama akun, nomor telepon, tanggal, serta jam pengiriman pesan (timestamp) secara jelas.",
+            "3. Simpan File Asli dan Tautan (URL): Simpan foto, video, atau dokumen asli tanpa dipotong (crop) atau diubah nama filenya agar data teknis (metadata) tetap terjaga. Salin juga alamat tautan akun/situs tempat konten diunggah.",
+            "4. Cadangkan Bukti: Simpan seluruh salinan bukti ke dalam folder terenkripsi atau penyimpan awan (cloud storage) yang aman.",
+          ],
+        },
+        {
+          type: "h2",
+          text: "Langkah Pelaporan dan Pendampingan",
+        },
+        {
+          type: "ul",
+          items: [
+            "1. Laporkan Konten ke Platform: Gunakan fitur report internal di aplikasi atau media sosial untuk memblokir akun pelaku dan menurunkan (take down) konten.",
+            "2. Layanan Rujukan Pemerintah: Hubungi Call Center SAPA 129 (KemenPPPA) melalui nomor telepon 129 atau WhatsApp 08111-129-129 untuk akses pendampingan psikologis dan hukum.",
+            "3. Lembaga Pendamping Khusus: Minta bantuan teknis dan pendampingan ke lembaga seperti SAFEnet (AwasKBGO) atau LBH APIK.",
+            "4. Laporan Kepolisian: Mengajukan laporan pidana resmi ke Unit Siber atau Unit Pelayanan Perempuan dan Anak (PPA) kepolisian setempat berdasarkan UU TPKS.",
+          ],
+        },
+        {
+          type: "p",
+          text: "Sumber Referensi:",
+        },
+        {
+          type: "ul",
+          items: [
+            "Southeast Asia Freedom of Expression Network (SAFEnet). (2021). Panduan Memahami dan Menangani Kekerasan Berbasis Gender Online (KBGO).",
+            "Undang-Undang Republik Indonesia Nomor 12 Tahun 2022 tentang Tindak Pidana Kekerasan Seksual (UU TPKS).",
+            "Undang-Undang Republik Indonesia Nomor 1 Tahun 2024 tentang Perubahan Kedua atas Undang-Undang Nomor 11 Tahun 2008 tentang Informasi dan Transaksi Elektronik.",
+          ],
+        },
+      ],
+    },
+    {
       id: "a4",
       slug: "stres-dan-siklus-menstruasi-remaja",
       headline: false,
@@ -430,12 +531,11 @@ export const educationContent = {
       image: "/imagea4.jpg",
       likes: 0,
       body: [
-        { type: "p", text: "Masa remaja merupakan periode transisi yang diwarnai oleh berbagai perubahan fisik, emosional, dan psikologis. Salah satu masalah kesehatan reproduksi yang cukup sering dialami oleh remaja putri adalah ketidakteraturan siklus menstruasi. Di antara berbagai faktor gaya hidup, kondisi stres emosional terbukti menjadi salah satu pemicu utama yang mempengaruhi kelancaran siklus bulanan tersebut." },
-        { type: "p", text: "Tekanan emosional atau beban pikiran yang tinggi memiliki dampak langsung terhadap keseimbangan hormon di dalam tubuh. Ketika seorang remaja mengalami stres pada tingkat sedang hingga berat, tubuh akan merespons dengan meningkatkan produksi hormon kortisol. Lonjakan hormon kortisol ini kemudian dapat menekan kadar Luteinizing Hormone (LH), yaitu hormon yang berfungsi mengatur pelepasan sel telur. Akibat ketidakseimbangan sistem hormonal tersebut, proses pelepasan sel telur menjadi terganggu sehingga jadwal menstruasi menjadi tidak teratur atau terlambat." },
-        { type: "p", text: "Sementara itu, durasi dan kualitas tidur pada dasarnya penting untuk pemulihan fisik harian. Namun, apabila durasi tidur remaja masih tercukupi dalam rentang 7 hingga 8 jam per hari, faktor stres emosional tetap menjadi variabel yang paling dominan dalam mempengaruhi stabilitas siklus menstruasi." },
-        { type: "p", text: "Oleh karena itu, pengelolaan stres menjadi langkah krusial dalam menjaga kesehatan reproduksi remaja putri. Menerapkan pola hidup seimbang, mengontrol emosi dengan baik, serta meluangkan waktu untuk istirahat dan kegiatan yang menyenangkan dapat membantu menstabilkan produksi hormon dalam tubuh agar siklus menstruasi tetap lancar dan teratur." },
-
-        { type: "p", text: <i>Sumber Referensi: Efendi, B. P., Latifah, Lestari, Y. P., & Basit, M. (2024). Tingkat Stres dan Kualitas Tidur yang Mempengaruhi Siklus Menstruasi pada Remaja Putri. Jurnal Keperawatan Jiwa, 12(3), 657-666.</i> },
+            { type: "p", text: "Masa remaja merupakan periode transisi yang diwarnai oleh berbagai perubahan fisik, emosional, dan psikologis. Salah satu masalah kesehatan reproduksi yang cukup sering dialami oleh remaja putri adalah ketidakteraturan siklus menstruasi. Di antara berbagai faktor gaya hidup, kondisi stres emosional terbukti menjadi salah satu pemicu utama yang mempengaruhi kelancaran siklus bulanan tersebut." },
+            { type: "p", text: "Tekanan emosional atau beban pikiran yang tinggi memiliki dampak langsung terhadap keseimbangan hormon di dalam tubuh. Ketika seorang remaja mengalami stres pada tingkat sedang hingga berat, tubuh akan merespons dengan meningkatkan produksi hormon kortisol. Lonjakan hormon kortisol ini kemudian dapat menekan kadar Luteinizing Hormone (LH), yaitu hormon yang berfungsi mengatur pelepasan sel telur. Akibat ketidakseimbangan sistem hormonal tersebut, proses pelepasan sel telur menjadi terganggu sehingga jadwal menstruasi menjadi tidak teratur atau terlambat." },
+            { type: "p", text: "Sementara itu, durasi dan kualitas tidur pada dasarnya penting untuk pemulihan fisik harian. Namun, apabila durasi tidur remaja masih tercukupi dalam rentang 7 hingga 8 jam per hari, faktor stres emosional tetap menjadi variabel yang paling dominan dalam mempengaruhi stabilitas siklus menstruasi." },
+            { type: "p", text: "Oleh karena itu, pengelolaan stres menjadi langkah krusial dalam menjaga kesehatan reproduksi remaja putri. Menerapkan pola hidup seimbang, mengontrol emosi dengan baik, serta meluangkan waktu untuk istirahat dan kegiatan yang menyenangkan dapat membantu menstabilkan produksi hormon dalam tubuh agar siklus menstruasi tetap lancar dan teratur." },
+            { type: "p", text: "Sumber Referensi: Efendi, B. P., Latifah, Lestari, Y. P., & Basit, M. (2024). Tingkat Stres dan Kualitas Tidur yang Mempengaruhi Siklus Menstruasi pada Remaja Putri. Jurnal Keperawatan Jiwa, 12(3), 657-666." },
       ],
     },
     {
@@ -451,33 +551,36 @@ export const educationContent = {
       image: "/hukum1.jpg",
       likes: 5,
       body: [
-        { type: "p", text: "Bab II (Pasal 4 sampai Pasal 18) memuat aturan inti mengenai tindakan apa saja yang masuk kategori kekerasan seksual beserta sanksi pidana dan denda bagi pelakunya." },
-        { type: "p", text: <b>Jenis Kekerasan Seksual (Pasal 4)</b> },
-        { type: "p", text: "UU ini mengatur 9 bentuk utama kekerasan seksual. Selain itu, bentuk kejahatan lain yang sudah diatur di hukum sebelumnya (seperti perkosaan, pencabulan, kejahatan seksual pada anak, pornografi anak, pemaksaan pelacuran, perdagangan orang, dan kekerasan seksual dalam rumah tangga) juga diakui sepenuhnya sebagai tindak pidana kekerasan seksual." },
-        { type: "p", text: <b>Bentuk Perbuatan dan Sanksinya (Pasal 5 - 14)</b> },
-        { type: "ul", items: [
-          <><b>Pelecehan Seksual Nonfisik (Pasal 5):</b> Perbuatan seperti siulan, ucapan, atau isyarat bernada seksual yang merendahkan martabat seseorang. Sanksinya adalah penjara paling lama 9 bulan dan/atau denda maksimal Rp10 juta.</>,
-          <><b>Pelecehan Seksual Fisik (Pasal 6):</b> Memegang, meraba, atau menyentuh tubuh/organ seksual tanpa persetujuan. Pelaku diancam penjara maksimal 4 tahun dan denda hingga Rp50 juta. Jika perbuatan dilakukan dengan memanfaatkan wewenang, jabatan, atau kondisi korban yang bergantung padanya, sanksi meningkat menjadi penjara maksimal 12 tahun dan denda hingga Rp300 juta.</>,
-          <><b>Syarat Pelaporan Pelecehan (Pasal 7):</b> Pelecehan nonfisik dan pelecehan fisik ringan bersifat delik aduan (hanya bisa diproses jika korban melapor). Namun, jika korbannya adalah Anak atau Penyandang Disabilitas, polisi wajib memprosesnya secara langsung meski tanpa laporan dari korban.</>,
-          <><b>Pemaksaan Kontrasepsi (Pasal 8):</b> Memaksa orang lain menggunakan alat pencegah kehamilan hingga korban kehilangan fungsi reproduksinya untuk sementara. Sanksinya berupa penjara maksimal 5 tahun dan/atau denda hingga Rp50 juta.</>,
-          <><b>Pemaksaan Sterilisasi (Pasal 9):</b> Memaksa atau menghilangkan fungsi reproduksi seseorang secara permanen/tetap. Pelaku diancam penjara maksimal 9 tahun dan/atau denda maksimal Rp200 juta.</>,
-          <><b>Pemaksaan Perkawinan (Pasal 10):</b> Memaksa seseorang untuk menikah, termasuk perkawinan anak, pemaksaan nikah atas nama tradisi/budaya, atau memaksa korban memperkosa untuk menikahi pelakunya. Sanksinya adalah penjara maksimal 9 tahun dan/atau denda hingga Rp200 juta.</>,
-          <><b>Penyiksaan Seksual (Pasal 11):</b> Kekerasan seksual yang dilakukan oleh pejabat atau aparat resmi untuk mengintimidasi, memaksa pengakuan, atau mempermalukan seseorang. Pelaku diancam penjara maksimal 12 tahun dan/atau denda maksimal Rp300 juta.</>,
-          <><b>Eksploitasi Seksual (Pasal 12):</b> Memanfaatkan tubuh atau organ seksual orang lain demi mencari keuntungan atau uang dengan memanfaatkan kerentanan atau ketidakberdayaan korban. Pelaku diancam penjara maksimal 15 tahun dan/atau denda hingga Rp1 miliar.</>,
-          <><b>Perbudakan Seksual (Pasal 13):</b> Mengendalikan dan membuat seseorang tidak berdaya agar bisa terus-menerus dieksploitasi secara seksual. Sanksinya adalah penjara maksimal 15 tahun dan/atau denda maksimal Rp1 miliar.</>,
-          <><b>Kekerasan Seksual Berbasis Elektronik / Online (Pasal 14):</b> Merekam/mengambil foto bernada seksual tanpa izin, menyebarkan konten seksual pribadi seseorang, atau menguntit seseorang secara digital untuk tujuan seksual. Pelaku diancam penjara maksimal 4 tahun dan denda hingga Rp200 juta. Jika disertai pemerasan atau ancaman, sanksinya naik menjadi penjara maksimal 6 tahun dan denda hingga Rp300 juta. Perekaman atau penyebaran demi pembelaan diri atau kepentingan umum tidak dapat dipidana.</>,
-        ] },
-        { type: "p", text: <b>Pemberatan Hukuman (Pasal 15)</b> },
-        { type: "p", text: "Hukuman penjara dan denda akan ditambah sepertiga (1/3) jika perbuatan dilakukan oleh anggota keluarga, pengajar, tenaga medis, atasan kerja, atau pejabat publik. Pemberatan juga berlaku jika kejahatan dilakukan oleh lebih dari satu orang (bersekutu), dilakukan berulang kali, atau korbannya adalah anak, penyandang disabilitas, wanita hamil, orang pingsan/tidak berdaya, serta dalam kondisi bencana atau perang." },
-        { type: "p", text: <b>Ganti Rugi, Hukuman Tambahan, dan Rehabilitasi (Pasal 16 dan 17)</b> },
-        { type: "p", text: <><b>Restitusi dan Sanksi Tambahan (Pasal 16):</b> Hakim wajib mewajibkan pelaku membayar uang ganti rugi (restitusi) kepada korban untuk kasus dengan ancaman hukuman 4 tahun atau lebih. Hakim juga dapat menjatuhkan sanksi tambahan berupa pencabutan hak asuh anak, pengumuman identitas pelaku ke publik, serta penyitaan harta hasil kejahatan.</> },
-        { type: "p", text: <><b>Rehabilitasi Pelaku (Pasal 17):</b> Selain hukuman pidana, pelaku dapat diwajibkan menjalani rehabilitasi medis dan sosial di bawah pengawasan dinas kesehatan dan sosial.</> },
-        { type: "p", text: <b>Hukuman untuk Perusahaan / Korporasi (Pasal 18)</b> },
-        { type: "p", text: "Jika tindak pidana kekerasan seksual dilakukan oleh atau atas nama perusahaan (korporasi), perusahaan tersebut diancam denda Rp5 miliar hingga Rp15 miliar. Hakim juga dapat menjatuhkan sanksi tambahan seperti penutupan usaha, pembekuan kegiatan, hingga pembubaran perusahaan." },
-        { type: "p", text: <i>Sumber: UU Nomor 12 Tahun 2022 (Bab II, Pasal 4 - 18).</i> },
+            { type: "p", text: "Bab II (Pasal 4 sampai Pasal 18) memuat aturan inti mengenai tindakan apa saja yang masuk kategori kekerasan seksual beserta sanksi pidana dan denda bagi pelakunya." },
+            { type: "h2", text: "Jenis Kekerasan Seksual (Pasal 4)" },
+            { type: "p", text: "UU ini mengatur 9 bentuk utama kekerasan seksual. Selain itu, bentuk kejahatan lain yang sudah diatur di hukum sebelumnya (seperti perkosaan, pencabulan, kejahatan seksual pada anak, pornografi anak, pemaksaan pelacuran, perdagangan orang, dan kekerasan seksual dalam rumah tangga) juga diakui sepenuhnya sebagai tindak pidana kekerasan seksual." },
+            { type: "h2", text: "Bentuk Perbuatan dan Sanksinya (Pasal 5 - 14)" },
+            {
+              type: "ul",
+              items: [
+                "Pelecehan Seksual Nonfisik (Pasal 5): Perbuatan seperti siulan, ucapan, atau isyarat bernada seksual yang merendahkan martabat seseorang. Sanksinya adalah penjara paling lama 9 bulan dan/atau denda maksimal Rp10 juta.",
+                "Pelecehan Seksual Fisik (Pasal 6): Memegang, meraba, atau menyentuh tubuh/organ seksual tanpa persetujuan. Pelaku diancam penjara maksimal 4 tahun dan denda hingga Rp50 juta. Jika perbuatan dilakukan dengan memanfaatkan wewenang, jabatan, atau kondisi korban yang bergantung padanya, sanksi meningkat menjadi penjara maksimal 12 tahun dan denda hingga Rp300 juta.",
+                "Syarat Pelaporan Pelecehan (Pasal 7): Pelecehan nonfisik dan pelecehan fisik ringan bersifat delik aduan (hanya bisa diproses jika korban melapor). Namun, jika korbannya adalah Anak atau Penyandang Disabilitas, polisi wajib memprosesnya secara langsung meski tanpa laporan dari korban.",
+                "Pemaksaan Kontrasepsi (Pasal 8): Memaksa orang lain menggunakan alat pencegah kehamilan hingga korban kehilangan fungsi reproduksinya untuk sementara. Sanksinya berupa penjara maksimal 5 tahun dan/atau denda hingga Rp50 juta.",
+                "Pemaksaan Sterilisasi (Pasal 9): Memaksa atau menghilangkan fungsi reproduksi seseorang secara permanen/tetap. Pelaku diancam penjara maksimal 9 tahun dan/atau denda maksimal Rp200 juta.",
+                "Pemaksaan Perkawinan (Pasal 10): Memaksa seseorang untuk menikah, termasuk perkawinan anak, pemaksaan nikah atas nama tradisi/budaya, atau memaksa korban memperkosa untuk menikahi pelakunya. Sanksinya adalah penjara maksimal 9 tahun dan/atau denda hingga Rp200 juta.",
+                "Penyiksaan Seksual (Pasal 11): Kekerasan seksual yang dilakukan oleh pejabat atau aparat resmi untuk mengintimidasi, memaksa pengakuan, atau mempermalukan seseorang. Pelaku diancam penjara maksimal 12 tahun dan/atau denda maksimal Rp300 juta.",
+                "Eksploitasi Seksual (Pasal 12): Memanfaatkan tubuh atau organ seksual orang lain demi mencari keuntungan atau uang dengan memanfaatkan kerentanan atau ketidakberdayaan korban. Pelaku diancam penjara maksimal 15 tahun dan/atau denda hingga Rp1 miliar.",
+                "Perbudakan Seksual (Pasal 13): Mengendalikan dan membuat seseorang tidak berdaya agar bisa terus-menerus dieksploitasi secara seksual. Sanksinya adalah penjara maksimal 15 tahun dan/atau denda maksimal Rp1 miliar.",
+                "Kekerasan Seksual Berbasis Elektronik / Online (Pasal 14): Merekam/mengambil foto bernada seksual tanpa izin, menyebarkan konten seksual pribadi seseorang, atau menguntit seseorang secara digital untuk tujuan seksual. Pelaku diancam penjara maksimal 4 tahun dan denda hingga Rp200 juta. Jika disertai pemerasan atau ancaman, sanksinya naik menjadi penjara maksimal 6 tahun dan denda hingga Rp300 juta. Perekaman atau penyebaran demi pembelaan diri atau kepentingan umum tidak dapat dipidana.",
+              ],
+            },
+            { type: "h2", text: "Pemberatan Hukuman (Pasal 15)" },
+            { type: "p", text: "Hukuman penjara dan denda akan ditambah sepertiga (1/3) jika perbuatan dilakukan oleh anggota keluarga, pengajar, tenaga medis, atasan kerja, atau pejabat publik. Pemberatan juga berlaku jika kejahatan dilakukan oleh lebih dari satu orang (bersekutu), dilakukan berulang kali, atau korbannya adalah anak, penyandang disabilitas, wanita hamil, orang pingsan/tidak berdaya, serta dalam kondisi bencana atau perang." },
+            { type: "h2", text: "Ganti Rugi, Hukuman Tambahan, dan Rehabilitasi (Pasal 16 dan 17)" },
+            { type: "p", text: "Restitusi dan Sanksi Tambahan (Pasal 16): Hakim wajib mewajibkan pelaku membayar uang ganti rugi (restitusi) kepada korban untuk kasus dengan ancaman hukuman 4 tahun atau lebih. Hakim juga dapat menjatuhkan sanksi tambahan berupa pencabutan hak asuh anak, pengumuman identitas pelaku ke publik, serta penyitaan harta hasil kejahatan." },
+            { type: "p", text: "Rehabilitasi Pelaku (Pasal 17): Selain hukuman pidana, pelaku dapat diwajibkan menjalani rehabilitasi medis dan sosial di bawah pengawasan dinas kesehatan dan sosial." },
+            { type: "h2", text: "Hukuman untuk Perusahaan / Korporasi (Pasal 18)" },
+            { type: "p", text: "Jika tindak pidana kekerasan seksual dilakukan oleh atau atas nama perusahaan (korporasi), perusahaan tersebut diancam denda Rp5 miliar hingga Rp15 miliar. Hakim juga dapat menjatuhkan sanksi tambahan seperti penutupan usaha, pembekuan kegiatan, hingga pembubaran perusahaan." },
+            { type: "p", text: "Sumber: UU Nomor 12 Tahun 2022 (Bab II, Pasal 4 - 18)." },
       ],
     },
-        {
+    {
       id: "a6",
       slug: "trauma-freeze-fawn",
       headline: false,
@@ -490,30 +593,28 @@ export const educationContent = {
       image: "/imagea6.jpg",
       likes: 0,
       body: [
-        { type: "p", text: "Ketika seseorang berada dalam situasi terancam atau mengalami kekerasan, tanggapan yang paling umum diketahui masyarakat adalah melawan (fight) atau melarikan diri (flight). Namun, dalam banyak kasus ancaman hebat atau kekerasan seksual, korban justru mengalami kondisi freeze (terpaku dan tidak bisa bergerak) atau fawn (menuruti atau berusaha menyenangkan pelaku)." },
-        { type: "p", text: "Respons freeze dan fawn bukanlah pertanda bahwa korban lemah, pasrah, atau menyetujui perlakuan yang dialaminya. Kedua respons ini merupakan mekanisme pertahanan diri otomatis dari otak dan sistem saraf demi mempertahankan hidup." },
-
-        { type: "p", text: <b>Mekanisme Otomatis Sistem Saraf</b> },
-        { type: "p", text: "Saat ancaman datang, bagian otak yang bernama amigdala langsung memproses bahaya dan mengaktifkan sistem saraf otonom. Otak akan melakukan kalkulasi kilat tentang tindakan yang paling memungkinkan untuk bertahan hidup. Ketika sistem saraf menilai bahwa melawan atau melarikan diri justru akan memperbesar risiko kematian atau cedera yang lebih parah, tubuh secara otomatis beralih ke mode pertahanan freeze atau fawn." },
-
-        { type: "p", text: <b>Memahami Respons 'Freeze' (Terpaku)</b> },
-        { type: "p", text: "Freeze atau tonic immobility adalah kondisi kelumpuhan sementara secara involunter (tanpa kendali sadar). Korban merasa tubuhnya mendadak kaku, bersuara pun tidak mampu, meskipun dalam keadaan sadar penuh. Secara biologis, respons ini terjadi ketika otak mengaktifkan sistem saraf parasimpatis secara ekstrem untuk menahan rasa sakit fisik dan meminimalkan kerusakan pada tubuh akibat ancaman hebat." },
-
-        { type: "p", text: <b>Memahami Respons 'Fawn' (Berusaha Menyenangkan Ancaman)</b> },
-        { type: "p", text: "Respons fawn merujuk pada perilaku menuruti keinginan pelaku, berbicara dengan nada lembut, atau berpura-pura kooperatif saat ancaman berlangsung. Mekanisme ini digunakan oleh otak untuk meredam kecenderungan agresif pelaku (de-escalation) demi mencegah kekerasan fisik yang lebih fatal. Korban tidak bertindak berdasarkan keinginan pribadi, melainkan dorongan biologis untuk meminimalkan bahaya saat itu juga." },
-
-        { type: "p", text: <b>Refleks Pertahanan Tubuh Bukan Persetujuan (Consent)</b> },
-        { type: "p", text: "Hal mendasar yang harus dipahami oleh masyarakat maupun penegak hukum adalah bahwa persetujuan (consent) hanya dapat diberikan secara sadar, bebas, dan tanpa paksaan. Respons freeze dan fawn adalah refleks neurobiologis involunter di bawah tekanan dan ancaman. Oleh karena itu, ketidakmampuan untuk melawannya atau perilaku menuruti ancaman tidak boleh disalahartikan sebagai persetujuan dari korban." },
-
-        { type: "p", text: <i>Sumber Referensi:</i> },
-        { type: "ul", items: [
-          "Möller, A., Söndergaard, H. P., & Helström, L. (2017). Tonic immobility during sexual assault - a common reaction predicting post-traumatic stress disorder and severe depression. Acta Obstetricia et Gynecologica Scandinavica, 96(8), 932-938.",
-          "Porges, S. W. (2011). The Polyvagal Theory: Neurophysiological Foundations of Emotions, Attachment, Communication, and Self-regulation. W. W. Norton & Company.",
-          "Walker, P. (2013). Complex PTSD: From Surviving to Thriving. Azure Coyote Publishing.",
-        ] },
+            { type: "p", text: "Ketika seseorang berada dalam situasi terancam atau mengalami kekerasan, tanggapan yang paling umum diketahui masyarakat adalah melawan (fight) atau melarikan diri (flight). Namun, dalam banyak kasus ancaman hebat atau kekerasan seksual, korban justru mengalami kondisi freeze (terpaku dan tidak bisa bergerak) atau fawn (menuruti atau berusaha menyenangkan pelaku)." },
+            { type: "p", text: "Respons freeze dan fawn bukanlah pertanda bahwa korban lemah, pasrah, atau menyetujui perlakuan yang dialaminya. Kedua respons ini merupakan mekanisme pertahanan diri otomatis dari otak dan sistem saraf demi mempertahankan hidup." },
+            { type: "h2", text: "Mekanisme Otomatis Sistem Saraf" },
+            { type: "p", text: "Saat ancaman datang, bagian otak yang bernama amigdala langsung memproses bahaya dan mengaktifkan sistem saraf otonom. Otak akan melakukan kalkulasi kilat tentang tindakan yang paling memungkinkan untuk bertahan hidup. Ketika sistem saraf menilai bahwa melawan atau melarikan diri justru akan memperbesar risiko kematian atau cedera yang lebih parah, tubuh secara otomatis beralih ke mode pertahanan freeze atau fawn." },
+            { type: "h2", text: "Memahami Respons 'Freeze' (Terpaku)" },
+            { type: "p", text: "Freeze atau tonic immobility adalah kondisi kelumpuhan sementara secara involunter (tanpa kendali sadar). Korban merasa tubuhnya mendadak kaku, bersuara pun tidak mampu, meskipun dalam keadaan sadar penuh. Secara biologis, respons ini terjadi ketika otak mengaktifkan sistem saraf parasimpatis secara ekstrem untuk menahan rasa sakit fisik dan meminimalkan kerusakan pada tubuh akibat ancaman hebat." },
+            { type: "h2", text: "Memahami Respons 'Fawn' (Berusaha Menyenangkan Ancaman)" },
+            { type: "p", text: "Respons fawn merujuk pada perilaku menuruti keinginan pelaku, berbicara dengan nada lembut, atau berpura-pura kooperatif saat ancaman berlangsung. Mekanisme ini digunakan oleh otak untuk meredam kecenderungan agresif pelaku (de-escalation) demi mencegah kekerasan fisik yang lebih fatal. Korban tidak bertindak berdasarkan keinginan pribadi, melainkan dorongan biologis untuk meminimalkan bahaya saat itu juga." },
+            { type: "h2", text: "Refleks Pertahanan Tubuh Bukan Persetujuan (Consent)" },
+            { type: "p", text: "Hal mendasar yang harus dipahami oleh masyarakat maupun penegak hukum adalah bahwa persetujuan (consent) hanya dapat diberikan secara sadar, bebas, dan tanpa paksaan. Respons freeze dan fawn adalah refleks neurobiologis involunter di bawah tekanan dan ancaman. Oleh karena itu, ketidakmampuan untuk melawannya atau perilaku menuruti ancaman tidak boleh disalahartikan sebagai persetujuan dari korban." },
+            { type: "p", text: "Sumber Referensi:" },
+            {
+              type: "ul",
+              items: [
+                "Möller, A., Söndergaard, H. P., & Helström, L. (2017). Tonic immobility during sexual assault - a common reaction predicting post-traumatic stress disorder and severe depression. Acta Obstetricia et Gynecologica Scandinavica, 96(8), 932-938.",
+                "Porges, S. W. (2011). The Polyvagal Theory: Neurophysiological Foundations of Emotions, Attachment, Communication, and Self-regulation. W. W. Norton & Company.",
+                "Walker, P. (2013). Complex PTSD: From Surviving to Thriving. Azure Coyote Publishing.",
+              ],
+            },
       ],
     },
-    { 
+    {
       id: "a7",
       slug: "hak-di-tempat-kerja",
       headline: false,
@@ -526,56 +627,148 @@ export const educationContent = {
       image: "/imagea7.jpg",
       likes: 0,
       body: [
-        { type: "p", text: "Sebagai perempuan, setiap individu memiliki hak dasar yang dilindungi oleh hukum untuk belajar dan bekerja dalam lingkungan yang aman, adil, serta bebas dari segala bentuk diskriminasi maupun kekerasan. Hak-hak ini mencakup jaminan atas kesehatan reproduksi, kesetaraan kesempatan karir dan akademik, hingga perlindungan fisik dan mental dari perlakuan tidak adil yang memanfaatkan ketimpangan relasi kuasa." },
-
-        { type: "p", text: <b>Gambaran Hak Dasar di Tempat Kerja dan Kampus</b> },
-        { type: "ul", items: [
-          <><b>Hak di Tempat Kerja:</b> Perempuan berhak atas lingkungan kerja yang bebas dari intimidasi dan perlakuan diskriminatif. Hal ini mencakup perlindungan kesehatan reproduksi (seperti hak atas cuti haid, cuti melahirkan, cuti keguguran, serta waktu/fasilitas menyusui), kesetaraan upah dan promosi jabatan, serta jaminan penanganan jika terjadi pelecehan di tempat kerja.</>,
-          <><b>Hak di Lingkungan Kampus:</b> Perempuan berhak atas ruang belajar yang aman dari bahaya kekerasan seksual dan penyalahgunaan relasi kuasa oleh sesama civitas akademika. Kampus wajib menyediakan pendampingan medis dan psikologis, menjaga kerahasiaan identitas pelapor, serta menjamin keberlanjutan hak akademik korban tanpa ancaman sanksi atau intimidasi.</>,
-        ] },
-
-        { type: "p", text: <b>Payung Hukum Perlindungan</b> },
-        { type: "p", text: "Untuk menjamin pemenuhan hak-hak tersebut, pemerintah Indonesia telah menetapkan regulasi yang mengikat sektor pendidikan dan ketenagakerjaan:" },
-        { type: "ul", items: [
-          <><b>Di Lingkungan Kampus:</b> Permendikbudristek No. 30 Tahun 2021 mewajibkan setiap perguruan tinggi membentuk Satuan Tugas Pencegahan dan Penanganan Kekerasan Seksual (Satgas PPKS) serta menyediakan mekanisme penanganan laporan kekerasan seksual yang transparan.</>,
-          <><b>Di Lingkungan Kerja:</b> Kepmenaker No. 88 Tahun 2023 memberikan petunjuk teknis pencegahan dan penanganan kekerasan seksual di tempat kerja. Hal ini diperkuat oleh Undang-Undang No. 12 Tahun 2022 tentang Tindak Pidana Kekerasan Seksual (UU TPKS) yang menindak tegas tindak kekerasan seksual yang memanfaatkan relasi kuasa di dunia kerja.</>,
-        ] },
-
-        { type: "p", text: <b>Hak-Hak Utama Korban dan Pelapor</b> },
-        { type: "p", text: "Apabila terjadi tindak kekerasan atau pelecehan, korban maupun pelapor berhak mendapatkan:" },
-        { type: "ul", items: [
-          <><b>Hak atas Penanganan:</b> Akses langsung terhadap bantuan hukum, layanan konseling psikologis, serta tindakan medis tanpa diskriminasi.</>,
-          <><b>Hak atas Perlindungan:</b> Jaminan kerahasiaan identitas dan perlindungan penuh dari ancaman balasan, seperti Pemutusan Hubungan Kerja (PHK), skorsing, atau penurunan nilai akademik.</>,
-          <><b>Hak atas Pemulihan:</b> Pemulihan kondisi fisik, mental, serta pemulihan status kerja atau akademik yang terdampak akibat kejadian tersebut.</>,
-        ] },
-
-        { type: "p", text: <b>Langkah dan Mekanisme Pengaduan</b> },
-        { type: "p", text: "Jika Anda atau rekan Anda mengalami pelecehan di kampus maupun tempat kerja, langkah-langkah penanganan yang dapat ditempuh meliputi:" },
-        { type: "ol", items: [
-          <><b>Mengumpulkan dan Memelihara Bukti:</b> Simpan pesan singkat, pos-el, dokumen fisik, rekaman suara, tangkapan layar, serta catat rincian kejadian dan saksi-saksi yang berada di lokasi.</>,
-          <>
-            <b>Melaporkan ke Unit Internal:</b>
-            <ul className="mt-2 list-disc space-y-1 pl-6">
-              <li>Di kampus: Hubungi Satgas PPKS perguruan tinggi setempat.</li>
-              <li>Di tempat kerja: Laporkan kepada divisi HRD, Manajer Kepatuhan, atau tim internal penanganan kekerasan di perusahaan.</li>
-            </ul>
-          </>,
-          <><b>Mengakses Layanan Rujukan Nasional:</b> Manfaatkan layanan pengaduan pemerintah melalui Call Center SAPA 129 (KemenPPPA) via telepon di nomor 129 atau pesan WhatsApp di 08111-129-129.</>,
-          <><b>Menempuh Jalur Hukum:</b> Mengajukan laporan resmi kepada pihak kepolisian dengan menggunakan landasan hukum UU TPKS.</>,
-        ] },
-
-        { type: "p", text: <i>Sumber Referensi:</i> },
-        { type: "ul", items: [
-          "Kementerian Pendidikan, Kebudayaan, Riset, dan Teknologi Republik Indonesia. (2021). Peraturan Menteri Pendidikan, Kebudayaan, Riset, dan Teknologi Nomor 30 Tahun 2021 tentang Pencegahan dan Penanganan Kekerasan Seksual di Lingkungan Perguruan Tinggi.",
-          "Kementerian Ketenagakerjaan Republik Indonesia. (2023). Keputusan Menteri Ketenagakerjaan Nomor 88 Tahun 2023 tentang Pedoman Pencegahan dan Penanganan Kekerasan Seksual di Tempat Kerja.",
-          "Undang-Undang Republik Indonesia Nomor 12 Tahun 2022 tentang Tindak Pidana Kekerasan Seksual (UU TPKS).",
-        ] },
+            { type: "p", text: "Sebagai perempuan, setiap individu memiliki hak dasar yang dilindungi oleh hukum untuk belajar dan bekerja dalam lingkungan yang aman, adil, serta bebas dari segala bentuk diskriminasi maupun kekerasan. Hak-hak ini mencakup jaminan atas kesehatan reproduksi, kesetaraan kesempatan karir dan akademik, hingga perlindungan fisik dan mental dari perlakuan tidak adil yang memanfaatkan ketimpangan relasi kuasa." },
+            { type: "h2", text: "Gambaran Hak Dasar di Tempat Kerja dan Kampus" },
+            {
+              type: "ul",
+              items: [
+                "Hak di Tempat Kerja: Perempuan berhak atas lingkungan kerja yang bebas dari intimidasi dan perlakuan diskriminatif. Hal ini mencakup perlindungan kesehatan reproduksi (seperti hak atas cuti haid, cuti melahirkan, cuti keguguran, serta waktu/fasilitas menyusui), kesetaraan upah dan promosi jabatan, serta jaminan penanganan jika terjadi pelecehan di tempat kerja.",
+                "Hak di Lingkungan Kampus: Perempuan berhak atas ruang belajar yang aman dari bahaya kekerasan seksual dan penyalahgunaan relasi kuasa oleh sesama civitas akademika. Kampus wajib menyediakan pendampingan medis dan psikologis, menjaga kerahasiaan identitas pelapor, serta menjamin keberlanjutan hak akademik korban tanpa ancaman sanksi atau intimidasi.",
+              ],
+            },
+            { type: "h2", text: "Payung Hukum Perlindungan" },
+            { type: "p", text: "Untuk menjamin pemenuhan hak-hak tersebut, pemerintah Indonesia telah menetapkan regulasi yang mengikat sektor pendidikan dan ketenagakerjaan:" },
+            {
+              type: "ul",
+              items: [
+                "Di Lingkungan Kampus: Permendikbudristek No. 30 Tahun 2021 mewajibkan setiap perguruan tinggi membentuk Satuan Tugas Pencegahan dan Penanganan Kekerasan Seksual (Satgas PPKS) serta menyediakan mekanisme penanganan laporan kekerasan seksual yang transparan.",
+                "Di Lingkungan Kerja: Kepmenaker No. 88 Tahun 2023 memberikan petunjuk teknis pencegahan dan penanganan kekerasan seksual di tempat kerja. Hal ini diperkuat oleh Undang-Undang No. 12 Tahun 2022 tentang Tindak Pidana Kekerasan Seksual (UU TPKS) yang menindak tegas tindak kekerasan seksual yang memanfaatkan relasi kuasa di dunia kerja.",
+              ],
+            },
+            { type: "h2", text: "Hak-Hak Utama Korban dan Pelapor" },
+            { type: "p", text: "Apabila terjadi tindak kekerasan atau pelecehan, korban maupun pelapor berhak mendapatkan:" },
+            {
+              type: "ul",
+              items: [
+                "Hak atas Penanganan: Akses langsung terhadap bantuan hukum, layanan konseling psikologis, serta tindakan medis tanpa diskriminasi.",
+                "Hak atas Perlindungan: Jaminan kerahasiaan identitas dan perlindungan penuh dari ancaman balasan, seperti Pemutusan Hubungan Kerja (PHK), skorsing, atau penurunan nilai akademik.",
+                "Hak atas Pemulihan: Pemulihan kondisi fisik, mental, serta pemulihan status kerja atau akademik yang terdampak akibat kejadian tersebut.",
+              ],
+            },
+            { type: "h2", text: "Langkah dan Mekanisme Pengaduan" },
+            { type: "p", text: "Jika Anda atau rekan Anda mengalami pelecehan di kampus maupun tempat kerja, langkah-langkah penanganan yang dapat ditempuh meliputi:" },
+            {
+              type: "ul",
+              items: [
+                "1. Mengumpulkan dan Memelihara Bukti: Simpan pesan singkat, pos-el, dokumen fisik, rekaman suara, tangkapan layar, serta catat rincian kejadian dan saksi-saksi yang berada di lokasi.",
+                "2. Melaporkan ke Unit Internal: Di kampus dapat menghubungi Satgas PPKS perguruan tinggi setempat, sedangkan di tempat kerja dapat melaporkan kepada divisi HRD, Manajer Kepatuhan, atau tim internal penanganan kekerasan di perusahaan.",
+                "3. Mengakses Layanan Rujukan Nasional: Manfaatkan layanan pengaduan pemerintah melalui Call Center SAPA 129 (KemenPPPA) via telepon di nomor 129 atau pesan WhatsApp di 08111-129-129.",
+                "4. Menempuh Jalur Hukum: Mengajukan laporan resmi kepada pihak kepolisian dengan menggunakan landasan hukum UU TPKS.",
+              ],
+            },
+            { type: "p", text: "Sumber Referensi:" },
+            {
+              type: "ul",
+              items: [
+                "Kementerian Pendidikan, Kebudayaan, Riset, dan Teknologi Republik Indonesia. (2021). Peraturan Menteri Pendidikan, Kebudayaan, Riset, dan Teknologi Nomor 30 Tahun 2021 tentang Pencegahan dan Penanganan Kekerasan Seksual di Lingkungan Perguruan Tinggi.",
+                "Kementerian Ketenagakerjaan Republik Indonesia. (2023). Keputusan Menteri Ketenagakerjaan Nomor 88 Tahun 2023 tentang Pedoman Pencegahan dan Penanganan Kekerasan Seksual di Tempat Kerja.",
+                "Undang-Undang Republik Indonesia Nomor 12 Tahun 2022 tentang Tindak Pidana Kekerasan Seksual (UU TPKS).",
+              ],
+            },
       ],
     },
-    { id: "a8", slug: "mengamankan-akun", headline: false, category: "safety", author: "Tim Keamanan Svarati",
+    {
+      id: "a8",
+      slug: "mengamankan-akun",
+      headline: false,
+      category: "safety",
+      author: "Tim Keamanan Svarati",
       title: "Cara Mengamankan Akun dan Jejak Digitalmu",
       summary: "Langkah praktis melindungi akun, lokasi, dan percakapan dari pihak yang tidak berhak mengaksesnya.",
-      date: "2 Sep 2026", readTime: "4 menit baca", image: "/edukasi/artikel-8.jpg" },
+      date: "2 Sep 2026",
+      readTime: "4 menit baca",
+      image: "/imagea8.jpg",
+      likes: 0,
+      body: [
+          {
+            type: "p",
+            text: "Di era digital saat ini, identitas pribadi, lokasi terkini, dan riwayat percakapan merupakan data sensitif yang berisiko disalahgunakan oleh pihak yang tidak berwenang. Ancaman seperti pembajakan akun, pelacakan tanpa izin (cyberstalking), hingga penyebaran data pribadi (doxxing) dapat dialami oleh siapa saja. Oleh karena itu, menerapkan langkah-langkah praktis perlindungan privasi digital merupakan bentuk pertahanan diri (digital self-defense) yang sangat penting.",
+          },
+          {
+            type: "h2",
+            text: "1. Memperkuat Keamanan Akun dan Akses Masuk",
+          },
+          {
+            type: "p",
+            text: "Perlindungan akun dimulai dari benteng pertahanan utama, yaitu kata sandi dan metode autentikasi:",
+          },
+          {
+            type: "ul",
+            items: [
+              "Gunakan Kata Sandi yang Kuat dan Unik: Hindari penggunaan kata sandi yang sama untuk beberapa akun. Gunakan kombinasi frasa panjang (passphrase) yang terdiri dari huruf besar, huruf kecil, angka, dan simbol, atau manfaatkan pengelola kata sandi (password manager).",
+              "Aktifkan Verifikasi Dua Langkah (2FA): Selalu aktifkan fitur Two-Factor Authentication (2FA) di seluruh akun penting seperti pos-el (email), media sosial, dan perbankan. Gunakan aplikasi autentikator (seperti Google Authenticator atau Authy) sebagai pilihan yang lebih aman dibandingkan pesan singkat (SMS).",
+            ],
+          },
+          {
+            type: "h2",
+            text: "2. Membatasi Akses Lokasi dan Informasi Pribadi",
+          },
+          {
+            type: "p",
+            text: "Jejak lokasi dan informasi pribadi sering kali dimanfaatkan untuk melakukan intimidasi atau pelacakan:",
+          },
+          {
+            type: "ul",
+            items: [
+              "Matikan Layanan Lokasi (GPS): Nonaktifkan izin lokasi pada aplikasi media sosial dan kamera jika tidak sedang dibutuhkan.",
+              "Hindari Unggahan Berbagi Lokasi Secara Langsung (Real-Time): Tunda mengunggah foto atau video kegiatan harian hingga Anda sudah berpindah tempat. Pastikan gambar tidak menampilkan informasi sensitif seperti alamat rumah, dokumen identitas, atau tiket perjalanan.",
+              "Atur Privasi Media Sosial: Ubah setelan akun menjadi privat dan batasi siapa saja yang dapat mengirimkan pesan, melihat kiriman, atau menandai (tag) akun Anda.",
+            ],
+          },
+          {
+            type: "h2",
+            text: "3. Mengamankan Percakapan dan Sesi Perangkat",
+          },
+          {
+            type: "p",
+            text: "Percakapan pribadi memerlukan perlindungan ekstra dari potensi peretasan atau pengintaian:",
+          },
+          {
+            type: "ul",
+            items: [
+              "Manfaatkan Aplikasi Pesan Terenkripsi: Gunakan aplikasi perpesanan yang mendukung enkripsi dari ujung ke ujung (end-to-end encryption). Untuk pembicaraan sensitif, aktifkan fitur pesan otomatis terhapus (disappearing messages).",
+              "Periksa Sesi Perangkat Aktif Secara Berkala: Cek daftar perangkat yang terhubung (linked devices) pada akun WhatsApp, Telegram, Google, atau media sosial lainnya. Segera lakukan keluar (log out) dari perangkat yang tidak dikenal atau sudah tidak digunakan.",
+            ],
+          },
+          {
+            type: "h2",
+            text: "4. Mengelola Izin Aplikasi dan Kebersihan Digital",
+          },
+          {
+            type: "p",
+            text: "Aplikasi yang terpasang di ponsel sering kali meminta izin akses berlebih yang dapat mengancam privasi:",
+          },
+          {
+            type: "ul",
+            items: [
+              "Audit Izin Aplikasi (App Permissions): Rutin periksa dan cabut izin aplikasi yang tidak relevan, seperti akses ke mikrofon, kamera, kontak, atau lokasi untuk aplikasi yang tidak membutuhkannya.",
+              "Bersihkan Riwayat dan Cookie: Hapus riwayat penelusuran, cache, dan cookie peramban (browser) secara berkala untuk meminimalkan rekam jejak aktivitas daring yang dilacak oleh pihak ketiga.",
+            ],
+          },
+          {
+            type: "p",
+            text: "Sumber Referensi:",
+          },
+          {
+            type: "ul",
+            items: [
+              "Badan Siber dan Sandi Negara (BSSN). (2022). Panduan Kesadaran Keamanan Siber untuk Pengguna Individu. Jakarta: BSSN RI.",
+              "Electronic Frontier Foundation (EFF). (2023). Surveillance Self-Defense: Tips, Tools and How-tos for Safer Digital Communications. EFF.org.",
+              "Southeast Asia Freedom of Expression Network (SAFEnet). (2021). Panduan Keamanan Digital untuk Perlindungan Diri dan Privasi. Jakarta: SAFEnet.",
+            ],
+          },
+      ],
+    },
     {
       id: "a9",
       slug: "mengenal-uu-tpks-bab-3",
@@ -589,11 +782,11 @@ export const educationContent = {
       image: "/hukum2.jpg",
       likes: 0,
       body: [
-        { type: "p", text: "Bab III terdiri dari Pasal 19 yang mengatur aturan tegas bagi siapa saja yang berusaha menghalangi jalannya proses hukum dalam penanganan kasus kekerasan seksual." },
-        { type: "p", text: <b>Larangan Menghalangi Proses Hukum (Pasal 19)</b> },
-        { type: "p", text: "Setiap orang dilarang keras secara sengaja mencegah, merintangi, atau menggagalkan proses hukum yang sedang berjalan, baik secara langsung maupun tidak langsung. Larangan ini berlaku pada seluruh tingkatan proses peradilan, mulai dari penyidikan oleh pihak kepolisian, penuntutan oleh jaksa, hingga pemeriksaan perkara di sidang pengadilan." },
-        { type: "p", text: "Tindakan menghalangi ini mencakup perbuatan yang menyasar atau memengaruhi posisi tersangka, terdakwa, maupun saksi. Bagi siapa pun yang terbukti melakukan perbuatan merintangi proses peradilan ini, diancam dengan hukuman penjara paling lama 5 tahun." },
-        { type: "p", text: <i>Sumber: UU Nomor 12 Tahun 2022 (Bab III, Pasal 19).</i> },
+            { type: "p", text: "Bab III terdiri dari Pasal 19 yang mengatur aturan tegas bagi siapa saja yang berusaha menghalangi jalannya proses hukum dalam penanganan kasus kekerasan seksual." },
+            { type: "h2", text: "Larangan Menghalangi Proses Hukum (Pasal 19)" },
+            { type: "p", text: "Setiap orang dilarang keras secara sengaja mencegah, merintangi, atau menggagalkan proses hukum yang sedang berjalan, baik secara langsung maupun tidak langsung. Larangan ini berlaku pada seluruh tingkatan proses peradilan, mulai dari penyidikan oleh pihak kepolisian, penuntutan oleh jaksa, hingga pemeriksaan perkara di sidang pengadilan." },
+            { type: "p", text: "Tindakan menghalangi ini mencakup perbuatan yang menyasar atau memengaruhi posisi tersangka, terdakwa, maupun saksi. Bagi siapa pun yang terbukti melakukan perbuatan merintangi proses peradilan ini, diancam dengan hukuman penjara paling lama 5 tahun." },
+            { type: "p", text: "Sumber: UU Nomor 12 Tahun 2022 (Bab III, Pasal 19)." },
       ],
     },
     {
@@ -606,84 +799,99 @@ export const educationContent = {
       summary: "Alur proses hukum dari pelaporan sampai putusan hakim, jenis alat bukti, pendampingan, restitusi, dan perlindungan darurat bagi korban.",
       date: "27 Okt 2026",
       readTime: "10 menit baca",
-      image: "/hukum3.jpg",
+      image: "/hukum.jpg",
       likes: 0,
       body: [
-        { type: "p", text: "Bab IV mengatur seluruh tahapan proses hukum mulai dari pelaporan, pemeriksaan, pembuktian, hingga pelaksanaan putusan hakim. Agar mudah dipahami, berikut adalah pengelompokan seluruh pasal dalam Bab IV beserta penjelasannya:" },
-
-        { type: "p", text: <b>1. Aturan Umum dan Syarat Aparat Hukum (Pasal 20 - 23)</b> },
-        { type: "ul", items: [
-          <><b>Prinsip Dasar Hukum (Pasal 20):</b> Seluruh proses peradilan menggunakan aturan hukum acara pidana biasa, kecuali jika diatur secara khusus di dalam UU ini.</>,
-          <><b>Syarat Aparat Penegak Hukum (Pasal 21):</b> Polisi, jaksa, dan hakim wajib memiliki pemahaman hak asasi manusia, bersikap empati pada korban, serta pernah mengikuti pelatihan khusus kekerasan seksual. Jika belum ada, pimpinan lembaga harus menunjuk petugas yang berpengalaman.</>,
-          <><b>Sikap Aparat Saat Memeriksa (Pasal 22):</b> Aparat dilarang keras menakut-nakuti korban, dilarang menyalahkan cara hidup atau pakaian korban, dan dilarang memberikan pertanyaan yang menjebak atau membuat korban trauma.</>,
-          <><b>Dilarang Damai di Luar Pengadilan (Pasal 23):</b> Kasus kekerasan seksual wajib diproses secara hukum dan tidak boleh diselesaikan secara “kekeluargaan”, kecuali jika pelakunya adalah anak-anak.</>,
-        ] },
-
-        { type: "p", text: <b>2. Kemudahan Pembuktian dan Alat Bukti (Pasal 24 - 25)</b> },
-        { type: "ul", items: [
-          <><b>Jenis Alat Bukti Sah (Pasal 24):</b> Bukti kekerasan seksual tidak hanya berupa kesaksian biasa, tetapi juga bisa berupa bukti elektronik (chat, rekaman, foto), rekam medis, hasil pemeriksaan forensik, surat keterangan dari psikolog/psikiater, hingga rekam rekening bank.</>,
-          <><b>Kemudahan Pembuktian (Pasal 25):</b> Kesaksian dari korban yang ditambah 1 alat bukti sah lainnya sudah cukup bagi hakim untuk menyatakan pelaku bersalah. Selain itu, kesaksian dari keluarga pelaku di bawah sumpah dapat diterima, serta kesaksian dari penyandang disabilitas diakui memiliki kekuatan hukum yang setara.</>,
-        ] },
-
-        { type: "p", text: <b>3. Pendampingan Korban dan Saksi (Pasal 26 - 29)</b> },
-        { type: "ul", items: [
-          <><b>Hak Didampingi (Pasal 26):</b> Korban berhak ditemani oleh pendamping (dari LPSK, UPTD PPA, advokat, psikolog, atau pekerja sosial) dari awal laporan hingga persidangan selesai, di mana pendamping diutamakan memiliki jenis kelamin yang sama dengan korban.</>,
-          <><b>Pendampingan Penyandang Disabilitas (Pasal 27):</b> Korban atau saksi penyandang disabilitas berhak ditemani orang tua, wali, atau pendamping khusus, selama orang tua/wali tersebut bukan merupakan tersangka.</>,
-          <><b>Perlindungan Bagi Pendamping (Pasal 28 dan 29):</b> Pendamping mendapatkan perlindungan hukum penuh dan tidak dapat dituntut secara pidana maupun perdata selama menjalankan tugasnya dengan niat baik.</>,
-        ] },
-
-        { type: "p", text: <b>4. Tata Cara Ganti Rugi / Restitusi (Pasal 30 - 38)</b> },
-        { type: "ul", items: [
-          <><b>Bentuk Ganti Rugi (Pasal 30):</b> Korban berhak atas restitusi yang meliputi penggantian harta/penghasilan yang hilang, penderitaan fisik/mental yang dialami, biaya pengobatan medis dan psikologis, serta biaya peradilan.</>,
-          <><b>Pemberitahuan dan Penyitaan Harta (Pasal 31):</b> Polisi, jaksa, dan hakim wajib memberi tahu korban soal hak restitusi. Polisi dapat menyita harta pelaku sejak tahap penyidikan sebagai jaminan ganti rugi atas izin pengadilan.</>,
-          <><b>Pengembalian Harta (Pasal 32):</b> Harta pelaku yang disita wajib dikembalikan jika pengadilan menyatakan pelaku tidak bersalah atau diputus bebas.</>,
-          <><b>Tenggat Pelunasan dan Sanksi Pengganti (Pasal 33):</b> Pelaku wajib membayar ganti rugi maksimal 30 hari setelah putusan inkrah. Jika tidak dibayar, harta pelaku akan dilelang oleh jaksa. Apabila hartanya tidak cukup, pelaku diganti dengan hukuman penjara tambahan. Untuk perusahaan, sanksi penggantinya berupa penutupan usaha maksimal 1 tahun.</>,
-          <><b>Berita Acara Pembayaran (Pasal 34):</b> Jaksa wajib membuat laporan resmi mengenai penyerahan restitusi kepada korban, polisi, dan pengadilan.</>,
-          <><b>Bantuan Kompensasi Negara (Pasal 35):</b> Jika harta pelaku yang dilelang tetap tidak cukup untuk membayar ganti rugi, negara akan membayar kekurangannya kepada korban melalui Dana Bantuan Korban.</>,
-          <><b>Kasus yang Dihentikan (Pasal 36):</b> Jika kasus dihentikan demi hukum atau kepentingan umum, harta pelaku yang sempat disita tetap dapat dilelang atas izin pengadilan untuk membayar restitusi kepada korban.</>,
-          <><b>Pelaku Anak (Pasal 37):</b> Jika pelaku kekerasan seksual adalah anak-anak, pembayaran ganti rugi menjadi tanggung jawab orang tua atau walinya.</>,
-          <><b>Aturan Pengajuan (Pasal 38):</b> Tata cara pengajuan restitusi mengikuti ketentuan peraturan perundang-undangan yang berlaku.</>,
-        ] },
-
-        { type: "p", text: <b>5. Pelaporan dan Perlindungan Darurat (Pasal 39 - 47)</b> },
-        { type: "ul", items: [
-          <><b>Tempat Lapor dan Kewajiban Tenaga Medis (Pasal 39):</b> Laporan dapat diajukan ke polisi, UPTD PPA, atau lembaga sosial. Tenaga medis yang menemukan tanda kekerasan seksual wajib melaporkannya ke pihak berwenang.</>,
-          <><b>Tanggung Jawab Lembaga Layanan (Pasal 40):</b> UPTD PPA atau lembaga layanan setempat wajib memberikan perlindungan dan bantuan yang dibutuhkan korban secara langsung.</>,
-          <><b>Kerahasiaan Laporan (Pasal 41):</b> Laporan harus diterima di ruang khusus yang aman dan rahasia. Lembaga penerima laporan wajib memproses laporan ke polisi paling lambat 3x24 jam.</>,
-          <><b>Perlindungan Darurat 1x24 Jam (Pasal 42):</b> Polisi wajib memberikan perlindungan awal paling lambat 1x24 jam setelah laporan diterima, yang berlaku selama 14 hari dan berwenang membatasi gerak pelaku agar tidak mendekati korban.</>,
-          <><b>Perlindungan Lanjutan ke LPSK (Pasal 43 dan 44):</b> Dalam 1x24 jam sejak memberi perlindungan awal, polisi wajib mengajukan perlindungan jangka panjang bagi korban ke LPSK dengan melibatkan UPTD PPA.</>,
-          <><b>Pembatasan Gerak Pelaku oleh Hakim (Pasal 45):</b> Jika tersangka tidak ditahan, hakim dapat memerintahkan pembatasan gerak pelaku (misalnya dilarang mendatangi korban) selama 6 bulan dan bisa diperpanjang 1 kali.</>,
-          <><b>Penghapusan Konten Digital (Pasal 46 dan 47):</b> Pemerintah berwenang langsung memutus akses konten kekerasan seksual di internet, dan jaksa dapat meminta pengadilan memerintahkan Kominfo menghapus konten digital tersebut demi kepentingan umum.</>,
-        ] },
-
-        { type: "p", text: <b>6. Aturan Pemeriksaan Saksi dan Korban (Pasal 48 - 51)</b> },
-        { type: "ul", items: [
-          <><b>Metode Pemeriksaan Alternatif (Pasal 48):</b> Jika saksi/korban berhalangan hadir di persidangan karena sakit, takut, atau alasan keamanan, pemeriksaan dapat menggunakan pembacaan berita acara, rekaman video, atau video call.</>,
-          <><b>Pemeriksaan Rekaman Elektronik (Pasal 49 dan 50):</b> Penyidik polisi bisa merekam pemeriksaan saksi/korban atas izin ketua pengadilan negeri agar korban tidak perlu ditanya berulang-ulang, dan hasilnya dituangkan dalam berita acara resmi.</>,
-          <><b>Pemeriksaan Video Call di Persidangan (Pasal 51):</b> Hakim dapat memerintahkan persidangan via video call dari tempat lain yang aman atau kantor perwakilan RI jika saksi/korban berada di luar negeri.</>,
-        ] },
-
-        { type: "p", text: <b>7. Prosedur Khusus Penyidikan dan Penuntutan (Pasal 52 - 57)</b> },
-        { type: "ul", items: [
-          <><b>Pemeriksaan Anak (Pasal 52):</b> Untuk saksi/korban anak, pemeriksaan rekaman atau video call dapat dilakukan demi keselamatan anak, baik dengan atau tanpa persetujuan orang tua.</>,
-          <><b>Tempat Pemeriksaan Khusus (Pasal 53):</b> Pemeriksaan oleh penyidik dilakukan di ruang pelayanan khusus polisi, UPTD PPA, atau tempat aman seperti rumah sakit/rumah aman.</>,
-          <><b>Konsultasi Pendamping (Pasal 54):</b> Polisi wajib berkonsultasi dengan pendamping sebelum bertanya kepada korban, dan pertanyaan disalurkan lewat pendamping jika korban trauma berat.</>,
-          <><b>Pengamanan Data Digital (Pasal 55):</b> Penyidik berwenang mengunci data/sistem elektronik kasus agar tidak tersebar ke luar proses hukum atas penetapan kejaksaan.</>,
-          <><b>Pertemuan Pendahuluan (Pasal 56):</b> Jaksa dapat bertemu korban dan pendamping sebelum sidang untuk menjelaskan tahapan peradilan, hak restitusi, dan hak pemeriksaan jarak jauh.</>,
-          <><b>Aturan Wajah dan Detail Dakwaan (Pasal 57):</b> Jaksa dilarang menuliskan dakwaan secara vulgar, terlalu rinci, atau menempelkan foto organ seksual korban demi menjaga martabat dan kerahasiaan korban.</>,
-        ] },
-
-        { type: "p", text: <b>8. Pelaksanaan Persidangan dan Putusan (Pasal 58 - 64)</b> },
-        { type: "ul", items: [
-          <><b>Sidang Tertutup (Pasal 58):</b> Seluruh rangkaian persidangan kekerasan seksual wajib digelar secara tertutup untuk umum.</>,
-          <><b>Kerahasiaan Identitas (Pasal 59):</b> Pembacaan putusan dilakukan terbuka untuk umum, tetapi nama dan identitas korban serta saksi wajib dirahasiakan dalam surat putusan.</>,
-          <><b>Pertanyaan yang Dilarang di Sidang (Pasal 60):</b> Hakim dan jaksa dilarang memberikan pertanyaan yang merendahkan, menyalahkan, mengintimidasi, atau mengungkit latar belakang kehidupan seksual korban.</>,
-          <><b>Fasilitas Sidang (Pasal 61 dan 62):</b> Pengadilan wajib menyediakan fasilitas perlindungan bagi saksi/korban, dan hakim dapat memerintahkan penggantian pendamping jika diminta oleh korban/keluarga.</>,
-          <><b>Wajib Memuat Pemulihan (Pasal 63):</b> Hakim dalam putusannya wajib mempertimbangkan dan mencantumkan upaya pemulihan bagi korban.</>,
-          <><b>Eksekusi Pidana Denda (Pasal 64):</b> Denda pidana wajib dilunasi pelaku dalam waktu 30 hari. Jika tidak dibayar, hartanya dilelang oleh jaksa, dan jika hartanya kurang, diganti dengan hukuman penjara pengganti. Bagi korporasi, sanksi penggantinya berupa pembekuan kegiatan usaha maksimal 1 tahun.</>,
-        ] },
-
-        { type: "p", text: <i>Sumber: UU Nomor 12 Tahun 2022 (Bab IV, Pasal 20 - 64).</i> },
+            { type: "p", text: "Bab IV mengatur seluruh tahapan proses hukum mulai dari pelaporan, pemeriksaan, pembuktian, hingga pelaksanaan putusan hakim. Agar mudah dipahami, berikut adalah pengelompokan seluruh pasal dalam Bab IV beserta penjelasannya:" },
+            { type: "h2", text: "1. Aturan Umum dan Syarat Aparat Hukum (Pasal 20 - 23)" },
+            {
+              type: "ul",
+              items: [
+                "Prinsip Dasar Hukum (Pasal 20): Seluruh proses peradilan menggunakan aturan hukum acara pidana biasa, kecuali jika diatur secara khusus di dalam UU ini.",
+                "Syarat Aparat Penegak Hukum (Pasal 21): Polisi, jaksa, dan hakim wajib memiliki pemahaman hak asasi manusia, bersikap empati pada korban, serta pernah mengikuti pelatihan khusus kekerasan seksual. Jika belum ada, pimpinan lembaga harus menunjuk petugas yang berpengalaman.",
+                "Sikap Aparat Saat Memeriksa (Pasal 22): Aparat dilarang keras menakut-nakuti korban, dilarang menyalahkan cara hidup atau pakaian korban, dan dilarang memberikan pertanyaan yang menjebak atau membuat korban trauma.",
+                "Dilarang Damai di Luar Pengadilan (Pasal 23): Kasus kekerasan seksual wajib diproses secara hukum dan tidak boleh diselesaikan secara “kekeluargaan”, kecuali jika pelakunya adalah anak-anak.",
+              ],
+            },
+            { type: "h2", text: "2. Kemudahan Pembuktian dan Alat Bukti (Pasal 24 - 25)" },
+            {
+              type: "ul",
+              items: [
+                "Jenis Alat Bukti Sah (Pasal 24): Bukti kekerasan seksual tidak hanya berupa kesaksian biasa, tetapi juga bisa berupa bukti elektronik (chat, rekaman, foto), rekam medis, hasil pemeriksaan forensik, surat keterangan dari psikolog/psikiater, hingga rekam rekening bank.",
+                "Kemudahan Pembuktian (Pasal 25): Kesaksian dari korban yang ditambah 1 alat bukti sah lainnya sudah cukup bagi hakim untuk menyatakan pelaku bersalah. Selain itu, kesaksian dari keluarga pelaku di bawah sumpah dapat diterima, serta kesaksian dari penyandang disabilitas diakui memiliki kekuatan hukum yang setara.",
+              ],
+            },
+            { type: "h2", text: "3. Pendampingan Korban dan Saksi (Pasal 26 - 29)" },
+            {
+              type: "ul",
+              items: [
+                "Hak Didampingi (Pasal 26): Korban berhak ditemani oleh pendamping (dari LPSK, UPTD PPA, advokat, psikolog, atau pekerja sosial) dari awal laporan hingga persidangan selesai, di mana pendamping diutamakan memiliki jenis kelamin yang sama dengan korban.",
+                "Pendampingan Penyandang Disabilitas (Pasal 27): Korban atau saksi penyandang disabilitas berhak ditemani orang tua, wali, atau pendamping khusus, selama orang tua/wali tersebut bukan merupakan tersangka.",
+                "Perlindungan Bagi Pendamping (Pasal 28 dan 29): Pendamping mendapatkan perlindungan hukum penuh dan tidak dapat dituntut secara pidana maupun perdata selama menjalankan tugasnya dengan niat baik.",
+              ],
+            },
+            { type: "h2", text: "4. Tata Cara Ganti Rugi / Restitusi (Pasal 30 - 38)" },
+            {
+              type: "ul",
+              items: [
+                "Bentuk Ganti Rugi (Pasal 30): Korban berhak atas restitusi yang meliputi penggantian harta/penghasilan yang hilang, penderitaan fisik/mental yang dialami, biaya pengobatan medis dan psikologis, serta biaya peradilan.",
+                "Pemberitahuan dan Penyitaan Harta (Pasal 31): Polisi, jaksa, dan hakim wajib memberi tahu korban soal hak restitusi. Polisi dapat menyita harta pelaku sejak tahap penyidikan sebagai jaminan ganti rugi atas izin pengadilan.",
+                "Pengembalian Harta (Pasal 32): Harta pelaku yang disita wajib dikembalikan jika pengadilan menyatakan pelaku tidak bersalah atau diputus bebas.",
+                "Tenggat Pelunasan dan Sanksi Pengganti (Pasal 33): Pelaku wajib membayar ganti rugi maksimal 30 hari setelah putusan inkrah. Jika tidak dibayar, harta pelaku akan dilelang oleh jaksa. Apabila hartanya tidak cukup, pelaku diganti dengan hukuman penjara tambahan. Untuk perusahaan, sanksi penggantinya berupa penutupan usaha maksimal 1 tahun.",
+                "Berita Acara Pembayaran (Pasal 34): Jaksa wajib membuat laporan resmi mengenai penyerahan restitusi kepada korban, polisi, dan pengadilan.",
+                "Bantuan Kompensasi Negara (Pasal 35): Jika harta pelaku yang dilelang tetap tidak cukup untuk membayar ganti rugi, negara akan membayar kekurangannya kepada korban melalui Dana Bantuan Korban.",
+                "Kasus yang Dihentikan (Pasal 36): Jika kasus dihentikan demi hukum atau kepentingan umum, harta pelaku yang sempat disita tetap dapat dilelang atas izin pengadilan untuk membayar restitusi kepada korban.",
+                "Pelaku Anak (Pasal 37): Jika pelaku kekerasan seksual adalah anak-anak, pembayaran ganti rugi menjadi tanggung jawab orang tua atau walinya.",
+                "Aturan Pengajuan (Pasal 38): Tata cara pengajuan restitusi mengikuti ketentuan peraturan perundang-undangan yang berlaku.",
+              ],
+            },
+            { type: "h2", text: "5. Pelaporan dan Perlindungan Darurat (Pasal 39 - 47)" },
+            {
+              type: "ul",
+              items: [
+                "Tempat Lapor dan Kewajiban Tenaga Medis (Pasal 39): Laporan dapat diajukan ke polisi, UPTD PPA, atau lembaga sosial. Tenaga medis yang menemukan tanda kekerasan seksual wajib melaporkannya ke pihak berwenang.",
+                "Tanggung Jawab Lembaga Layanan (Pasal 40): UPTD PPA atau lembaga layanan setempat wajib memberikan perlindungan dan bantuan yang dibutuhkan korban secara langsung.",
+                "Kerahasiaan Laporan (Pasal 41): Laporan harus diterima di ruang khusus yang aman dan rahasia. Lembaga penerima laporan wajib memproses laporan ke polisi paling lambat 3x24 jam.",
+                "Perlindungan Darurat 1x24 Jam (Pasal 42): Polisi wajib memberikan perlindungan awal paling lambat 1x24 jam setelah laporan diterima, yang berlaku selama 14 hari dan berwenang membatasi gerak pelaku agar tidak mendekati korban.",
+                "Perlindungan Lanjutan ke LPSK (Pasal 43 dan 44): Dalam 1x24 jam sejak memberi perlindungan awal, polisi wajib mengajukan perlindungan jangka panjang bagi korban ke LPSK dengan melibatkan UPTD PPA.",
+                "Pembatasan Gerak Pelaku oleh Hakim (Pasal 45): Jika tersangka tidak ditahan, hakim dapat memerintahkan pembatasan gerak pelaku (misalnya dilarang mendatangi korban) selama 6 bulan dan bisa diperpanjang 1 kali.",
+                "Penghapusan Konten Digital (Pasal 46 dan 47): Pemerintah berwenang langsung memutus akses konten kekerasan seksual di internet, dan jaksa dapat meminta pengadilan memerintahkan Kominfo menghapus konten digital tersebut demi kepentingan umum.",
+              ],
+            },
+            { type: "h2", text: "6. Aturan Pemeriksaan Saksi dan Korban (Pasal 48 - 51)" },
+            {
+              type: "ul",
+              items: [
+                "Metode Pemeriksaan Alternatif (Pasal 48): Jika saksi/korban berhalangan hadir di persidangan karena sakit, takut, atau alasan keamanan, pemeriksaan dapat menggunakan pembacaan berita acara, rekaman video, atau video call.",
+                "Pemeriksaan Rekaman Elektronik (Pasal 49 dan 50): Penyidik polisi bisa merekam pemeriksaan saksi/korban atas izin ketua pengadilan negeri agar korban tidak perlu ditanya berulang-ulang, dan hasilnya dituangkan dalam berita acara resmi.",
+                "Pemeriksaan Video Call di Persidangan (Pasal 51): Hakim dapat memerintahkan persidangan via video call dari tempat lain yang aman atau kantor perwakilan RI jika saksi/korban berada di luar negeri.",
+              ],
+            },
+            { type: "h2", text: "7. Prosedur Khusus Penyidikan dan Penuntutan (Pasal 52 - 57)" },
+            {
+              type: "ul",
+              items: [
+                "Pemeriksaan Anak (Pasal 52): Untuk saksi/korban anak, pemeriksaan rekaman atau video call dapat dilakukan demi keselamatan anak, baik dengan atau tanpa persetujuan orang tua.",
+                "Tempat Pemeriksaan Khusus (Pasal 53): Pemeriksaan oleh penyidik dilakukan di ruang pelayanan khusus polisi, UPTD PPA, atau tempat aman seperti rumah sakit/rumah aman.",
+                "Konsultasi Pendamping (Pasal 54): Polisi wajib berkonsultasi dengan pendamping sebelum bertanya kepada korban, dan pertanyaan disalurkan lewat pendamping jika korban trauma berat.",
+                "Pengamanan Data Digital (Pasal 55): Penyidik berwenang mengunci data/sistem elektronik kasus agar tidak tersebar ke luar proses hukum atas penetapan kejaksaan.",
+                "Pertemuan Pendahuluan (Pasal 56): Jaksa dapat bertemu korban dan pendamping sebelum sidang untuk menjelaskan tahapan peradilan, hak restitusi, dan hak pemeriksaan jarak jauh.",
+                "Aturan Wajah dan Detail Dakwaan (Pasal 57): Jaksa dilarang menuliskan dakwaan secara vulgar, terlalu rinci, atau menempelkan foto organ seksual korban demi menjaga martabat dan kerahasiaan korban.",
+              ],
+            },
+            { type: "h2", text: "8. Pelaksanaan Persidangan dan Putusan (Pasal 58 - 64)" },
+            {
+              type: "ul",
+              items: [
+                "Sidang Tertutup (Pasal 58): Seluruh rangkaian persidangan kekerasan seksual wajib digelar secara tertutup untuk umum.",
+                "Kerahasiaan Identitas (Pasal 59): Pembacaan putusan dilakukan terbuka untuk umum, tetapi nama dan identitas korban serta saksi wajib dirahasiakan dalam surat putusan.",
+                "Pertanyaan yang Dilarang di Sidang (Pasal 60): Hakim dan jaksa dilarang memberikan pertanyaan yang merendahkan, menyalahkan, mengintimidasi, atau mengungkit latar belakang kehidupan seksual korban.",
+                "Fasilitas Sidang (Pasal 61 dan 62): Pengadilan wajib menyediakan fasilitas perlindungan bagi saksi/korban, dan hakim dapat memerintahkan penggantian pendamping jika diminta oleh korban/keluarga.",
+                "Wajib Memuat Pemulihan (Pasal 63): Hakim dalam putusannya wajib mempertimbangkan dan mencantumkan upaya pemulihan bagi korban.",
+                "Eksekusi Pidana Denda (Pasal 64): Denda pidana wajib dilunasi pelaku dalam waktu 30 hari. Jika tidak dibayar, hartanya dilelang oleh jaksa, dan jika hartanya kurang, diganti dengan hukuman penjara pengganti. Bagi korporasi, sanksi penggantinya berupa pembekuan kegiatan usaha maksimal 1 tahun.",
+              ],
+            },
+            { type: "p", text: "Sumber: UU Nomor 12 Tahun 2022 (Bab IV, Pasal 20 - 64)." },
       ],
     },
     {
@@ -699,276 +907,274 @@ export const educationContent = {
       image: "/imagea11.jpg",
       likes: 0,
       body: [
-        { type: "p", text: "Nyeri menstruasi atau dismenore merupakan salah satu gangguan kesehatan reproduksi yang paling umum dialami oleh wanita usia subur. Rasa kram atau nyeri pada perut bagian bawah saat menstruasi terjadi akibat peningkatan produksi senyawa prostaglandin yang memicu kontraksi otot rahim. Meskipun kerap dianggap sebagai hal yang wajar, tingkat keparahan nyeri menstruasi ini sangat dipengaruhi oleh kondisi fisik dan pola hidup harian, khususnya status gizi dan asupan makanan." },
-        { type: "p", text: "Status gizi yang tidak seimbang, baik terlalu kurus maupun berlebih, dapat mengganggu kestabilan hormon reproduksi wanita. Pada wanita dengan status gizi kurang, keterbatasan asupan nutrisi menurunkan daya tahan tubuh terhadap sensasi nyeri serta mengganggu keseimbangan hormon estrogen dan progesteron. Sementara itu, pada kondisi berat badan berlebih atau obesitas, penumpukan jaringan lemak memicu reaksi peradangan kronis yang mendorong produksi prostaglandin berlebihan, sehingga rasa kram yang dialami menjadi lebih parah." },
-        { type: "p", text: "Selain berat badan, kebiasaan mengonsumsi makanan cepat saji dan makanan tinggi lemak jenuh turut berkontribusi terhadap munculnya dismenore primer. Jenis makanan yang bersifat proinflamasi tersebut mempercepat proses peradangan di dalam tubuh dan memperkuat kontraksi otot rahim saat haid. Sebaliknya, menerapkan pola makan bergizi seimbang yang kaya akan serat, mikronutrien, dan zat antiinflamasi terbukti dapat menekan peradangan dan meredakan intensitas nyeri haid." },
-        { type: "p", text: "Menjaga berat badan tetap ideal dan membatasi konsumsi makanan olahan tinggi lemak merupakan langkah preventif yang sangat dianjurkan bagi wanita. Pemenuhan gizi yang tepat tidak hanya membantu meredakan rasa tidak nyaman selama menstruasi, tetapi juga menjaga fungsi sistem reproduksi tetap sehat secara berkelanjutan." },
-
-        { type: "p", text: <i>Sumber Referensi:</i> },
-        { type: "p", text: <i>Aulya, Y., Kundaryanti, R., & Rena, A. (2021). Hubungan Usia Menarche dan Konsumsi Makanan Cepat Saji dengan Kejadian Dismenore Primer pada Siswi di Jakarta Tahun 2021. Jurnal Menara Medika, 4(1), 10-21.</i> },
-        { type: "p", text: <i>Dewi, N. P. S. R., Citrawathi, D. M., & Savitri, N. P. W. (2019). Status Gizi dan Usia Saat Menarche Berkorelasi terhadap Kejadian Dismenore Siswi SMP. Jurnal Penelitian dan Pengembangan Sains dan Humaniora, 3(2), 99-108.</i> },
+            { type: "p", text: "Nyeri menstruasi atau dismenore merupakan salah satu gangguan kesehatan reproduksi yang paling umum dialami oleh wanita usia subur. Rasa kram atau nyeri pada perut bagian bawah saat menstruasi terjadi akibat peningkatan produksi senyawa prostaglandin yang memicu kontraksi otot rahim. Meskipun kerap dianggap sebagai hal yang wajar, tingkat keparahan nyeri menstruasi ini sangat dipengaruhi oleh kondisi fisik dan pola hidup harian, khususnya status gizi dan asupan makanan." },
+            { type: "p", text: "Status gizi yang tidak seimbang, baik terlalu kurus maupun berlebih, dapat mengganggu kestabilan hormon reproduksi wanita. Pada wanita dengan status gizi kurang, keterbatasan asupan nutrisi menurunkan daya tahan tubuh terhadap sensasi nyeri serta mengganggu keseimbangan hormon estrogen dan progesteron. Sementara itu, pada kondisi berat badan berlebih atau obesitas, penumpukan jaringan lemak memicu reaksi peradangan kronis yang mendorong produksi prostaglandin berlebihan, sehingga rasa kram yang dialami menjadi lebih parah." },
+            { type: "p", text: "Selain berat badan, kebiasaan mengonsumsi makanan cepat saji dan makanan tinggi lemak jenuh turut berkontribusi terhadap munculnya dismenore primer. Jenis makanan yang bersifat proinflamasi tersebut mempercepat proses peradangan di dalam tubuh dan memperkuat kontraksi otot rahim saat haid. Sebaliknya, menerapkan pola makan bergizi seimbang yang kaya akan serat, mikronutrien, dan zat antiinflamasi terbukti dapat menekan peradangan dan meredakan intensitas nyeri haid." },
+            { type: "p", text: "Menjaga berat badan tetap ideal dan membatasi konsumsi makanan olahan tinggi lemak merupakan langkah preventif yang sangat dianjurkan bagi wanita. Pemenuhan gizi yang tepat tidak hanya membantu meredakan rasa tidak nyaman selama menstruasi, tetapi juga menjaga fungsi sistem reproduksi tetap sehat secara berkelanjutan." },
+            { type: "p", text: "Sumber Referensi:" },
+            { type: "p", text: "Aulya, Y., Kundaryanti, R., & Rena, A. (2021). Hubungan Usia Menarche dan Konsumsi Makanan Cepat Saji dengan Kejadian Dismenore Primer pada Siswi di Jakarta Tahun 2021. Jurnal Menara Medika, 4(1), 10-21." },
+            { type: "p", text: "Dewi, N. P. S. R., Citrawathi, D. M., & Savitri, N. P. W. (2019). Status Gizi dan Usia Saat Menarche Berkorelasi terhadap Kejadian Dismenore Siswi SMP. Jurnal Penelitian dan Pengembangan Sains dan Humaniora, 3(2), 99-108." },
       ],
     },
   ],
 
-    detail: {
-    back: "Kembali ke Edukasi",
-    like: "Suka",
-    share: "Bagikan",
-    copied: "Tautan disalin",
-    related: "Baca Selanjutnya",
-    help: {
-      title: "Butuh bantuan sekarang?",
-      text: "Hubungi layanan SAPA 129, layanan darurat perlindungan perempuan dan anak yang aktif 24 jam atau langsung ke Pusat Darurat 112",
-      cta: "Hubungi 129", 
-      cta2: "Pusat Darurat 112",
-      href: "tel:129",
-      href2: "tel:112",
-    },
+  detail: {
+  back: "Kembali ke Edukasi",
+  like: "Suka",
+  share: "Bagikan",
+  copied: "Tautan disalin",
+  related: "Baca Selanjutnya",
+  help: {
+    title: "Butuh bantuan sekarang?",
+    text: "Hubungi layanan SAPA 129, layanan darurat perlindungan perempuan dan anak yang aktif 24 jam atau langsung ke Pusat Darurat 112",
+    cta: "Hubungi 129", 
+    cta2: "Pusat Darurat 112",
+    href: "tel:129",
+    href2: "tel:112",
   },
+},
 };
 
 // Tema warna per kategori. Class ditulis lengkap agar terbaca oleh Tailwind.
 // badge: varian komponen Badge. avatarText: warna inisial pada lingkaran putih.
 export const categoryTheme = {
-  rights: {
-    card: "bg-svarati-coral border-svarati-coral",
-    badge: "coral",
-    avatarText: "text-svarati-coral-dark",
-  },
-  law: {
-    card: "bg-svarati-lavender border-svarati-lavender",
-    badge: "lavender",
-    avatarText: "text-svarati-lavender",
-  },
-  reproductive: {
-    card: "bg-svarati-coral-dark border-svarati-coral-darker",
-    badge: "coral",
-    avatarText: "text-svarati-coral-dark",
-  },
-  mental: {
-    card: "bg-svarati-lavender-dark border-svarati-lavender-dark",
-    badge: "lavender",
-    avatarText: "text-svarati-lavender",
-  },
-  safety: {
-    card: "bg-svarati-teal-light border-svarati-teal",
-    badge: "teal",
-    avatarText: "text-svarati-teal-light",
-  },
+rights: {
+  card: "bg-svarati-coral border-svarati-coral",
+  badge: "coral",
+  avatarText: "text-svarati-coral-dark",
+},
+law: {
+  card: "bg-svarati-lavender border-svarati-lavender",
+  badge: "lavender",
+  avatarText: "text-svarati-lavender",
+},
+reproductive: {
+  card: "bg-svarati-coral-dark border-svarati-coral-darker",
+  badge: "coral",
+  avatarText: "text-svarati-coral-dark",
+},
+mental: {
+  card: "bg-svarati-lavender-dark border-svarati-lavender-dark",
+  badge: "lavender",
+  avatarText: "text-svarati-lavender",
+},
+safety: {
+  card: "bg-svarati-teal-light border-svarati-teal",
+  badge: "teal",
+  avatarText: "text-svarati-teal-light",
+},
 };
 
 // Pencarian label kategori: categoryLabel["law"] -> "Hukum & UU TPKS"
 export const categoryLabel = Object.fromEntries(
-  educationContent.tabs.map((t) => [t.id, t.label])
+educationContent.tabs.map((t) => [t.id, t.label])
 );
 // ===== KURATIF =====
 // Nama dan rute diambil dari MENU_UTAMA dan DARURAT. Di sini hanya teks pendukung.
 const MENU_PENDAMPINGAN = MENU_UTAMA.find((menu) => menu.id === "pendampingan");
 const MENU_PREVENTIF = MENU_UTAMA.find((menu) => menu.id === "pahami-hakmu");
-const EDU_HUKUM = MENU_PREVENTIF.submenu.find((sub) => sub.id === "edukasi-hukum");
 const SVARATI_AI = MENU_PENDAMPINGAN.submenu.find((sub) => sub.id === "svarati-ai");
 
 export const KURATIF = {
-  common: {
-    emergencyLabel: DARURAT.tombol,
-    back: "Kembali",
-    next: "Lanjut",
-    finish: "Lihat Hasil",
-    skip: "Lewati pertanyaan ini",
-    backToQuiz: "Kembali ke kuis",
-    restart: "Ulangi kuis",
-    lihatDaftar: "Lihat daftar layanan",
-    storageNote: "Kamu bisa berhenti kapan saja. Jawabanmu hanya tersimpan selama halaman ini terbuka.",
-    aiDisclaimer: "Ini bukan pengganti psikolog, pendamping, atau layanan hukum. Jika kamu dalam bahaya, gunakan Bantuan Darurat.",
-  },
+common: {
+  emergencyLabel: DARURAT.tombol,
+  back: "Kembali",
+  next: "Lanjut",
+  finish: "Lihat Hasil",
+  skip: "Lewati pertanyaan ini",
+  backToQuiz: "Kembali ke kuis",
+  restart: "Ulangi kuis",
+  lihatDaftar: "Lihat daftar layanan",
+  storageNote: "Kamu bisa berhenti kapan saja. Jawabanmu hanya tersimpan selama halaman ini terbuka.",
+  aiDisclaimer: "Ini bukan pengganti psikolog, pendamping, atau layanan hukum. Jika kamu dalam bahaya, gunakan Bantuan Darurat.",
+},
 
-  menu: {
-    title: "Dukungan untuk Kasus yang Kamu Alami.",
-    intro: "Pilih langkah yang paling sesuai dengan kondisimu saat ini. Kamu bisa mulai dari mana saja.",
-    disclaimer: "Layanan di halaman ini membantu kamu memahami situasi. Hasilnya bukan diagnosis dan bukan penilaian hukum.",
-    hintCekKondisi: "±2 menit",
-    // Deskripsi per item, dicocokkan dengan id di submenu
-    desc: {
-      "cek-kondisi": "Enam pertanyaan singkat, satu per layar. Kamu bisa melewati atau kembali kapan saja.",
-      "svarati-ai": "Ceritakan apa yang kamu alami, atau tanyakan langkah berikutnya.",
-      "cari-layanan": "Daftar layanan pendampingan dan hukum yang sudah diverifikasi.",
-    },
+menu: {
+  title: "Dukungan untuk Kasus yang Kamu Alami.",
+  intro: "Pilih langkah yang paling sesuai dengan kondisimu saat ini. Kamu bisa mulai dari mana saja.",
+  disclaimer: "Layanan di halaman ini membantu kamu memahami situasi. Hasilnya bukan diagnosis dan bukan penilaian hukum.",
+  hintCekKondisi: "±2 menit",
+  // Deskripsi per item, dicocokkan dengan id di submenu
+  desc: {
+    "cek-kondisi": "Enam pertanyaan singkat, satu per layar. Kamu bisa melewati atau kembali kapan saja.",
+    "svarati-ai": "Ceritakan apa yang kamu alami, atau tanyakan langkah berikutnya.",
+    "cari-layanan": "Daftar layanan pendampingan dan hukum yang sudah diverifikasi.",
   },
+},
 
-  selfAssessment: {
-    title: (step, total) => `Langkah ${step} dari ${total}`,
-    hint: "Boleh pilih lebih dari satu.",
-    panelKiri: {
-      judul: "Cek kondisimu",
-      judulKuis: "Pelan-pelan, mulai dari sini.",
-      dukungan:
-        "Jawab sesuai yang kamu rasakan. Tidak ada jawaban yang benar atau salah, dan kamu boleh melewati pertanyaan mana pun.",
-    },
-    darurat: {
-      judul: "Keselamatanmu adalah prioritas",
-      isi: "Kamu tampaknya masih berada dalam situasi berbahaya. Hubungi salah satu layanan di bawah ini sekarang.",
-      keluarCepatAwal: "Kamu juga bisa menggunakan tombol",
-      keluarCepatAkhir: "di bagian atas untuk segera meninggalkan halaman ini.",
-      hubungi: "Hubungi",
-    },
-    hasilDarurat: {
-      judul: "Dalam situasi darurat?",
-      isi: "Jangan tunggu daftar ini, hubungi langsung layanan darurat.",
-    },
-    education: {
-      judul: "Edukasi Hukum untuk Kamu",
-      isi: "Kamu memilih untuk memahami batasan hukum secara umum. Kamu akan diarahkan ke modul Edukasi untuk informasi yang relevan.",
-      tombol: "Ke Modul Edukasi",
-      route: EDU_HUKUM.href,
-    },
-    result: {
-      lead: "Tidak perlu memutuskan apa pun sekarang.",
-      leadRest: "Berikut beberapa langkah yang mungkin membantu.",
-      disclaimer: "Hasil ini berdasarkan jawabanmu dan bukan diagnosis atau penilaian hukum.",
-    },
-    cards: {
-      space: {
-        title: "Ruang bercerita",
-        body: `Kamu bisa menuliskan apa pun yang kamu rasakan di ${SVARATI_AI.nama}, dengan kecepatanmu sendiri.`,
-        cta: `Buka ${SVARATI_AI.nama}`,
-        route: SVARATI_AI.href,
-      },
-      digital: {
-        title: "Menyimpan bukti digital",
-        body: "Kamu punya bukti digital. Beberapa hal yang bisa dilakukan:",
-        list: [
-          "Jangan hapus pesan atau foto aslinya",
-          "Buat salinan di tempat lain yang kamu percaya",
-          "Catat tanggal dan jam kejadian selagi ingat",
-        ],
-      },
-      institution: {
-        title: "Pelaporan di institusi",
-        body: "Tempat kamu belajar atau bekerja biasanya punya jalur pengaduan. Kamu bisa bertanya dulu tanpa langsung melapor.",
-        list: [
-          "Cari tahu prosedur pengaduan di tempatmu",
-          "Kamu boleh membawa pendamping saat bertanya",
-        ],
-      },
-      threat: {
-        title: "Kamu tidak harus menghadapi ancaman sendirian",
-        body: "Ancaman atau tekanan seperti ini bisa sangat berat. Berbicara dengan pendamping bisa membantu memikirkan langkah yang aman.",
-        list: [
-          "Hubungi pendamping atau orang yang kamu percaya",
-          "Simpan bukti ancaman jika ada",
-        ],
-      },
-      emotional: {
-        title: "Dukungan emosional",
-        body: "Membeku, bingung, atau baru menyadari sesuatu setelah beberapa waktu itu wajar. Tidak ada cara yang benar untuk bereaksi.",
-        list: [
-          "Kamu boleh membahas ini dengan psikolog atau pendamping",
-          "Tidak perlu menceritakan semuanya sekaligus",
-        ],
-      },
-      noEvidence: {
-        title: "Kalau belum ada bukti",
-        body: "Tidak adanya bukti tidak membuat pengalamanmu kurang berarti. Pendamping bisa membantu melihat pilihan yang tersedia.",
-      },
-    },
-    questions: [
-      {
-        id: "q1",
-        text: "Bagaimana kondisimu sekarang?",
-        options: [
-          { id: "a", label: "Dalam bahaya (mengancam jiwa atau kesehatan)", flag: "darurat" },
-          { id: "b", label: "Aman, tapi bingung" },
-          { id: "c", label: "Aman, tapi masih trauma" },
-          { id: "d", label: "Aman, hanya ingin tahu soal hukum atau hak perempuan", flag: "edukasi" },
-        ],
-      },
-      {
-        id: "q2",
-        text: "Di mana kejadiannya?",
-        options: [
-          { id: "a", label: "Online (chat, medsos)" },
-          { id: "b", label: "Kampus, sekolah, magang, kos" },
-          { id: "c", label: "Kantor atau tempat kerja" },
-          { id: "d", label: "Tempat umum" },
-          { id: "e", label: "Rumah atau keluarga" },
-        ],
-      },
-      {
-        id: "q3",
-        text: "Siapa yang terlibat?",
-        options: [
-          { id: "a", label: "Atasan atau dosen" },
-          { id: "b", label: "Teman atau rekan" },
-          { id: "c", label: "Pacar, mantan, atau keluarga" },
-          { id: "d", label: "Orang yang baru dikenal" },
-        ],
-      },
-      {
-        id: "q4",
-        text: "Apa yang terjadi?",
-        multi: true,
-        options: [
-          { id: "a", group: "Kata-kata", label: "Ada candaan atau komentar bernuansa seksual" },
-          { id: "b", group: "Kata-kata", label: "Dikomentari soal tubuh" },
-          { id: "c", group: "Online", label: "Dikirimi foto atau video tanpa izin" },
-          { id: "d", group: "Online", label: "Diancam foto atau datanya disebar" },
-          { id: "e", group: "Online", label: "Diintip atau direkam diam-diam" },
-          { id: "f", group: "Fisik", label: "Disentuh tanpa izin" },
-          { id: "g", group: "Fisik", label: "Dipaksa berhubungan intim" },
-          { id: "h", group: "Ancaman", label: "Nilai atau kerja dikaitkan dengan permintaan intim" },
-        ],
-      },
-      {
-        id: "q5",
-        text: "Bagaimana reaksimu saat itu?",
-        options: [
-          { id: "a", label: "Sudah menolak, tapi tetap dilanjutkan" },
-          { id: "b", label: "Membeku atau takut" },
-          { id: "c", label: "Menurut karena takut diancam" },
-          { id: "d", label: "Baru sadar setelah beberapa waktu" },
-        ],
-      },
-      {
-        id: "q6",
-        text: "Ada bukti atau saksi?",
-        options: [
-          { id: "a", label: "Ada bukti digital" },
-          { id: "b", label: "Ada saksi" },
-          { id: "c", label: "Tidak ada, hanya ingatanku" },
-          { id: "d", label: "Belum tahu" },
-        ],
-      },
-    ],
+selfAssessment: {
+  title: (step, total) => `Langkah ${step} dari ${total}`,
+  hint: "Boleh pilih lebih dari satu.",
+  panelKiri: {
+    judul: "Cek kondisimu",
+    judulKuis: "Pelan-pelan, mulai dari sini.",
+    dukungan:
+      "Jawab sesuai yang kamu rasakan. Tidak ada jawaban yang benar atau salah, dan kamu boleh melewati pertanyaan mana pun.",
   },
+  darurat: {
+    judul: "Keselamatanmu adalah prioritas",
+    isi: "Kamu tampaknya masih berada dalam situasi berbahaya. Hubungi salah satu layanan di bawah ini sekarang.",
+    keluarCepatAwal: "Kamu juga bisa menggunakan tombol",
+    keluarCepatAkhir: "di bagian atas untuk segera meninggalkan halaman ini.",
+    hubungi: "Hubungi",
+  },
+  hasilDarurat: {
+    judul: "Dalam situasi darurat?",
+    isi: "Jangan tunggu daftar ini, hubungi langsung layanan darurat.",
+  },
+  education: {
+    judul: "Edukasi Hak Perempuan untuk Kamu",
+    isi: "Kamu memilih untuk memahami batasan hukum secara umum. Kamu akan diarahkan ke modul Edukasi untuk informasi yang relevan.",
+    tombol: "Ke Modul Edukasi",
+    route: MENU_PREVENTIF.href,
+  },
+  result: {
+    lead: "Tidak perlu memutuskan apa pun sekarang.",
+    leadRest: "Berikut beberapa langkah yang mungkin membantu.",
+    disclaimer: "Hasil ini berdasarkan jawabanmu dan bukan diagnosis atau penilaian hukum.",
+  },
+  cards: {
+    space: {
+      title: "Ruang bercerita",
+      body: `Kamu bisa menuliskan apa pun yang kamu rasakan di ${SVARATI_AI.nama}, dengan kecepatanmu sendiri.`,
+      cta: `Buka ${SVARATI_AI.nama}`,
+      route: SVARATI_AI.href,
+    },
+    digital: {
+      title: "Menyimpan bukti digital",
+      body: "Kamu punya bukti digital. Beberapa hal yang bisa dilakukan:",
+      list: [
+        "Jangan hapus pesan atau foto aslinya",
+        "Buat salinan di tempat lain yang kamu percaya",
+        "Catat tanggal dan jam kejadian selagi ingat",
+      ],
+    },
+    institution: {
+      title: "Pelaporan di institusi",
+      body: "Tempat kamu belajar atau bekerja biasanya punya jalur pengaduan. Kamu bisa bertanya dulu tanpa langsung melapor.",
+      list: [
+        "Cari tahu prosedur pengaduan di tempatmu",
+        "Kamu boleh membawa pendamping saat bertanya",
+      ],
+    },
+    threat: {
+      title: "Kamu tidak harus menghadapi ancaman sendirian",
+      body: "Ancaman atau tekanan seperti ini bisa sangat berat. Berbicara dengan pendamping bisa membantu memikirkan langkah yang aman.",
+      list: [
+        "Hubungi pendamping atau orang yang kamu percaya",
+        "Simpan bukti ancaman jika ada",
+      ],
+    },
+    emotional: {
+      title: "Dukungan emosional",
+      body: "Membeku, bingung, atau baru menyadari sesuatu setelah beberapa waktu itu wajar. Tidak ada cara yang benar untuk bereaksi.",
+      list: [
+        "Kamu boleh membahas ini dengan psikolog atau pendamping",
+        "Tidak perlu menceritakan semuanya sekaligus",
+      ],
+    },
+    noEvidence: {
+      title: "Kalau belum ada bukti",
+      body: "Tidak adanya bukti tidak membuat pengalamanmu kurang berarti. Pendamping bisa membantu melihat pilihan yang tersedia.",
+    },
+  },
+  questions: [
+    {
+      id: "q1",
+      text: "Bagaimana kondisimu sekarang?",
+      options: [
+        { id: "a", label: "Dalam bahaya (mengancam jiwa atau kesehatan)", flag: "darurat" },
+        { id: "b", label: "Aman, tapi bingung" },
+        { id: "c", label: "Aman, tapi masih trauma" },
+        { id: "d", label: "Aman, hanya ingin tahu soal hukum atau hak perempuan", flag: "edukasi" },
+      ],
+    },
+    {
+      id: "q2",
+      text: "Di mana kejadiannya?",
+      options: [
+        { id: "a", label: "Online (chat, medsos)" },
+        { id: "b", label: "Kampus, sekolah, magang, kos" },
+        { id: "c", label: "Kantor atau tempat kerja" },
+        { id: "d", label: "Tempat umum" },
+        { id: "e", label: "Rumah atau keluarga" },
+      ],
+    },
+    {
+      id: "q3",
+      text: "Siapa yang terlibat?",
+      options: [
+        { id: "a", label: "Atasan atau dosen" },
+        { id: "b", label: "Teman atau rekan" },
+        { id: "c", label: "Pacar, mantan, atau keluarga" },
+        { id: "d", label: "Orang yang baru dikenal" },
+      ],
+    },
+    {
+      id: "q4",
+      text: "Apa yang terjadi?",
+      multi: true,
+      options: [
+        { id: "a", label: "Ada candaan atau komentar bernuansa seksual" },
+        { id: "b", label: "Dikomentari soal tubuh" },
+        { id: "c", label: "Dikirimi foto atau video tanpa izin" },
+        { id: "d", label: "Diancam foto atau datanya disebar" },
+        { id: "e", label: "Diintip atau direkam diam-diam" },
+        { id: "f", label: "Disentuh tanpa izin" },
+        { id: "g", label: "Dipaksa berhubungan intim" },
+        { id: "h", label: "Nilai atau kerja dikaitkan dengan permintaan intim" },
+      ],
+    },
+    {
+      id: "q5",
+      text: "Bagaimana reaksimu saat itu?",
+      options: [
+        { id: "a", label: "Sudah menolak, tapi tetap dilanjutkan" },
+        { id: "b", label: "Membeku atau takut" },
+        { id: "c", label: "Menurut karena takut diancam" },
+        { id: "d", label: "Baru sadar setelah beberapa waktu" },
+      ],
+    },
+    {
+      id: "q6",
+      text: "Ada bukti atau saksi?",
+      options: [
+        { id: "a", label: "Ada bukti digital" },
+        { id: "b", label: "Ada saksi" },
+        { id: "c", label: "Tidak ada, hanya ingatanku" },
+        { id: "d", label: "Belum tahu" },
+      ],
+    },
+  ],
+},
 
-  ai: {
-    badge: SVARATI_AI.nama,
-    nama: "Svarati AI",
-    judulPanel: "Mau mulai dari mana?",
-    typing: "Svarati AI sedang mengetik",
-    headerJudul: "Teman cerita",
-    headerSub: "Asisten AI, bukan manusia",
-    greeting: "Hai. Kamu bisa memilih apa yang ingin dilakukan, atau langsung menulis sesuatu.",
-    inputLabel: "Tulis pesan",
-    inputPlaceholder: "Bagikan apa yang kamu rasa nyaman...",
-    send: "Kirim",
-    chips: [
-      { label: "Saya ingin cerita", key: "cerita" },
-      { label: "Apa langkah berikutnya?", key: "langkah" },
-      { label: "Saya ingin istirahat", key: "istirahat" },
-      { label: "Apa hak saya sebagai korban?", key: "hak" },
-    ],
-    // Balasan terkurasi. Nantinya diganti dengan jawaban RAG yang sudah diverifikasi.
-    replies: {
-      cerita: "Terima kasih sudah memilih untuk berbagi. Kamu boleh cerita sedikit demi sedikit, atau hanya bagian yang nyaman saja.",
-      langkah: "Kalau kamu ingin tahu langkah berikutnya, kita bisa mulai dari yang paling mendesak. Apakah kamu sedang merasa aman sekarang?",
-      istirahat: "Tidak apa-apa untuk berhenti dulu. Halaman ini akan tetap di sini saat kamu siap kembali.",
-      hak: "Sebagai korban, kamu memiliki hak untuk mendapatkan perlindungan, bantuan, dan keadilan. Kamu berhak melaporkan kejadian ini dan meminta bantuan dari pihak berwenang.",
-      urgent: "Aku mendengarmu, dan keselamatanmu yang paling penting sekarang. Kalau kamu dalam bahaya, tekan tombol Bantuan Darurat di bawah ini. Kamu tidak harus menghadapinya sendirian.",
-      default: "Terima kasih sudah menuliskan itu. Kamu boleh melanjutkan kapan saja, atau memilih langkah lain di atas.",
-    },
-    errorText: "Maaf, balasan belum bisa dikirim. Coba lagi sebentar lagi, atau gunakan tombol bantuan darurat jika kamu butuh bantuan sekarang.",
-    urgentNotice: "Kedengarannya situasimu mendesak. Kamu tidak harus menghadapinya sendiri. Hubungi layanan bantuan sekarang.",
+ai: {
+  badge: SVARATI_AI.nama,
+  nama: "Svarati AI",
+  judulPanel: "Mau mulai dari mana?",
+  typing: "Svarati AI sedang mengetik",
+  headerJudul: "Teman cerita",
+  headerSub: "Asisten AI, bukan manusia",
+  greeting: "Hai. Kamu bisa memilih apa yang ingin dilakukan, atau langsung menulis sesuatu.",
+  inputLabel: "Tulis pesan",
+  inputPlaceholder: "Bagikan apa yang kamu rasa nyaman...",
+  send: "Kirim",
+  chips: [
+    { label: "Saya ingin cerita", key: "cerita" },
+    { label: "Apa langkah berikutnya?", key: "langkah" },
+    { label: "Saya ingin istirahat", key: "istirahat" },
+    { label: "Apa hak saya sebagai korban?", key: "hak" },
+  ],
+  // Balasan terkurasi. Nantinya diganti dengan jawaban RAG yang sudah diverifikasi.
+  replies: {
+    cerita: "Terima kasih sudah memilih untuk berbagi. Kamu boleh cerita sedikit demi sedikit, atau hanya bagian yang nyaman saja.",
+    langkah: "Kalau kamu ingin tahu langkah berikutnya, kita bisa mulai dari yang paling mendesak. Apakah kamu sedang merasa aman sekarang?",
+    istirahat: "Tidak apa-apa untuk berhenti dulu. Halaman ini akan tetap di sini saat kamu siap kembali.",
+    hak: "Sebagai korban, kamu memiliki hak untuk mendapatkan perlindungan, bantuan, dan keadilan. Kamu berhak melaporkan kejadian ini dan meminta bantuan dari pihak berwenang.",
+    urgent: "Aku mendengarmu, dan keselamatanmu yang paling penting sekarang. Kalau kamu dalam bahaya, tekan tombol Bantuan Darurat di bawah ini. Kamu tidak harus menghadapinya sendirian.",
+    default: "Terima kasih sudah menuliskan itu. Kamu boleh melanjutkan kapan saja, atau memilih langkah lain di atas.",
   },
+  errorText: "Maaf, balasan belum bisa dikirim. Coba lagi sebentar lagi, atau gunakan tombol bantuan darurat jika kamu butuh bantuan sekarang.",
+  urgentNotice: "Kedengarannya situasimu mendesak. Kamu tidak harus menghadapinya sendiri. Hubungi layanan bantuan sekarang.",
+},
 };

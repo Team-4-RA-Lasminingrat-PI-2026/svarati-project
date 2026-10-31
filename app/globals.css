@@ -222,7 +222,7 @@
 
   .hero-root {
     /* Satuan fluid: ikut yang terkecil antara lebar dan tinggi layar.
-       Tinggi isi hero Â±44u, jadi pada 1.8vh isinya selalu < 100% tinggi layar. */
+       Tinggi isi hero ±44u, jadi pada 1.8vh isinya selalu < 100% tinggi layar. */
     --u: clamp(0.8rem, min(1.15vw, 1.8vh), 3.2rem);
     /* Lebar gambar: mengikuti tinggi layar, maksimal 52% lebar */
     --art-w: min(calc(100svh * 0.89), 52vw);
@@ -279,3 +279,26 @@
     font-size: calc(var(--u) * 0.85);
   }
 }
+
+/*=====================================
+
+  Floating Bubble Chat Svarati AI Banner
+
+  ======================================*/
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-6px); }
+  }
+  
+  .animate-float-slow {
+    animation: float 4s ease-in-out infinite;
+  }
+  
+  .animate-float-medium {
+    animation: float 3.2s ease-in-out infinite 0.5s;
+  }
+  
+  .animate-float-fast {
+    animation: float 3.8s ease-in-out infinite 1s;
+  }

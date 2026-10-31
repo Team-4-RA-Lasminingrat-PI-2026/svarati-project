@@ -276,7 +276,8 @@ export default function HelpDirectoryPage() {
                 activeTab={tipe}
                 onChange={setTipe}
                 variant="teal"
-                className="flex w-full gap-2 [&>button]:grow [&>button]:text-center"
+                boxed={false}
+                className="w-full [&>button]:grow [&>button]:text-center"
               />
 
               <div className="flex flex-wrap items-center justify-between gap-2">
