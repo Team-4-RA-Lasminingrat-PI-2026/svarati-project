@@ -1,0 +1,323 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <style>
+      @keyframes mascotFloat {
+        0%, 100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-9px);
+        }
+      }
+      @keyframes mascotWave {
+        0%, 100% {
+          transform: rotate(0deg);
+        }
+        25% {
+          transform: rotate(-14deg);
+        }
+        75% {
+          transform: rotate(6deg);
+        }
+      }
+      @keyframes hoverPulse {
+        0%, 100% {
+          transform: scale(1);
+          opacity: 0.65;
+        }
+        50% {
+          transform: scale(1.08);
+          opacity: 0.9;
+        }
+      }
+      @keyframes antennaPulse {
+        0%, 100% {
+          filter: drop-shadow(0 0 3px rgba(255, 127, 110, 0.7));
+        }
+        50% {
+          filter: drop-shadow(0 0 9px rgba(255, 127, 110, 0.95));
+        }
+      }
+      @keyframes sparkleShimmer {
+        0%, 100% {
+          transform: scale(0.9) rotate(0deg);
+          opacity: 0.4;
+        }
+        50% {
+          transform: scale(1.2) rotate(15deg);
+          opacity: 0.95;
+        }
+      }
+      #mascot-root {
+        animation: mascotFloat 3.8s ease-in-out infinite;
+      }
+      #arm-waving {
+        transform-origin: 260px 240px;
+        animation: mascotWave 2.2s ease-in-out infinite;
+      }
+      #hover-glow {
+        transform-origin: 200px 338px;
+        animation: hoverPulse 3.8s ease-in-out infinite;
+      }
+      #antenna-beacon {
+        animation: antennaPulse 2.4s ease-in-out infinite;
+      }
+      .sparkle-fx {
+        animation: sparkleShimmer 2.8s ease-in-out infinite;
+      }
+      .sparkle-fx-delay {
+        animation: sparkleShimmer 3.2s ease-in-out infinite 1.4s;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #mascot-root, #arm-waving, #hover-glow, #antenna-beacon, .sparkle-fx {
+          animation: none !important;
+        }
+      }
+    </style>
+    <!-- Gradients -->
+    <!-- Head & Body Gradients (Clean White & Soft Lavender) -->
+    <linearGradient id="body-gradient" x1="20%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="55%" stop-color="#F5F3FF"/>
+      <stop offset="100%" stop-color="#E4E0FB"/>
+    </linearGradient>
+
+    <linearGradient id="body-shade-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="60%" stop-color="#EEEBFF"/>
+      <stop offset="100%" stop-color="#DCD6FA"/>
+    </linearGradient>
+
+    <linearGradient id="headband-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#E8E4FB"/>
+      <stop offset="100%" stop-color="#C5BEF4"/>
+    </linearGradient>
+
+    <!-- Visor Gradient (Deep Violet / Navy) -->
+    <linearGradient id="visor-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#231A3F"/>
+      <stop offset="45%" stop-color="#16122C"/>
+      <stop offset="100%" stop-color="#0E0B1E"/>
+    </linearGradient>
+
+    <!-- Glass Visor Reflection Highlight -->
+    <linearGradient id="visor-reflection" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.32"/>
+      <stop offset="60%" stop-color="#FFFFFF" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- Accent Gradient: Soft Coral & Peach -->
+    <linearGradient id="coral-accent-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFA494"/>
+      <stop offset="50%" stop-color="#FF7F6E"/>
+      <stop offset="100%" stop-color="#F25B49"/>
+    </linearGradient>
+
+    <!-- Ear Cap Ring Gradient -->
+    <linearGradient id="earcap-rim" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="50%" stop-color="#EDE9FE"/>
+      <stop offset="100%" stop-color="#DDD6FE"/>
+    </linearGradient>
+
+    <!-- LED Eye Coral Glow Gradient -->
+    <linearGradient id="eye-glow-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFB3A7"/>
+      <stop offset="50%" stop-color="#FF7F6E"/>
+      <stop offset="100%" stop-color="#FF6352"/>
+    </linearGradient>
+
+    <!-- Floating Hover Energy Gradient -->
+    <radialGradient id="hover-glow-gradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FF7F6E" stop-opacity="0.55"/>
+      <stop offset="45%" stop-color="#C4B5FD" stop-opacity="0.35"/>
+      <stop offset="80%" stop-color="#818CF8" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#818CF8" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Core Orb Radial Gradient -->
+    <radialGradient id="core-glow-radial" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="40%" stop-color="#FFA89B"/>
+      <stop offset="85%" stop-color="#FF705E"/>
+      <stop offset="100%" stop-color="#E54B3A"/>
+    </radialGradient>
+
+    <!-- Filters -->
+    <!-- Soft Glow for LED Eyes -->
+    <filter id="eye-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2.2" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Soft Drop Shadow for Mascot Floating Body Elements -->
+    <filter id="soft-shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#8B7FB8" flood-opacity="0.18"/>
+    </filter>
+
+    <!-- Subtle Depth Shadow for Inset Screen -->
+    <filter id="visor-shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="3" stdDeviation="2.5" flood-color="#0A0815" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <!-- Floating Hover FX (Anti-Gravity Glow) -->
+  <g id="hover-fx">
+    <!-- Outer Hover Wave -->
+    <ellipse id="hover-glow" cx="200" cy="346" rx="54" ry="11" fill="url(#hover-glow-gradient)" />
+    <!-- Secondary Soft Energy Ripple -->
+    <ellipse cx="200" cy="346" rx="28" ry="5.5" fill="none" stroke="#FFA396" stroke-width="1.8" opacity="0.45" stroke-dasharray="3 3"/>
+  </g>
+
+  <!-- Complete Floating Mascot Root -->
+  <g id="mascot-root">
+
+    <!-- Antenna -->
+    <g id="antenna">
+      <!-- Antenna Stalk -->
+      <path d="M 197 104 L 197 76 C 197 74.5 198.5 73 200 73 C 201.5 73 203 74.5 203 76 L 203 104 Z" fill="#DDD6FE"/>
+      <!-- Antenna Joint Ring -->
+      <rect x="195" y="94" width="10" height="4" rx="2" fill="#C4B5FD"/>
+      <!-- Glowing Antenna Beacon Orb -->
+      <circle id="antenna-beacon" cx="200" cy="69" r="8.5" fill="url(#core-glow-radial)"/>
+      <!-- Soft Beacon Highlight -->
+      <circle cx="197.5" cy="66.5" r="2.4" fill="#FFFFFF" opacity="0.9"/>
+    </g>
+
+    <!-- Headphone Band (Behind Head) -->
+    <path id="headphone-band" d="M 108 160 C 108 98 292 98 292 160" fill="none" stroke="url(#headband-gradient)" stroke-width="7" stroke-linecap="round"/>
+
+    <!-- Left Arm (Gentle Floating Hand / Rest Position) -->
+    <g id="arm-left" filter="url(#soft-shadow)">
+      <!-- Arm floating pod -->
+      <path d="M 132 232 C 122 238 114 250 115 264 C 116 274 125 281 133 277 C 142 272 146 256 144 243 C 142 235 137 229 132 232 Z" fill="url(#body-gradient)"/>
+      <!-- Soft coral palm accent dot -->
+      <circle cx="127" cy="265" r="4.2" fill="url(#coral-accent-gradient)"/>
+    </g>
+
+    <!-- Floating Body (Torso) -->
+    <g id="body" filter="url(#soft-shadow)">
+      <!-- Outer Torso Capsule / Smooth Chibi Pod -->
+      <path d="M 152 225 C 146 238 146 265 156 288 C 166 312 186 324 200 324 C 214 324 234 312 244 288 C 254 265 254 238 248 225 C 243 216 157 216 152 225 Z" fill="url(#body-shade-gradient)"/>
+      
+      <!-- Torso Upper Belly Highlight Plate -->
+      <path d="M 158 228 C 154 240 155 262 163 280 C 172 298 188 308 200 308 C 212 308 228 298 237 280 C 245 262 246 240 242 228 C 237 222 163 222 158 228 Z" fill="url(#body-gradient)"/>
+
+      <!-- Subtle Torso Contour Highlight -->
+      <path d="M 166 234 C 163 248 165 265 171 278" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" opacity="0.8"/>
+
+      <!-- Chest Panel (Cute AI Power Core) -->
+      <g id="chest-panel">
+        <!-- Inset Well -->
+        <rect x="184" y="244" width="32" height="32" rx="16" fill="#EDE9FE"/>
+        <!-- Coral Power Ring -->
+        <circle cx="200" cy="260" r="11" fill="none" stroke="url(#coral-accent-gradient)" stroke-width="2.4"/>
+        <!-- Core Glowing Heart / AI Node -->
+        <circle cx="200" cy="260" r="7.5" fill="url(#core-glow-radial)"/>
+        <circle cx="198" cy="258" r="2" fill="#FFFFFF" opacity="0.9"/>
+      </g>
+
+      <!-- Bottom Thruster Rim / Micro Magnetic Levitation Ring -->
+      <path d="M 183 319 C 188 322 212 322 217 319 C 214 324 186 324 183 319 Z" fill="#C4B5FD"/>
+    </g>
+
+    <!-- Head Group -->
+    <g id="head" filter="url(#soft-shadow)">
+      <!-- Main Head Dome (Chibi Spherical/Curved Shape) -->
+      <rect x="114" y="98" width="172" height="126" rx="63" fill="url(#body-gradient)"/>
+      
+      <!-- Head Contour Highlight (Crisp Soft Light) -->
+      <path d="M 134 122 C 152 108 248 108 266 122" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" opacity="0.9"/>
+      <path d="M 125 140 C 122 150 122 165 125 175" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+
+      <!-- Headphone Ear Caps (Left and Right) -->
+      <!-- Left Ear Cap -->
+      <g id="ear-left">
+        <!-- Base Bracket -->
+        <rect x="99" y="142" width="18" height="42" rx="9" fill="url(#earcap-rim)"/>
+        <!-- Coral Cushion Accent -->
+        <rect x="103" y="146" width="11" height="34" rx="5.5" fill="url(#coral-accent-gradient)"/>
+        <!-- Inner Glowing Dot -->
+        <circle cx="108.5" cy="163" r="2.8" fill="#FFFFFF" opacity="0.9"/>
+      </g>
+
+      <!-- Right Ear Cap -->
+      <g id="ear-right">
+        <!-- Base Bracket -->
+        <rect x="283" y="142" width="18" height="42" rx="9" fill="url(#earcap-rim)"/>
+        <!-- Coral Cushion Accent -->
+        <rect x="286" y="146" width="11" height="34" rx="5.5" fill="url(#coral-accent-gradient)"/>
+        <!-- Inner Glowing Dot -->
+        <circle cx="291.5" cy="163" r="2.8" fill="#FFFFFF" opacity="0.9"/>
+      </g>
+
+      <!-- Visor Face Screen (Deep Violet/Navy) -->
+      <g id="visor">
+        <!-- Outer Visor Bezel / Inset Cutout -->
+        <rect x="133" y="122" width="134" height="78" rx="36" fill="#1B1632" filter="url(#visor-shadow)"/>
+        <!-- Deep Navy Inner Glass Screen -->
+        <rect x="135" y="124" width="130" height="74" rx="34" fill="url(#visor-gradient)"/>
+
+        <!-- Glass Curved Reflection (Gloss Shine) -->
+        <path d="M 145 132 C 160 127 240 127 255 132 C 260 134 262 139 256 142 C 240 148 160 148 144 142 C 138 139 140 134 145 132 Z" fill="url(#visor-reflection)"/>
+        <ellipse cx="152" cy="142" rx="5" ry="2" fill="#FFFFFF" opacity="0.25" transform="rotate(-15 152 142)"/>
+
+        <!-- Cheerful LED Eyes & Facial Expression -->
+        <g id="eyes">
+          
+      <!-- Left Smiling LED Eye -->
+      <path class="mascot-eye" d="M 157 163 Q 170 148 183 163" stroke="url(#eye-glow-grad)" stroke-width="5.5" stroke-linecap="round" fill="none" filter="url(#eye-glow)"/>
+      <!-- Right Smiling LED Eye -->
+      <path class="mascot-eye" d="M 217 163 Q 230 148 243 163" stroke="url(#eye-glow-grad)" stroke-width="5.5" stroke-linecap="round" fill="none" filter="url(#eye-glow)"/>
+    
+          
+          <!-- Cute Cheek LED Blush (Soft Glow) -->
+          <ellipse cx="150" cy="173" rx="7.5" ry="3.5" fill="#FF7F6E" opacity="0.32" filter="url(#eye-glow)"/>
+          <ellipse cx="250" cy="173" rx="7.5" ry="3.5" fill="#FF7F6E" opacity="0.32" filter="url(#eye-glow)"/>
+
+          <!-- Friendly Smile Arc -->
+          <path d="M 194 172 Q 200 177 206 172" stroke="url(#eye-glow-grad)" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.9" filter="url(#eye-glow)"/>
+        </g>
+      </g>
+    </g>
+
+    <!-- Right Arm (Raised in Warm Friendly Waving Gesture) -->
+    <g id="arm-waving" filter="url(#soft-shadow)">
+      <!-- Upper Floating Arm Segment angled up -->
+      <path d="M 252 232 C 263 226 278 214 286 198 C 291 188 285 178 274 182 C 264 186 254 205 246 220 C 242 227 246 235 252 232 Z" fill="url(#body-gradient)"/>
+      
+      <!-- Waving Forearm & Cute Rounded Hand -->
+      <!-- Floating Palm / Mitten Hand -->
+      <path d="M 283 194 C 290 183 297 172 301 161 C 304 153 296 147 289 152 C 283 156 278 164 274 175 C 270 185 277 197 283 194 Z" fill="url(#body-gradient)"/>
+      
+      <!-- Cute Waving Thumb / Outer Digit -->
+      <path d="M 296 172 C 303 172 308 167 308 161 C 308 156 302 154 298 158 Z" fill="url(#body-gradient)"/>
+
+      <!-- Coral Palm Accent Ring (Friendly Beacon) -->
+      <circle cx="286" cy="173" r="4.5" fill="url(#coral-accent-gradient)"/>
+      <circle cx="285" cy="172" r="1.5" fill="#FFFFFF" opacity="0.85"/>
+
+      <!-- Motion Wave Accents (Subtle cute breeze lines near waving hand) -->
+      <path d="M 314 154 C 318 159 318 165 314 170" fill="none" stroke="#FF9C8F" stroke-width="2.2" stroke-linecap="round" opacity="0.75"/>
+      <path d="M 322 150 C 328 158 328 167 322 174" fill="none" stroke="#C4B5FD" stroke-width="2" stroke-linecap="round" opacity="0.55"/>
+    </g>
+
+    <!-- Magical AI Sparkles (Helpful & Friendly Aura) -->
+    
+    <g id="accents">
+      <!-- Top-right Sparkle (near waving hand) -->
+      <path class="sparkle-fx" d="M 315 125 Q 315 133 323 133 Q 315 133 315 141 Q 315 133 307 133 Q 315 133 315 125 Z" fill="#FFA599" opacity="0.85"/>
+      <circle cx="327" cy="120" r="1.8" fill="#C4B5FD" opacity="0.7"/>
+
+      <!-- Left Sparkle (near antenna & ear cap) -->
+      <path class="sparkle-fx-delay" d="M 88 126 Q 88 132 94 132 Q 88 132 88 138 Q 88 132 82 132 Q 88 132 88 126 Z" fill="#C4B5FD" opacity="0.75"/>
+      <circle cx="80" cy="144" r="1.6" fill="#FFA599" opacity="0.6"/>
+    </g>
+
+  </g>
+</svg>
