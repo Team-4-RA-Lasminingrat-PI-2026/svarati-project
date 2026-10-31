@@ -10,7 +10,7 @@ export default function RuangPemulihan() {
   return (
     <section
       id="ruang-pemulihan"
-      className="overflow-hidden bg-svarati-coral-soft px-4 pb-12 pt-10 sm:px-6 lg:pb-16 lg:pt-12"
+      className="mt-16 sm:mt-20 lg:mt-24 overflow-hidden bg-svarati-coral-soft px-4 pb-12 pt-10 sm:px-6 lg:pb-16 lg:pt-12"
     >
       <div className="mx-auto grid w-full max-w-6xl items-center gap-8 lg:grid-cols-[1.15fr_1fr] lg:gap-6">
         {/* KIRI: pohon + kartu melayang (mobile dan desktop) */}
