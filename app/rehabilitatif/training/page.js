@@ -48,12 +48,12 @@ const exercises = [
 export default function TrainingPage() {
     return (
         // pt-28 / md:pt-36 memberi ruang untuk navbar yang melayang di atas
-        <main className="min-h-screen bg-svarati-cream px-4 pb-12 pt-28 font-sans md:px-8 md:pt-36 lg:px-12">
+         <main className="min-h-screen bg-svarati-cream px-4 pb-8 pt-24 font-sans md:px-8 md:pb-12 lg:px-12">
             <div className="mx-auto max-w-4xl space-y-8">
                 {/* Header: badge + ajakan latihan */}
                 <div className="max-w-2xl">
                     <Badge variant="coral" className="mb-5">
-                        Latihan Pemulihan
+                        Relaksasi & Grounding
                     </Badge>
                     <h1 className="mb-5 text-4xl font-bold leading-tight text-svarati-teal font-heading md:text-5xl">
                         Yuk Berikan Ruang Tenang untuk Dirimu Hari Ini!

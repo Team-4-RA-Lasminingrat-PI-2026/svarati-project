@@ -101,8 +101,9 @@ export default function HelpDirectoryPage() {
 
   const hasil = LAYANAN.filter((s) => {
     const cocokTipe = tipe === "Semua" || s.tipe === tipe;
-    const cocokLokasi =
-      s.nasional || ((!provinsi || s.provinsi === provinsi) && (!kota || s.kota === kota));
+   const cocokLokasi =
+      s.provinsi === "Seluruh Indonesia" ||
+      ((!provinsi || s.provinsi === provinsi) && (!kota || s.kota === kota));
     const q = cari.trim().toLowerCase();
     const cocokCari =
       !q || [s.nama, s.alamat, s.kota].some((v) => v.toLowerCase().includes(q));
@@ -290,14 +291,16 @@ export default function HelpDirectoryPage() {
                       Reset Filter
                     </Button>
                   )}
-                  <button
+                 <Button
                     type="button"
+                    variant="tertiary"
+                    size="sm"
+                    icon={<Download className="size-3.5" aria-hidden="true" />}
                     onClick={unduhCSV}
-                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-svarati-lavender-dark underline transition-colors hover:text-svarati-teal"
+                    className="text-xs font-semibold"
                   >
-                    <Download className="size-3.5" aria-hidden="true" />
                     Unduh dokumen hasil pencarian (.csv)
-                  </button>
+                  </Button>
                 </div>
               </div>
             </div>

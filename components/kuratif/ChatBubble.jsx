@@ -1,4 +1,3 @@
-import { Heart } from "lucide-react";
 import { KURATIF } from "@/content/labels";
 
 const ai = KURATIF.ai;
@@ -12,11 +11,15 @@ export function BotAvatar({ large = false }) {
   return (
     <span
       aria-hidden="true"
-      className={`flex shrink-0 items-center justify-center rounded-full bg-svarati-coral-soft text-svarati-coral-dark ${
+      className={`flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-svarati-coral-soft ${
         large ? "h-8 w-8" : "h-7 w-7"
       }`}
     >
-      <Heart className={large ? "h-4 w-4" : "h-3.5 w-3.5"} />
+      <img
+        src="/cute-ai-mascot.svg"
+        alt=""
+        className={large ? "h-6 w-6" : "h-5 w-5"}
+      />
     </span>
   );
 }

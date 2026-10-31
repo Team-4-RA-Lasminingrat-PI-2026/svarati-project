@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Card, CardTitle, CardDescription } from "@/components/Card";
+import  Badge  from "@/components/Badge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { X, Leaf, Trash2, Check, Pencil } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
@@ -215,11 +216,11 @@ export default function PemulihanPage() {
             <div className="mx-auto max-w-4xl space-y-8">
                 {/* Header: badge + ajakan healing journey */}
                 <div className="max-w-2xl">
-                    <span className="mb-5 inline-block rounded-full bg-svarati-coral/15 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-svarati-coral">
-                        Healing Journey
-                    </span>
+                   <Badge variant="coral" styleType="soft" className="mb-5">
+                        Refleksi Diri
+                    </Badge>
                     <h1 className="mb-5 text-4xl font-bold leading-tight text-svarati-teal font-heading md:text-5xl">
-                        Mulai Healing Journey-mu, Selangkah Demi Selangkah
+                        Mulai Jurnal Pemulihan-mu, Selangkah Demi Selangkah
                     </h1>
                     <p className="text-lg leading-relaxed text-svarati-coral">
                         Kamu berhak pulih dengan ritmemu sendiri... Check-in emosi harianmu,

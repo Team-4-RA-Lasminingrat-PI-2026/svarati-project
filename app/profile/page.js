@@ -40,7 +40,7 @@ const pilar = [
     badge: "Preventif",
     judul: "Pahami Hakmu",
     deskripsi: "Edukasi & pencegahan",
-    fitur: ["Edukasi Hak", "Kuis Singkat", "Simulasi Batasan Diri"],
+    fitur: ["Edukasi Hak Perempuan"],
   },
   {
     variant: "teal",
@@ -48,7 +48,7 @@ const pilar = [
     badge: "Kuratif",
     judul: "Pendampingan",
     deskripsi: "Penanganan & bantuan",
-    fitur: ["Cek Kondisimu", "Cari Layanan Terdekat", "Tanya Svarati AI"],
+    fitur: ["Cek Kondisimu", "Tanya Svarati AI", "Cari Layanan Terdekat"],
   },
   {
     variant: "coral",

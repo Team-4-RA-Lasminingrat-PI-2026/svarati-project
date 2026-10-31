@@ -41,22 +41,19 @@ export default function PemulihanPage() {
         <Card
           variant="coral"
           size="lg"
-          className={`relative mb-8 overflow-hidden border-0 bg-linear-to-br from-svarati-coral-soft via-white to-svarati-coral/20 shadow-sm sm:p-10 ${muncul("")}`}
+          className={`relative mb-8 overflow-hidden border-0 from-svarati-coral-soft via-white to-svarati-coral/20 shadow-sm sm:p-10 ${muncul("")}`}
         >
-        {/* Decorative image (icon pohon) */}
-        <div
-          className={`pointer-events-none absolute inset-y-0 right-0 hidden w-1/2 p-6 md:block ${munculGambar("delay-300")}`}
-        >
-        <div className="relative h-full w-full">
-        <Image
-          src="/tree-icon.png"
-          alt=""
-          fill
-          priority
-          sizes="(max-width: 768px) 100vw, 50vw"
-          className="object-contain object-right opacity-60 [mask-image:radial-gradient(ellipse_at_center,black_45%,transparent_80%)]"
-        />
-        </div>
+      
+       {/* Lingkaran dekoratif */}
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+          {/* Lingkaran besar, pojok kanan atas */}
+          <div
+            className={`absolute -right-16 -top-24 size-56 rounded-full bg-svarati-coral/15 sm:size-72 ${munculGambar("delay-300")}`}
+          />
+          {/* Lingkaran lebih gelap, kanan bawah */}
+          <div
+            className={`absolute -bottom-20 right-16 size-40 rounded-full bg-svarati-coral/25 sm:right-24 sm:size-56 ${munculGambar("delay-500")}`}
+          />
         </div>
 
           <div className="relative z-10 max-w-xl">
