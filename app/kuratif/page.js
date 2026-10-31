@@ -27,10 +27,25 @@ export default function Page() {
   return (
     <div className="w-full px-2 pb-12 pt-22 sm:px-3">
       <div className="mx-auto max-w-6xl">
-        <Card variant="solid" size="lg" className="bg-svarati-teal-dark">
-          <Badge variant="teal" styleType="white">{badgeKuratif}</Badge>
-          <h1 className="mt-4 text-3xl font-bold text-white">{menuKuratif.title}</h1>
-          <p className="mt-3 max-w-3xl leading-relaxed text-white/90">{menuKuratif.intro}</p>
+        <Card
+          variant="solid"
+          size="lg"
+          className="relative overflow-hidden bg-svarati-teal-dark"
+        >
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute -right-16 -top-16 size-72 rounded-full bg-svarati-teal/50"
+          />
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute -bottom-24 right-24 size-56 rounded-full bg-black/20"
+          />
+
+          <div className="relative">
+            <Badge variant="teal" styleType="white">{badgeKuratif}</Badge>
+            <h1 className="mt-4 text-3xl font-bold text-white">{menuKuratif.title}</h1>
+            <p className="mt-3 max-w-3xl leading-relaxed text-white/90">{menuKuratif.intro}</p>
+          </div>
         </Card>
 
         <ul className="mt-8 grid gap-4">

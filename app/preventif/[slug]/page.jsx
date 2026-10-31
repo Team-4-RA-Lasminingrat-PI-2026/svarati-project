@@ -154,11 +154,11 @@ export default async function ArticlePage({ params }) {
               {edu.detail.help.cta}
             </Button>
             <Button
-              render={<a href2={edu.detail.help.href} />}
+              render={<a href={edu.detail.help.href2} />}
               nativeButton={false}
               variant="exit"
               size="md"
-              className="mt-4 ml-4 rounded-full px-5 font-bold"
+              className="rounded-full px-5 font-bold"
               icon={<Phone className="size-4" aria-hidden="true" />}
             >
               {edu.detail.help.cta2}
