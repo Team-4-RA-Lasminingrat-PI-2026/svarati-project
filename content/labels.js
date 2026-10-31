@@ -224,7 +224,7 @@ export const pemulihanContent = {
   badge: "Ruang Pemulihan",
   judul: "Mari Sembuh Bersama, Perlahan-lahan",
   deskripsi:
-    "Ambil jeda sejenak untuk dirimu. Kelola emosimu hari ini melalui jurnal penenang diri, dan temukan kekuatan baru dengan membaca pesan dukungan dari sesama penyintas di Pohon Harapan. Kamu tidak berjuang sendirian.",
+    "Ambil jeda sejenak untuk dirimu. Pilih fitur yang paling sesuai dengan kondisimu. Kamu tidak berjuang sendirian.",
   cta: { label: "Mulai Pemulihan", href: "/rehabilitatif" },
   gambar: { src: "/tree-of-hope-transparent.svg", alt: "Ilustrasi pohon harapan" },
   labelDukungan: "Dukungan",

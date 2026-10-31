@@ -18,35 +18,34 @@ export default function Hero() {
 
   return (
     <>
-      <section className="relative min-h-svh overflow-hidden bg-linear-to-b from-svarati-lavender-light to-svarati-teal-soft text-svarati-teal">
-        <div className="grid min-h-svh grid-cols-1 lg:grid-cols-2">
-          {/* KIRI: teks. pt menyisakan ruang untuk navbar fixed */}
-          <div className="relative z-10 flex min-w-0 flex-col justify-center px-5 pb-6 pt-28 sm:px-8 lg:pb-8 lg:pl-16 lg:pr-8 lg:pt-28 xl:pl-24">
-            <div className="max-w-xl">
-              {/* Ukuran headline mengikuti tinggi layar agar tidak terpotong */}
+      <section className="hero-root relative min-h-svh overflow-hidden bg-linear-to-b from-svarati-lavender-light to-svarati-teal-soft text-svarati-teal">
+      <div className="grid min-h-svh grid-cols-1">
+          {/* KIRI: teks */}
+          <div className="hero-col relative z-10 flex min-w-0 flex-col justify-center px-5 pb-6 pt-28 sm:px-8">
+            <div className="hero-inner max-w-xl">
               <h1
-                className="text-4xl font-bold leading-[1.1] tracking-tight sm:text-5xl lg:text-[clamp(2rem,6.5vh,3.75rem)]"
+                className="hero-title text-4xl font-bold leading-[1.1] tracking-tight sm:text-5xl"
                 style={{ fontFamily: "var(--font-hero, var(--font-sans))" }}
               >
                 {c.headline.map((line) => (
-                  <span key={line.text} className={`${toneClass[line.tone]} mr-2 inline-block`}>
+                  <span key={line.text} className={`${toneClass[line.tone]} block`}>
                     {line.text}
                   </span>
                 ))}
               </h1>
 
-              <p className="mt-3 max-w-md text-sm leading-relaxed text-svarati-lavender-dark">
+              <p className="hero-desc mt-3 max-w-md text-sm leading-relaxed text-svarati-lavender-dark">
                 {c.description}
               </p>
 
-              <p className="mt-4 text-[11px] font-bold uppercase tracking-wide text-svarati-lavender-dark">
+              <p className="hero-label mt-4 text-[11px] font-bold uppercase tracking-wide text-svarati-lavender-dark">
                 {c.optionsLabel}
               </p>
 
-              <ul className="mt-2 flex w-full max-w-md flex-col gap-2">
+              <ul className="hero-list mt-2 flex w-full max-w-md flex-col gap-2">
                 {c.options.map((o) => {
                   const isTertiary = o.variant === "tertiary";
-                  const className = `h-auto whitespace-normal py-2.5 text-left text-sm font-semibold ${
+                  const className = `hero-btn h-auto whitespace-normal py-2.5 text-left text-sm font-semibold ${
                     isTertiary ? "justify-center" : "justify-between gap-3 shadow-md"
                   }`;
 
@@ -56,7 +55,7 @@ export default function Hero() {
                       {!isTertiary && (
                         <ArrowRight
                           size={16}
-                          className="shrink-0 transition group-hover/button:translate-x-0.5"
+                          className="hero-arrow shrink-0 transition group-hover/button:translate-x-0.5"
                         />
                       )}
                     </>
@@ -92,14 +91,16 @@ export default function Hero() {
                 })}
               </ul>
 
-              <p className="mt-4 text-xs italic text-svarati-lavender-dark">{c.footnote}</p>
+              <p className="hero-note mt-4 text-xs italic text-svarati-lavender-dark">
+                {c.footnote}
+              </p>
             </div>
           </div>
 
-          {/* KANAN: gambar edge-to-edge (atas, kanan, bawah) di desktop */}
-          <div
+         {/* KANAN: desktop = kotak rasio tetap menempel di kanan atas setinggi layar */}
+         <div
             aria-hidden="true"
-           className="pointer-events-none absolute inset-0 z-0 opacity-60 lg:pointer-events-auto lg:relative lg:inset-auto lg:min-w-0 lg:opacity-100"
+            className="pointer-events-none absolute inset-0 z-0 opacity-60 lg:inset-auto lg:right-0 lg:top-0 lg:h-full lg:w-[var(--art-w)] lg:opacity-100"
           >
             <div className="hero-art absolute inset-0">
               <Image
