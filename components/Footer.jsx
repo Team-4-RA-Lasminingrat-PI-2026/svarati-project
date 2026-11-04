@@ -1,10 +1,15 @@
 "use client";
 
 import Link from "next/link";
+import { Accessibility } from "lucide-react";
 import { Card } from "@/components/Card";
-import { BRAND, DARURAT, FOOTER, MENU_UTAMA } from "@/content/labels";
+import { Button } from "@/components/ui/button";
+import { useAccessibility } from "@/context/AccessibilityContext";
+import { AKSESIBILITAS, BRAND, DARURAT, FOOTER, MENU_UTAMA } from "@/content/labels";
 
 export default function Footer() {
+  const { openModal } = useAccessibility();
+
   // Mengambil menu pilar (Pahami Hakmu, Pendampingan, Pemulihan) dari MENU_UTAMA
   const pilarList = MENU_UTAMA.filter((item) => item.submenu && item.submenu.length > 0);
   const nomorDarurat = Object.values(DARURAT.nomor);
@@ -93,11 +98,28 @@ export default function Footer() {
 
       {/* Bottom Bar */}
       <div className="border-t border-white/15">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs sm:text-sm text-svarati-lavender-light">
-          <span>
-            © {BRAND.tahun} {BRAND.nama} · {BRAND.slogan}
-          </span>
-          <span className="italic">{BRAND.catatanPrototipe}</span>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-5 flex flex-col md:flex-row items-center justify-between gap-4 text-xs sm:text-sm text-svarati-lavender-light">
+
+          {/* Kiri: Copyright & Disclaimer */}
+          <div className="flex flex-col items-center md:items-start gap-1 text-center md:text-left">
+            <span>
+              © {BRAND.tahun} {BRAND.nama} · {BRAND.slogan}
+            </span>
+            <span className="italic text-xs opacity-80">{BRAND.catatanPrototipe}</span>
+          </div>
+
+          {/* Kanan: Tombol Aksesibilitas dengan Ikon */}
+          <Button
+            variant="outline"
+            size="md"
+            onClick={openModal}
+            aria-haspopup="dialog"
+            className="flex items-center gap-2"
+          >
+            <Accessibility size={18} />
+            <span>{AKSESIBILITAS.tombol}</span>
+          </Button>
+
         </div>
       </div>
     </footer>

@@ -51,8 +51,15 @@
   --animate-darurat-glow: darurat-glow 2s ease-in-out 3;
 
   @keyframes darurat-glow {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(192, 57, 43, 0.5); }
-    50%      { box-shadow: 0 0 0 8px rgba(192, 57, 43, 0); }
+
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 rgba(192, 57, 43, 0.5);
+    }
+
+    50% {
+      box-shadow: 0 0 0 8px rgba(192, 57, 43, 0);
+    }
   }
 }
 
@@ -191,6 +198,7 @@
    5. REDUCED MOTION
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -202,10 +210,10 @@
 /* ============================================================
   6. Hero Image
   =========================================================*/
-  /* Hero: di mobile/tablet gambar paling transparan di area teks (atas), makin jelas ke bawah */
+/* Hero: di mobile/tablet gambar paling transparan di area teks (atas), makin jelas ke bawah */
 .hero-art {
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.12) 45%, rgba(0,0,0,0.6) 100%);
-  mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.12) 45%, rgba(0,0,0,0.6) 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.12) 45%, rgba(0, 0, 0, 0.6) 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.12) 45%, rgba(0, 0, 0, 0.6) 100%);
 }
 
 @media (min-width: 1024px) {
@@ -286,19 +294,88 @@
 
   ======================================*/
 
-  @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-6px); }
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px);
   }
-  
-  .animate-float-slow {
-    animation: float 4s ease-in-out infinite;
+
+  50% {
+    transform: translateY(-6px);
   }
-  
-  .animate-float-medium {
-    animation: float 3.2s ease-in-out infinite 0.5s;
-  }
-  
-  .animate-float-fast {
-    animation: float 3.8s ease-in-out infinite 1s;
-  }
+}
+
+.animate-float-slow {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-float-medium {
+  animation: float 3.2s ease-in-out infinite 0.5s;
+}
+
+.animate-float-fast {
+  animation: float 3.8s ease-in-out infinite 1s;
+}
+
+/* ============================================================
+   7. TEMA KONTRAS TINGGI (RLA034)
+   Aktif lewat <html data-contrast="high">. Cukup menimpa palet
+   dan variabel semantik, sehingga seluruh komponen ikut berubah.
+   Strategi: teal menjadi hitam, cream menjadi putih.
+   ============================================================ */
+html[data-contrast="high"] {
+  /* Teal: menjadi hitam (teks halaman dan latar footer) */
+  --color-svarati-teal: #000000;
+  --color-svarati-teal-light: #1A1A1A;
+  --color-svarati-teal-dark: #000000;
+  --color-svarati-teal-soft: #FFFFFF;
+
+  /* Coral: dibuat lebih gelap agar teks putih di atasnya tegas */
+  --color-svarati-coral: #9A2E00;
+  --color-svarati-coral-dark: #6B1F00;
+  --color-svarati-coral-darker: #4A1500;
+  --color-svarati-coral-soft: #FFFFFF;
+
+  /* Lavender: yang pekat jadi ungu gelap, yang muda jadi putih */
+  --color-svarati-lavender: #3D2F80;
+  --color-svarati-lavender-light: #FFFFFF;
+  --color-svarati-lavender-hover: #E5E5E5;
+  --color-svarati-lavender-dark: #000000;
+  --color-svarati-lavender-darker: #000000;
+  --color-svarati-lavender-border: #000000;
+
+  /* Surface */
+  --color-svarati-cream: #FFFFFF;
+
+  /* Danger */
+  --color-svarati-danger: #8B0000;
+  --color-svarati-danger-dark: #5C0000;
+  --color-svarati-danger-darker: #3D0000;
+  --color-svarati-danger-soft: #FFFFFF;
+
+  /* Variabel semantik yang perlu dipaksa hitam pekat */
+  --border: #000000;
+  --input: #000000;
+  --ring: #000000;
+}
+
+/* Tautan selalu bergaris bawah agar tidak bergantung pada warna */
+html[data-contrast="high"] a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Outline fokus lebih tebal */
+html[data-contrast="high"] :focus-visible {
+  outline-width: 4px;
+}
+
+html[data-contrast="high"] footer :focus-visible {
+  outline-color: #FFFFFF;
+}
+
+/* Garis tepi footer tetap terlihat di atas latar hitam */
+html[data-contrast="high"] footer {
+  border-top: 2px solid #FFFFFF;
+}
