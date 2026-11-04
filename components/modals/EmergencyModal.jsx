@@ -100,7 +100,7 @@ export default function EmergencyModal({ open, onClose }) {
         </Button>
 
         <Link
-          href="/kuratif/direktori-bantuan"
+          href="/kuratif/help-directory"
           onClick={onClose}
           className={cn(
             buttonVariants({ variant: "ghost", size: "md" }),
