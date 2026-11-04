@@ -1,6 +1,13 @@
 {
-    "tailwindCSS.classFunctions": ["cn", "cva"],
+    "tailwindCSS.classFunctions": [
+        "cn",
+        "cva"
+    ],
     "tailwindCSS.experimental.classRegex": [
-        ["variants\\s*=\\s*\\{([\\s\\S]*?)\\}", "[\"'`]([^\"'`]*?)[\"'`]"]
-    ]
+        [
+            "variants\\s*=\\s*\\{([\\s\\S]*?)\\}",
+            "[\"'`]([^\"'`]*?)[\"'`]"
+        ]
+    ],
+    "css.lint.unknownAtRules": "ignore"
 }
