@@ -6,7 +6,6 @@ import { AccessibilityProvider } from "@/context/AccessibilityContext";
 import AccessibilityModal from "@/components/modals/AccessibilityModal";
 import ScreenReaderEnhancer from "@/components/ScreenReaderEnhancer";
 
-
 const lora = Lora({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
@@ -34,20 +33,37 @@ const initAccessibility = `try{var s=JSON.parse(localStorage.getItem("svarati-ac
 
 export default function RootLayout({ children }) {
   return (
+    // Variabel font dipasang di <html> agar terbaca oleh :root di globals.css (@theme)
     <html
       lang="id"
       className={`${lora.variable} ${publicSans.variable} h-full`}
+      suppressHydrationWarning
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: initAccessibility }} />
+      </head>
       <body className="font-sans bg-svarati-cream text-svarati-teal antialiased h-full overflow-x-hidden">
-        <div className="flex flex-col min-h-screen w-full">
-          <Navbar />
+        <AccessibilityProvider>
+          <a
+            href="#konten-utama"
+            className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[70] focus:bg-white focus:text-svarati-teal focus:px-4 focus:py-2 focus:rounded-full focus:font-bold"
+          >
+            Lewati ke konten utama
+          </a>
 
-          <main id="konten-utama" className="flex-1 w-full">
-            {children}
-          </main>
+          <div className="flex flex-col min-h-screen w-full">
+            <Navbar />
 
-          <Footer />
-        </div>
+            <main id="konten-utama" className="flex-1 w-full">
+              {children}
+            </main>
+
+            <Footer />
+          </div>
+
+          <AccessibilityModal />
+          <ScreenReaderEnhancer />
+        </AccessibilityProvider>
       </body>
     </html>
   );
