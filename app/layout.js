@@ -6,6 +6,7 @@ import { AccessibilityProvider } from "@/context/AccessibilityContext";
 import AccessibilityModal from "@/components/modals/AccessibilityModal";
 import ScreenReaderEnhancer from "@/components/ScreenReaderEnhancer";
 
+
 const lora = Lora({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
