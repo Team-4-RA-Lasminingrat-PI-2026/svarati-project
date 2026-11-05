@@ -1177,6 +1177,63 @@ export const KURATIF = {
     urgentNotice: "Kedengarannya situasimu mendesak. Kamu tidak harus menghadapinya sendiri. Hubungi layanan bantuan sekarang.",
   },
 };
+
+// ===== DIREKTORI LAYANAN BANTUAN =====
+export const DIREKTORI = {
+  back: { label: "Pendampingan", href: MENU_PENDAMPINGAN.href },
+  badge: "Direktori Layanan Bantuan",
+  judul: "Temukan Bantuan Terdekat dari Lokasimu!",
+  deskripsi: [
+    "Tidak perlu ragu untuk mencari bantuan. Puluhan lembaga pemerintah, swasta, maupun organisasi masyarakat siap membantumu.",
+    "Temukan berbagai layanan dari lembaga bantuan hukum, psikologis, maupun medis di seluruh Indonesia pada fitur di bawah ini.",
+    "Filter berdasarkan provinsi dan kota untuk menemukan layanan bantuan terdekat.",
+  ],
+
+  alert: {
+    judul: "Dalam situasi darurat?",
+    isi: "Jangan tunggu daftar ini, hubungi langsung layanan darurat.",
+    tutup: "Tutup pesan darurat",
+  },
+
+  filter: {
+    judulLokasi: "Filter berdasarkan lokasi",
+    judulLayanan: "Filter berdasarkan layanan",
+    cariLabel: "Cari nama lembaga atau kota",
+    cariPlaceholder: "Cari nama lembaga atau kota...",
+    provinsiLabel: "Provinsi",
+    semuaProvinsi: "Semua Provinsi",
+    nilaiNasional: "__nasional__", // nilai internal, bukan teks tampilan
+    provinsiNasional: "Nasional / Pusat",
+    kotaLabel: "Kota",
+    semuaKota: "Semua Kota",
+    semua: "Semua",
+    jumlah: "layanan ditemukan",
+    reset: "Reset Filter",
+    unduh: "Unduh dokumen hasil pencarian (.csv)",
+  },
+
+  hasil: {
+    judul: "Hasil pencarian",
+    kosong: "Tidak ada layanan untuk filter ini.",
+    resetKosong: "Reset filter",
+    petunjukNasional: "Layanan nasional seperti SAPA 129 bisa dihubungi dari mana saja.",
+    lihatNasional: "Lihat layanan nasional",
+  },
+
+  kartu: {
+    nasional: "Layanan nasional",
+    hubungi: "Hubungi Sekarang",
+    situs: "Kunjungi situs",
+  },
+
+  csv: {
+    header: ["Nama", "Jenis", "Provinsi", "Kota", "Alamat", "Telepon"],
+    namaFile: "daftar-kontak.csv",
+    peringatan:
+      "File akan tersimpan di perangkat ini dan bisa dilihat orang lain yang memakai perangkat ini. Lanjutkan unduh?",
+  },
+};
+
 // ===== AKSESIBILITAS (RLA034) =====
 export const AKSESIBILITAS = {
   tombol: "Aksesibilitas",
@@ -1192,3 +1249,4 @@ export const AKSESIBILITAS = {
   statusAktif: "aktif",
   statusMati: "nonaktif",
 };
+
