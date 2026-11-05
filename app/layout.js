@@ -7,6 +7,7 @@ const lora = Lora({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-lora",
+  display: "swap",
 });
 
 const publicSans = Public_Sans({
@@ -14,6 +15,7 @@ const publicSans = Public_Sans({
   weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
   variable: "--font-public-sans",
+  display: "swap",
 });
 
 export const metadata = {
@@ -24,17 +26,11 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="id" className="h-full">
-      <body
-        className={`${lora.variable} ${publicSans.variable} font-sans bg-svarati-cream text-svarati-teal antialiased h-full overflow-x-hidden`}
-      >
-        <a
-          href="#konten-utama"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[70] focus:bg-white focus:text-svarati-teal focus:px-4 focus:py-2 focus:rounded-full focus:font-bold"
-        >
-          Lewati ke konten utama
-        </a>
-
+    <html
+      lang="id"
+      className={`${lora.variable} ${publicSans.variable} h-full`}
+    >
+      <body className="font-sans bg-svarati-cream text-svarati-teal antialiased h-full overflow-x-hidden">
         <div className="flex flex-col min-h-screen w-full">
           <Navbar />
 

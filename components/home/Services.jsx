@@ -12,7 +12,7 @@ const TONE_TEXT = {
 
 export default function Services() {
   return (
-    <section id="services" className="scroll-mt-24 px-4 pb-12 pt-22 sm:px-6 lg:pb-16">
+    <section id="fitur" className="scroll-mt-24 px-4 pb-12 pt-10 sm:px-6 lg:pb-16">
       <div className="mx-auto w-full max-w-6xl">
         <div className="mx-auto mb-6 max-w-4xl text-center">
           <h2 className="text-2xl font-bold text-svarati-teal md:text-3xl">

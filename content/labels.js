@@ -105,22 +105,19 @@ export const heroContent = {
     { text: "Temukan Amanmu", tone: "secondary" },
   ],
 
-  description:
-    "Svarati adalah ruang aman bagi perempuan Indonesia untuk memahami hak-haknya, menemukan bantuan terpercaya, dan melangkah menuju pemulihan secara aman.",
+    description:
+    "Svarati adalah ruang aman bagi perempuan Indonesia untuk memahami hak-haknya, menemukan bantuan terpercaya, dan melangkah menuju pemulihan secara aman. Seluruh akses dijamin anonim tanpa perlu mendaftar akun.",
 
-  optionsLabel: "Apa yang kamu butuhkan saat ini?",
- options: [
-  { label: "Saya butuh bantuan darurat sekarang", action: "emergency", variant: "exit" },
-  { label: "Cek apakah yang saya alami termasuk kekerasan", href: "/kuratif", variant: "secondary" },
-  { label: "Saya hanya butuh ruang tenang dan tempat bercerita", href: "/rehabilitatif", variant: "primary" },
-  { label: "Hanya ingin mencari tahu? Jelajahi edukasi", href: "/preventif", variant: "tertiary" },
-],
-
-  footnote: "*Seluruh akses dijamin anonim tanpa perlu mendaftar akun.",
+   optionsLabel: "Apa yang kamu butuhkan saat ini?",
+  options: [
+    { label: "Cek apakah yang saya alami termasuk kekerasan", href: "/kuratif/self-assessment", variant: "primary" },
+    { label: "Ceritakan pada Svarati AI", href: "/kuratif/svarati-ai", variant: "secondary" },
+    { label: "Jelajahi fitur lainnya", href: "#fitur", variant: "tertiary" },
+  ],
 
   // Ganti dengan gambar 
   image: {
-    src: "/image3.jpg",
+    src: "/image7.jpg",
     alt: "Perempuan",
     position: "50% 50%",
   },
