@@ -52,12 +52,14 @@ export default function ArticleCard({ article, categoryName }) {
             >
               {initials(article.author)}
             </span>
-            <span className="truncate text-xs text-white/85">
+            {/* Hapus "truncate", biarkan teks melipat (wrap) secara natural */}
+            <span className="text-xs text-white/85">
               {article.author} • {article.readTime}
             </span>
           </div>
 
-          <CardTitle className="mb-0 line-clamp-2 text-base text-white">
+          {/* Gunakan line-clamp-none di HP (tampil semua), baru line-clamp-2 di ukuran md (laptop) */}
+          <CardTitle className="mb-0 text-base text-white line-clamp-none md:line-clamp-2">
             {article.title}
           </CardTitle>
 
