@@ -34,12 +34,12 @@ export default function EducationBanner({ headlines }) {
         <div
           ref={trackRef}
           onScroll={onScroll}
-          className="flex snap-x snap-mandatory overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="flex snap-x snap-mandatory overflow-x-auto [scrollbar-none] [&::-webkit-scrollbar]:hidden"
         >
           {/* Slide 1: penjelasan halaman */}
           <div
             aria-roledescription="slide"
-            className="relative flex h-[26rem] w-full flex-none snap-center flex-col justify-center overflow-hidden bg-svarati-lavender-dark px-8 sm:px-14 md:h-80 lg:h-[22rem] lg:px-20"
+            className="relative flex w-full flex-none snap-center flex-col justify-center overflow-hidden bg-svarati-lavender-dark px-8 pb-14 pt-10 sm:px-14 md:h-80 md:py-0 lg:h-88 lg:px-20"
           >
             <span aria-hidden="true" className="pointer-events-none absolute -right-16 -top-16 size-72 rounded-full bg-svarati-lavender/40" />
             <span aria-hidden="true" className="pointer-events-none absolute -bottom-24 right-24 size-56 rounded-full bg-svarati-lavender-darker/60" />
@@ -52,7 +52,7 @@ export default function EducationBanner({ headlines }) {
               <h1 className="text-3xl font-bold leading-tight text-white md:text-4xl lg:text-5xl">
                 {edu.intro.title}
               </h1>
-              <p className="mt-4 max-w-xl text-sm leading-relaxed text-svarati-lavender-light md:text-base">
+              <p className="mt-4 max-w-xl text-lg leading-relaxed text-white/85 md:text-base">
                 {edu.intro.description}
               </p>
             </div>
@@ -60,45 +60,46 @@ export default function EducationBanner({ headlines }) {
 
           {/* Slide 2+: artikel headline */}
           {headlines.map((a) => (
-            <div
-              key={a.id}
-              aria-roledescription="slide"
-              className="grid h-[26rem] w-full flex-none snap-center grid-rows-[10rem_1fr] bg-svarati-lavender-light md:h-80 md:grid-cols-2 md:grid-rows-1 lg:h-[22rem]"
-            >
-              <div className="flex min-w-0 flex-col justify-center px-8 py-5 sm:px-14 lg:px-20">
-                <Badge variant="lavender" styleType="white" className="mb-3 w-fit">
-                  {categoryLabel[a.category]}
-                </Badge>
-                <h2 className="text-xl font-bold leading-snug text-svarati-teal md:text-2xl lg:text-3xl">
-                  {a.title}
-                </h2>
-                <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-svarati-lavender-dark">
-                  {a.summary}
-                </p>
-                <div className="mt-4">
-                  <Button
-                    render={<Link href={`${edu.basePath}/${a.slug}`} />}
-                    nativeButton={false}
-                    variant="primary"
-                    size="md"
-                    className="rounded-full px-5 font-bold"
-                    icon={<ChevronRight className="size-4" aria-hidden="true" />}
-                    iconPosition="right"
-                  >
-                    {edu.readLabel}
-                  </Button>
-                </div>
+          <div
+            key={a.id}
+            aria-roledescription="slide"
+            className="flex w-full flex-none snap-center flex-col overflow-hidden bg-svarati-lavender-light md:grid md:h-80 md:grid-cols-2 md:grid-rows-1 lg:h-88"
+          >
+            {/* Gambar: di mobile mengikuti rasio lebar, bukan tinggi tetap */}
+            <div className="relative aspect-video w-full md:order-last md:aspect-auto md:h-full">
+              <Image
+                src={a.image}
+                alt=""
+                fill
+                sizes="(min-width: 768px) 50vw, 100vw"
+                className="object-cover"
+              />
+            </div>
+          
+            <div className="flex min-w-0 flex-1 flex-col justify-center px-8 pb-14 pt-5 sm:px-14 md:py-5 lg:px-20">
+              <Badge variant="lavender" styleType="white" className="mb-3 w-fit">
+                {categoryLabel[a.category]}
+              </Badge>
+              <h2 className="text-xl font-bold leading-snug text-svarati-teal md:text-2xl lg:text-3xl">
+                {a.title}
+              </h2>
+              <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-svarati-lavender-dark">
+                {a.summary}
+              </p>
+              <div className="mt-4">
+                <Button
+                  render={<Link href={`${edu.basePath}/${a.slug}`} />}
+                  nativeButton={false}
+                  variant="primary"
+                  size="md"
+                  className="rounded-full px-5 font-bold"
+                  icon={<ChevronRight className="size-4" aria-hidden="true" />}
+                  iconPosition="right"
+                >
+                  {edu.readLabel}
+                </Button>
               </div>
-
-              <div className="relative order-first md:order-none">
-                <Image
-                  src={a.image}
-                  alt=""
-                  fill
-                  sizes="(min-width: 768px) 50vw, 100vw"
-                  className="object-cover"
-                />
-              </div>
+            </div>
             </div>
           ))}
         </div>

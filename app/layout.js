@@ -2,6 +2,10 @@ import { Lora, Public_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { AccessibilityProvider } from "@/context/AccessibilityContext";
+import AccessibilityModal from "@/components/modals/AccessibilityModal";
+import ScreenReaderEnhancer from "@/components/ScreenReaderEnhancer";
+
 
 const lora = Lora({
   subsets: ["latin"],
@@ -23,6 +27,10 @@ export const metadata = {
   description:
     "Ruang digital anonim bagi perempuan untuk memahami hak, menemukan dukungan, dan melangkah menuju pemulihan.",
 };
+
+// Dijalankan sebelum halaman tampil, supaya tema kontras tinggi tidak "berkedip" saat refresh.
+// Key harus sama dengan A11Y_STORAGE_KEY di AccessibilityContext.
+const initAccessibility = `try{var s=JSON.parse(localStorage.getItem("svarati-accessibility"));if(s&&s.highContrast){document.documentElement.dataset.contrast="high";}}catch(e){}`;
 
 export default function RootLayout({ children }) {
   return (

@@ -9,6 +9,7 @@ import QuickOutButton from "@/components/QuickOutButton";
 import { BRAND, DARURAT, MENU_UTAMA, NAVBAR } from "@/content/labels";
 //Tambahan import untuk EmergencyModal-Gaby19Oct
 import EmergencyModal from "@/components/modals/EmergencyModal";
+import { Zap } from "lucide-react";
 
 const isActive = (pathname, href) =>
   href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -245,9 +246,10 @@ export default function Navbar() {
             <Button
               type="button"
               onClick={() => setEmergencyOpen(true)}
-              className="motion-safe:animate-darurat-glow h-auto gap-1 whitespace-nowrap rounded-full bg-svarati-danger px-3 py-2.5 text-xs font-bold text-white shadow-md hover:bg-svarati-danger-dark sm:gap-2 sm:px-4 sm:text-sm"
+              className="motion-safe:animate-darurat-glow h-auto gap-1 whitespace-nowrap rounded-full border-2 border-transparent bg-svarati-danger px-3 py-2.5 text-xs font-bold text-white shadow-md hover:bg-svarati-danger-dark sm:gap-2 sm:px-4 sm:text-sm"
             >
-              <span aria-hidden="true">⚡</span>
+              {/* <span aria-hidden="true">⚡</span> */}
+              <Zap aria-hidden="true" className="size-4 fill-current" />
               <span className="sm:hidden">{DARURAT.tombolRingkas}</span>
               <span className="hidden sm:inline">{DARURAT.tombol}</span>
             </Button>
