@@ -6,11 +6,11 @@ import { AccessibilityProvider } from "@/context/AccessibilityContext";
 import AccessibilityModal from "@/components/modals/AccessibilityModal";
 import ScreenReaderEnhancer from "@/components/ScreenReaderEnhancer";
 
-
 const lora = Lora({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-lora",
+  display: "swap",
 });
 
 const publicSans = Public_Sans({
@@ -18,6 +18,7 @@ const publicSans = Public_Sans({
   weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
   variable: "--font-public-sans",
+  display: "swap",
 });
 
 export const metadata = {
@@ -32,13 +33,16 @@ const initAccessibility = `try{var s=JSON.parse(localStorage.getItem("svarati-ac
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="id" className="h-full" suppressHydrationWarning>
+    // Variabel font dipasang di <html> agar terbaca oleh :root di globals.css (@theme)
+    <html
+      lang="id"
+      className={`${lora.variable} ${publicSans.variable} h-full`}
+      suppressHydrationWarning
+    >
       <head>
         <script dangerouslySetInnerHTML={{ __html: initAccessibility }} />
       </head>
-      <body
-        className={`${lora.variable} ${publicSans.variable} font-sans bg-svarati-cream text-svarati-teal antialiased h-full overflow-x-hidden`}
-      >
+      <body className="font-sans bg-svarati-cream text-svarati-teal antialiased h-full overflow-x-hidden">
         <AccessibilityProvider>
           <a
             href="#konten-utama"

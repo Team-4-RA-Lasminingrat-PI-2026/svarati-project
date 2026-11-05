@@ -20,6 +20,7 @@
 
   /* Coral (Aksen) */
   --color-svarati-coral: #E07A5F;
+  --color-svarati-coral-medium: #C0502F;
   --color-svarati-coral-dark: #B14A25;
   --color-svarati-coral-darker: #9A3A1A;
   --color-svarati-coral-soft: #FFF5F2;
@@ -192,6 +193,10 @@
   footer :focus-visible {
     outline-color: #FFFFFF;
   }
+
+  @media (prefers-reduced-motion: no-preference) {
+     html { scroll-behavior: smooth; }
+  }
 }
 
 /* ============================================================
@@ -208,85 +213,170 @@
 }
 
 /* ============================================================
-  6. Hero Image
-  =========================================================*/
-/* Hero: di mobile/tablet gambar paling transparan di area teks (atas), makin jelas ke bawah */
-.hero-art {
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.12) 45%, rgba(0, 0, 0, 0.6) 100%);
-  mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.12) 45%, rgba(0, 0, 0, 0.6) 100%);
-}
+   6. HERO
+   Dua mode gambar:
+   - Latar   (< 1024px atau portrait): gambar jadi latar pudar di belakang teks
+   - Desktop (>= 1024px & landscape) : dua kolom, siluet di kanan-atas
+   Ukuran teks punya tiga tahap: phone, tablet (>= 640px), desktop.
+   ============================================================ */
 
-@media (min-width: 1024px) {
-  .hero-art {
-    -webkit-mask-image: url(/woman.svg);
-    mask-image: url(/woman.svg);
-    -webkit-mask-repeat: no-repeat;
-    mask-repeat: no-repeat;
-    -webkit-mask-size: cover;
-    mask-size: cover;
-    -webkit-mask-position: right top;
-    mask-position: right top;
+   .hero {
+    --art-ratio: 0.89; /* lebar / tinggi viewBox woman.svg.*/
+    position: relative;
+    overflow: hidden;
+    min-height: 100svh;
   }
+  
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 100svh;
+  }
+  
+  /* ---------- PHONE ---------- */
+  
+  .hero-col {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+    padding: 7rem 1.25rem 2.5rem;
+  }
+  
+  .hero-inner {
+    width: 100%;
+    max-width: 32rem;
+  }
+  
+  .hero-title {
+    font-size: clamp(2.25rem, 8vw, 3.75rem);
+    line-height: 1.1;
+  }
+  
+  .hero-desc {
+    margin-top: 0.75rem;
+    max-width: 28rem;
+    font-size: clamp(0.9375rem, 2.2vw, 1.125rem);
+    line-height: 1.6;
+  }
+  
+  .hero-label {
+    margin-top: 1.5rem;
+    font-size: 0.75rem;
+  }
+  
+  .hero-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    width: 100%;
+    max-width: 28rem;
+    margin-top: 0.5rem;
+  }
+  
+  .hero-btn {
+    padding-block: 0.7rem;
+    font-size: clamp(0.875rem, 2vw, 1rem);
+  }
+  
+  /* Gambar sebagai latar: transparan di area teks (atas), makin jelas ke bawah */
+  .hero-art-box {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    opacity: 0.6;
+    pointer-events: none;
+  }
+  
+  .hero-art {
+    position: absolute;
+    inset: 0;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.12) 45%, rgba(0,0,0,0.6) 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.12) 45%, rgba(0,0,0,0.6) 100%);
+  }
+  
+  /* ---------- TABLET (>= 640px): gambar tetap latar, teks mengisi layar ---------- */
 
-  .hero-root {
-    /* Satuan fluid: ikut yang terkecil antara lebar dan tinggi layar.
-       Tinggi isi hero ±44u, jadi pada 1.8vh isinya selalu < 100% tinggi layar. */
-    --u: clamp(0.8rem, min(1.15vw, 1.8vh), 3.2rem);
-    /* Lebar gambar: mengikuti tinggi layar, maksimal 52% lebar */
-    --art-w: min(calc(100svh * 0.89), 52vw);
+@media (min-width: 640px) {
+  .hero {
+    /* Satuan skala tablet: ikut lebar layar.
+       768px -> 16.8px | 1032px -> 21.7px | maks 25.6px */
+    --t: clamp(1.05rem, 2.1vw, 1.6rem);
   }
 
   .hero-col {
-    padding-left: clamp(3rem, 6vw, 16rem);
-    padding-right: calc(var(--art-w) + 2.5vw);
-    padding-top: calc(var(--u) * 7.5);
-    padding-bottom: calc(var(--u) * 2);
+    padding: 8rem 2rem 3rem;
   }
 
   .hero-inner {
-    width: 100%;
-    max-width: min(calc(var(--u) * 36), 100%);
-    /* Di layar sangat lebar, teks berada di tengah ruang kosong sebelum gambar */
+    max-width: min(calc(var(--t) * 40), 100%);
     margin-inline: auto;
   }
 
-  .hero-title {
-    font-size: calc(var(--u) * 3.8);
-    line-height: 1.08;
-  }
-
-  .hero-desc {
-    margin-top: calc(var(--u) * 0.9);
-    max-width: min(calc(var(--u) * 32), 100%);
-    font-size: calc(var(--u) * 1.1);
-  }
-
-  .hero-label {
-    margin-top: calc(var(--u) * 1.4);
-    font-size: calc(var(--u) * 0.8);
-  }
-
-  .hero-list {
-    margin-top: calc(var(--u) * 0.6);
-    max-width: min(calc(var(--u) * 34), 100%);
-    gap: calc(var(--u) * 0.65);
-  }
-
-  .hero-btn {
-    padding-block: calc(var(--u) * 0.8);
-    font-size: calc(var(--u) * 1.1);
-  }
-
-  .hero-arrow {
-    width: calc(var(--u) * 1.2);
-    height: calc(var(--u) * 1.2);
-  }
-
-  .hero-note {
-    margin-top: calc(var(--u) * 1.2);
-    font-size: calc(var(--u) * 0.85);
-  }
+  .hero-title { font-size: calc(var(--t) * 3.6); line-height: 1.08; }
+  .hero-desc  { max-width: 100%; margin-top: calc(var(--t) * 1); font-size: calc(var(--t) * 1.25); }
+  .hero-label { margin-top: calc(var(--t) * 1.8); font-size: calc(var(--t) * 0.85); }
+  .hero-list  { max-width: 100%; margin-top: calc(var(--t) * 0.7); gap: calc(var(--t) * 0.75); }
+  .hero-btn   { padding-block: calc(var(--t) * 0.95); font-size: calc(var(--t) * 1.2); }
+  .hero-arrow { width: calc(var(--t) * 1.3); height: calc(var(--t) * 1.3); }
 }
+  
+  /* ---------- DESKTOP (>= 1024px DAN landscape) ---------- */
+  
+  @media (min-width: 1024px) and (min-aspect-ratio: 5/4) {
+    .hero {
+      /* Satu satuan untuk semua ukuran teks.
+         Dibatasi tinggi (agar muat satu layar) DAN lebar (agar tidak sempit). */
+      --u: clamp(0.8rem, min(1.8svh, 1.1vw), 2.2rem);
+      /* Lebar gambar: mengikuti tinggi layar, maksimal 54% lebar */
+      --art-w: min(calc(100svh * var(--art-ratio)), 54vw);
+    }
+  
+    .hero-grid {
+      grid-template-columns: minmax(0, 1fr) var(--art-w);
+    }
+  
+    /* Gambar keluar dari mode latar: kotak berasio tetap, menempel kanan-atas */
+    .hero-art-box {
+      position: relative;
+      inset: auto;
+      opacity: 1;
+      align-self: start;
+      justify-self: end;
+      width: 100%;
+      aspect-ratio: var(--art-ratio);
+    }
+  
+    .hero-art {
+      -webkit-mask-image: url(/woman.svg);
+      mask-image: url(/woman.svg);
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+      -webkit-mask-size: 100% 100%;
+      mask-size: 100% 100%;
+      -webkit-mask-position: center;
+      mask-position: center;
+    }
+  
+    /* Teks berada di tengah ruang kosong di sebelah kiri gambar */
+    .hero-col {
+      padding: calc(var(--u) * 7.5) 2vw calc(var(--u) * 2) clamp(1.5rem, 3vw, 8rem);
+    }
+  
+    .hero-inner {
+      max-width: calc(var(--u) * 36);
+      margin-inline: auto;
+    }
+  
+    .hero-title { font-size: calc(var(--u) * 3.8); line-height: 1.08; }
+    .hero-desc  { margin-top: calc(var(--u) * 0.9); max-width: min(calc(var(--u) * 32), 100%); font-size: calc(var(--u) * 1.1); }
+    .hero-label { margin-top: calc(var(--u) * 1.4); font-size: calc(var(--u) * 0.8); }
+    .hero-list  { margin-top: calc(var(--u) * 0.6); max-width: min(calc(var(--u) * 34), 100%); gap: calc(var(--u) * 0.65); }
+    .hero-btn { padding-block: calc(var(--u) * 1); font-size: calc(var(--u) * 1.2); }    
+    .hero-arrow { width: calc(var(--u) * 1.2); height: calc(var(--u) * 1.2); }
+  }
 
 /*=====================================
 

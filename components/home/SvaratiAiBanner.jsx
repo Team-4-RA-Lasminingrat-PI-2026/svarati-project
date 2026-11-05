@@ -10,7 +10,7 @@ export default function SvaratiAiBanner() {
   return (
     <section
       id="svarati-ai"
-      className="mt-16 sm:mt-20 lg:mt-24 overflow-hidden bg-svarati-lavender-light/50 px-4 pb-14 pt-10 sm:px-6 lg:pb-16 lg:pt-12"
+      className="mt-5 sm:mt-10 lg:mt-15 overflow-hidden bg-svarati-lavender-light/50 px-4 pb-14 pt-10 sm:px-6 lg:pb-16 lg:pt-12"
     >
       <div className="mx-auto grid w-full max-w-6xl items-center gap-10 lg:grid-cols-2 lg:gap-8">
         {/* KIRI: Teks Utama */}
