@@ -88,7 +88,7 @@ export default function EducationList({ articles }) {
               </Button>
             </div>
           ) : (
-            <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <ul className="grid gap-3 grid-cols-2 lg:grid-cols-3 md:gap-5">
               {filtered.map((a) => (
                 <li key={a.id}>
                   <ArticleCard article={a} categoryName={categoryLabel[a.category]} />
