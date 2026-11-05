@@ -5,11 +5,13 @@ import { Button } from "@/components/ui/button";
 import { DARURAT } from "@/content/labels";
 import { LogOut } from "lucide-react";
 
-const QUICK_EXIT_URL = "https://www.google.com";
-const EXIT_FLAG = "svarati_exit";
+const QUICK_EXIT_URL = "https://id.wikipedia.org/wiki/Halaman_Utama";
 
 export default function QuickOutButton({ className = "" }) {
   const quickExit = useCallback(() => {
+     // 1. Tab baru tanpa riwayat: panah Back-nya kosong
+    window.open(QUICK_EXIT_URL, "_blank", "noopener,noreferrer");
+    // 2. Tab Svarati langsung dikosongkan dan diganti halaman netral
     document.documentElement.style.display = "none";
     window.location.replace(QUICK_EXIT_URL);
   }, []);
@@ -17,7 +19,7 @@ export default function QuickOutButton({ className = "" }) {
   useEffect(() => {
     const onKeyDown = (e) => {
       if (e.key !== "Escape"|| e.repeat)return;
-      if (document.querySelector('[role="dialog"]')) return; // Escape menutup modal, bukan keluar
+      if (document.querySelector('[role="dialog"]')) return; // Escape menutup dialog, bukan keluar
         quickExit();
     };
     window.addEventListener("keydown", onKeyDown);
