@@ -5,6 +5,8 @@ import Footer from "@/components/Footer";
 import { AccessibilityProvider } from "@/context/AccessibilityContext";
 import AccessibilityModal from "@/components/modals/AccessibilityModal";
 import ScreenReaderEnhancer from "@/components/ScreenReaderEnhancer";
+import ReplaceHistory from "@/components/ReplaceHistory";
+
 
 const lora = Lora({
   subsets: ["latin"],
@@ -39,6 +41,7 @@ export default function RootLayout({ children }) {
         className={`${lora.variable} ${publicSans.variable} font-sans bg-svarati-cream text-svarati-teal antialiased h-full overflow-x-hidden`}
       >
         <AccessibilityProvider>
+          <ReplaceHistory />
           <a
             href="#konten-utama"
             className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[70] focus:bg-white focus:text-svarati-teal focus:px-4 focus:py-2 focus:rounded-full focus:font-bold"
