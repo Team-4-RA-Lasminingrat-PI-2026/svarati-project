@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import Link from "next/link";
-import { ArrowLeft, Play, Pause, Volume2, Timer } from "lucide-react";
+import { ArrowLeft, Play, Pause, Volume2, Timer, AlertCircle, CheckCircle2 } from "lucide-react";
 import Badge from "@/components/Badge";
 import { Card, CardDescription, cardVariants } from "@/components/Card";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -369,54 +369,143 @@ const BUILDERS = {
     },
 };
 
+// Lama suara memudar saat dihentikan, supaya tidak berhenti mendadak
+const FADE_MS = 1500;
+
+// Pembantu waktu timer (dipanggil dari klik tombol, bukan saat render)
+const waktuSekarang = () => Date.now();
+const sisaDetik = (endAt) => Math.max(1, Math.ceil((endAt - waktuSekarang()) / 1000));
+
+const PESAN = {
+    tidakDidukung:
+        "Browsermu belum mendukung pemutar suara ini. Coba buka halaman ini di Chrome, Edge, Firefox, atau Safari versi terbaru.",
+    gagalPutar: "Suara tidak bisa diputar. Coba muat ulang halaman, lalu pilih suara lagi.",
+    timerSelesai: "Waktu selesai. Suara sudah dihentikan.",
+};
+
 export default function SoundPage() {
     const [activeId, setActiveId] = useState(null);
     const [volume, setVolume] = useState(0.5);
     const [timerMin, setTimerMin] = useState(0);
-    const [remaining, setRemaining] = useState(null); // sisa detik, null = tidak ada timer berjalan
+    // Timer berjalan: simpan waktu selesainya. Timer dijeda: simpan sisa detiknya.
+    const [endAt, setEndAt] = useState(null);
+    const [pausedLeft, setPausedLeft] = useState(null);
+    const [now, setNow] = useState(0);
+    const [notice, setNotice] = useState("");
+    const [error, setError] = useState("");
 
     const ctxRef = useRef(null);
     const gainRef = useRef(null);
     const stopRef = useRef(null);
     const buffersRef = useRef({});
+    const fadingRef = useRef(new Set()); // suara yang sedang memudar
 
     const isPlaying = activeId !== null;
+    const remaining =
+        endAt !== null ? Math.max(0, Math.ceil((endAt - now) / 1000)) : pausedLeft;
+    const isPaused = !isPlaying && pausedLeft !== null;
 
-    const stopSound = useCallback(() => {
-        try {
-            stopRef.current?.();
-        } catch { }
+    // Hentikan suara yang sedang diputar; fade = memudar pelan dulu
+    const stopAudio = useCallback((fade = true) => {
+        const stop = stopRef.current;
+        const gain = gainRef.current;
+        const ctx = ctxRef.current;
         stopRef.current = null;
         gainRef.current = null;
-        setActiveId(null);
+        if (!stop) return;
+
+        const stopNow = () => {
+            fadingRef.current.delete(stopNow);
+            try { stop(); } catch { }
+        };
+
+        if (fade && gain && ctx?.state === "running") {
+            try {
+                gain.gain.cancelScheduledValues(ctx.currentTime);
+                gain.gain.setValueAtTime(gain.gain.value, ctx.currentTime);
+                gain.gain.setTargetAtTime(0, ctx.currentTime, FADE_MS / 4000);
+            } catch { }
+            fadingRef.current.add(stopNow);
+            setTimeout(stopNow, FADE_MS);
+        } else {
+            stopNow();
+        }
     }, []);
 
+    // Mulai hitung mundur dengan sisa waktu tertentu (detik)
+    const startCountdown = (seconds) => {
+        const t = waktuSekarang();
+        setEndAt(t + seconds * 1000);
+        setNow(t);
+        setPausedLeft(null);
+    };
+
     const playSound = (sound) => {
-        stopSound();
-
         const AudioCtx = window.AudioContext || window.webkitAudioContext;
-        if (!ctxRef.current) ctxRef.current = new AudioCtx();
-        const ctx = ctxRef.current;
-        ctx.resume?.();
+        if (!AudioCtx) {
+            setError(PESAN.tidakDidukung);
+            return;
+        }
 
-        const getBuffer = (type) =>
-            (buffersRef.current[type] ??= createNoiseBuffer(ctx, type));
+        stopAudio(true); // suara sebelumnya memudar, suara baru naik pelan
 
-        // Volume utama untuk suara ini, naik pelan supaya tidak mengagetkan
-        const gain = ctx.createGain();
-        gain.gain.value = 0;
-        gain.connect(ctx.destination);
-        gain.gain.setTargetAtTime(volume, ctx.currentTime, 0.15);
+        let rig = null;
+        try {
+            if (!ctxRef.current) ctxRef.current = new AudioCtx();
+            const ctx = ctxRef.current;
+            ctx.resume?.()?.catch?.(() => { });
 
-        const rig = createRig(ctx, getBuffer);
-        BUILDERS[sound.id](ctx, gain, rig);
+            const getBuffer = (type) =>
+                (buffersRef.current[type] ??= createNoiseBuffer(ctx, type));
 
-        stopRef.current = () => {
-            rig.stop();
-            try { gain.disconnect(); } catch { }
-        };
-        gainRef.current = gain;
+            // Volume utama untuk suara ini, naik pelan supaya tidak mengagetkan
+            const gain = ctx.createGain();
+            gain.gain.value = 0;
+            gain.connect(ctx.destination);
+            gain.gain.setTargetAtTime(volume, ctx.currentTime, 0.15);
+
+            rig = createRig(ctx, getBuffer);
+            BUILDERS[sound.id](ctx, gain, rig);
+
+            stopRef.current = () => {
+                rig.stop();
+                try { gain.disconnect(); } catch { }
+            };
+            gainRef.current = gain;
+        } catch {
+            try { rig?.stop(); } catch { }
+            setError(PESAN.gagalPutar);
+            return;
+        }
+
         setActiveId(sound.id);
+        setError("");
+        setNotice("");
+
+        // Timer: ganti suara = lanjut, dijeda = lanjut dari sisa, belum mulai = dari awal
+        if (timerMin > 0 && endAt === null) {
+            startCountdown(pausedLeft ?? timerMin * 60);
+        }
+    };
+
+    // Dijeda: suara berhenti dan sisa waktu disimpan
+    const pauseSound = () => {
+        stopAudio(true);
+        setActiveId(null);
+        if (endAt !== null) {
+            setPausedLeft(sisaDetik(endAt));
+            setEndAt(null);
+        }
+    };
+
+    const chooseTimer = (minutes) => {
+        if (minutes === timerMin) return; // klik ulang pilihan yang sama: timer tetap jalan
+        setTimerMin(minutes);
+        setPausedLeft(null);
+        setNotice("");
+        // Durasi baru dihitung dari awal; kalau suara belum diputar, mulai saat diputar
+        if (minutes > 0 && isPlaying) startCountdown(minutes * 60);
+        else setEndAt(null);
     };
 
     // Volume langsung berubah saat slider digeser
@@ -426,37 +515,37 @@ export default function SoundPage() {
         }
     }, [volume]);
 
-    // Hitung mundur: mulai saat suara diputar dan timer dipilih,
-    // mulai ulang kalau pilihan timer diganti, tetap jalan saat ganti suara
+    // Hitung mundur selama timer berjalan; saat habis, suara memudar lalu berhenti
     useEffect(() => {
-        if (!isPlaying || timerMin === 0) {
-            setRemaining(null);
-            return;
-        }
-        const endAt = Date.now() + timerMin * 60 * 1000;
-        setRemaining(timerMin * 60);
-
+        if (endAt === null) return;
         const interval = setInterval(() => {
-            const left = Math.max(0, Math.round((endAt - Date.now()) / 1000));
-            setRemaining(left);
-            if (left <= 0) {
+            const t = Date.now();
+            setNow(t);
+            if (t >= endAt) {
                 clearInterval(interval);
-                stopSound();
+                stopAudio(true);
+                setActiveId(null);
+                setEndAt(null);
+                setPausedLeft(null);
+                setNotice(PESAN.timerSelesai);
             }
         }, 1000);
-
         return () => clearInterval(interval);
-    }, [isPlaying, timerMin, stopSound]);
+    }, [endAt, stopAudio]);
 
-    // Bersihkan saat halaman ditutup
+    // Bersihkan saat halaman ditutup (langsung berhenti, tanpa memudar)
     useEffect(() => {
+        const fading = fadingRef.current;
         return () => {
-            stopSound();
+            try { stopRef.current?.(); } catch { }
+            stopRef.current = null;
+            gainRef.current = null;
+            fading.forEach((stop) => stop());
             ctxRef.current?.close?.();
             ctxRef.current = null;
             buffersRef.current = {};
         };
-    }, [stopSound]);
+    }, []);
 
     return (
         // pt-28 / md:pt-36 memberi ruang untuk navbar yang melayang di atas
@@ -486,6 +575,16 @@ export default function SoundPage() {
                 </div>
 
                 <Card variant="white" size="lg" className="mx-auto max-w-2xl space-y-6">
+                    {/* Pesan error (browser tidak mendukung / gagal memutar) */}
+                    {error && (
+                        <p
+                            role="alert"
+                            className="flex items-start gap-2 rounded-2xl bg-svarati-danger-soft p-4 text-sm text-svarati-danger-darker"
+                        >
+                            <AlertCircle className="mt-0.5 size-4 shrink-0" /> {error}
+                        </p>
+                    )}
+
                     {/* Daftar suara per kelompok: tombol bergaya card */}
                     <div className="space-y-6">
                         {GROUP_ORDER.map((group) => (
@@ -499,7 +598,7 @@ export default function SoundPage() {
                                         return (
                                             <button
                                                 key={sound.id}
-                                                onClick={() => (isActive ? stopSound() : playSound(sound))}
+                                                onClick={() => (isActive ? pauseSound() : playSound(sound))}
                                                 aria-pressed={isActive}
                                                 className={cn(
                                                     cardVariants({
@@ -532,9 +631,14 @@ export default function SoundPage() {
 
                     {/* Volume */}
                     <div>
-                        <label htmlFor="volume" className="mb-2 flex items-center gap-2 text-sm font-bold text-svarati-teal">
-                            <Volume2 className="size-4" /> Volume
-                        </label>
+                        <div className="mb-2 flex items-center justify-between gap-2">
+                            <label htmlFor="volume" className="flex items-center gap-2 text-sm font-bold text-svarati-teal">
+                                <Volume2 className="size-4" /> Volume
+                            </label>
+                            <span className="text-sm font-medium tabular-nums text-svarati-teal/80" aria-hidden="true">
+                                {Math.round(volume * 100)}%
+                            </span>
+                        </div>
                         <input
                             id="volume"
                             type="range"
@@ -542,6 +646,7 @@ export default function SoundPage() {
                             max="1"
                             step="0.05"
                             value={volume}
+                            aria-valuetext={`${Math.round(volume * 100)} persen`}
                             onChange={(e) => setVolume(Number(e.target.value))}
                             className="w-full accent-svarati-teal"
                         />
@@ -556,15 +661,37 @@ export default function SoundPage() {
                                     key={t.minutes}
                                     variant={timerMin === t.minutes ? "secondary" : "ghost"}
                                     size="sm"
-                                    onClick={() => setTimerMin(t.minutes)}
+                                    aria-pressed={timerMin === t.minutes}
+                                    onClick={() => chooseTimer(t.minutes)}
                                 >
                                     {t.label}
                                 </Button>
                             ))}
                         </div>
 
-                        {/* Sisa waktu */}
-                        {remaining !== null ? (
+                        {/* Sisa waktu: berjalan, dijeda, atau belum mulai */}
+                        {isPaused ? (
+                            <Card
+                                variant="cream"
+                                size="sm"
+                                className="mt-4 flex items-center justify-between gap-3"
+                            >
+                                <span className="text-sm font-medium text-svarati-teal">
+                                    <span className="flex items-center gap-2">
+                                        <Pause className="size-4" /> Dijeda
+                                    </span>
+                                    <span className="mt-0.5 block text-xs text-svarati-teal/70">
+                                        Putar suara untuk melanjutkan hitung mundur.
+                                    </span>
+                                </span>
+                                <span className="text-right">
+                                    <span className="block text-xs text-svarati-teal/70">Sisa</span>
+                                    <span className="text-2xl font-bold tabular-nums text-svarati-teal">
+                                        {formatTime(pausedLeft)}
+                                    </span>
+                                </span>
+                            </Card>
+                        ) : remaining !== null ? (
                             <Card
                                 variant="teal"
                                 size="sm"
@@ -585,6 +712,15 @@ export default function SoundPage() {
                                 </CardDescription>
                             )
                         )}
+
+                        {/* Pesan saat timer selesai; selalu ada supaya dibacakan screen reader */}
+                        <p
+                            role="status"
+                            className={notice ? "mt-4 flex items-center gap-2 text-sm font-medium text-svarati-teal" : "sr-only"}
+                        >
+                            {notice && <CheckCircle2 className="size-4 shrink-0" />}
+                            {notice}
+                        </p>
                     </div>
                 </Card>
             </div>
