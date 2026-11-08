@@ -1,10 +1,12 @@
 import { Lora, Public_Sans } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { AccessibilityProvider } from "@/context/AccessibilityContext";
 import AccessibilityModal from "@/components/modals/AccessibilityModal";
 import ScreenReaderEnhancer from "@/components/ScreenReaderEnhancer";
+import SessionInit from "@/components/SessionInit";
 
 const lora = Lora({
   subsets: ["latin"],
@@ -40,9 +42,12 @@ export default function RootLayout({ children }) {
       suppressHydrationWarning
     >
       <head>
-        <script dangerouslySetInnerHTML={{ __html: initAccessibility }} />
+        <Script id="init-accessibility" strategy="beforeInteractive">
+          {initAccessibility}
+        </Script>
       </head>
       <body className="font-sans bg-svarati-cream text-svarati-teal antialiased h-full overflow-x-hidden">
+        <SessionInit />
         <AccessibilityProvider>
           <a
             href="#konten-utama"

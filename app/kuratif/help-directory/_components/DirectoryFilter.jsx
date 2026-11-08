@@ -84,8 +84,8 @@ export default function DirectoryFilter({
               >
                 <option value="">{F.semuaKota}</option>
                 {daftarKota.map((c) => (
-                  <option key={c} value={c}>
-                    {c}
+                  <option key={c.id} value={c.id}>
+                    {c.nama}
                   </option>
                 ))}
               </Select>
@@ -114,7 +114,12 @@ export default function DirectoryFilter({
             </p>
             <div className="flex items-center gap-3">
               {adaFilter && (
-                <Button type="button" variant="ghost" size="sm" onClick={onReset}>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={onReset}
+                >
                   {F.reset}
                 </Button>
               )}
