@@ -1218,12 +1218,34 @@ export const DIREKTORI = {
     resetKosong: "Reset filter",
     petunjukNasional: "Layanan nasional seperti SAPA 129 bisa dihubungi dari mana saja.",
     lihatNasional: "Lihat layanan nasional",
+    gagal: `Daftar layanan belum bisa dimuat. Coba muat ulang halaman. Jika kamu butuh bantuan sekarang, hubungi ${DARURAT.nomor.pusat.nomor} atau ${DARURAT.nomor.sapa.nomor}.`,
+    muatLagi: "Muat lebih banyak",
+    sedangMemuat: "Memuat...",
+    menampilkan: (tampil, total) => `Menampilkan ${tampil} dari ${total} layanan`,
   },
 
   kartu: {
-    nasional: "Layanan nasional",
-    hubungi: "Hubungi Sekarang",
-    situs: "Kunjungi situs",
+  nasional: "Layanan nasional",
+  hubungi: "Hubungi Sekarang",
+  situs: "Kunjungi situs",
+  lihatDetail: "Lihat detail",
+  tutupDetail: "Tutup detail",
+  deskripsi: "Tentang lembaga",
+  jam: "Jam operasional",
+  email: "Email",
+  sosmed: "Media sosial",
+  peta: "Lokasi",
+  bukaPeta: "Buka di Google Maps",
+  verifikasi: "Verifikasi data",
+  terverifikasi: "Data terverifikasi",
+  terverifikasiPada: "Data terverifikasi pada",
+},
+
+  paginasi: {
+    label: "Paginasi daftar layanan",
+    sebelumnya: "Sebelumnya",
+    berikutnya: "Berikutnya",
+    halaman: (n) => `Halaman ${n}`,
   },
 
   csv: {
@@ -1231,6 +1253,7 @@ export const DIREKTORI = {
     namaFile: "daftar-kontak.csv",
     peringatan:
       "File akan tersimpan di perangkat ini dan bisa dilihat orang lain yang memakai perangkat ini. Lanjutkan unduh?",
+    gagal: "File belum bisa diunduh. Coba lagi sebentar lagi.",
   },
 };
 
