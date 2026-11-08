@@ -7,6 +7,7 @@ import  Badge  from "@/components/Badge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { X, Leaf, Trash2, Check, Pencil } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
+import ConfirmDialog from "@/components/modals/ConfirmDialog";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 
@@ -15,6 +16,9 @@ const NOTES_KEY = "svarati-mood-notes";
 // Tulisan yang belum ditekan "Simpan catatan", supaya tidak hilang saat refresh atau tab tertutup
 const DRAFTS_KEY = "svarati-mood-drafts";
 const MAX_NOTE = 1000;
+
+// Contoh: "Minggu, 8 November 2026"
+const formatTanggal = (d) => format(d, "EEEE, d MMMM yyyy", { locale: id });
 
 // Mulai dari kosong, hanya check-in yang benar-benar dicatat yang tampil
 const initialMoods = {};
@@ -104,6 +108,8 @@ export default function PemulihanPage() {
     // Disimpan sebagai tanggal (bukan true/false), jadi otomatis "reset" saat pindah tanggal
     const [editingKey, setEditingKey] = useState(null);
     const [savedKey, setSavedKey] = useState(null);
+    const [confirmTarget, setConfirmTarget] = useState(null); // "day" | "all" | null
+    const [notice, setNotice] = useState("");
 
     const dateKey = date ? format(date, "yyyy-MM-dd") : null;
 
@@ -165,14 +171,38 @@ export default function PemulihanPage() {
         setEditingKey(null);
     };
 
+    // Pesan singkat setelah data dihapus (dibacakan juga oleh screen reader)
+    const showNotice = (text) => {
+        setNotice(text);
+        setTimeout(() => setNotice((n) => (n === text ? "" : n)), 4000);
+    };
+
+    // Hapus satu tanggal dari data; kalau datanya jadi kosong, key-nya ikut dihapus dari localStorage
+    const removeEntry = (history, setHistory, removeAll) => {
+        if (!(dateKey in history)) return;
+        const next = { ...history };
+        delete next[dateKey];
+        if (Object.keys(next).length > 0) setHistory(next);
+        else removeAll();
+    };
+
+    const handleDeleteDay = () => {
+        if (!dateKey) return;
+        removeEntry(moodHistory, setMoodHistory, removeMoods);
+        removeEntry(noteHistory, setNoteHistory, removeNotes);
+        removeEntry(draftHistory, setDraftHistory, removeDrafts);
+        setEditingKey(null);
+        setSavedKey(null);
+        showNotice(`Data tanggal ${formatTanggal(date)} sudah dihapus dari perangkat ini.`);
+    };
+
     const handleClearAll = () => {
-        if (window.confirm("Hapus semua data mood dan catatan dari perangkat ini?")) {
-            removeMoods();
-            removeNotes();
-            removeDrafts();
-            setEditingKey(null);
-            setSavedKey(null);
-        }
+        removeMoods();
+        removeNotes();
+        removeDrafts();
+        setEditingKey(null);
+        setSavedKey(null);
+        showNotice("Semua data mood dan catatan sudah dihapus dari perangkat ini.");
     };
 
     const streakCount = computeStreak(moodHistory);
@@ -195,6 +225,11 @@ export default function PemulihanPage() {
     const currentDetail = activeMoodEmoji ? moodDetails[activeMoodEmoji] : null;
     const showEditor = isEditing || !savedNote;
     const hasUnsavedChange = noteDraft.trim() !== savedNote;
+    const hasDayData = Boolean(activeMoodEmoji || savedNote || draft !== undefined);
+    const hasAnyData =
+        Object.keys(moodHistory).length > 0 ||
+        Object.keys(noteHistory).length > 0 ||
+        Object.keys(draftHistory).length > 0;
 
     return (
         // pt-28 / md:pt-36 memberi ruang untuk navbar yang melayang di atas
@@ -413,20 +448,66 @@ export default function PemulihanPage() {
                                 </Link>
                             </>
                         )}
+
+                        {/* Hapus data tanggal ini saja */}
+                        {hasDayData && (
+                            <div className="mt-6 flex justify-center border-t border-gray-100 pt-4">
+                                <button
+                                    type="button"
+                                    onClick={() => setConfirmTarget("day")}
+                                    className="flex items-center gap-2 rounded-full px-3 py-1.5 text-sm text-svarati-danger hover:bg-svarati-danger-soft"
+                                >
+                                    <Trash2 className="size-4" />
+                                    Hapus data tanggal ini
+                                </button>
+                            </div>
+                        )}
                     </Card>
                 )}
 
-                {/* Hapus data */}
-                <div className="flex justify-center">
-                    <button
-                        onClick={handleClearAll}
-                        className="flex items-center gap-2 text-xs text-svarati-teal/60 hover:text-svarati-teal"
-                    >
-                        <Trash2 className="size-3.5" />
-                        Hapus data mood dan catatan dari perangkat ini
-                    </button>
-                </div>
+                {/* Pesan setelah hapus; selalu ada di halaman supaya dibacakan screen reader */}
+                <p
+                    role="status"
+                    className={`mx-auto max-w-3xl text-center text-sm font-medium text-svarati-teal ${notice ? "" : "sr-only"}`}
+                >
+                    {notice && (
+                        <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-2 shadow-sm">
+                            <Check className="size-4" /> {notice}
+                        </span>
+                    )}
+                </p>
+
+                {/* Hapus semua data */}
+                {hasAnyData && (
+                    <div className="flex justify-center">
+                        <button
+                            type="button"
+                            onClick={() => setConfirmTarget("all")}
+                            className="flex items-center gap-2 text-xs text-svarati-teal/60 hover:text-svarati-teal"
+                        >
+                            <Trash2 className="size-3.5" />
+                            Hapus semua data mood dan catatan dari perangkat ini
+                        </button>
+                    </div>
+                )}
             </div>
+
+            <ConfirmDialog
+                open={confirmTarget === "day"}
+                onOpenChange={(open) => !open && setConfirmTarget(null)}
+                title="Hapus data tanggal ini?"
+                description={`Mood, catatan, dan draf pada ${date ? formatTanggal(date) : ""} akan dihapus dari perangkat ini dan tidak bisa dikembalikan.`}
+                confirmLabel="Ya, hapus"
+                onConfirm={handleDeleteDay}
+            />
+            <ConfirmDialog
+                open={confirmTarget === "all"}
+                onOpenChange={(open) => !open && setConfirmTarget(null)}
+                title="Hapus semua data jurnal?"
+                description="Semua mood, catatan, dan draf di perangkat ini akan dihapus dan tidak bisa dikembalikan."
+                confirmLabel="Ya, hapus semua"
+                onConfirm={handleClearAll}
+            />
         </main>
     );
 }
