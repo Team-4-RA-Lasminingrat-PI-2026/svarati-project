@@ -1,5 +1,6 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { useLocalStorageState } from "@/lib/useLocalStorageState";
 import Link from "next/link";
 import { Card, CardTitle, CardDescription } from "@/components/Card";
 import  Badge  from "@/components/Badge";
@@ -11,10 +12,13 @@ import { id } from "date-fns/locale";
 
 const STORAGE_KEY = "svarati-mood-history";
 const NOTES_KEY = "svarati-mood-notes";
+// Tulisan yang belum ditekan "Simpan catatan", supaya tidak hilang saat refresh atau tab tertutup
+const DRAFTS_KEY = "svarati-mood-drafts";
 const MAX_NOTE = 1000;
 
 // Mulai dari kosong, hanya check-in yang benar-benar dicatat yang tampil
 const initialMoods = {};
+const EMPTY = {};
 
 const moodDetails = {
     "😡": {
@@ -93,60 +97,48 @@ function computeStreak(moods) {
 
 export default function PemulihanPage() {
     const [date, setDate] = useState(new Date());
-    const [activeMoodEmoji, setActiveMoodEmoji] = useState(null);
-    const [moodHistory, setMoodHistory] = useState(initialMoods);
-    const [noteHistory, setNoteHistory] = useState({});
-    const [noteDraft, setNoteDraft] = useState("");
-    const [noteSaved, setNoteSaved] = useState(false);
-    const [isEditing, setIsEditing] = useState(false);
-    const [loaded, setLoaded] = useState(false);
+    // Semua input jurnal langsung tersimpan di localStorage setiap kali berubah
+    const [moodHistory, setMoodHistory, removeMoods] = useLocalStorageState(STORAGE_KEY, initialMoods);
+    const [noteHistory, setNoteHistory, removeNotes] = useLocalStorageState(NOTES_KEY, EMPTY);
+    const [draftHistory, setDraftHistory, removeDrafts] = useLocalStorageState(DRAFTS_KEY, EMPTY);
+    // Disimpan sebagai tanggal (bukan true/false), jadi otomatis "reset" saat pindah tanggal
+    const [editingKey, setEditingKey] = useState(null);
+    const [savedKey, setSavedKey] = useState(null);
 
     const dateKey = date ? format(date, "yyyy-MM-dd") : null;
 
-    // Load dari localStorage sekali saat mount
-    useEffect(() => {
-        try {
-            const savedMoods = localStorage.getItem(STORAGE_KEY);
-            if (savedMoods) setMoodHistory(JSON.parse(savedMoods));
-            const savedNotes = localStorage.getItem(NOTES_KEY);
-            if (savedNotes) setNoteHistory(JSON.parse(savedNotes));
-        } catch { }
-        setLoaded(true);
-    }, []);
-
-    // Simpan mood setiap kali berubah (setelah load selesai)
-    useEffect(() => {
-        if (!loaded) return;
-        try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(moodHistory));
-        } catch { }
-    }, [moodHistory, loaded]);
-
-    // Simpan catatan setiap kali berubah (setelah load selesai)
-    useEffect(() => {
-        if (!loaded) return;
-        try {
-            localStorage.setItem(NOTES_KEY, JSON.stringify(noteHistory));
-        } catch { }
-    }, [noteHistory, loaded]);
-
-    // Sinkronkan emoji aktif dengan tanggal yang dipilih
-    useEffect(() => {
-        setActiveMoodEmoji(dateKey ? moodHistory[dateKey] ?? null : null);
-    }, [dateKey, moodHistory]);
-
-    // Muat catatan tanggal yang dipilih ke kolom ketik
-    useEffect(() => {
-        setNoteDraft(dateKey ? noteHistory[dateKey] ?? "" : "");
-        setNoteSaved(false);
-        setIsEditing(false); // pindah tanggal = kembali ke mode baca
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dateKey, loaded]);
+    // Nilai turunan: dihitung langsung dari data, tanpa state tambahan
+    const activeMoodEmoji = dateKey ? moodHistory[dateKey] ?? null : null;
+    const savedNote = dateKey ? noteHistory[dateKey] ?? "" : "";
+    const draft = dateKey ? draftHistory[dateKey] : undefined;
+    const noteDraft = draft ?? savedNote;
+    const isEditing = dateKey !== null && (editingKey === dateKey || draft !== undefined);
+    const noteSaved = dateKey !== null && savedKey === dateKey;
 
     const handleSelectMood = (emoji) => {
         if (!dateKey) return;
-        setActiveMoodEmoji(emoji);
         setMoodHistory((prev) => ({ ...prev, [dateKey]: emoji }));
+    };
+
+    // Draf disimpan selama isinya berbeda dari catatan tersimpan (termasuk kalau dikosongkan)
+    const handleChangeNote = (value) => {
+        if (!dateKey) return;
+        const text = value.slice(0, MAX_NOTE);
+        setSavedKey(null);
+        setDraftHistory((prev) => {
+            const next = { ...prev };
+            if (text !== savedNote) next[dateKey] = text;
+            else delete next[dateKey];
+            return next;
+        });
+    };
+
+    const discardDraft = () => {
+        setDraftHistory((prev) => {
+            const next = { ...prev };
+            delete next[dateKey];
+            return next;
+        });
     };
 
     const handleSaveNote = () => {
@@ -158,33 +150,28 @@ export default function PemulihanPage() {
             else delete next[dateKey]; // kolom dikosongkan = hapus catatan hari itu
             return next;
         });
-        setNoteDraft(text);
-        setIsEditing(false); // setelah disimpan, tampil mode baca
-        setNoteSaved(true);
-        setTimeout(() => setNoteSaved(false), 2000);
+        discardDraft(); // sudah disimpan, draf tidak diperlukan lagi
+        setEditingKey(null); // setelah disimpan, tampil mode baca
+        setSavedKey(dateKey);
+        setTimeout(() => setSavedKey((k) => (k === dateKey ? null : k)), 2000);
     };
 
     const handleStartEdit = () => {
-        setNoteDraft(noteHistory[dateKey] ?? "");
-        setIsEditing(true);
+        setEditingKey(dateKey);
     };
 
     const handleCancelEdit = () => {
-        setNoteDraft(noteHistory[dateKey] ?? "");
-        setIsEditing(false);
+        discardDraft(); // batal = buang draf
+        setEditingKey(null);
     };
 
     const handleClearAll = () => {
         if (window.confirm("Hapus semua data mood dan catatan dari perangkat ini?")) {
-            setMoodHistory({});
-            setNoteHistory({});
-            setNoteDraft("");
-            setIsEditing(false);
-            setActiveMoodEmoji(null);
-            try {
-                localStorage.removeItem(STORAGE_KEY);
-                localStorage.removeItem(NOTES_KEY);
-            } catch { }
+            removeMoods();
+            removeNotes();
+            removeDrafts();
+            setEditingKey(null);
+            setSavedKey(null);
         }
     };
 
@@ -206,7 +193,6 @@ export default function PemulihanPage() {
     });
 
     const currentDetail = activeMoodEmoji ? moodDetails[activeMoodEmoji] : null;
-    const savedNote = dateKey ? noteHistory[dateKey] ?? "" : "";
     const showEditor = isEditing || !savedNote;
     const hasUnsavedChange = noteDraft.trim() !== savedNote;
 
@@ -349,10 +335,7 @@ export default function PemulihanPage() {
                                         <textarea
                                             id="mood-note"
                                             value={noteDraft}
-                                            onChange={(e) => {
-                                                setNoteDraft(e.target.value.slice(0, MAX_NOTE));
-                                                setNoteSaved(false);
-                                            }}
+                                            onChange={(e) => handleChangeNote(e.target.value)}
                                             rows={5}
                                             maxLength={MAX_NOTE}
                                             autoFocus={isEditing}
@@ -362,6 +345,7 @@ export default function PemulihanPage() {
                                         <div className="mt-2 flex items-center justify-between gap-3">
                                             <span className="text-xs text-gray-400">
                                                 {noteDraft.length}/{MAX_NOTE}
+                                                {hasUnsavedChange && noteDraft.trim() && " · Draf tersimpan otomatis"}
                                             </span>
                                             <div className="flex items-center gap-2">
                                                 {savedNote && (
