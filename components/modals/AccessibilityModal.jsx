@@ -4,6 +4,7 @@ import { Dialog } from "@base-ui/react/dialog";
 import { Button } from "@/components/ui/button";
 import { useAccessibility } from "@/context/AccessibilityContext";
 import { AKSESIBILITAS as T } from "@/content/labels";
+import { speak, stopSpeaking } from "@/lib/speech";
 
 function SwitchRow({ id, nama, desk, checked, onChange }) {
     return (
@@ -68,7 +69,15 @@ export default function AccessibilityModal() {
                             nama={T.screenReader.nama}
                             desk={T.screenReader.desk}
                             checked={settings.screenReader}
-                            onChange={() => toggle("screenReader")}
+                            onChange={() => {
+                                const aktif = !settings.screenReader;
+                                toggle("screenReader");
+                                if (aktif) {
+                                    speak(`${T.screenReader.nama} ${T.statusAktif}`);
+                                } else {
+                                    stopSpeaking();
+                                }
+                            }}
                         />
                     </div>
 
