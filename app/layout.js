@@ -29,9 +29,9 @@ export const metadata = {
     "Ruang digital anonim bagi perempuan untuk memahami hak, menemukan dukungan, dan melangkah menuju pemulihan.",
 };
 
-// Dijalankan sebelum halaman tampil, supaya tema kontras tinggi tidak "berkedip" saat refresh.
-// Key harus sama dengan A11Y_STORAGE_KEY di AccessibilityContext.
-const initAccessibility = `try{var s=JSON.parse(localStorage.getItem("svarati-accessibility"));if(s&&s.highContrast){document.documentElement.dataset.contrast="high";}}catch(e){}`;
+// Dijalankan sebelum halaman tampil, supaya tema kontras tinggi dan setelan teks tidak "berkedip" saat refresh.
+// Key dan nilai harus sama dengan AccessibilityContext.
+const initAccessibility = `try{var s=JSON.parse(localStorage.getItem("svarati-accessibility"));if(s){var d=document.documentElement.dataset;if(s.highContrast){d.contrast="high";}["fontSize","lineHeight","letterSpacing"].forEach(function(k){if(s[k]==="kecil"||s[k]==="besar"){d[k]=s[k];}});if(["kiri","tengah","kanan","penuh"].indexOf(s.textAlign)>-1){d.textAlign=s.textAlign;}}}catch(e){}`;
 
 export default function RootLayout({ children }) {
   return (

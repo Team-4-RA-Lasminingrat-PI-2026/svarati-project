@@ -1267,6 +1267,21 @@ export const AKSESIBILITAS = {
   screenReader: {
     nama: "Mode screen reader",
   },
+  // Pilihan ukuran untuk ukuran teks, tinggi baris, dan spasi teks
+  ukuran: { kecil: "Kecil", normal: "Normal", besar: "Besar" },
+  ukuranTeks: { nama: "Atur Ukuran Teks" },
+  tinggiBaris: { nama: "Atur Tinggi Baris" },
+  spasiTeks: { nama: "Atur Spasi Teks" },
+  rataTulisan: {
+    nama: "Atur Rata Tulisan",
+    bawaan: "bawaan halaman",
+    pilihan: {
+      kiri: "Rata kiri",
+      tengah: "Rata tengah",
+      kanan: "Rata kanan",
+      penuh: "Rata kiri-kanan",
+    },
+  },
   aturUlang: "Atur ulang",
   tutup: "Tutup pengaturan aksesibilitas",
   statusAktif: "aktif",

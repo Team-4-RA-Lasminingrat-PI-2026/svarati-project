@@ -510,3 +510,30 @@ html[data-contrast="high"] footer :focus-visible {
 html[data-contrast="high"] footer {
   border-top: 2px solid #FFFFFF;
 }
+/* ============================================================
+   8. PENGATURAN TEKS (aksesibilitas)
+   Aktif lewat <html data-font-size / data-line-height /
+   data-letter-spacing / data-text-align>, dipasang oleh
+   AccessibilityContext. Tanpa atribut = tampilan bawaan.
+   ============================================================ */
+
+/* Ukuran teks: semua ukuran Tailwind memakai rem, jadi cukup ubah font-size <html> */
+html[data-font-size="kecil"] { font-size: 87.5%; }
+html[data-font-size="besar"] { font-size: 118.75%; }
+
+/* Tinggi baris: !important supaya menimpa utility seperti leading-tight / text-sm */
+html[data-line-height="kecil"] body * { line-height: 1.25 !important; }
+html[data-line-height="besar"] body * { line-height: 2 !important; }
+
+/* Spasi teks: nilai "besar" mengikuti WCAG 1.4.12 (huruf 0.12em, kata 0.16em) */
+html[data-letter-spacing="kecil"] body * { letter-spacing: -0.01em !important; word-spacing: -0.02em !important; }
+html[data-letter-spacing="besar"] body * { letter-spacing: 0.12em !important; word-spacing: 0.16em !important; }
+
+/* Rata tulisan: hanya elemen teks, supaya tombol dan ikon tetap di tempatnya */
+html[data-text-align] body :is(p, li, h1, h2, h3, h4, h5, h6, blockquote, dd, dt, figcaption, td, th, label) {
+  text-align: var(--a11y-text-align) !important;
+}
+html[data-text-align="kiri"] { --a11y-text-align: left; }
+html[data-text-align="tengah"] { --a11y-text-align: center; }
+html[data-text-align="kanan"] { --a11y-text-align: right; }
+html[data-text-align="penuh"] { --a11y-text-align: justify; }

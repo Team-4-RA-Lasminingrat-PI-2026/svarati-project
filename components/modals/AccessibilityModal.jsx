@@ -1,10 +1,74 @@
 "use client";
 
 import { Dialog } from "@base-ui/react/dialog";
+import {
+    ALargeSmall,
+    ListChevronsUpDown,
+    Space,
+    Text,
+    TextAlignCenter,
+    TextAlignEnd,
+    TextAlignJustify,
+    TextAlignStart,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useAccessibility } from "@/context/AccessibilityContext";
+import { useAccessibility, PILIHAN_UKURAN } from "@/context/AccessibilityContext";
 import { AKSESIBILITAS as T } from "@/content/labels";
 import { speak, stopSpeaking } from "@/lib/speech";
+
+const IKON_RATA = {
+    kiri: TextAlignStart,
+    tengah: TextAlignCenter,
+    kanan: TextAlignEnd,
+    penuh: TextAlignJustify,
+};
+
+// Satu baris pengaturan: judul dengan ikon, lalu deretan tombol pilihan
+function OptionGroup({ id, Icon, nama, children }) {
+    return (
+        <div className="py-4">
+            <p id={`${id}-label`} className="flex items-center gap-2 font-semibold">
+                <Icon className="size-5 shrink-0" aria-hidden="true" /> {nama}
+            </p>
+            <div role="group" aria-labelledby={`${id}-label`} className="mt-3 flex flex-wrap gap-2">
+                {children}
+            </div>
+        </div>
+    );
+}
+
+// Tombol pilihan; aria-pressed memberi tahu screen reader pilihan mana yang aktif
+function OptionButton({ active, onClick, className, ...props }) {
+    return (
+        <Button
+            type="button"
+            variant={active ? "secondary" : "ghost"}
+            size="md"
+            aria-pressed={active}
+            onClick={onClick}
+            className={className}
+            {...props}
+        />
+    );
+}
+
+// Pengaturan Kecil / Normal / Besar (ukuran teks, tinggi baris, spasi teks)
+function SizeGroup({ id, Icon, nama, value, onChange }) {
+    return (
+        <OptionGroup id={id} Icon={Icon} nama={nama}>
+            {PILIHAN_UKURAN.map((pilihan) => (
+                <OptionButton
+                    key={pilihan}
+                    active={value === pilihan}
+                    onClick={() => onChange(pilihan)}
+                    className="min-w-20"
+                >
+                    {T.ukuran[pilihan]}
+                </OptionButton>
+            ))}
+        </OptionGroup>
+    );
+}
 
 function SwitchRow({ id, nama, desk, checked, onChange }) {
     return (
@@ -35,13 +99,19 @@ function SwitchRow({ id, nama, desk, checked, onChange }) {
 }
 
 export default function AccessibilityModal() {
-    const { isOpen, setOpen, settings, toggle, reset } = useAccessibility();
+    const { isOpen, setOpen, settings, toggle, set, reset } = useAccessibility();
+
+    // Klik pilihan rata yang sedang aktif = kembali ke rata bawaan halaman
+    const pilihRata = (rata) => set("textAlign", settings.textAlign === rata ? null : rata);
+    const statusRata = settings.textAlign
+        ? T.rataTulisan.pilihan[settings.textAlign]
+        : T.rataTulisan.bawaan;
 
     return (
         <Dialog.Root open={isOpen} onOpenChange={setOpen}>
             <Dialog.Portal>
                 <Dialog.Backdrop className="fixed inset-0 z-[100] bg-black/50" />
-                <Dialog.Popup className="fixed left-1/2 top-1/2 z-[101] w-[calc(100%-2rem)] max-w-md -translate-x-1/2 -translate-y-1/2 rounded-3xl border border-border bg-card p-6 text-card-foreground shadow-xl">
+                <Dialog.Popup className="fixed left-1/2 top-1/2 z-[101] max-h-[90vh] w-[calc(100%-2rem)] max-w-md -translate-x-1/2 overflow-y-auto -translate-y-1/2 rounded-3xl border border-border bg-card p-6 text-card-foreground shadow-xl">
                     <div className="flex items-start justify-between gap-4">
                         <Dialog.Title className="text-xl font-bold">{T.judul}</Dialog.Title>
                         <Dialog.Close
@@ -79,12 +149,54 @@ export default function AccessibilityModal() {
                                 }
                             }}
                         />
+                        <SizeGroup
+                            id="a11y-ukuran-teks"
+                            Icon={ALargeSmall}
+                            nama={T.ukuranTeks.nama}
+                            value={settings.fontSize}
+                            onChange={(v) => set("fontSize", v)}
+                        />
+                        <SizeGroup
+                            id="a11y-tinggi-baris"
+                            Icon={ListChevronsUpDown}
+                            nama={T.tinggiBaris.nama}
+                            value={settings.lineHeight}
+                            onChange={(v) => set("lineHeight", v)}
+                        />
+                        <SizeGroup
+                            id="a11y-spasi-teks"
+                            Icon={Space}
+                            nama={T.spasiTeks.nama}
+                            value={settings.letterSpacing}
+                            onChange={(v) => set("letterSpacing", v)}
+                        />
+                        <OptionGroup id="a11y-rata" Icon={Text} nama={T.rataTulisan.nama}>
+                            {Object.entries(T.rataTulisan.pilihan).map(([rata, label]) => {
+                                const Ikon = IKON_RATA[rata];
+                                return (
+                                    <OptionButton
+                                        key={rata}
+                                        active={settings.textAlign === rata}
+                                        onClick={() => pilihRata(rata)}
+                                        aria-label={label}
+                                        title={label}
+                                        className="size-11 p-0"
+                                    >
+                                        <Ikon className="size-5" aria-hidden="true" />
+                                    </OptionButton>
+                                );
+                            })}
+                        </OptionGroup>
                     </div>
 
-                    {/* Diumumkan screen reader setiap kali toggle berubah */}
+                    {/* Diumumkan screen reader setiap kali pengaturan berubah */}
                     <p role="status" className="sr-only">
                         {T.kontras.nama} {settings.highContrast ? T.statusAktif : T.statusMati}.{" "}
-                        {T.screenReader.nama} {settings.screenReader ? T.statusAktif : T.statusMati}.
+                        {T.screenReader.nama} {settings.screenReader ? T.statusAktif : T.statusMati}.{" "}
+                        {T.ukuranTeks.nama}: {T.ukuran[settings.fontSize]}.{" "}
+                        {T.tinggiBaris.nama}: {T.ukuran[settings.lineHeight]}.{" "}
+                        {T.spasiTeks.nama}: {T.ukuran[settings.letterSpacing]}.{" "}
+                        {T.rataTulisan.nama}: {statusRata}.
                     </p>
 
                     <div className="mt-4 flex justify-end">
