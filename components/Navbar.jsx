@@ -119,7 +119,8 @@ function NavItem({ item, pathname, isOpen, onToggle, onNavigate }) {
 function DesktopItem({ item, pathname }) {
   const [open, setOpen] = useState(false);
   const active = isPillarActive(pathname, item);
-  const triggerClass = `flex items-center gap-1 rounded-full px-4 py-1.5 text-xs font-bold tracking-wide transition-all ${
+  // ← UBAH (baris 122): tambah whitespace-nowrap agar label tetap satu baris
+  const triggerClass = `flex items-center gap-1 whitespace-nowrap rounded-full px-4 py-1.5 text-xs font-bold tracking-wide transition-all ${
     active ? `scale-105 shadow-md ${STATE.active}` : STATE.idle
   }`;
 
@@ -181,11 +182,11 @@ export default function Navbar() {
   return (
     <>
       <header className="fixed inset-x-0 top-3 z-40 overflow-x-clip px-2 sm:px-3">
-        <nav
+      <nav
           aria-label={NAVBAR.navigasiUtama}
-          className="mx-auto flex max-w-6xl items-center justify-between gap-2 rounded-full border border-white/40 bg-white/40 px-4 py-1 shadow-lg backdrop-blur-md sm:gap-3 sm:px-5 lg:gap-4 lg:px-6"
+          className="mx-auto flex max-w-7xl items-center justify-between gap-1.5 rounded-full border border-white/40 bg-white/40 px-2.5 py-1 shadow-lg backdrop-blur-md min-[400px]:px-4 sm:gap-3 sm:px-5 lg:gap-4 lg:px-6"
         >
-          <div className="flex items-center gap-1">
+          <div className="flex min-w-0 items-center gap-0.5 min-[400px]:gap-1">
             <Button
               type="button"
               variant="ghost"
@@ -193,7 +194,7 @@ export default function Navbar() {
               aria-label={mobileOpen ? NAVBAR.tutupMenu : NAVBAR.bukaMenu}
               aria-expanded={mobileOpen}
               aria-controls={mobileOpen ? "menu-mobile" : undefined}
-              className="mr-1 flex h-auto w-auto flex-col gap-1.5 p-2 lg:hidden"
+              className="mr-0 flex h-auto w-auto flex-col gap-1.5 p-1.5 min-[400px]:mr-1 min-[400px]:p-2 xl:hidden"
             >
               <span
                 className={`${BAR} ${mobileOpen ? "translate-y-2 rotate-45" : ""}`}
@@ -207,15 +208,15 @@ export default function Navbar() {
             <Link
               href="/"
               aria-label={`${BRAND.nama}, ke beranda`}
-              className="group flex shrink-0 select-none items-center gap-2.5 px-1 py-1"
+              className="group flex shrink-0 select-none items-center gap-2.5 px-0 py-1 min-[400px]:px-1"
             >
-              <div className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-svarati-lavender-light transition-all group-hover:bg-svarati-lavender-hover">
+              <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-svarati-lavender-light transition-all group-hover:bg-svarati-lavender-hover min-[400px]:h-11 min-[400px]:w-11">
                 <Image
                   src="/images/logo.png"
                   alt=""
                   width={44}
                   height={44}
-                  className="object-contain"
+                  className="size-full object-contain"
                   priority
                 />
               </div>
@@ -230,7 +231,7 @@ export default function Navbar() {
           </div>
 
           {/* Menu desktop */}
-          <ul className="hidden items-center gap-1 rounded-full border border-svarati-teal/10 bg-svarati-teal/5 p-1 lg:flex">
+          <ul className="hidden items-center gap-1 rounded-full border border-svarati-teal/10 bg-svarati-teal/5 p-1 xl:flex">
             {MENU_UTAMA.map((item) => (
               <DesktopItem
                 key={`${item.id}-${pathname}`}
@@ -241,15 +242,18 @@ export default function Navbar() {
           </ul>
 
           {/* Tombol utilitas */}
-          <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
-            {/* EmergencyModal belum dibuat: tombol ini akan membuka pop-up darurat nanti. */}
+          <div className="flex shrink-0 items-center gap-1 min-[400px]:gap-1.5 sm:gap-2">
+            {/* Tombol ini membuka pop-up darurat (EmergencyModal). */}
             <Button
               type="button"
               onClick={() => setEmergencyOpen(true)}
-              className="motion-safe:animate-darurat-glow h-auto gap-1 whitespace-nowrap rounded-full border-2 border-transparent bg-svarati-danger px-3 py-2.5 text-xs font-bold text-white shadow-md hover:bg-svarati-danger-dark sm:gap-2 sm:px-4 sm:text-sm"
+              className="motion-safe:animate-darurat-glow h-auto gap-1 whitespace-nowrap rounded-full border-2 border-transparent bg-svarati-danger px-2.5 py-2.5 text-xs font-bold text-white shadow-md hover:bg-svarati-danger-dark min-[400px]:px-3 sm:gap-2 sm:px-4 sm:text-sm"
             >
-              {/* <span aria-hidden="true">⚡</span> */}
-              <Zap aria-hidden="true" className="size-4 fill-current" />
+              {/* Ikon disembunyikan di layar < 380px untuk menghemat ruang */}
+              <Zap
+                aria-hidden="true"
+                className="size-4 fill-current max-[379px]:hidden"
+              />
               <span className="sm:hidden">{DARURAT.tombolRingkas}</span>
               <span className="hidden sm:inline">{DARURAT.tombol}</span>
             </Button>
@@ -261,27 +265,29 @@ export default function Navbar() {
         {/* Menu mobile */}
         {mobileOpen && (
           <>
-          {/* ★ BARU: overlay gelap, ketuk untuk menutup menu */}
-          <div
-            aria-hidden="true"
-            onClick={closeMobile}
-            className="fixed inset-0 -z-10 bg-black/30 lg:hidden"
-          />
-          <ul
-            id="menu-mobile"
-            className="mx-2 mt-2 flex max-h-[70vh] max-w-6xl flex-col gap-1 overflow-y-auto rounded-3xl border border-svarati-teal/20 bg-white p-2 shadow-xl lg:hidden"
-          >
-            {MENU_UTAMA.map((item) => (
-              <NavItem
-                key={item.id}
-                item={item}
-                pathname={pathname}
-                isOpen={openPillarId === item.id}
-                onToggle={() => togglePillar(item.id)}
-                onNavigate={closeMobile}
-              />
-            ))}
-          </ul>
+            {/* Overlay gelap, ketuk untuk menutup menu */}
+            <div
+              aria-hidden="true"
+              onClick={closeMobile}
+              // ← UBAH (baris 268): lg:hidden → xl:hidden
+              className="fixed inset-0 -z-10 bg-black/30 xl:hidden"
+            />
+            <ul
+              id="menu-mobile"
+              // ← UBAH (baris 272): lg:hidden → xl:hidden
+              className="mx-2 mt-2 flex max-h-[70vh] max-w-6xl flex-col gap-1 overflow-y-auto rounded-3xl border border-svarati-teal/20 bg-white p-2 shadow-xl xl:hidden"
+            >
+              {MENU_UTAMA.map((item) => (
+                <NavItem
+                  key={item.id}
+                  item={item}
+                  pathname={pathname}
+                  isOpen={openPillarId === item.id}
+                  onToggle={() => togglePillar(item.id)}
+                  onNavigate={closeMobile}
+                />
+              ))}
+            </ul>
           </>
         )}
       </header>

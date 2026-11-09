@@ -216,15 +216,17 @@
    6. HERO
    Dua mode gambar:
    - Latar   (< 1024px atau portrait): gambar jadi latar pudar di belakang teks
-   - Desktop (>= 1024px & landscape) : dua kolom, siluet di kanan-atas
+   - Desktop (>= 1024px & landscape) : dua kolom, siluet menempel kanan-bawah
    Ukuran teks punya tiga tahap: phone, tablet (>= 640px), desktop.
    ============================================================ */
 
    .hero {
-    --art-ratio: 0.89; /* lebar / tinggi viewBox woman.svg.*/
+    --art-ratio: 0.89; /* lebar / tinggi viewBox woman.svg */
     position: relative;
     overflow: hidden;
     min-height: 100svh;
+    /* Wajib: agar satuan cqw di bawah mengukur lebar hero (sama dengan lebar navbar) */
+    container-type: inline-size;
   }
   
   .hero-grid {
@@ -293,35 +295,35 @@
   .hero-art {
     position: absolute;
     inset: 0;
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.12) 45%, rgba(0,0,0,0.6) 100%);
-    mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.12) 45%, rgba(0,0,0,0.6) 100%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.12) 45%, rgba(0, 0, 0, 0.6) 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.12) 45%, rgba(0, 0, 0, 0.6) 100%);
   }
   
   /* ---------- TABLET (>= 640px): gambar tetap latar, teks mengisi layar ---------- */
-
-@media (min-width: 640px) {
-  .hero {
-    /* Satuan skala tablet: ikut lebar layar.
-       768px -> 16.8px | 1032px -> 21.7px | maks 25.6px */
-    --t: clamp(1.05rem, 2.1vw, 1.6rem);
+  
+  @media (min-width: 640px) {
+    .hero {
+      /* Satuan skala tablet: ikut lebar layar.
+         768px -> 16.1px | 1032px -> 21.7px | maks 25.6px */
+      --t: clamp(1.05rem, 2.1vw, 1.6rem);
+    }
+  
+    .hero-col {
+      padding: 8rem 2rem 3rem;
+    }
+  
+    .hero-inner {
+      max-width: min(calc(var(--t) * 40), 100%);
+      margin-inline: auto;
+    }
+  
+    .hero-title { font-size: calc(var(--t) * 3.6); line-height: 1.08; }
+    .hero-desc  { max-width: 100%; margin-top: calc(var(--t) * 1); font-size: calc(var(--t) * 1.25); }
+    .hero-label { margin-top: calc(var(--t) * 1.8); font-size: calc(var(--t) * 0.85); }
+    .hero-list  { max-width: 100%; margin-top: calc(var(--t) * 0.7); gap: calc(var(--t) * 0.75); }
+    .hero-btn   { padding-block: calc(var(--t) * 0.95); font-size: calc(var(--t) * 1.2); }
+    .hero-arrow { width: calc(var(--t) * 1.3); height: calc(var(--t) * 1.3); }
   }
-
-  .hero-col {
-    padding: 8rem 2rem 3rem;
-  }
-
-  .hero-inner {
-    max-width: min(calc(var(--t) * 40), 100%);
-    margin-inline: auto;
-  }
-
-  .hero-title { font-size: calc(var(--t) * 3.6); line-height: 1.08; }
-  .hero-desc  { max-width: 100%; margin-top: calc(var(--t) * 1); font-size: calc(var(--t) * 1.25); }
-  .hero-label { margin-top: calc(var(--t) * 1.8); font-size: calc(var(--t) * 0.85); }
-  .hero-list  { max-width: 100%; margin-top: calc(var(--t) * 0.7); gap: calc(var(--t) * 0.75); }
-  .hero-btn   { padding-block: calc(var(--t) * 0.95); font-size: calc(var(--t) * 1.2); }
-  .hero-arrow { width: calc(var(--t) * 1.3); height: calc(var(--t) * 1.3); }
-}
   
   /* ---------- DESKTOP (>= 1024px DAN landscape) ---------- */
   
@@ -330,24 +332,41 @@
       /* Satu satuan untuk semua ukuran teks.
          Dibatasi tinggi (agar muat satu layar) DAN lebar (agar tidak sempit). */
       --u: clamp(0.8rem, min(1.8svh, 1.1vw), 2.2rem);
-      /* Lebar gambar: mengikuti tinggi layar, maksimal 54% lebar */
-      --art-w: min(calc(100svh * var(--art-ratio)), 54vw);
+  
+         /* Lebar gambar: mengikuti tinggi layar, maksimal 58% lebar */
+    --art-w: min(calc(100svh * var(--art-ratio)), 58vw);
+  
+      /* Tepi kiri navbar: sama dengan rumus navbar
+         (max-w-7xl = 80rem, ditengahkan, dengan jarak minimum px-3 = 0.75rem) */
+      --nav-left: max(0.75rem, calc((100cqw - 80rem) / 2));
+  
+      /* Teks mulai sejajar isi navbar (tepi navbar + padding dalam lg:px-6 = 1.5rem).
+         Di layar sangat lebar posisi digeser ke kiri secukupnya supaya
+         teks (minimal 30u) tidak menabrak gambar. */
+      /* Posisi dasar: sejajar isi navbar, tapi mundur ke kiri di layar sangat lebar
+       supaya teks (minimal 34u) tidak menabrak gambar. */
+      --text-base: min(
+        calc(var(--nav-left) + 1.5rem),
+        max(1.5rem, calc(100cqw - var(--art-w) - var(--u) * 34 - 1.5vw))
+      );
+      --text-left: var(--text-base);
     }
   
     .hero-grid {
       grid-template-columns: minmax(0, 1fr) var(--art-w);
     }
   
-    /* Gambar keluar dari mode latar: kotak berasio tetap, menempel kanan-atas */
-    .hero-art-box {
-      position: relative;
-      inset: auto;
-      opacity: 1;
-      align-self: start;
-      justify-self: end;
-      width: 100%;
-      aspect-ratio: var(--art-ratio);
-    }
+    /* Gambar keluar dari mode latar: kotak berasio tetap, menempel kanan-BAWAH.
+       Sisa ruang (di layar mendekati 4:3) pindah ke atas, di belakang navbar kaca. */
+       .hero-art-box {
+        position: relative;
+        inset: auto;
+        opacity: 1;
+        align-self: center;
+        justify-self: end;
+        width: 100%;
+        aspect-ratio: var(--art-ratio);
+      }
   
     .hero-art {
       -webkit-mask-image: url(/woman.svg);
@@ -360,22 +379,43 @@
       mask-position: center;
     }
   
-    /* Teks berada di tengah ruang kosong di sebelah kiri gambar */
+    /* Teks rata kiri mengikuti tepi navbar */
     .hero-col {
-      padding: calc(var(--u) * 7.5) 2vw calc(var(--u) * 2) clamp(1.5rem, 3vw, 8rem);
+      padding: calc(var(--u) * 7.5) 1.5vw calc(var(--u) * 2) var(--text-left);
     }
   
     .hero-inner {
       max-width: calc(var(--u) * 36);
-      margin-inline: auto;
+      margin-inline: 0;
     }
   
-    .hero-title { font-size: calc(var(--u) * 3.8); line-height: 1.08; }
-    .hero-desc  { margin-top: calc(var(--u) * 0.9); max-width: min(calc(var(--u) * 32), 100%); font-size: calc(var(--u) * 1.1); }
-    .hero-label { margin-top: calc(var(--u) * 1.4); font-size: calc(var(--u) * 0.8); }
+    /* Judul 3.6u (sebelumnya 3.8u) agar "Temukan Amanmu" tidak turun baris di 1024px.
+       Teks kecil diberi batas minimum agar tetap terbaca di layar pendek. */
+    .hero-title { font-size: calc(var(--u) * 3.6); line-height: 1.08; }
+    .hero-desc  {
+      margin-top: calc(var(--u) * 0.9);
+      max-width: min(calc(var(--u) * 32), 100%);
+      font-size: max(calc(var(--u) * 1.1), 0.9375rem);
+    }
+    .hero-label { margin-top: calc(var(--u) * 1.4); font-size: max(calc(var(--u) * 0.8), 0.75rem); }
     .hero-list  { margin-top: calc(var(--u) * 0.6); max-width: min(calc(var(--u) * 34), 100%); gap: calc(var(--u) * 0.65); }
-    .hero-btn { padding-block: calc(var(--u) * 1); font-size: calc(var(--u) * 1.2); }    
+    .hero-btn   { padding-block: calc(var(--u) * 1); font-size: max(calc(var(--u) * 1.2), 0.9375rem); }
     .hero-arrow { width: calc(var(--u) * 1.2); height: calc(var(--u) * 1.2); }
+  }
+
+  /* ---------- DESKTOP PENDEK (tinggi <= 700px, mis. laptop 1358x606) ----------
+   Ruang kosong di sebelah teks besar karena ukuran teks mentok minimum.
+   Teks digeser 30% dari sisa ruang itu ke kanan agar tidak menempel di kiri. */
+  @media (min-width: 1024px) and (min-aspect-ratio: 5/4) and (max-height: 700px) {
+    .hero {
+      --text-left: calc(
+        var(--text-base) +
+        max(
+          0px,
+          calc(100cqw - var(--art-w) - var(--u) * 36 - var(--text-base) - 1.5vw)
+        ) * 0.3
+      );
+    }
   }
 
 /*=====================================
@@ -426,6 +466,7 @@ html[data-contrast="high"] {
   --color-svarati-coral-dark: #6B1F00;
   --color-svarati-coral-darker: #4A1500;
   --color-svarati-coral-soft: #FFFFFF;
+  --color-svarati-coral-medium: #6B1F00;
 
   /* Lavender: yang pekat jadi ungu gelap, yang muda jadi putih */
   --color-svarati-lavender: #3D2F80;
