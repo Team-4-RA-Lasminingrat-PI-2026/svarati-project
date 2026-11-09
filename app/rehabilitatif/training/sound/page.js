@@ -7,20 +7,27 @@ import { Card, CardDescription, cardVariants } from "@/components/Card";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-// Semua suara dibuat langsung di browser (tanpa file audio)
-const GROUP_ORDER = ["Noise", "Suara Alam", "Musik & Ambient"];
+// Kode kategori di database (relaxation_tracks.category) dan judul yang tampil di halaman
+const GROUPS = [
+    { kategori: "noise", label: "Noise" },
+    { kategori: "suara_alam", label: "Suara Alam" },
+    { kategori: "musik", label: "Musik & Ambient" },
+];
 
-const SOUNDS = [
-    { id: "white", group: "Noise", label: "White Noise", desc: "Desis rata yang menutupi bunyi di sekitar" },
-    { id: "pink", group: "Noise", label: "Pink Noise", desc: "Lebih lembut, mirip hujan ringan" },
-    { id: "brown", group: "Noise", label: "Brown Noise", desc: "Dalam dan hangat, mirip gemuruh jauh" },
-    { id: "hujan", group: "Suara Alam", label: "Hujan", desc: "Rintik hujan yang rata dan menenangkan" },
-    { id: "ombak", group: "Suara Alam", label: "Ombak", desc: "Gelombang yang datang dan pergi perlahan" },
-    { id: "hutan", group: "Suara Alam", label: "Hutan & Angin", desc: "Angin lembut dengan kicau burung sesekali" },
-    { id: "sungai", group: "Suara Alam", label: "Aliran Sungai", desc: "Air yang mengalir pelan di antara bebatuan" },
-    { id: "piano", group: "Musik & Ambient", label: "Piano Lembut", desc: "Nada piano pelan yang bergema lembut" },
-    { id: "mangkuk", group: "Musik & Ambient", label: "Mangkuk Tibet", desc: "Dentang mangkuk yang panjang dan dalam" },
-    { id: "pad", group: "Musik & Ambient", label: "Pad Ambient", desc: "Dengung hangat yang naik turun perlahan" },
+// Daftar suara diambil dari GET /api/sounds (RLA055).
+// Daftar ini hanya cadangan kalau API gagal (offline / Supabase bermasalah).
+// `id` = sound_key di database = nama generator di BUILDERS.
+const CADANGAN_SOUNDS = [
+    { id: "white", kategori: "noise", label: "White Noise", desc: "Desis rata yang menutupi bunyi di sekitar" },
+    { id: "pink", kategori: "noise", label: "Pink Noise", desc: "Lebih lembut, mirip hujan ringan" },
+    { id: "brown", kategori: "noise", label: "Brown Noise", desc: "Dalam dan hangat, mirip gemuruh jauh" },
+    { id: "hujan", kategori: "suara_alam", label: "Hujan", desc: "Rintik hujan yang rata dan menenangkan" },
+    { id: "ombak", kategori: "suara_alam", label: "Ombak", desc: "Gelombang yang datang dan pergi perlahan" },
+    { id: "hutan", kategori: "suara_alam", label: "Hutan & Angin", desc: "Angin lembut dengan kicau burung sesekali" },
+    { id: "sungai", kategori: "suara_alam", label: "Aliran Sungai", desc: "Air yang mengalir pelan di antara bebatuan" },
+    { id: "piano", kategori: "musik", label: "Piano Lembut", desc: "Nada piano pelan yang bergema lembut" },
+    { id: "mangkuk", kategori: "musik", label: "Mangkuk Tibet", desc: "Dentang mangkuk yang panjang dan dalam" },
+    { id: "pad", kategori: "musik", label: "Pad Ambient", desc: "Dengung hangat yang naik turun perlahan" },
 ];
 
 const TIMERS = [
@@ -383,7 +390,21 @@ const PESAN = {
     timerSelesai: "Waktu selesai. Suara sudah dihentikan.",
 };
 
+// Ambil daftar suara dari API. Hanya track dengan generator yang dikenal yang dipakai
+// (track berbasis file audio belum didukung pemutar ini).
+async function ambilDaftarSuara(signal) {
+    const res = await fetch("/api/sounds", { signal });
+    if (!res.ok) throw new Error(`GET /api/sounds ${res.status}`);
+    const { data } = await res.json();
+    const sounds = (data ?? [])
+        .filter((t) => t.soundKey && BUILDERS[t.soundKey])
+        .map((t) => ({ id: t.soundKey, kategori: t.kategori, label: t.judul, desc: t.deskripsi ?? "" }));
+    if (sounds.length === 0) throw new Error("Daftar suara kosong");
+    return sounds;
+}
+
 export default function SoundPage() {
+    const [sounds, setSounds] = useState(null); // null = sedang dimuat
     const [activeId, setActiveId] = useState(null);
     const [volume, setVolume] = useState(0.5);
     const [timerMin, setTimerMin] = useState(0);
@@ -508,6 +529,19 @@ export default function SoundPage() {
         else setEndAt(null);
     };
 
+    // Muat daftar suara sekali saat halaman dibuka; kalau gagal, pakai daftar cadangan
+    useEffect(() => {
+        const controller = new AbortController();
+        ambilDaftarSuara(controller.signal)
+            .then(setSounds)
+            .catch((e) => {
+                if (controller.signal.aborted) return;
+                console.warn("Daftar suara dari API gagal dimuat, pakai cadangan:", e?.message);
+                setSounds(CADANGAN_SOUNDS);
+            });
+        return () => controller.abort();
+    }, []);
+
     // Volume langsung berubah saat slider digeser
     useEffect(() => {
         if (gainRef.current && ctxRef.current) {
@@ -586,14 +620,21 @@ export default function SoundPage() {
                     )}
 
                     {/* Daftar suara per kelompok: tombol bergaya card */}
+                    {sounds === null ? (
+                        <div role="status" aria-label="Memuat daftar suara" className="space-y-3">
+                            {[0, 1, 2].map((i) => (
+                                <div key={i} className="h-[76px] animate-pulse rounded-2xl bg-svarati-cream" />
+                            ))}
+                        </div>
+                    ) : (
                     <div className="space-y-6">
-                        {GROUP_ORDER.map((group) => (
-                            <div key={group}>
+                        {GROUPS.filter((g) => sounds.some((s) => s.kategori === g.kategori)).map((group) => (
+                            <div key={group.kategori}>
                                 <p className="mb-3 text-xs font-bold uppercase tracking-widest text-svarati-teal/60">
-                                    {group}
+                                    {group.label}
                                 </p>
                                 <div className="space-y-3">
-                                    {SOUNDS.filter((s) => s.group === group).map((sound) => {
+                                    {sounds.filter((s) => s.kategori === group.kategori).map((sound) => {
                                         const isActive = activeId === sound.id;
                                         return (
                                             <button
@@ -628,6 +669,7 @@ export default function SoundPage() {
                             </div>
                         ))}
                     </div>
+                    )}
 
                     {/* Volume */}
                     <div>
