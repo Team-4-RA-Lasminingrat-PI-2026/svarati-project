@@ -1,20 +1,28 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { useLocalStorageState } from "@/lib/useLocalStorageState";
 import Link from "next/link";
 import { Card, CardTitle, CardDescription } from "@/components/Card";
 import  Badge  from "@/components/Badge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { X, Leaf, Trash2, Check, Pencil } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
+import ConfirmDialog from "@/components/modals/ConfirmDialog";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 
 const STORAGE_KEY = "svarati-mood-history";
 const NOTES_KEY = "svarati-mood-notes";
+// Tulisan yang belum ditekan "Simpan catatan", supaya tidak hilang saat refresh atau tab tertutup
+const DRAFTS_KEY = "svarati-mood-drafts";
 const MAX_NOTE = 1000;
+
+// Contoh: "Minggu, 8 November 2026"
+const formatTanggal = (d) => format(d, "EEEE, d MMMM yyyy", { locale: id });
 
 // Mulai dari kosong, hanya check-in yang benar-benar dicatat yang tampil
 const initialMoods = {};
+const EMPTY = {};
 
 const moodDetails = {
     "😡": {
@@ -93,60 +101,50 @@ function computeStreak(moods) {
 
 export default function PemulihanPage() {
     const [date, setDate] = useState(new Date());
-    const [activeMoodEmoji, setActiveMoodEmoji] = useState(null);
-    const [moodHistory, setMoodHistory] = useState(initialMoods);
-    const [noteHistory, setNoteHistory] = useState({});
-    const [noteDraft, setNoteDraft] = useState("");
-    const [noteSaved, setNoteSaved] = useState(false);
-    const [isEditing, setIsEditing] = useState(false);
-    const [loaded, setLoaded] = useState(false);
+    // Semua input jurnal langsung tersimpan di localStorage setiap kali berubah
+    const [moodHistory, setMoodHistory, removeMoods] = useLocalStorageState(STORAGE_KEY, initialMoods);
+    const [noteHistory, setNoteHistory, removeNotes] = useLocalStorageState(NOTES_KEY, EMPTY);
+    const [draftHistory, setDraftHistory, removeDrafts] = useLocalStorageState(DRAFTS_KEY, EMPTY);
+    // Disimpan sebagai tanggal (bukan true/false), jadi otomatis "reset" saat pindah tanggal
+    const [editingKey, setEditingKey] = useState(null);
+    const [savedKey, setSavedKey] = useState(null);
+    const [confirmTarget, setConfirmTarget] = useState(null); // "day" | "all" | null
+    const [notice, setNotice] = useState("");
 
     const dateKey = date ? format(date, "yyyy-MM-dd") : null;
 
-    // Load dari localStorage sekali saat mount
-    useEffect(() => {
-        try {
-            const savedMoods = localStorage.getItem(STORAGE_KEY);
-            if (savedMoods) setMoodHistory(JSON.parse(savedMoods));
-            const savedNotes = localStorage.getItem(NOTES_KEY);
-            if (savedNotes) setNoteHistory(JSON.parse(savedNotes));
-        } catch { }
-        setLoaded(true);
-    }, []);
-
-    // Simpan mood setiap kali berubah (setelah load selesai)
-    useEffect(() => {
-        if (!loaded) return;
-        try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(moodHistory));
-        } catch { }
-    }, [moodHistory, loaded]);
-
-    // Simpan catatan setiap kali berubah (setelah load selesai)
-    useEffect(() => {
-        if (!loaded) return;
-        try {
-            localStorage.setItem(NOTES_KEY, JSON.stringify(noteHistory));
-        } catch { }
-    }, [noteHistory, loaded]);
-
-    // Sinkronkan emoji aktif dengan tanggal yang dipilih
-    useEffect(() => {
-        setActiveMoodEmoji(dateKey ? moodHistory[dateKey] ?? null : null);
-    }, [dateKey, moodHistory]);
-
-    // Muat catatan tanggal yang dipilih ke kolom ketik
-    useEffect(() => {
-        setNoteDraft(dateKey ? noteHistory[dateKey] ?? "" : "");
-        setNoteSaved(false);
-        setIsEditing(false); // pindah tanggal = kembali ke mode baca
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dateKey, loaded]);
+    // Nilai turunan: dihitung langsung dari data, tanpa state tambahan
+    const activeMoodEmoji = dateKey ? moodHistory[dateKey] ?? null : null;
+    const savedNote = dateKey ? noteHistory[dateKey] ?? "" : "";
+    const draft = dateKey ? draftHistory[dateKey] : undefined;
+    const noteDraft = draft ?? savedNote;
+    const isEditing = dateKey !== null && (editingKey === dateKey || draft !== undefined);
+    const noteSaved = dateKey !== null && savedKey === dateKey;
 
     const handleSelectMood = (emoji) => {
         if (!dateKey) return;
-        setActiveMoodEmoji(emoji);
         setMoodHistory((prev) => ({ ...prev, [dateKey]: emoji }));
+    };
+
+    // Draf disimpan selama isinya berbeda dari catatan tersimpan (termasuk kalau dikosongkan)
+    const handleChangeNote = (value) => {
+        if (!dateKey) return;
+        const text = value.slice(0, MAX_NOTE);
+        setSavedKey(null);
+        setDraftHistory((prev) => {
+            const next = { ...prev };
+            if (text !== savedNote) next[dateKey] = text;
+            else delete next[dateKey];
+            return next;
+        });
+    };
+
+    const discardDraft = () => {
+        setDraftHistory((prev) => {
+            const next = { ...prev };
+            delete next[dateKey];
+            return next;
+        });
     };
 
     const handleSaveNote = () => {
@@ -158,34 +156,53 @@ export default function PemulihanPage() {
             else delete next[dateKey]; // kolom dikosongkan = hapus catatan hari itu
             return next;
         });
-        setNoteDraft(text);
-        setIsEditing(false); // setelah disimpan, tampil mode baca
-        setNoteSaved(true);
-        setTimeout(() => setNoteSaved(false), 2000);
+        discardDraft(); // sudah disimpan, draf tidak diperlukan lagi
+        setEditingKey(null); // setelah disimpan, tampil mode baca
+        setSavedKey(dateKey);
+        setTimeout(() => setSavedKey((k) => (k === dateKey ? null : k)), 2000);
     };
 
     const handleStartEdit = () => {
-        setNoteDraft(noteHistory[dateKey] ?? "");
-        setIsEditing(true);
+        setEditingKey(dateKey);
     };
 
     const handleCancelEdit = () => {
-        setNoteDraft(noteHistory[dateKey] ?? "");
-        setIsEditing(false);
+        discardDraft(); // batal = buang draf
+        setEditingKey(null);
+    };
+
+    // Pesan singkat setelah data dihapus (dibacakan juga oleh screen reader)
+    const showNotice = (text) => {
+        setNotice(text);
+        setTimeout(() => setNotice((n) => (n === text ? "" : n)), 4000);
+    };
+
+    // Hapus satu tanggal dari data; kalau datanya jadi kosong, key-nya ikut dihapus dari localStorage
+    const removeEntry = (history, setHistory, removeAll) => {
+        if (!(dateKey in history)) return;
+        const next = { ...history };
+        delete next[dateKey];
+        if (Object.keys(next).length > 0) setHistory(next);
+        else removeAll();
+    };
+
+    const handleDeleteDay = () => {
+        if (!dateKey) return;
+        removeEntry(moodHistory, setMoodHistory, removeMoods);
+        removeEntry(noteHistory, setNoteHistory, removeNotes);
+        removeEntry(draftHistory, setDraftHistory, removeDrafts);
+        setEditingKey(null);
+        setSavedKey(null);
+        showNotice(`Data tanggal ${formatTanggal(date)} sudah dihapus dari perangkat ini.`);
     };
 
     const handleClearAll = () => {
-        if (window.confirm("Hapus semua data mood dan catatan dari perangkat ini?")) {
-            setMoodHistory({});
-            setNoteHistory({});
-            setNoteDraft("");
-            setIsEditing(false);
-            setActiveMoodEmoji(null);
-            try {
-                localStorage.removeItem(STORAGE_KEY);
-                localStorage.removeItem(NOTES_KEY);
-            } catch { }
-        }
+        removeMoods();
+        removeNotes();
+        removeDrafts();
+        setEditingKey(null);
+        setSavedKey(null);
+        showNotice("Semua data mood dan catatan sudah dihapus dari perangkat ini.");
     };
 
     const streakCount = computeStreak(moodHistory);
@@ -206,9 +223,13 @@ export default function PemulihanPage() {
     });
 
     const currentDetail = activeMoodEmoji ? moodDetails[activeMoodEmoji] : null;
-    const savedNote = dateKey ? noteHistory[dateKey] ?? "" : "";
     const showEditor = isEditing || !savedNote;
     const hasUnsavedChange = noteDraft.trim() !== savedNote;
+    const hasDayData = Boolean(activeMoodEmoji || savedNote || draft !== undefined);
+    const hasAnyData =
+        Object.keys(moodHistory).length > 0 ||
+        Object.keys(noteHistory).length > 0 ||
+        Object.keys(draftHistory).length > 0;
 
     return (
         // pt-28 / md:pt-36 memberi ruang untuk navbar yang melayang di atas
@@ -349,10 +370,7 @@ export default function PemulihanPage() {
                                         <textarea
                                             id="mood-note"
                                             value={noteDraft}
-                                            onChange={(e) => {
-                                                setNoteDraft(e.target.value.slice(0, MAX_NOTE));
-                                                setNoteSaved(false);
-                                            }}
+                                            onChange={(e) => handleChangeNote(e.target.value)}
                                             rows={5}
                                             maxLength={MAX_NOTE}
                                             autoFocus={isEditing}
@@ -362,6 +380,7 @@ export default function PemulihanPage() {
                                         <div className="mt-2 flex items-center justify-between gap-3">
                                             <span className="text-xs text-gray-400">
                                                 {noteDraft.length}/{MAX_NOTE}
+                                                {hasUnsavedChange && noteDraft.trim() && " · Draf tersimpan otomatis"}
                                             </span>
                                             <div className="flex items-center gap-2">
                                                 {savedNote && (
@@ -429,20 +448,66 @@ export default function PemulihanPage() {
                                 </Link>
                             </>
                         )}
+
+                        {/* Hapus data tanggal ini saja */}
+                        {hasDayData && (
+                            <div className="mt-6 flex justify-center border-t border-gray-100 pt-4">
+                                <button
+                                    type="button"
+                                    onClick={() => setConfirmTarget("day")}
+                                    className="flex items-center gap-2 rounded-full px-3 py-1.5 text-sm text-svarati-danger hover:bg-svarati-danger-soft"
+                                >
+                                    <Trash2 className="size-4" />
+                                    Hapus data tanggal ini
+                                </button>
+                            </div>
+                        )}
                     </Card>
                 )}
 
-                {/* Hapus data */}
-                <div className="flex justify-center">
-                    <button
-                        onClick={handleClearAll}
-                        className="flex items-center gap-2 text-xs text-svarati-teal/60 hover:text-svarati-teal"
-                    >
-                        <Trash2 className="size-3.5" />
-                        Hapus data mood dan catatan dari perangkat ini
-                    </button>
-                </div>
+                {/* Pesan setelah hapus; selalu ada di halaman supaya dibacakan screen reader */}
+                <p
+                    role="status"
+                    className={`mx-auto max-w-3xl text-center text-sm font-medium text-svarati-teal ${notice ? "" : "sr-only"}`}
+                >
+                    {notice && (
+                        <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-2 shadow-sm">
+                            <Check className="size-4" /> {notice}
+                        </span>
+                    )}
+                </p>
+
+                {/* Hapus semua data */}
+                {hasAnyData && (
+                    <div className="flex justify-center">
+                        <button
+                            type="button"
+                            onClick={() => setConfirmTarget("all")}
+                            className="flex items-center gap-2 text-xs text-svarati-teal/60 hover:text-svarati-teal"
+                        >
+                            <Trash2 className="size-3.5" />
+                            Hapus semua data mood dan catatan dari perangkat ini
+                        </button>
+                    </div>
+                )}
             </div>
+
+            <ConfirmDialog
+                open={confirmTarget === "day"}
+                onOpenChange={(open) => !open && setConfirmTarget(null)}
+                title="Hapus data tanggal ini?"
+                description={`Mood, catatan, dan draf pada ${date ? formatTanggal(date) : ""} akan dihapus dari perangkat ini dan tidak bisa dikembalikan.`}
+                confirmLabel="Ya, hapus"
+                onConfirm={handleDeleteDay}
+            />
+            <ConfirmDialog
+                open={confirmTarget === "all"}
+                onOpenChange={(open) => !open && setConfirmTarget(null)}
+                title="Hapus semua data jurnal?"
+                description="Semua mood, catatan, dan draf di perangkat ini akan dihapus dan tidak bisa dikembalikan."
+                confirmLabel="Ya, hapus semua"
+                onConfirm={handleClearAll}
+            />
         </main>
     );
 }
