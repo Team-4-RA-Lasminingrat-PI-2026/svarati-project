@@ -217,7 +217,7 @@ Menu utama di navbar diambil dari `MENU_UTAMA` di `content/labels.js`:
 
 ## API
 
-Semua endpoint ada di `app/api/` dan mengambil data dari Supabase lewat `lib/help-directory.js`. Kalau gagal, endpoint mengembalikan status `500` dengan `{ "error": "..." }`.
+Semua endpoint ada di `app/api/` dan mengambil data dari Supabase lewat `lib/help-directory.js` (direktori, provinsi, kota) dan `lib/relaxation-tracks.js` (suara terapi, tabel `relaxation_tracks`). Kalau gagal, endpoint mengembalikan status `500` dengan `{ "error": "..." }`.
 
 | Endpoint | Parameter | Hasil |
 |---|---|---|
@@ -225,6 +225,7 @@ Semua endpoint ada di `app/api/` dan mengambil data dari Supabase lewat `lib/hel
 | `GET /api/help-directory/export` | `cari`, `provinsi`, `kota`, `tipe` | File CSV (maks. 1000 baris) |
 | `GET /api/provinces` | – | `{ data: [{ id, nama }] }` |
 | `GET /api/cities` | `provinsi` (nama) atau `provinsi_id` | `{ data: [{ id, nama }] }` |
+| `GET /api/sounds` | `kategori` (`noise`, `suara_alam`, `musik`; opsional) | `{ data: [{ id, kategori, judul, deskripsi, soundKey, audioUrl, durasiDetik, urutan }] }` |
 
 `tipe` yang valid: `Pemerintah`, `Bantuan Hukum`, `Medis`, `Psikologis`, `Lembaga Masyarakat`. Hanya layanan dengan `is_verified = true` yang ditampilkan.
 
