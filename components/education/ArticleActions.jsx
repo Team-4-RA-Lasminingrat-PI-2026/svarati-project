@@ -27,7 +27,7 @@ export default function ArticleActions({ title, initialLikes = 0 }) {
     "flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold text-svarati-lavender-dark transition hover:bg-svarati-lavender-light";
 
   return (
-    <div className="pointer-events-none fixed inset-x-0 bottom-4 z-30 flex justify-center px-4">
+    <div className="pointer-events-none fixed inset-x-0 bottom-24 z-30 sm:bottom-4 flex justify-center px-4">
       <div className="pointer-events-auto flex items-center gap-1 rounded-full border border-svarati-lavender-light bg-white/90 p-1.5 shadow-lg backdrop-blur-md">
         <button
           type="button"

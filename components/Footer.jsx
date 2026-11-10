@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Accessibility } from "lucide-react";
+import { IkonAksesibilitas } from "@/components/AccessibilityFab";
 import { Card } from "@/components/Card";
 import { Button } from "@/components/ui/button";
 import { useAccessibility } from "@/context/AccessibilityContext";
@@ -116,7 +116,7 @@ export default function Footer() {
             aria-haspopup="dialog"
             className="flex items-center gap-2"
           >
-            <Accessibility size={18} />
+            <IkonAksesibilitas className="size-[18px]" />
             <span>{AKSESIBILITAS.tombol}</span>
           </Button>
 
