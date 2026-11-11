@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { treeOfHopeContent as t } from "@/content/labels";
 import {
   MAX_MESSAGE_LENGTH,
@@ -10,17 +10,15 @@ import {
 import LocationCombobox from "./LocationCombobox";
 
 let groupsCache = null; // daftar daerah diambil sekali per kunjungan halaman
+let draft = { text: "", role: "", location: "", agreed: false }; // draf pesan baru yang belum terkirim
 
 export default function MessageFormModal({ open, editing, onClose, onSubmit, onEmpty }) {
-  // Tulisan pesan baru yang belum terkirim dipertahankan saat form ditutup.
-  const draftRef = useRef({ text: "", role: "", location: "", agreed: false });
   if (!open) return null;
 
   return (
     <MessageForm
       key={editing ? `edit-${editing.id}` : "new"} // pasang ulang tiap mode/pesan berganti
       editing={editing}
-      draftRef={draftRef}
       onClose={onClose}
       onSubmit={onSubmit}
       onEmpty={onEmpty}
@@ -28,11 +26,11 @@ export default function MessageFormModal({ open, editing, onClose, onSubmit, onE
   );
 }
 
-function MessageForm({ editing, draftRef, onClose, onSubmit, onEmpty }) {
+function MessageForm({ editing, onClose, onSubmit, onEmpty }) {
   // Nilai awal: pesan yang diedit, atau draf pesan baru
   const init = editing
     ? { text: editing.text ?? "", role: editing.role ?? "", location: editing.location ?? "", agreed: false }
-    : draftRef.current;
+    : draft;
 
   const [text, setText] = useState(init.text);
   const [role, setRole] = useState(init.role);
@@ -44,19 +42,22 @@ function MessageForm({ editing, draftRef, onClose, onSubmit, onEmpty }) {
 
   // Simpan draf hanya untuk pesan baru
   useEffect(() => {
-    if (!editing) draftRef.current = { text, role, location, agreed };
-  }, [editing, draftRef, text, role, location, agreed]);
+    if (!editing) draft = { text, role, location, agreed };
+  }, [editing, text, role, location, agreed]);
 
   // Daftar provinsi + kota
   useEffect(() => {
     if (groupsCache) return;
     fetch(LOCATIONS_URL)
-      .then((r) => r.json())
+      .then((r) => {
+        if (!r.ok) throw new Error(`locations ${r.status}`);
+        return r.json();
+      })
       .then((j) => {
         groupsCache = j.data ?? [];
         setGroups(groupsCache);
       })
-      .catch(() => {});
+      .catch((err) => console.error("[locations]", err));
   }, []);
 
   // Semua nilai yang sah (nama provinsi dan nama kota)
@@ -64,8 +65,14 @@ function MessageForm({ editing, draftRef, onClose, onSubmit, onEmpty }) {
   // Daerah lama yang tidak ada di daftar (mis. pesan yang dikirim sebelum ada dropdown)
   const legacy = Boolean(location) && groups.length > 0 && !known.has(location);
 
+  // Esc menutup form, kecuali saat daftar daerah sedang terbuka (Esc hanya menutup daftar itu)
   useEffect(() => {
-    const onKey = (e) => e.key === "Escape" && !sending && onClose();
+    const onKey = (e) => {
+      if (e.key !== "Escape" || sending) return;
+      const el = document.activeElement;
+      if (el?.getAttribute("role") === "combobox" && el.getAttribute("aria-expanded") === "true") return;
+      onClose();
+    };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [sending, onClose]);
@@ -74,7 +81,7 @@ function MessageForm({ editing, draftRef, onClose, onSubmit, onEmpty }) {
     e.preventDefault();
     if (!text.trim()) return onEmpty();
     if (legacy) {
-      setLocError(`"${location}" tidak ada di daftar. Pilih daerah dari daftar, atau pilih "Tidak dipilih".`);
+      setLocError(`"${location}" tidak ada di daftar. Pilih daerah dari daftar, atau kosongkan.`);
       return;
     }
     setLocError("");
@@ -82,7 +89,7 @@ function MessageForm({ editing, draftRef, onClose, onSubmit, onEmpty }) {
     setSending(true);
     const ok = await onSubmit({ text: text.trim(), role, location });
     setSending(false);
-    if (ok && !editing) draftRef.current = { text: "", role: "", location: "", agreed: false };
+    if (ok && !editing) draft = { text: "", role: "", location: "", agreed: false };
   }
 
   const field = "mt-1 w-full rounded-xl border border-input bg-card px-3 py-2 text-card-foreground";
@@ -133,16 +140,16 @@ function MessageForm({ editing, draftRef, onClose, onSubmit, onEmpty }) {
         </label>
 
         <LocationCombobox
-  label={t.form.locationLabel}
-  value={location}
-  onChange={(v) => {
-    setLocation(v);
-    setLocError("");
-  }}
-  groups={groups}
-  invalid={Boolean(locError)}
-/>
-{locError && <p className="mt-1 text-xs text-destructive">{locError}</p>}
+          label={t.form.locationLabel}
+          value={location}
+          onChange={(v) => {
+            setLocation(v);
+            setLocError("");
+          }}
+          groups={groups}
+          invalid={Boolean(locError)}
+        />
+        {locError && <p className="mt-1 text-xs text-destructive">{locError}</p>}
 
         {!editing && (
           <>

@@ -57,7 +57,8 @@ export default function LocationCombobox({ label, value, onChange, groups, inval
       .slice(0, MAX_SHOWN);
   }, [options, query]);
 
-  useEffect(() => setActive(0), [query, open]);
+  // Dijaga agar tidak melewati panjang daftar (tanpa setState di dalam effect)
+  const activeIndex = Math.min(active, Math.max(results.length - 1, 0));
 
   // Tutup saat klik di luar
   useEffect(() => {
@@ -70,12 +71,13 @@ export default function LocationCombobox({ label, value, onChange, groups, inval
 
   // Pastikan opsi aktif terlihat
   useEffect(() => {
-    if (open) document.getElementById(`${uid}-opt-${active}`)?.scrollIntoView({ block: "nearest" });
-  }, [active, open, uid]);
+    if (open) document.getElementById(`${uid}-opt-${activeIndex}`)?.scrollIntoView({ block: "nearest" });
+  }, [activeIndex, open, uid]);
 
   function choose(opt) {
     onChange(opt.value);
     setQuery("");
+    setActive(0);
     setOpen(false);
   }
 
@@ -83,17 +85,18 @@ export default function LocationCombobox({ label, value, onChange, groups, inval
     if (e.key === "ArrowDown") {
       e.preventDefault();
       setOpen(true);
-      setActive((i) => Math.min(i + 1, results.length - 1));
+      setActive(Math.min(activeIndex + 1, results.length - 1));
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
-      setActive((i) => Math.max(i - 1, 0));
+      setActive(Math.max(activeIndex - 1, 0));
     } else if (e.key === "Enter" && open) {
       e.preventDefault(); // jangan mengirim form
-      if (results[active]) choose(results[active]);
+      if (results[activeIndex]) choose(results[activeIndex]);
     } else if (e.key === "Escape" && open) {
       e.stopPropagation(); // hanya menutup daftar, bukan seluruh form
       setOpen(false);
       setQuery("");
+      setActive(0);
     }
   }
 
@@ -111,14 +114,18 @@ export default function LocationCombobox({ label, value, onChange, groups, inval
         aria-expanded={open}
         aria-controls={listId}
         aria-autocomplete="list"
-        aria-activedescendant={open ? `${uid}-opt-${active}` : undefined}
+        aria-activedescendant={open ? `${uid}-opt-${activeIndex}` : undefined}
         aria-invalid={invalid || undefined}
         autoComplete="off"
         value={shownText}
         placeholder="Ketik nama kota atau provinsi"
-        onFocus={() => setOpen(true)}
+        onFocus={() => {
+          setActive(0);
+          setOpen(true);
+        }}
         onChange={(e) => {
           setQuery(e.target.value);
+          setActive(0);
           setOpen(true);
         }}
         onKeyDown={onKeyDown}
@@ -145,7 +152,7 @@ export default function LocationCombobox({ label, value, onChange, groups, inval
               onClick={() => choose(o)}
               onMouseEnter={() => setActive(i)}
               className={`flex cursor-pointer items-baseline justify-between gap-3 px-3 py-2 text-sm ${
-                i === active ? "bg-accent text-accent-foreground" : ""
+                i === activeIndex ? "bg-accent text-accent-foreground" : ""
               }`}
             >
               <span className="font-medium">{o.label}</span>
