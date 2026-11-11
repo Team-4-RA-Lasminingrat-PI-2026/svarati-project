@@ -93,6 +93,53 @@ function createNoiseBuffer(ctx, type) {
     return buffer;
 }
 
+// Tekstur hujan stereo (12 detik, diputar berulang): ribuan tetesan kecil di waktu acak,
+// berbeda di kiri dan kanan supaya terdengar luas seperti hujan sungguhan.
+// rapat = jumlah tetesan per detik per sisi.
+function createRainBuffer(ctx, rapat) {
+    const sr = ctx.sampleRate;
+    const size = sr * 12;
+    const sambung = Math.floor(sr * 0.5);
+    const buffer = ctx.createBuffer(2, size, sr);
+    for (let ch = 0; ch < 2; ch++) {
+        const raw = new Float32Array(size + sambung);
+        const jumlah = Math.floor(rapat * (raw.length / sr));
+        for (let n = 0; n < jumlah; n++) {
+            const mulai = Math.floor(Math.random() * raw.length);
+            if (Math.random() < 0.88) {
+                // Tetesan kecil: letupan derau yang sangat pendek
+                const amp = Math.random() ** 2 * 0.35;
+                const tau = sr * (0.0008 + Math.random() * 0.0025);
+                for (let k = 0; k < tau * 5 && mulai + k < raw.length; k++) {
+                    raw[mulai + k] += (Math.random() * 2 - 1) * amp * Math.exp(-k / tau);
+                }
+            } else {
+                // Tetesan yang jatuh ke genangan: "plip" yang nadanya sedikit naik
+                const amp = 0.04 + Math.random() * 0.08;
+                const f0 = 1200 + Math.random() * 1600;
+                const tau = sr * (0.006 + Math.random() * 0.01);
+                let fase = 0;
+                for (let k = 0; k < tau * 5 && mulai + k < raw.length; k++) {
+                    fase += (2 * Math.PI * f0 * (1 + (0.5 * k) / (tau * 5))) / sr;
+                    raw[mulai + k] += Math.sin(fase) * amp * Math.exp(-k / tau);
+                }
+            }
+        }
+        // Haluskan bagian yang terlalu tajam (low-pass satu kutub, ~5 kHz)
+        const a = Math.exp((-2 * Math.PI * 5000) / sr);
+        let y = 0;
+        for (let i = 0; i < raw.length; i++) {
+            y = (1 - a) * raw[i] + a * y;
+            raw[i] = y;
+        }
+        const d = buffer.getChannelData(ch);
+        for (let i = 0; i < size; i++) {
+            d[i] = i < sambung ? raw[i] * (i / sambung) + raw[size + i] * (1 - i / sambung) : raw[i];
+        }
+    }
+    return buffer;
+}
+
 // Mencatat semua node/timer supaya bisa dihentikan dengan bersih
 function createRig(ctx) {
     const nodes = [];
@@ -107,8 +154,8 @@ function createRig(ctx) {
     return {
         track,
         // Buffer derau (dibuat sekali per jenis)
-        buffer(type) {
-            return (buffers[type] ??= createNoiseBuffer(ctx, type));
+        buffer(type, buat = () => createNoiseBuffer(ctx, type)) {
+            return (buffers[type] ??= buat());
         },
         // Derau yang berputar terus (dasar suara hujan, angin, ombak)
         noise(type) {
@@ -366,34 +413,20 @@ function lapisan(ctx, r, out, { jenis, tipe, freq, Q = 0.7, level }) {
     return { f, g };
 }
 
-// Rintik hujan yang hangat (tanpa desis tajam)
-function dasarHujan(ctx, r, out, level) {
-    const hp = filter(ctx, r, "highpass", 250);
-    const lp = filter(ctx, r, "lowpass", 1800);
+// Hujan: tekstur tetesan stereo + desir jauh yang pelan. rapat = tetesan per detik.
+function dasarHujan(ctx, r, out, level, rapat = 700) {
+    const s = r.track(ctx.createBufferSource());
+    s.buffer = r.buffer("hujan" + rapat, () => createRainBuffer(ctx, rapat));
+    s.loop = true;
+    s.start();
+    const lp = filter(ctx, r, "lowpass", 6500);
     const g = gainNode(ctx, r, level);
-    r.noise("pink").connect(hp);
-    hp.connect(lp);
+    s.connect(lp);
     lp.connect(g);
     g.connect(out);
-    r.lfo(0.04, level * 0.2, g.gain);
-    // Tetesan kecil yang empuk
-    const tetes = filter(ctx, r, "lowpass", 2200);
-    tetes.connect(out);
-    r.loop(() => {
-        const t = ctx.currentTime;
-        const f0 = 700 + Math.random() * 700;
-        const o = ctx.createOscillator();
-        const tg = ctx.createGain();
-        o.frequency.setValueAtTime(f0, t);
-        o.frequency.exponentialRampToValueAtTime(f0 * 0.7, t + 0.1);
-        tg.gain.setValueAtTime(0.0001, t);
-        tg.gain.exponentialRampToValueAtTime(level * 0.05, t + 0.006);
-        tg.gain.exponentialRampToValueAtTime(0.0001, t + 0.14);
-        o.connect(tg);
-        tg.connect(tetes);
-        o.start(t);
-        o.stop(t + 0.16);
-    }, 120, 500);
+    // Desir hujan di kejauhan
+    const jauh = lapisan(ctx, r, out, { jenis: "pink", tipe: "lowpass", freq: 900, level: level * 0.12 });
+    r.lfo(0.03, level * 0.04, jauh.g.gain);
 }
 
 // Ombak yang jauh: gemuruh dalam yang datang dan pergi tiap ~14 detik
@@ -588,7 +621,7 @@ const BUILDERS = {
 
     // ===== Suara alam =====
 
-    hujan_lembut: (ctx, out, r) => dasarHujan(ctx, r, out, 0.5),
+    hujan_lembut: (ctx, out, r) => dasarHujan(ctx, r, out, 1),
 
     ombak_jauh: (ctx, out, r) => dasarOmbak(ctx, r, out, 0.5),
 
@@ -625,7 +658,7 @@ const BUILDERS = {
 
     // Gerimis di hutan dengan suara burung jauh
     gerimis_hutan: (ctx, out, r) => {
-        dasarHujan(ctx, r, out, 0.4);
+        dasarHujan(ctx, r, out, 0.75, 300);
         dasarAngin(ctx, r, out, 0.25);
         const lp = filter(ctx, r, "lowpass", 1500);
         lp.connect(out);
@@ -657,7 +690,7 @@ const BUILDERS = {
 
     // Hujan pelan dengan akor piano yang datang sesekali
     hujan_piano: (ctx, out, r) => {
-        dasarHujan(ctx, r, out, 0.45);
+        dasarHujan(ctx, r, out, 0.8);
         BUILDERS.selimut_malam(ctx, lebihPelan(ctx, r, out, 0.6), r);
     },
 
