@@ -537,3 +537,108 @@ html[data-text-align="kiri"] { --a11y-text-align: left; }
 html[data-text-align="tengah"] { --a11y-text-align: center; }
 html[data-text-align="kanan"] { --a11y-text-align: right; }
 html[data-text-align="penuh"] { --a11y-text-align: justify; }
+
+/* ============================================================
+   9. MODE GELAP (aksesibilitas)
+   Aktif lewat <html data-theme="dark">, dipasang oleh
+   AccessibilityContext (tidak bersamaan dengan kontras tinggi).
+   Strategi: seperti kontras tinggi, cukup menimpa palet.
+   Teks teal jadi terang, latar cream/putih jadi gelap.
+   Elemen berlatar pekat (tombol teal, footer, dll.) tetap
+   memakai palet aslinya supaya teks putihnya tetap terbaca.
+   ============================================================ */
+html[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* Permukaan gelap (pengganti cream dan putih) */
+  --sv-surface: #15303A;
+  --color-svarati-cream: #0D1F24;
+
+  /* Teal: dipakai terutama sebagai warna teks, jadi dibuat terang */
+  --color-svarati-teal: #E4EEF0;
+  --color-svarati-teal-light: #A9CBD3;
+  --color-svarati-teal-dark: #F2F7F8;
+  --color-svarati-teal-soft: #173A44;
+
+  /* Coral: teks lebih terang, latar lembut jadi gelap */
+  --color-svarati-coral: #E8876C;
+  --color-svarati-coral-medium: #F09A80;
+  --color-svarati-coral-dark: #F2A58E;
+  --color-svarati-coral-darker: #F5B5A1;
+  --color-svarati-coral-soft: #3A2520;
+
+  /* Lavender: yang pekat jadi terang (teks), yang muda jadi ungu gelap (latar) */
+  --color-svarati-lavender: #A99CE0;
+  --color-svarati-lavender-light: #2C2850;
+  --color-svarati-lavender-hover: #3A3466;
+  --color-svarati-lavender-dark: #C9BFF0;
+  --color-svarati-lavender-darker: #DCD5F7;
+  --color-svarati-lavender-border: #8C7FCB;
+
+  /* Danger */
+  --color-svarati-danger: #F08070;
+  --color-svarati-danger-dark: #F39A8D;
+  --color-svarati-danger-darker: #F6B0A6;
+  --color-svarati-danger-soft: #3A1F1C;
+
+  /* Abu-abu Tailwind dibalik (gelap <-> terang) */
+  --color-gray-50: #13262C;
+  --color-gray-100: #1A3038;
+  --color-gray-200: #24404A;
+  --color-gray-300: #34525C;
+  --color-gray-400: #8FA6AD;
+  --color-gray-500: #A3B7BD;
+  --color-gray-600: #B8C9CE;
+  --color-gray-700: #CFDCE0;
+  --color-gray-800: #E1EAEC;
+  --color-gray-900: #EEF3F4;
+
+  /* Variabel semantik shadcn */
+  --card: var(--sv-surface);
+  --popover: var(--sv-surface);
+  --primary: #E4EEF0;
+  --primary-foreground: #0D1F24;
+  --border: #2E4A54;
+}
+
+/* Elemen berlatar pekat: kembalikan palet asli di dalamnya */
+html[data-theme="dark"] :is(
+  [class~="bg-svarati-teal"], [class~="bg-svarati-teal-dark"], [class~="bg-svarati-teal-light"],
+  [class~="bg-svarati-lavender-dark"], [class~="bg-svarati-lavender-darker"],
+  [class~="bg-svarati-coral"], [class~="bg-svarati-coral-medium"], [class~="bg-svarati-coral-dark"], [class~="bg-svarati-coral-darker"],
+  [class~="bg-svarati-danger"], [class~="bg-svarati-danger-dark"], [class~="bg-svarati-danger-darker"]
+) {
+  --color-svarati-cream: #FAF8F5;
+  --color-svarati-teal: #0F4C5C;
+  --color-svarati-teal-light: #1D6577;
+  --color-svarati-teal-dark: #0B3B47;
+  --color-svarati-teal-soft: #E8F3F1;
+  --color-svarati-coral: #E07A5F;
+  --color-svarati-coral-medium: #C0502F;
+  --color-svarati-coral-dark: #B14A25;
+  --color-svarati-coral-darker: #9A3A1A;
+  --color-svarati-coral-soft: #FFF5F2;
+  --color-svarati-lavender: #9D8FD6;
+  --color-svarati-lavender-light: #D8D1F3;
+  --color-svarati-lavender-hover: #C6BCEB;
+  --color-svarati-lavender-dark: #5A4A9E;
+  --color-svarati-lavender-darker: #463A7C;
+  --color-svarati-danger: #C0392B;
+  --color-svarati-danger-dark: #A02A1F;
+  --color-svarati-danger-darker: #7F2218;
+  --color-svarati-danger-soft: #FBEAE8;
+}
+
+/* Latar putih jadi permukaan gelap. Di dalam layer utilities dengan
+   spesifisitas rendah (:where), supaya efek hover:bg-... tetap jalan. */
+@layer utilities {
+  :where(html[data-theme="dark"]) .bg-white {
+    background-color: var(--sv-surface);
+  }
+  :where(html[data-theme="dark"]) :is([class*="bg-white/4"], [class*="bg-white/6"], [class*="bg-white/7"], [class*="bg-white/8"], [class*="bg-white/9"]) {
+    background-color: rgb(21 48 58 / 0.85);
+  }
+  :where(html[data-theme="dark"]) :is(.border-white\/40, [class*="border-white/4"]) {
+    border-color: rgb(255 255 255 / 0.12);
+  }
+}

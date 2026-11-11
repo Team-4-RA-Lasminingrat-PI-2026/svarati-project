@@ -1264,6 +1264,9 @@ export const AKSESIBILITAS = {
   kontras: {
     nama: "Tema kontras tinggi",
   },
+  gelap: {
+    nama: "Mode gelap",
+  },
   screenReader: {
     nama: "Mode screen reader",
   },

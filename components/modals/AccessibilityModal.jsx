@@ -135,6 +135,13 @@ export default function AccessibilityModal() {
                             onChange={() => toggle("highContrast")}
                         />
                         <SwitchRow
+                            id="a11y-gelap"
+                            nama={T.gelap.nama}
+                            desk={T.gelap.desk}
+                            checked={settings.darkMode}
+                            onChange={() => toggle("darkMode")}
+                        />
+                        <SwitchRow
                             id="a11y-sr"
                             nama={T.screenReader.nama}
                             desk={T.screenReader.desk}
@@ -192,6 +199,7 @@ export default function AccessibilityModal() {
                     {/* Diumumkan screen reader setiap kali pengaturan berubah */}
                     <p role="status" className="sr-only">
                         {T.kontras.nama} {settings.highContrast ? T.statusAktif : T.statusMati}.{" "}
+                        {T.gelap.nama} {settings.darkMode ? T.statusAktif : T.statusMati}.{" "}
                         {T.screenReader.nama} {settings.screenReader ? T.statusAktif : T.statusMati}.{" "}
                         {T.ukuranTeks.nama}: {T.ukuran[settings.fontSize]}.{" "}
                         {T.tinggiBaris.nama}: {T.ukuran[settings.lineHeight]}.{" "}

@@ -11,6 +11,7 @@ export const PILIHAN_RATA = ["kiri", "tengah", "kanan", "penuh"];
 
 const DEFAULT_SETTINGS = {
     highContrast: false,
+    darkMode: false,
     screenReader: false,
     fontSize: "normal",
     lineHeight: "normal",
@@ -26,6 +27,7 @@ function rapikan(saved) {
     }
     if (!PILIHAN_RATA.includes(s.textAlign)) s.textAlign = null;
     s.highContrast = s.highContrast === true;
+    s.darkMode = s.darkMode === true;
     s.screenReader = s.screenReader === true;
     return s;
 }
@@ -35,6 +37,9 @@ function rapikan(saved) {
 function terapkanKeHtml(settings) {
     const root = document.documentElement;
     root.dataset.contrast = settings.highContrast ? "high" : "normal";
+    // Mode gelap dan kontras tinggi tidak dipakai bersamaan; kontras tinggi yang menang
+    if (settings.darkMode && !settings.highContrast) root.dataset.theme = "dark";
+    else delete root.dataset.theme;
     root.dataset.screenReader = settings.screenReader ? "on" : "off";
     for (const key of ["fontSize", "lineHeight", "letterSpacing"]) {
         if (settings[key] === "normal") delete root.dataset[key];
@@ -68,7 +73,15 @@ export function AccessibilityProvider({ children }) {
 
     const value = {
         settings,
-        toggle: (key) => ubah(key, (v) => !v),
+        toggle: (key) =>
+            setSaved((prev) => {
+                const s = rapikan(prev);
+                const next = { ...s, [key]: !s[key] };
+                // Menyalakan mode gelap mematikan kontras tinggi, dan sebaliknya
+                if (key === "darkMode" && next.darkMode) next.highContrast = false;
+                if (key === "highContrast" && next.highContrast) next.darkMode = false;
+                return next;
+            }),
         // Ubah satu setelan, misalnya set("fontSize", "besar")
         set: (key, val) => ubah(key, () => val),
         reset: () => setSaved({ ...DEFAULT_SETTINGS }),

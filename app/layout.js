@@ -32,7 +32,7 @@ export const metadata = {
 
 // Dijalankan sebelum halaman tampil, supaya tema kontras tinggi dan setelan teks tidak "berkedip" saat refresh.
 // Key dan nilai harus sama dengan AccessibilityContext.
-const initAccessibility = `try{var s=JSON.parse(localStorage.getItem("svarati-accessibility"));if(s){var d=document.documentElement.dataset;if(s.highContrast){d.contrast="high";}["fontSize","lineHeight","letterSpacing"].forEach(function(k){if(s[k]==="kecil"||s[k]==="besar"){d[k]=s[k];}});if(["kiri","tengah","kanan","penuh"].indexOf(s.textAlign)>-1){d.textAlign=s.textAlign;}}}catch(e){}`;
+const initAccessibility = `try{var s=JSON.parse(localStorage.getItem("svarati-accessibility"));if(s){var d=document.documentElement.dataset;if(s.highContrast){d.contrast="high";}else if(s.darkMode){d.theme="dark";}["fontSize","lineHeight","letterSpacing"].forEach(function(k){if(s[k]==="kecil"||s[k]==="besar"){d[k]=s[k];}});if(["kiri","tengah","kanan","penuh"].indexOf(s.textAlign)>-1){d.textAlign=s.textAlign;}}}catch(e){}`;
 
 export default function RootLayout({ children }) {
   return (
