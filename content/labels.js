@@ -1291,3 +1291,67 @@ export const AKSESIBILITAS = {
   statusMati: "nonaktif",
 };
 
+// TREE OF HOPE
+export const treeOfHopeContent = {
+  back: { label: "Pemulihan", href: "/rehabilitatif", aria: "Kembali ke Pemulihan" },
+  badge: "DUKUNGAN KOMUNITAS",
+  title: "Kamu Tidak Sendirian!",
+  description:
+    "Temukan kehangatan dan dukungan melalui pesan-pesan dari komunitas Svarati. Bagikan juga kata-kata penyemangatmu dan tumbuhkan harapan bersama perempuan lainnya. Setiap pesan adalah benih harapan.",
+  scrollHint: "Geser ke bawah untuk melihat Pesan Dukungan di Pohon Harapan",
+  image: { src: "/tree-of-hope-transparent.svg", alt: "Ilustrasi pohon harapan" },
+  supportLabel: "Dukungan",
+  anonymous: "Anonim",
+  newLabel: "Baru",
+  // Nilai ini disimpan di database (user_role) dan dipakai validasi API.
+  roles: ["Penyintas", "Pendamping", "Keluarga", "Teman", "Aktivis"],
+
+  composeEnvelope: "Kirim pesan dukungan anonimmu sekarang!",
+  composeCta: "Klik di sini",
+  moreMessages: "Klik pesan atau amplop untuk membaca pesan lebih lengkap.",
+  readMore: "Baca pesan",
+
+  like: {
+    aria: (liked, count, label) =>
+      `${liked ? "Batalkan dukungan" : "Beri dukungan"}. Saat ini ${count} ${label}`,
+  },
+
+  pager: {
+    previous: "‹ Lebih baru",
+    next: "Lebih lama ›",
+    page: (n, total) => `Halaman ${n} dari ${total}`,
+  },
+
+  reader: {
+    position: (n, total) => `Pesan ${n} dari ${total}`,
+    close: "Tutup",
+    previous: "Pesan sebelumnya (lebih baru)",
+    next: "Pesan berikutnya (lebih lama)",
+    openFrom: (author) => `Buka pesan dari ${author}`,
+    readFull: (author) => `Baca pesan lengkap dari ${author}`,
+  },
+
+  form: {
+    title: "Kirim pesan dukunganmu",
+    info: "Pesanmu akan tampil secara anonim di Pohon Harapan Komunitas Svarati.",
+    messageLabel: "Pesan",
+    messagePlaceholder: "Tulis pesan dukungan atau harapanmu di sini...",
+    roleLabel: "Peran (opsional)",
+    rolePlaceholder: "Tidak dipilih",
+    locationLabel: "Asal daerah (opsional)",
+    locationPlaceholder: "Contoh: Bandung",
+    submit: "Kirim Pesan",
+    sending: "Mengirim...",
+    cancel: "Batal",
+  },
+
+  toast: {
+    empty: "Tulis pesanmu dulu sebelum mengirim.",
+    success: "Pesan anonimmu berhasil dikirim.",
+    sendFailed: "Pesan belum bisa dikirim. Coba lagi sebentar lagi.",
+    loadFailed: "Pesan belum bisa dimuat. Coba muat ulang halaman.",
+    likeFailed: "Dukungan belum bisa disimpan. Coba lagi sebentar lagi.",
+    likeUnavailable: "Dukungan belum bisa disimpan untuk pesan ini.",
+    offline: "Sedang offline. Menampilkan pesan-pesan pilihan untukmu.",
+  },
+};
