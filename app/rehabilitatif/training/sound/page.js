@@ -10,34 +10,33 @@ import { cn } from "@/lib/utils";
 // Kode kategori di database (relaxation_tracks.category) dan judul yang tampil di halaman
 const GROUPS = [
     { kategori: "musik", label: "Musik Tenang" },
-    { kategori: "suara_alam", label: "Suara Alam" },
 ];
 
 // Daftar suara diambil dari GET /api/sounds (RLA055).
 // Daftar ini hanya cadangan kalau API gagal (offline / Supabase bermasalah).
 // `id` = sound_key di database = nama generator di BUILDERS.
 const CADANGAN_SOUNDS = [
-    { id: "melodi_brahms", kategori: "musik", label: "Melodi Brahms", desc: "Melodi klasik Brahms yang dimainkan piano pelan dengan iringan hangat" },
-    { id: "kotak_musik", kategori: "musik", label: "Kotak Musik Bintang", desc: "Melodi Twinkle Twinkle Little Star dari kotak musik yang berdenting lembut" },
-    { id: "cahaya_bulan", kategori: "musik", label: "Cahaya Bulan", desc: "Lagu rakyat Prancis Au Clair de la Lune, berdenting pelan seperti lonceng kecil" },
-    { id: "arpeggio_tidur", kategori: "musik", label: "Piano Mengayun", desc: "Petikan piano pelan yang mengayun lembut" },
-    { id: "ayunan", kategori: "musik", label: "Ayunan Lembut", desc: "Kotak musik dengan irama yang bergoyang pelan" },
-    { id: "pelukan_hangat", kategori: "musik", label: "Pelukan Hangat", desc: "Melodi piano sederhana di atas iringan yang hangat" },
-    { id: "harpa_malam", kategori: "musik", label: "Harpa Malam", desc: "Petikan harpa yang naik perlahan, lalu hening sejenak" },
-    { id: "bintang_jatuh", kategori: "musik", label: "Bintang Jatuh", desc: "Denting tinggi yang turun pelan di atas dengung lembut" },
-    { id: "gitar_tidur", kategori: "musik", label: "Gitar Senja", desc: "Petikan gitar nilon yang pelan dan hangat" },
-    { id: "selimut_malam", kategori: "musik", label: "Selimut Malam", desc: "Akor piano panjang yang datang setiap beberapa detik" },
-    { id: "hujan_lembut", kategori: "suara_alam", label: "Hujan Lembut", desc: "Rintik hujan yang hangat dan empuk, tanpa desis tajam" },
-    { id: "ombak_jauh", kategori: "suara_alam", label: "Ombak Jauh", desc: "Gelombang di kejauhan yang datang dan pergi perlahan" },
-    { id: "angin_sore", kategori: "suara_alam", label: "Angin Sore", desc: "Hembusan angin pelan yang naik turun" },
-    { id: "sungai_kecil", kategori: "suara_alam", label: "Sungai Kecil", desc: "Air mengalir pelan dengan gelembung-gelembung kecil" },
-    { id: "malam_tenang", kategori: "suara_alam", label: "Malam Tenang", desc: "Udara malam yang sunyi dengan jangkrik di kejauhan" },
-    { id: "gerimis_hutan", kategori: "suara_alam", label: "Gerimis di Hutan", desc: "Gerimis dan angin pelan dengan suara burung jauh" },
-    { id: "api_unggun", kategori: "suara_alam", label: "Api Unggun", desc: "Gemuruh api yang hangat dan letupan kayu yang halus" },
-    { id: "hujan_piano", kategori: "suara_alam", label: "Hujan & Piano", desc: "Hujan pelan ditemani akor piano yang datang sesekali" },
-    { id: "lonceng_angin", kategori: "suara_alam", label: "Lonceng Angin", desc: "Angin sepoi dengan denting lonceng angin yang lembut" },
-    { id: "ombak_harpa", kategori: "suara_alam", label: "Ombak & Harpa", desc: "Ombak di kejauhan ditemani petikan harpa pelan" },
-];
+    { id: "melodi_brahms", label: "Melodi Brahms", desc: "Melodi klasik Brahms yang dimainkan piano pelan dengan iringan hangat" },
+    { id: "kotak_musik", label: "Kotak Musik Bintang", desc: "Melodi Twinkle Twinkle Little Star dari kotak musik yang berdenting lembut" },
+    { id: "cahaya_bulan", label: "Cahaya Bulan", desc: "Lagu rakyat Prancis Au Clair de la Lune, berdenting pelan seperti lonceng kecil" },
+    { id: "arpeggio_tidur", label: "Piano Mengayun", desc: "Petikan piano pelan yang mengayun lembut" },
+    { id: "ayunan", label: "Ayunan Lembut", desc: "Kotak musik dengan irama yang bergoyang pelan" },
+    { id: "pelukan_hangat", label: "Pelukan Hangat", desc: "Melodi piano sederhana di atas iringan yang hangat" },
+    { id: "harpa_malam", label: "Harpa Malam", desc: "Petikan harpa yang naik perlahan, lalu hening sejenak" },
+    { id: "bintang_jatuh", label: "Bintang Jatuh", desc: "Denting tinggi yang turun pelan di atas dengung lembut" },
+    { id: "gitar_tidur", label: "Gitar Senja", desc: "Petikan gitar nilon yang pelan dan hangat" },
+    { id: "selimut_malam", label: "Selimut Malam", desc: "Akor piano panjang yang datang setiap beberapa detik" },
+    { id: "dayung_perlahan", label: "Dayung Perlahan", desc: "Lagu Row, Row, Row Your Boat dari petikan harpa yang pelan" },
+    { id: "lonceng_pagi", label: "Lonceng Pagi", desc: "Lagu Frère Jacques yang berdenting pelan seperti lonceng kecil" },
+    { id: "awan_putih", label: "Awan Putih", desc: "Kotak musik dengan melodi ringan yang melayang pelan" },
+    { id: "kunang_kunang", label: "Kunang-Kunang", desc: "Denting tinggi yang naik turun pelan, seperti cahaya kecil yang berkedip" },
+    { id: "rumah_hangat", label: "Rumah Hangat", desc: "Piano elektrik yang lembut dan hangat" },
+    { id: "embun_pagi", label: "Embun Pagi", desc: "Tiupan flute yang pelan di atas iringan lembut" },
+    { id: "sayap_kupu", label: "Sayap Kupu-Kupu", desc: "Duet flute dan harpa yang ringan" },
+    { id: "bulan_sabit", label: "Bulan Sabit", desc: "Gesekan cello yang dalam dan panjang, ditemani piano" },
+    { id: "pelangi_sore", label: "Pelangi Sore", desc: "Kotak musik yang naik turun di atas iringan hangat" },
+    { id: "langkah_pelan", label: "Langkah Pelan", desc: "Piano pelan yang terinspirasi Gymnopédie karya Satie" },
+].map((t) => ({ ...t, kategori: "musik" }));
 
 const TIMERS = [
     { minutes: 0, label: "Tanpa timer" },
@@ -58,90 +57,8 @@ function formatTime(totalSeconds) {
 
 // ---------- Pembantu untuk membangun suara ----------
 
-// Derau dasar untuk suara alam (8 detik, diputar berulang).
-// Ujung buffer disambung halus ke awalnya supaya tidak ada bunyi "tik" setiap putaran.
-function createNoiseBuffer(ctx, type) {
-    const size = ctx.sampleRate * 8;
-    const sambung = Math.floor(ctx.sampleRate * 0.5);
-    const raw = new Float32Array(size + sambung);
-    if (type === "pink") {
-        let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
-        for (let i = 0; i < raw.length; i++) {
-            const w = Math.random() * 2 - 1;
-            b0 = 0.99886 * b0 + w * 0.0555179;
-            b1 = 0.99332 * b1 + w * 0.0750759;
-            b2 = 0.969 * b2 + w * 0.153852;
-            b3 = 0.8665 * b3 + w * 0.3104856;
-            b4 = 0.55 * b4 + w * 0.5329522;
-            b5 = -0.7616 * b5 - w * 0.016898;
-            raw[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + w * 0.5362) * 0.11;
-            b6 = w * 0.115926;
-        }
-    } else {
-        // brown: lebih dalam dan hangat
-        let last = 0;
-        for (let i = 0; i < raw.length; i++) {
-            last = (last + 0.02 * (Math.random() * 2 - 1)) / 1.02;
-            raw[i] = last * 3.5;
-        }
-    }
-    const buffer = ctx.createBuffer(1, size, ctx.sampleRate);
-    const data = buffer.getChannelData(0);
-    for (let i = 0; i < size; i++) {
-        data[i] = i < sambung ? raw[i] * (i / sambung) + raw[size + i] * (1 - i / sambung) : raw[i];
-    }
-    return buffer;
-}
-
-// Tekstur hujan stereo (12 detik, diputar berulang): ribuan tetesan kecil di waktu acak,
-// berbeda di kiri dan kanan supaya terdengar luas seperti hujan sungguhan.
-// rapat = jumlah tetesan per detik per sisi.
-function createRainBuffer(ctx, rapat) {
-    const sr = ctx.sampleRate;
-    const size = sr * 12;
-    const sambung = Math.floor(sr * 0.5);
-    const buffer = ctx.createBuffer(2, size, sr);
-    for (let ch = 0; ch < 2; ch++) {
-        const raw = new Float32Array(size + sambung);
-        const jumlah = Math.floor(rapat * (raw.length / sr));
-        for (let n = 0; n < jumlah; n++) {
-            const mulai = Math.floor(Math.random() * raw.length);
-            if (Math.random() < 0.88) {
-                // Tetesan kecil: letupan derau yang sangat pendek
-                const amp = Math.random() ** 2 * 0.35;
-                const tau = sr * (0.0008 + Math.random() * 0.0025);
-                for (let k = 0; k < tau * 5 && mulai + k < raw.length; k++) {
-                    raw[mulai + k] += (Math.random() * 2 - 1) * amp * Math.exp(-k / tau);
-                }
-            } else {
-                // Tetesan yang jatuh ke genangan: "plip" yang nadanya sedikit naik
-                const amp = 0.04 + Math.random() * 0.08;
-                const f0 = 1200 + Math.random() * 1600;
-                const tau = sr * (0.006 + Math.random() * 0.01);
-                let fase = 0;
-                for (let k = 0; k < tau * 5 && mulai + k < raw.length; k++) {
-                    fase += (2 * Math.PI * f0 * (1 + (0.5 * k) / (tau * 5))) / sr;
-                    raw[mulai + k] += Math.sin(fase) * amp * Math.exp(-k / tau);
-                }
-            }
-        }
-        // Haluskan bagian yang terlalu tajam (low-pass satu kutub, ~5 kHz)
-        const a = Math.exp((-2 * Math.PI * 5000) / sr);
-        let y = 0;
-        for (let i = 0; i < raw.length; i++) {
-            y = (1 - a) * raw[i] + a * y;
-            raw[i] = y;
-        }
-        const d = buffer.getChannelData(ch);
-        for (let i = 0; i < size; i++) {
-            d[i] = i < sambung ? raw[i] * (i / sambung) + raw[size + i] * (1 - i / sambung) : raw[i];
-        }
-    }
-    return buffer;
-}
-
 // Mencatat semua node/timer supaya bisa dihentikan dengan bersih
-function createRig(ctx) {
+function createRig() {
     const nodes = [];
     const stoppers = [];
     const buffers = {};
@@ -153,30 +70,6 @@ function createRig(ctx) {
 
     return {
         track,
-        // Buffer derau (dibuat sekali per jenis)
-        buffer(type, buat = () => createNoiseBuffer(ctx, type)) {
-            return (buffers[type] ??= buat());
-        },
-        // Derau yang berputar terus (dasar suara hujan, angin, ombak)
-        noise(type) {
-            const s = ctx.createBufferSource();
-            s.buffer = this.buffer(type);
-            s.loop = true;
-            s.start();
-            return track(s);
-        },
-        // Ayunan pelan untuk parameter (volume, nada filter); depth harus <= nilai dasarnya
-        lfo(freq, depth, param) {
-            const o = ctx.createOscillator();
-            o.frequency.value = freq;
-            const g = ctx.createGain();
-            g.gain.value = depth;
-            o.connect(g);
-            g.connect(param);
-            o.start();
-            track(o);
-            track(g);
-        },
         // Jalankan fungsi sekarang, lalu ulangi dengan jeda minMs..maxMs (acak kalau berbeda)
         loop(fn, minMs, maxMs = minMs) {
             let t;
@@ -226,6 +119,7 @@ const AKOR = {
     F: [41, 48, 57, 60],
     Am: [45, 52, 57, 60],
     Em: [40, 47, 55, 59],
+    Dm: [50, 57, 62, 65],
 };
 
 // Gema ruangan yang lembut: dibuat dari derau yang meluruh pelan
@@ -387,7 +281,8 @@ function mainkanLagu(ctx, dest, lagu, t, { beat, oktaf = 0, suara, level, iringa
     for (const [akor, notes] of lagu) {
         const mulai = t;
         for (const [m, b] of parse(notes)) {
-            softNote(ctx, dest, hz(m + oktaf), t, { ...suara, level });
+            if (suara.tahan) tiup(ctx, dest, hz(m + oktaf), t, b * beat * 0.92, { ...suara, level });
+            else softNote(ctx, dest, hz(m + oktaf), t, { ...suara, level });
             t += b * beat;
         }
         iringan(akor, mulai, t - mulai);
@@ -400,87 +295,84 @@ function ulangLagu(ctx, r, bus, lagu, { beat, jeda = 4, ...opsi }) {
     r.loop(() => mainkanLagu(ctx, bus, lagu, ctx.currentTime + 0.1, { beat, ...opsi }), putaran);
 }
 
-// ---------- Suara alam ----------
-// Semua dibuat hangat: frekuensi tinggi dipotong, naik-turunnya sangat pelan, tanpa hentakan.
+// ---------- Alat musik bernada panjang (flute, cello) ----------
 
-// Derau -> filter -> volume. Mengembalikan node volume (untuk diayun pelan)
-function lapisan(ctx, r, out, { jenis, tipe, freq, Q = 0.7, level }) {
-    const f = filter(ctx, r, tipe, freq, Q);
-    const g = gainNode(ctx, r, level);
-    r.noise(jenis).connect(f);
-    f.connect(g);
-    g.connect(out);
-    return { f, g };
-}
-
-// Hujan: tekstur tetesan stereo + desir jauh yang pelan. rapat = tetesan per detik.
-function dasarHujan(ctx, r, out, level, rapat = 700) {
-    const s = r.track(ctx.createBufferSource());
-    s.buffer = r.buffer("hujan" + rapat, () => createRainBuffer(ctx, rapat));
-    s.loop = true;
-    s.start();
-    const lp = filter(ctx, r, "lowpass", 6500);
-    const g = gainNode(ctx, r, level);
-    s.connect(lp);
-    lp.connect(g);
-    g.connect(out);
-    // Desir hujan di kejauhan
-    const jauh = lapisan(ctx, r, out, { jenis: "pink", tipe: "lowpass", freq: 900, level: level * 0.12 });
-    r.lfo(0.03, level * 0.04, jauh.g.gain);
-}
-
-// Ombak yang jauh: gemuruh dalam yang datang dan pergi tiap ~14 detik
-function dasarOmbak(ctx, r, out, level) {
-    const { f, g } = lapisan(ctx, r, out, { jenis: "brown", tipe: "lowpass", freq: 450, level: level * 0.6 });
-    r.lfo(0.07, level * 0.45, g.gain);
-    r.lfo(0.07, 200, f.frequency);
-    const buih = lapisan(ctx, r, out, { jenis: "pink", tipe: "bandpass", freq: 1100, Q: 0.5, level: level * 0.08 });
-    r.lfo(0.07, level * 0.07, buih.g.gain);
-}
-
-// Angin sore yang berhembus pelan
-function dasarAngin(ctx, r, out, level) {
-    const a = lapisan(ctx, r, out, { jenis: "pink", tipe: "bandpass", freq: 450, Q: 0.6, level: level * 0.6 });
-    r.lfo(0.03, level * 0.4, a.g.gain);
-    r.lfo(0.05, 180, a.f.frequency);
-    const b = lapisan(ctx, r, out, { jenis: "brown", tipe: "lowpass", freq: 300, level: level * 0.5 });
-    r.lfo(0.02, level * 0.3, b.g.gain);
-}
-
-// Nada pendek yang empuk (gelembung air, suara burung jauh)
-function nadaAlam(ctx, dest, f0, f1, { level, attack, dur }) {
-    const t = ctx.currentTime;
-    const o = ctx.createOscillator();
+// Nada yang ditahan (bukan dipetik): masuk pelan, ditahan, lalu memudar, dengan getaran (vibrato) halus
+function tiup(ctx, dest, freq, t, dur, { level, attack = 0.15, release = 0.4, partials, vibrato = 0.004 }) {
     const g = ctx.createGain();
-    o.frequency.setValueAtTime(f0, t);
-    o.frequency.exponentialRampToValueAtTime(f1, t + dur);
-    g.gain.setValueAtTime(0.0001, t);
-    g.gain.exponentialRampToValueAtTime(level, t + attack);
-    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-    o.connect(g);
+    const tahan = Math.max(t + attack, t + dur - release);
+    g.gain.setValueAtTime(0, t);
+    g.gain.linearRampToValueAtTime(level, t + attack);
+    g.gain.setValueAtTime(level, tahan);
+    g.gain.linearRampToValueAtTime(0, t + dur + release);
     g.connect(dest);
-    o.start(t);
-    o.stop(t + dur + 0.05);
+    const vib = ctx.createOscillator();
+    vib.frequency.value = 4.5;
+    vib.start(t);
+    vib.stop(t + dur + release + 0.05);
+    partials.forEach(([ratio, amp]) => {
+        const o = ctx.createOscillator();
+        o.type = "sine";
+        o.frequency.value = freq * ratio;
+        const vg = ctx.createGain();
+        vg.gain.value = freq * ratio * vibrato;
+        vib.connect(vg);
+        vg.connect(o.frequency);
+        const og = ctx.createGain();
+        og.gain.value = amp;
+        o.connect(og);
+        og.connect(g);
+        o.start(t);
+        o.stop(t + dur + release + 0.05);
+    });
 }
 
-// "Huu... huu..." burung jauh di kejauhan, sangat pelan
-function burungJauh(ctx, dest, level) {
-    const f = 380 + Math.random() * 120;
-    nadaAlam(ctx, dest, f, f * 0.9, { level, attack: 0.15, dur: 0.7 });
-    setTimeout(() => nadaAlam(ctx, dest, f * 0.95, f * 0.85, { level: level * 0.8, attack: 0.15, dur: 0.8 }), 900);
-}
+const FLUTE = { tahan: true, attack: 0.18, release: 0.5, partials: [[1, 1], [2, 0.12], [3, 0.03]] };
+const CELLO = { tahan: true, attack: 0.35, release: 0.7, vibrato: 0.005, partials: [[1, 1], [2, 0.5], [3, 0.22], [4, 0.1], [5, 0.04]] };
+const RHODES = { attack: 0.01, decay: 4, partials: [[1, 1], [2, 0.18], [4, 0.05]] };
 
-// Lonceng angin: nada logam yang panjang
-function lonceng(ctx, dest, midi, level) {
-    softNote(ctx, dest, hz(midi), ctx.currentTime, { attack: 0.004, decay: 4, level, partials: [[1, 1], [2.76, 0.25], [5.4, 0.08]] });
-}
+// Lagu 6/8 "Row, Row, Row Your Boat" (lagu tradisional, domain publik); satu ketukan = seperdelapan
+const LAGU_DAYUNG = [
+    ["C", "1:3 1:3"], ["C", "1:2 2:1 3:3"], ["C", "3:2 2:1 3:2 4:1"], ["C", "5:6"],
+    ["C", "8 8 8 5 5 5"], ["C", "3 3 3 1 1 1"], ["G", "5:2 4:1 3:2 2:1"], ["C", "1:6"],
+];
 
-// Pembungkus: jalankan generator lain dengan volume lebih kecil
-function lebihPelan(ctx, r, out, level) {
-    const g = gainNode(ctx, r, level);
-    g.connect(out);
-    return g;
-}
+// "Frère Jacques" (lagu tradisional Prancis, domain publik)
+const LAGU_LONCENG = [
+    ["C", "1 2 3 1"], ["C", "1 2 3 1"], ["C", "3 4 5:2"], ["C", "3 4 5:2"],
+    ["C", "5:0.5 6:0.5 5:0.5 4:0.5 3 1"], ["C", "5:0.5 6:0.5 5:0.5 4:0.5 3 1"],
+    ["C", "1 5, 1:2"], ["C", "1 5, 1:2"],
+];
+
+// Melodi orisinal 3/4 untuk kotak musik
+const LAGU_AWAN = [
+    ["C", "3:2 5"], ["G", "4:2 2"], ["Am", "3:2 1"], ["G", "2:3"],
+    ["F", "1:2 6,"], ["C", "5,:2 1"], ["G", "2 3 2"], ["C", "1:3"],
+];
+
+// Melodi orisinal untuk electric piano
+const LAGU_RUMAH = [
+    ["C", "3:2 2 1"], ["F", "6,:2 1:2"], ["C", "5,:2 3:2"], ["G", "2:4"],
+    ["C", "3:2 2 1"], ["F", "6,:2 1:2"], ["G", "2:2 7,:2"], ["C", "1:4"],
+];
+
+// Melodi orisinal untuk flute
+const LAGU_EMBUN = [
+    ["C", "5:2 6 5"], ["Am", "3:3 2"], ["F", "1:2 2 3"], ["G", "2:4"],
+    ["C", "5:2 6 8"], ["Am", "6:3 5"], ["F", "3 2 1 2"], ["C", "1:4"],
+];
+
+// Melodi orisinal flute untuk duet dengan harpa
+const LAGU_KUPU = [
+    ["F", "5:3 6"], ["C", "5:2 3:2"], ["G", "2:3 3"], ["Am", "1:4"],
+    ["F", "6,:2 1 2"], ["C", "3:2 5:2"], ["G", "4 3 2:2"], ["C", "1:4"],
+];
+
+// Melodi orisinal cello (dimainkan satu oktaf lebih rendah)
+const LAGU_BULAN_SABIT = [
+    ["Am", "3:2 1:2"], ["F", "6,:2 1:2"], ["C", "5,:2 1:2"], ["G", "2:2 7,:2"],
+    ["Am", "1:4"], ["F", "4,:2 6,:2"], ["G", "5,:2 7,:2"], ["C", "1:4"],
+];
 
 // Kunci di sini = sound_key di tabel relaxation_tracks
 const BUILDERS = {
@@ -619,99 +511,140 @@ const BUILDERS = {
         }, akorList.length * jarak * 1000);
     },
 
-    // ===== Suara alam =====
+    // Harpa 6/8 dengan nada bas pelan
+    dayung_perlahan: (ctx, out, r) => {
+        const bus = reverbBus(ctx, out, r, { seconds: 3.5, wet: 0.45, tone: 3200 });
+        ulangLagu(ctx, r, bus, LAGU_DAYUNG, {
+            beat: 0.3, jeda: 6, suara: HARPA, level: 0.12,
+            iringan: (akor, t, dur) => {
+                softNote(ctx, bus, hz(AKOR[akor][0]), t, { ...HARPA, level: 0.07 });
+                softNote(ctx, bus, hz(AKOR[akor][1]), t + dur / 2, { ...HARPA, level: 0.05 });
+            },
+        });
+    },
 
-    hujan_lembut: (ctx, out, r) => dasarHujan(ctx, r, out, 1),
+    // Celesta yang pelan dengan akor latar
+    lonceng_pagi: (ctx, out, r) => {
+        const bus = reverbBus(ctx, out, r, { seconds: 4, wet: 0.5, tone: 4500 });
+        ulangLagu(ctx, r, bus, LAGU_LONCENG, {
+            beat: 0.85, oktaf: 12, suara: CELESTA, level: 0.16,
+            iringan: (akor, t, dur) => padChord(ctx, bus, AKOR[akor], t, dur, 0.022),
+        });
+    },
 
-    ombak_jauh: (ctx, out, r) => dasarOmbak(ctx, r, out, 0.5),
+    // Kotak musik 3/4 dalam nada F (lima semitone lebih tinggi dari C)
+    awan_putih: (ctx, out, r) => {
+        const bus = reverbBus(ctx, out, r, { seconds: 3, wet: 0.4, tone: 4200 });
+        ulangLagu(ctx, r, bus, LAGU_AWAN, {
+            beat: 0.55, oktaf: 17, suara: KOTAK_MUSIK, level: 0.17,
+            iringan: (akor, t) => softNote(ctx, bus, hz(AKOR[akor][0] + 17), t, { ...PIANO, level: 0.08 }),
+        });
+    },
 
-    angin_sore: (ctx, out, r) => dasarAngin(ctx, r, out, 0.45),
-
-    // Air mengalir pelan dengan gelembung kecil yang empuk
-    sungai_kecil: (ctx, out, r) => {
-        lapisan(ctx, r, out, { jenis: "pink", tipe: "bandpass", freq: 800, Q: 0.7, level: 0.65 });
-        const kilau = lapisan(ctx, r, out, { jenis: "pink", tipe: "bandpass", freq: 1600, Q: 1, level: 0.08 });
-        r.lfo(2, 0.03, kilau.g.gain);
-        const lp = filter(ctx, r, "lowpass", 1500);
-        lp.connect(out);
+    // Celesta tinggi yang naik turun pelan, seperti cahaya kecil yang berkedip
+    kunang_kunang: (ctx, out, r) => {
+        const bus = reverbBus(ctx, out, r, { seconds: 4, wet: 0.55, tone: 5000 });
+        const urutan = ["Am", "F", "C", "G"];
+        const pola = [0, 1, 2, 3, 2, 1];
+        const ketuk = 0.42;
         r.loop(() => {
-            const f = 300 + Math.random() * 250;
-            nadaAlam(ctx, lp, f, f * 1.5, { level: 0.03, attack: 0.012, dur: 0.12 });
-        }, 150, 600);
+            let t = ctx.currentTime + 0.1;
+            urutan.forEach((nama) => {
+                const akor = AKOR[nama];
+                padChord(ctx, bus, akor, t, pola.length * ketuk, 0.022);
+                pola.forEach((i) => {
+                    softNote(ctx, bus, hz(akor[i] + 24), t, { ...CELESTA, level: 0.1 });
+                    t += ketuk;
+                });
+            });
+        }, urutan.length * pola.length * ketuk * 1000);
     },
 
-    // Udara malam yang tenang, jangkrik jauh, dan burung sesekali
-    malam_tenang: (ctx, out, r) => {
-        lapisan(ctx, r, out, { jenis: "brown", tipe: "lowpass", freq: 250, level: 0.3 });
-        const jauh = filter(ctx, r, "lowpass", 5000);
-        const jg = gainNode(ctx, r, 1);
-        jauh.connect(jg);
-        jg.connect(out);
+    // Electric piano yang hangat dengan akor di ketukan 1 dan 3
+    rumah_hangat: (ctx, out, r) => {
+        const bus = reverbBus(ctx, out, r, { seconds: 3, wet: 0.4, tone: 2600 });
+        ulangLagu(ctx, r, bus, LAGU_RUMAH, {
+            beat: 0.85, oktaf: 12, suara: RHODES, level: 0.15,
+            iringan: (akor, t, dur) => {
+                [0, dur / 2].forEach((d) =>
+                    AKOR[akor].forEach((m) => softNote(ctx, bus, hz(m + 12), t + d, { ...RHODES, level: 0.04 }))
+                );
+            },
+        });
+    },
+
+    // Flute pelan di atas akor latar
+    embun_pagi: (ctx, out, r) => {
+        const bus = reverbBus(ctx, out, r, { seconds: 4, wet: 0.5, tone: 3500 });
+        ulangLagu(ctx, r, bus, LAGU_EMBUN, {
+            beat: 0.9, oktaf: 12, suara: FLUTE, level: 0.09,
+            iringan: (akor, t, dur) => padChord(ctx, bus, AKOR[akor], t, dur, 0.025),
+        });
+    },
+
+    // Duet flute dan harpa
+    sayap_kupu: (ctx, out, r) => {
+        const bus = reverbBus(ctx, out, r, { seconds: 4, wet: 0.5, tone: 3500 });
+        ulangLagu(ctx, r, bus, LAGU_KUPU, {
+            beat: 0.85, oktaf: 12, suara: FLUTE, level: 0.08,
+            iringan: (akor, t) =>
+                AKOR[akor].forEach((m, i) => softNote(ctx, bus, hz(m + 12), t + i * 0.25, { ...HARPA, level: 0.09 })),
+        });
+    },
+
+    // Cello rendah yang panjang, ditemani petikan piano
+    bulan_sabit: (ctx, out, r) => {
+        const bus = reverbBus(ctx, out, r, { seconds: 4, wet: 0.5, tone: 2200 });
+        ulangLagu(ctx, r, bus, LAGU_BULAN_SABIT, {
+            beat: 0.9, oktaf: -12, suara: CELLO, level: 0.09,
+            iringan: (akor, t) =>
+                AKOR[akor].forEach((m, i) => softNote(ctx, bus, hz(m + 12), t + i * 0.35, { ...PIANO, level: 0.06 })),
+        });
+    },
+
+    // Kotak musik yang naik turun di atas akor latar
+    pelangi_sore: (ctx, out, r) => {
+        const bus = reverbBus(ctx, out, r, { seconds: 3.5, wet: 0.45, tone: 4200 });
+        const urutan = ["F", "C", "Dm", "G"];
+        const pola = [0, 1, 2, 3, 2, 3, 2, 1];
+        const ketuk = 0.32;
         r.loop(() => {
-            const f = 3900 + Math.random() * 400;
-            [0, 0.07, 0.14].forEach((d) =>
-                setTimeout(() => nadaAlam(ctx, jauh, f, f, { level: 0.006, attack: 0.008, dur: 0.035 }), d * 1000)
-            );
-        }, 900, 1700);
-        r.loop(() => burungJauh(ctx, jauh, 0.03), 12000, 20000);
+            let t = ctx.currentTime + 0.1;
+            urutan.forEach((nama) => {
+                const akor = AKOR[nama];
+                padChord(ctx, bus, akor, t, pola.length * ketuk, 0.022);
+                pola.forEach((i) => {
+                    softNote(ctx, bus, hz(akor[i] + 24), t, { ...KOTAK_MUSIK, level: 0.1 });
+                    t += ketuk;
+                });
+            });
+        }, urutan.length * pola.length * ketuk * 1000);
     },
 
-    // Gerimis di hutan dengan suara burung jauh
-    gerimis_hutan: (ctx, out, r) => {
-        dasarHujan(ctx, r, out, 0.75, 300);
-        dasarAngin(ctx, r, out, 0.25);
-        const lp = filter(ctx, r, "lowpass", 1500);
-        lp.connect(out);
-        r.loop(() => burungJauh(ctx, lp, 0.035), 9000, 16000);
-    },
-
-    // Api unggun: gemuruh hangat dan letupan kayu yang halus
-    api_unggun: (ctx, out, r) => {
-        const dasar = lapisan(ctx, r, out, { jenis: "brown", tipe: "lowpass", freq: 400, level: 0.32 });
-        r.lfo(0.1, 0.06, dasar.g.gain);
-        const bp = filter(ctx, r, "bandpass", 1800, 1);
-        const lp = filter(ctx, r, "lowpass", 3000);
-        bp.connect(lp);
-        lp.connect(out);
+    // Terinspirasi Gymnopédie No. 1 (Satie, 1888, domain publik): bas dan akor bergantian, melodi pelan
+    langkah_pelan: (ctx, out, r) => {
+        const bus = reverbBus(ctx, out, r, { seconds: 4, wet: 0.5, tone: 2600 });
+        const ketuk = 0.8;
+        // Tiap bar 3 ketukan: [nada bas, akor, nada melodi per ketukan (null = diam)]
+        const barA = [43, [59, 62, 66]]; // Gmaj7
+        const barB = [38, [57, 61, 66]]; // Dmaj7
+        const melodi = [
+            [null, null, null], [null, null, null],
+            [null, 78, 81], [79, 78, 73], [71, 73, 74], [69, null, null], [66, null, null], [null, null, null],
+            [null, 78, 81], [79, 78, 73], [71, 73, 74], [69, null, null], [64, null, null], [null, null, null],
+        ];
         r.loop(() => {
-            const t = ctx.currentTime;
-            const s = ctx.createBufferSource();
-            s.buffer = r.buffer("pink");
-            const g = ctx.createGain();
-            const lvl = 0.1 + Math.random() * 0.2;
-            g.gain.setValueAtTime(0.0001, t);
-            g.gain.exponentialRampToValueAtTime(lvl, t + 0.003);
-            g.gain.exponentialRampToValueAtTime(0.0001, t + 0.05);
-            s.connect(g);
-            g.connect(bp);
-            s.start(t, Math.random() * 7, 0.06);
-        }, 90, 700);
-    },
-
-    // Hujan pelan dengan akor piano yang datang sesekali
-    hujan_piano: (ctx, out, r) => {
-        dasarHujan(ctx, r, out, 0.8);
-        BUILDERS.selimut_malam(ctx, lebihPelan(ctx, r, out, 0.6), r);
-    },
-
-    // Angin dengan lonceng angin yang berdenting lembut
-    lonceng_angin: (ctx, out, r) => {
-        dasarAngin(ctx, r, out, 0.5);
-        const bus = reverbBus(ctx, out, r, { seconds: 4, wet: 0.5, tone: 5000 });
-        const nada = [72, 74, 76, 79, 81, 84, 86];
-        r.loop(() => {
-            const jumlah = 1 + Math.floor(Math.random() * 3);
-            for (let i = 0; i < jumlah; i++) {
-                const m = nada[Math.floor(Math.random() * nada.length)];
-                setTimeout(() => lonceng(ctx, bus, m, 0.05 + Math.random() * 0.04), i * (150 + Math.random() * 250));
-            }
-        }, 1800, 5000);
-    },
-
-    // Ombak jauh dengan petikan harpa pelan
-    ombak_harpa: (ctx, out, r) => {
-        dasarOmbak(ctx, r, out, 0.45);
-        BUILDERS.harpa_malam(ctx, lebihPelan(ctx, r, out, 0.6), r);
+            let t = ctx.currentTime + 0.1;
+            melodi.forEach((notes, bar) => {
+                const [bas, akor] = bar % 2 === 0 ? barA : barB;
+                softNote(ctx, bus, hz(bas), t, { ...PIANO, decay: 4, level: 0.12 });
+                akor.forEach((m) => softNote(ctx, bus, hz(m), t + ketuk, { ...PIANO, level: 0.05 }));
+                notes.forEach((m, k) => {
+                    if (m) softNote(ctx, bus, hz(m), t + k * ketuk, { ...PIANO, decay: 4, level: 0.13 });
+                });
+                t += 3 * ketuk;
+            });
+        }, melodi.length * 3 * ketuk * 1000);
     },
 };
 
@@ -820,7 +753,7 @@ export default function SoundPage() {
             gain.connect(ctx.destination);
             gain.gain.setTargetAtTime(volume, ctx.currentTime, 0.15);
 
-            rig = createRig(ctx);
+            rig = createRig();
             BUILDERS[sound.id](ctx, gain, rig);
 
             stopRef.current = () => {
