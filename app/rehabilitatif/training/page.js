@@ -16,7 +16,7 @@ const exercises = [
         Icon: Wind,
         badge: "Box Breathing · 4-7-8",
         variant: "teal",
-        color: "text-[#0f4c5c]",
+        color: "text-svarati-teal",
         cta: "Mulai Pernapasan",
         description:
             "Panduan pernapasan interaktif untuk menurunkan ketegangan, menstabilkan detak jantung, dan memberi rasa tenang saat cemas atau stres.",
@@ -27,7 +27,7 @@ const exercises = [
         Icon: Music,
         badge: "Musik · Suara alam · White noise",
         variant: "lavender",
-        color: "text-[#5a4a9e]",
+        color: "text-svarati-lavender-dark",
         cta: "Dengarkan Suara",
         description:
             "Pilihan suara yang menenangkan untuk membantumu rileks, mengurangi rasa cemas, dan tidur lebih nyenyak.",
@@ -38,7 +38,7 @@ const exercises = [
         Icon: Anchor,
         badge: "Sekitar 3 menit",
         variant: "coral",
-        color: "text-[#b14a25]",
+        color: "text-svarati-coral-dark",
         cta: "Mulai Grounding",
         description:
             "Panduan cepat saat panik: lihat 5 benda, sentuh 4 benda, dengar 3 suara, cium 2 aroma, dan rasakan 1 sensasi untuk kembali ke saat ini.",
