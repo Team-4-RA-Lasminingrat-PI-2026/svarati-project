@@ -53,9 +53,9 @@ const moodDetails = {
         label: "Cemas",
         quote: '"Pikiranku berpacu dan aku merasa gelisah."',
         rekomendasi:
-            "Kecemasan sering membuat kita memikirkan masa depan. Mari kembali ke saat ini. Menulis jurnal atau teknik mindfulness bisa sangat membantu.",
-        actionText: "Coba Latihan Mindfulness →",
-        href: "/rehabilitatif/training",
+            "Kecemasan sering membuat kita memikirkan masa depan. Mari kembali ke saat ini. Dengarkan musik yang tenang sambil menarik napas pelan, biarkan tubuhmu ikut melambat.",
+        actionText: "Dengarkan Suara Terapi →",
+        href: "/rehabilitatif/training/sound",
     },
     "😐": {
         label: "Biasa Saja",
