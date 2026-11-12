@@ -8,6 +8,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { X, Leaf, Trash2, Check, Pencil } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import ConfirmDialog from "@/components/modals/ConfirmDialog";
+import BackToPemulihan from "@/components/BackToPemulihan";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 
@@ -234,6 +235,7 @@ export default function PemulihanPage() {
     return (
         // pt-28 / md:pt-36 memberi ruang untuk navbar yang melayang di atas
         <main className="min-h-screen bg-svarati-cream px-4 pb-8 pt-24 font-sans md:px-8 md:pb-12 lg:px-12">
+            <BackToPemulihan />
             <div className="mx-auto max-w-4xl space-y-8">
                 {/* Header: badge + ajakan healing journey */}
                 <div className="max-w-2xl">

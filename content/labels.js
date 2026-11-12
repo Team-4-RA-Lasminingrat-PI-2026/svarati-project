@@ -1291,6 +1291,9 @@ export const AKSESIBILITAS = {
   statusMati: "nonaktif",
 };
 
+// Tombol kembali ke halaman Pemulihan (dipakai di Jurnal Pemulihan dan Latihan Tenang)
+export const KEMBALI_PEMULIHAN = { label: "Pemulihan", href: "/rehabilitatif", aria: "Kembali ke Pemulihan" };
+
 // TREE OF HOPE
 export const treeOfHopeContent = {
   back: { label: "Pemulihan", href: "/rehabilitatif", aria: "Kembali ke Pemulihan" },
