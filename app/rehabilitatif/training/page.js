@@ -26,7 +26,7 @@ const exercises = [
         href: "/rehabilitatif/training/sound",
         title: "Suara Terapi",
         Icon: Music,
-        badge: "Musik · Suara alam · White noise",
+        badge: "20 Musik Tenang",
         variant: "lavender",
         color: "text-svarati-lavender-dark",
         cta: "Dengarkan Suara",
