@@ -251,13 +251,13 @@ export default function PemulihanPage() {
                 </div>
 
                 {/* Kartu progres */}
-                <Card variant="solid" className="flex items-center justify-between p-6">
+                <Card variant="solid" className="flex items-center justify-between border-svarati-coral-darker bg-svarati-coral-dark p-6">
                     <div className="flex items-center gap-4">
                         <div className="p-3 bg-white/10 rounded-xl">
-                            <Leaf className="size-8 text-svarati-cream" />
+                            <Leaf className="size-8 text-white" />
                         </div>
                         <div>
-                            <p className="text-sm font-bold text-svarati-cream/80 uppercase tracking-wider mb-1">
+                            <p className="text-sm font-bold text-white/90 uppercase tracking-wider mb-1">
                                 Progresmu
                             </p>
                             <h2 className="text-2xl font-bold text-white mb-1">
@@ -265,7 +265,7 @@ export default function PemulihanPage() {
                                     ? `${streakCount} hari check-in beruntun`
                                     : "Belum ada check-in"}
                             </h2>
-                            <p className="text-sm text-svarati-cream/80">
+                            <p className="text-sm text-white/90">
                                 {streakCount > 0
                                     ? "Terus lanjutkan, setiap hari berarti."
                                     : "Pilih tanggal dan catat perasaanmu untuk memulai."}
@@ -332,7 +332,7 @@ export default function PemulihanPage() {
                                             {emojiKey}
                                         </button>
                                         <span
-                                            className={`text-xs ${isActive ? "font-bold text-svarati-teal" : "text-gray-400"
+                                            className={`text-xs ${isActive ? "font-bold text-svarati-coral-dark" : "text-gray-400"
                                                 }`}
                                         >
                                             {moodDetails[emojiKey].label}
@@ -375,7 +375,7 @@ export default function PemulihanPage() {
                                             maxLength={MAX_NOTE}
                                             autoFocus={isEditing}
                                             placeholder="Tulis apa yang kamu rasakan hari ini, apa yang terjadi, atau apa pun yang ingin kamu keluarkan. Hanya kamu yang bisa melihatnya di perangkat ini."
-                                            className="w-full resize-y rounded-2xl border border-svarati-teal/20 bg-white p-4 text-sm leading-relaxed text-svarati-teal placeholder:text-gray-400 focus:border-svarati-teal focus:outline-none focus:ring-2 focus:ring-svarati-teal/20"
+                                            className="w-full resize-y rounded-2xl border border-svarati-coral/30 bg-white p-4 text-sm leading-relaxed text-svarati-teal placeholder:text-gray-400 focus:border-svarati-coral-dark focus:outline-none focus:ring-2 focus:ring-svarati-coral/25"
                                         />
                                         <div className="mt-2 flex items-center justify-between gap-3">
                                             <span className="text-xs text-gray-400">
@@ -389,7 +389,7 @@ export default function PemulihanPage() {
                                                     </Button>
                                                 )}
                                                 <Button
-                                                    variant="secondary"
+                                                    variant="primary"
                                                     size="md"
                                                     onClick={handleSaveNote}
                                                     disabled={!hasUnsavedChange}
@@ -400,13 +400,13 @@ export default function PemulihanPage() {
                                         </div>
                                     </div>
                                 ) : (
-                                    <div className="mt-6 rounded-2xl border border-svarati-teal/20 bg-svarati-cream p-5">
+                                    <div className="mt-6 rounded-2xl border border-svarati-coral/20 bg-svarati-coral-soft p-5">
                                         <div className="mb-2 flex items-center justify-between gap-3">
                                             <p className="text-sm font-bold text-svarati-teal">
                                                 Catatanmu hari ini
                                             </p>
                                             {noteSaved && (
-                                                <span className="flex items-center gap-1 text-xs font-medium text-svarati-teal">
+                                                <span className="flex items-center gap-1 text-xs font-medium text-svarati-coral-dark">
                                                     <Check className="size-3.5" /> Tersimpan
                                                 </span>
                                             )}
@@ -427,7 +427,7 @@ export default function PemulihanPage() {
                                     </div>
                                 )}
 
-                                <Card variant="cream" className="mt-6 border-svarati-teal/20">
+                                <Card variant="coral" className="mt-6">
                                     <p className="font-bold text-svarati-teal text-sm mb-2 flex items-center gap-2">
                                         💡 Rekomendasi Untukmu
                                     </p>
