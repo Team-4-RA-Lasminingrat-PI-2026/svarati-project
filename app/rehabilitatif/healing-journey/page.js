@@ -251,21 +251,21 @@ export default function PemulihanPage() {
                 </div>
 
                 {/* Kartu progres */}
-                <Card variant="solid" className="flex items-center justify-between border-svarati-coral-darker bg-svarati-coral-dark p-6">
+                <Card variant="coral" className="flex items-center justify-between border-svarati-coral/30 bg-linear-to-r from-svarati-coral-soft via-white to-svarati-coral/20 p-6 shadow-sm">
                     <div className="flex items-center gap-4">
-                        <div className="p-3 bg-white/10 rounded-xl">
-                            <Leaf className="size-8 text-white" />
+                        <div className="p-3 bg-svarati-coral/20 rounded-xl">
+                            <Leaf className="size-8 text-svarati-coral-dark" />
                         </div>
                         <div>
-                            <p className="text-sm font-bold text-white/90 uppercase tracking-wider mb-1">
+                            <p className="text-sm font-bold text-svarati-coral-dark uppercase tracking-wider mb-1">
                                 Progresmu
                             </p>
-                            <h2 className="text-2xl font-bold text-white mb-1">
+                            <h2 className="text-2xl font-bold text-svarati-teal mb-1">
                                 {streakCount > 0
                                     ? `${streakCount} hari check-in beruntun`
                                     : "Belum ada check-in"}
                             </h2>
-                            <p className="text-sm text-white/90">
+                            <p className="text-sm text-svarati-teal/80">
                                 {streakCount > 0
                                     ? "Terus lanjutkan, setiap hari berarti."
                                     : "Pilih tanggal dan catat perasaanmu untuk memulai."}
@@ -280,7 +280,7 @@ export default function PemulihanPage() {
                                 title={title}
                                 className="flex size-9 items-center justify-center text-2xl"
                             >
-                                {emoji ? emoji : <span className="size-2 rounded-full bg-white/25" />}
+                                {emoji ? emoji : <span className="size-2 rounded-full bg-svarati-coral/40" />}
                             </span>
                         ))}
                     </div>
