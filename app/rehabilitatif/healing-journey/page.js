@@ -8,6 +8,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { X, Leaf, Trash2, Check, Pencil } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import ConfirmDialog from "@/components/modals/ConfirmDialog";
+import BackToPemulihan from "@/components/BackToPemulihan";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 
@@ -53,9 +54,9 @@ const moodDetails = {
         label: "Cemas",
         quote: '"Pikiranku berpacu dan aku merasa gelisah."',
         rekomendasi:
-            "Kecemasan sering membuat kita memikirkan masa depan. Mari kembali ke saat ini. Menulis jurnal atau teknik mindfulness bisa sangat membantu.",
-        actionText: "Coba Latihan Mindfulness →",
-        href: "/rehabilitatif/training",
+            "Kecemasan sering membuat kita memikirkan masa depan. Mari kembali ke saat ini. Dengarkan musik yang tenang sambil menarik napas pelan, biarkan tubuhmu ikut melambat.",
+        actionText: "Dengarkan Suara Terapi →",
+        href: "/rehabilitatif/training/sound",
     },
     "😐": {
         label: "Biasa Saja",
@@ -233,7 +234,8 @@ export default function PemulihanPage() {
 
     return (
         // pt-28 / md:pt-36 memberi ruang untuk navbar yang melayang di atas
-        <main className="min-h-screen bg-svarati-cream px-4 pb-8 pt-24 font-sans md:px-8 md:pb-12 lg:px-12">
+        <main className="relative min-h-screen bg-svarati-cream px-4 pb-8 pt-24 font-sans md:px-8 md:pb-12 lg:px-12">
+            <BackToPemulihan />
             <div className="mx-auto max-w-4xl space-y-8">
                 {/* Header: badge + ajakan healing journey */}
                 <div className="max-w-2xl">
@@ -251,21 +253,21 @@ export default function PemulihanPage() {
                 </div>
 
                 {/* Kartu progres */}
-                <Card variant="solid" className="flex items-center justify-between p-6">
+                <Card variant="coral" className="flex items-center justify-between border-svarati-coral/30 bg-linear-to-r from-svarati-coral-soft via-white to-svarati-coral/20 p-6 shadow-sm">
                     <div className="flex items-center gap-4">
-                        <div className="p-3 bg-white/10 rounded-xl">
-                            <Leaf className="size-8 text-svarati-cream" />
+                        <div className="p-3 bg-svarati-coral/20 rounded-xl">
+                            <Leaf className="size-8 text-svarati-coral-dark" />
                         </div>
                         <div>
-                            <p className="text-sm font-bold text-svarati-cream/80 uppercase tracking-wider mb-1">
+                            <p className="text-sm font-bold text-svarati-coral-dark uppercase tracking-wider mb-1">
                                 Progresmu
                             </p>
-                            <h2 className="text-2xl font-bold text-white mb-1">
+                            <h2 className="text-2xl font-bold text-svarati-teal mb-1">
                                 {streakCount > 0
                                     ? `${streakCount} hari check-in beruntun`
                                     : "Belum ada check-in"}
                             </h2>
-                            <p className="text-sm text-svarati-cream/80">
+                            <p className="text-sm text-svarati-teal/80">
                                 {streakCount > 0
                                     ? "Terus lanjutkan, setiap hari berarti."
                                     : "Pilih tanggal dan catat perasaanmu untuk memulai."}
@@ -280,7 +282,7 @@ export default function PemulihanPage() {
                                 title={title}
                                 className="flex size-9 items-center justify-center text-2xl"
                             >
-                                {emoji ? emoji : <span className="size-2 rounded-full bg-white/25" />}
+                                {emoji ? emoji : <span className="size-2 rounded-full bg-svarati-coral/40" />}
                             </span>
                         ))}
                     </div>
@@ -332,7 +334,7 @@ export default function PemulihanPage() {
                                             {emojiKey}
                                         </button>
                                         <span
-                                            className={`text-xs ${isActive ? "font-bold text-svarati-teal" : "text-gray-400"
+                                            className={`text-xs ${isActive ? "font-bold text-svarati-coral-dark" : "text-gray-400"
                                                 }`}
                                         >
                                             {moodDetails[emojiKey].label}
@@ -375,7 +377,7 @@ export default function PemulihanPage() {
                                             maxLength={MAX_NOTE}
                                             autoFocus={isEditing}
                                             placeholder="Tulis apa yang kamu rasakan hari ini, apa yang terjadi, atau apa pun yang ingin kamu keluarkan. Hanya kamu yang bisa melihatnya di perangkat ini."
-                                            className="w-full resize-y rounded-2xl border border-svarati-teal/20 bg-white p-4 text-sm leading-relaxed text-svarati-teal placeholder:text-gray-400 focus:border-svarati-teal focus:outline-none focus:ring-2 focus:ring-svarati-teal/20"
+                                            className="w-full resize-y rounded-2xl border border-svarati-coral/30 bg-white p-4 text-sm leading-relaxed text-svarati-teal placeholder:text-gray-400 focus:border-svarati-coral-dark focus:outline-none focus:ring-2 focus:ring-svarati-coral/25"
                                         />
                                         <div className="mt-2 flex items-center justify-between gap-3">
                                             <span className="text-xs text-gray-400">
@@ -389,7 +391,7 @@ export default function PemulihanPage() {
                                                     </Button>
                                                 )}
                                                 <Button
-                                                    variant="secondary"
+                                                    variant="primary"
                                                     size="md"
                                                     onClick={handleSaveNote}
                                                     disabled={!hasUnsavedChange}
@@ -400,13 +402,13 @@ export default function PemulihanPage() {
                                         </div>
                                     </div>
                                 ) : (
-                                    <div className="mt-6 rounded-2xl border border-svarati-teal/20 bg-svarati-cream p-5">
+                                    <div className="mt-6 rounded-2xl border border-svarati-coral/20 bg-svarati-coral-soft p-5">
                                         <div className="mb-2 flex items-center justify-between gap-3">
                                             <p className="text-sm font-bold text-svarati-teal">
                                                 Catatanmu hari ini
                                             </p>
                                             {noteSaved && (
-                                                <span className="flex items-center gap-1 text-xs font-medium text-svarati-teal">
+                                                <span className="flex items-center gap-1 text-xs font-medium text-svarati-coral-dark">
                                                     <Check className="size-3.5" /> Tersimpan
                                                 </span>
                                             )}
@@ -427,7 +429,7 @@ export default function PemulihanPage() {
                                     </div>
                                 )}
 
-                                <Card variant="cream" className="mt-6 border-svarati-teal/20">
+                                <Card variant="coral" className="mt-6">
                                     <p className="font-bold text-svarati-teal text-sm mb-2 flex items-center gap-2">
                                         💡 Rekomendasi Untukmu
                                     </p>
