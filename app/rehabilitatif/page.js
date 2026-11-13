@@ -118,7 +118,7 @@ export default function PemulihanPage() {
               </CardTitle>
 
               <CardDescription className="text-svarati-teal/80">
-                Panduan teknik pernapasan dan grounding (5-4-3-2-1) interaktif untuk membantu meredakan kecemasan dan mengembalikan fokus.
+                Panduan pernapasan, grounding (5-4-3-2-1), dan suara terapi interaktif untuk membantu meredakan kecemasan, mengembalikan fokus, dan membuatmu lebih rileks.
               </CardDescription>
             </div>
 
