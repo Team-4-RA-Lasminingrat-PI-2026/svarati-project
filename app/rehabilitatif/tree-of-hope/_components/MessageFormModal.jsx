@@ -12,7 +12,13 @@ import LocationCombobox from "./LocationCombobox";
 let groupsCache = null; // daftar daerah diambil sekali per kunjungan halaman
 let draft = { text: "", role: "", location: "", agreed: false }; // draf pesan baru yang belum terkirim
 
-export default function MessageFormModal({ open, editing, onClose, onSubmit, onEmpty }) {
+export default function MessageFormModal({
+  open,
+  editing,
+  onClose,
+  onSubmit,
+  onEmpty,
+}) {
   if (!open) return null;
 
   return (
@@ -29,7 +35,12 @@ export default function MessageFormModal({ open, editing, onClose, onSubmit, onE
 function MessageForm({ editing, onClose, onSubmit, onEmpty }) {
   // Nilai awal: pesan yang diedit, atau draf pesan baru
   const init = editing
-    ? { text: editing.text ?? "", role: editing.role ?? "", location: editing.location ?? "", agreed: false }
+    ? {
+        text: editing.text ?? "",
+        role: editing.role ?? "",
+        location: editing.location ?? "",
+        agreed: false,
+      }
     : draft;
 
   const [text, setText] = useState(init.text);
@@ -70,7 +81,11 @@ function MessageForm({ editing, onClose, onSubmit, onEmpty }) {
     const onKey = (e) => {
       if (e.key !== "Escape" || sending) return;
       const el = document.activeElement;
-      if (el?.getAttribute("role") === "combobox" && el.getAttribute("aria-expanded") === "true") return;
+      if (
+        el?.getAttribute("role") === "combobox" &&
+        el.getAttribute("aria-expanded") === "true"
+      )
+        return;
       onClose();
     };
     window.addEventListener("keydown", onKey);
@@ -81,7 +96,9 @@ function MessageForm({ editing, onClose, onSubmit, onEmpty }) {
     e.preventDefault();
     if (!text.trim()) return onEmpty();
     if (legacy) {
-      setLocError(`"${location}" tidak ada di daftar. Pilih daerah dari daftar, atau kosongkan.`);
+      setLocError(
+        `"${location}" tidak ada di daftar. Pilih daerah dari daftar, atau kosongkan.`,
+      );
       return;
     }
     setLocError("");
@@ -89,10 +106,12 @@ function MessageForm({ editing, onClose, onSubmit, onEmpty }) {
     setSending(true);
     const ok = await onSubmit({ text: text.trim(), role, location });
     setSending(false);
-    if (ok && !editing) draft = { text: "", role: "", location: "", agreed: false };
+    if (ok && !editing)
+      draft = { text: "", role: "", location: "", agreed: false };
   }
 
-  const field = "mt-1 w-full rounded-xl border border-input bg-card px-3 py-2 text-card-foreground";
+  const field =
+    "mt-1 w-full rounded-xl border border-input bg-card px-3 py-2 text-card-foreground";
   const canSubmit = !sending && (Boolean(editing) || agreed);
 
   return (
@@ -108,7 +127,9 @@ function MessageForm({ editing, onClose, onSubmit, onEmpty }) {
         onClick={(e) => e.stopPropagation()}
         className="max-h-[90svh] w-full max-w-lg overflow-y-auto rounded-3xl bg-card p-6 text-card-foreground shadow-xl animate-in fade-in zoom-in-95 duration-200"
       >
-        <h2 className="text-2xl font-bold">{editing ? "Ubah pesanmu" : t.form.title}</h2>
+        <h2 className="text-2xl font-bold">
+          {editing ? "Ubah pesanmu" : t.form.title}
+        </h2>
         <p className="mt-1 text-sm text-muted-foreground">{t.form.info}</p>
 
         <label className="mt-4 block text-sm font-semibold">
@@ -129,7 +150,11 @@ function MessageForm({ editing, onClose, onSubmit, onEmpty }) {
 
         <label className="mt-2 block text-sm font-semibold">
           {t.form.roleLabel}
-          <select value={role} onChange={(e) => setRole(e.target.value)} className={`${field} font-normal`}>
+          <select
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+            className={`${field} font-normal`}
+          >
             <option value="">{t.form.rolePlaceholder}</option>
             {t.roles.map((r) => (
               <option key={r} value={r}>
@@ -149,14 +174,16 @@ function MessageForm({ editing, onClose, onSubmit, onEmpty }) {
           groups={groups}
           invalid={Boolean(locError)}
         />
-        {locError && <p className="mt-1 text-xs text-destructive">{locError}</p>}
+        {locError && (
+          <p className="mt-1 text-xs text-destructive">{locError}</p>
+        )}
 
         {!editing && (
           <>
             <p className="mt-4 rounded-xl bg-accent p-3 text-xs text-accent-foreground">
-              Kamu dapat mengubah pesanmu sampai {EDIT_WINDOW_MINUTES} menit setelah dikirim, dari
-              perangkat dan peramban yang sama. Setelah itu, pesan akan tersimpan permanen di Pohon
-              Svarati.
+              Kamu dapat mengubah pesanmu sampai {EDIT_WINDOW_MINUTES} menit
+              setelah dikirim, dari perangkat dan peramban yang sama. Setelah
+              itu, pesan akan tersimpan permanen di Pohon Svarati.
             </p>
             <label className="mt-3 flex items-start gap-2 text-sm">
               <input
@@ -166,10 +193,12 @@ function MessageForm({ editing, onClose, onSubmit, onEmpty }) {
                 className="mt-1 h-4 w-4 accent-svarati-teal"
               />
               <span>
-                Pesanku tidak mengandung unsur SARA, ujaran kebencian, atau kekerasan, dan tidak
-                memuat data yang dapat mengidentifikasi seseorang (nama, nomor telepon, alamat, nama
-                pelaku). Aku menulisnya untuk memberi motivasi atau inspirasi bagi rekan penyintas.
-                Tim Svarati berhak menghapus pesan yang dinilai melanggar ketentuan ini.
+                Pesanku tidak mengandung unsur SARA, ujaran kebencian, atau
+                kekerasan, dan tidak memuat data yang dapat mengidentifikasi
+                seseorang (nama, nomor telepon, alamat, nama pelaku). Aku
+                menulisnya untuk memberi motivasi atau inspirasi bagi rekan
+                penyintas. Tim Svarati berhak menghapus pesan yang dinilai
+                melanggar ketentuan ini.
               </span>
             </label>
           </>
@@ -189,7 +218,11 @@ function MessageForm({ editing, onClose, onSubmit, onEmpty }) {
             disabled={!canSubmit}
             className="rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground hover:opacity-90 disabled:opacity-60"
           >
-            {sending ? t.form.sending : editing ? "Simpan perubahan" : t.form.submit}
+            {sending
+              ? t.form.sending
+              : editing
+                ? "Simpan perubahan"
+                : t.form.submit}
           </button>
         </div>
       </form>

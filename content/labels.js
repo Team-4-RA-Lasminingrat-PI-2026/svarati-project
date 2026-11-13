@@ -42,7 +42,7 @@ export const MENU_UTAMA = [
     submenu: [
       { id: "jurnal-pemulihan", nama: "Jurnal Pemulihan", href: "/rehabilitatif/healing-journey" },
       { id: "latihan-tenang", nama: "Latihan Tenang", href: "/rehabilitatif/training" },
-      { id: "cerita-dari-mereka", nama: "Cerita dari Mereka", href: "/rehabilitatif/tree-of-hope" },
+      { id: "pohon-harapan", nama: "Pohon Harapan", href: "/rehabilitatif/tree-of-hope" },
     ],
   },
   {
@@ -232,6 +232,10 @@ export const svaratiAiContent = {
   ],
 };
 
+// Rute fitur pemulihan diambil dari MENU_UTAMA agar tidak ditulis ganda.
+const SUBMENU_PEMULIHAN = MENU_UTAMA.find((menu) => menu.id === "pemulihan").submenu;
+const rutePemulihan = (id) => SUBMENU_PEMULIHAN.find((sub) => sub.id === id).href;
+
 export const pemulihanContent = {
   badge: "Ruang Pemulihan",
   judul: "Mari Sembuh Bersama, Perlahan-lahan",
@@ -261,6 +265,43 @@ export const pemulihanContent = {
       penulis: "Pendamping • Surabaya",
       dukungan: 31,
       posisi: "left-[4%] bottom-[2%]",
+    },
+  ],
+
+  fitur: [
+    {
+      id: "jurnal-pemulihan",
+      variant: "lavender",
+      badge: "Refleksi Diri",
+      title: "Jurnal Pemulihan",
+      description:
+        "Ruang aman dan privat untuk mencatat perasaanmu hari demi hari, melihat perkembangan emosionalmu, serta memproses pengalaman secara berkala.",
+      cta: "Buka Jurnal",
+      href: rutePemulihan("jurnal-pemulihan"),
+    },
+    {
+      id: "latihan-tenang",
+      variant: "teal",
+      badge: "Relaksasi & Grounding",
+      title: "Latihan Tenang",
+      description:
+        "Panduan teknik pernapasan dan grounding (5-4-3-2-1) interaktif untuk membantu meredakan kecemasan dan mengembalikan fokus.",
+      cta: "Mulai Latihan",
+      href: rutePemulihan("latihan-tenang"),
+    },
+    {
+      id: "pohon-harapan",
+      variant: "coral",
+      badge: "Dukungan Komunitas",
+      title: "Pohon Harapan",
+      // Bagian bertanda "tebal" ditampilkan sebagai teks tebal miring
+      description: [
+        { teks: "Pohon harapan berisi pesan saling menguatkan maupun cerita perjuangan penyintas lain sebagai pengingat bahwa " },
+        { teks: "Kamu Tidak Sendirian", tebal: true },
+        { teks: "." },
+      ],
+      cta: "Lihat Pohon Harapan",
+      href: rutePemulihan("pohon-harapan"),
     },
   ],
 };
@@ -1297,8 +1338,8 @@ export const treeOfHopeContent = {
   badge: "DUKUNGAN KOMUNITAS",
   title: "Kamu Tidak Sendirian!",
   description:
-    "Temukan kehangatan dan dukungan melalui pesan-pesan dari komunitas Svarati. Bagikan juga kata-kata penyemangatmu dan tumbuhkan harapan bersama perempuan lainnya. Setiap pesan adalah benih harapan.",
-  scrollHint: "Geser ke bawah untuk melihat Pesan Dukungan di Pohon Harapan",
+    "Temukan kehangatan melalui pesan-pesan dukungan dari komunitas Svarati di Pohon Harapan. Bagikan juga pesan penyemangatmu dan jadilah bagian dari tumbuhnya harapan bersama perempuan lainnya!",
+  scrollHint: "Geser ke bawah",
   image: { src: "/tree-of-hope-transparent.svg", alt: "Ilustrasi pohon harapan" },
   supportLabel: "Dukungan",
   anonymous: "Anonim",
@@ -1308,7 +1349,7 @@ export const treeOfHopeContent = {
 
   composeEnvelope: "Kirim pesan dukungan anonimmu sekarang!",
   composeCta: "Klik di sini",
-  moreMessages: "Klik pesan atau amplop untuk membaca pesan lebih lengkap.",
+  moreMessages: "Klik pesan atau amplop untuk membaca semua Pesan Dukungan",
   readMore: "Baca pesan",
 
   like: {
@@ -1317,8 +1358,8 @@ export const treeOfHopeContent = {
   },
 
   pager: {
-    previous: "‹ Lebih baru",
-    next: "Lebih lama ›",
+    previous: "Halaman sebelumnya",
+    next: "Halaman berikutnya",
     page: (n, total) => `Halaman ${n} dari ${total}`,
   },
 
@@ -1333,9 +1374,9 @@ export const treeOfHopeContent = {
 
   form: {
     title: "Kirim pesan dukunganmu",
-    info: "Pesanmu akan tampil secara anonim di Pohon Harapan Komunitas Svarati.",
+    info: "Pesan akan tampil secara anonim di Pohon Harapan Komunitas Svarati.",
     messageLabel: "Pesan",
-    messagePlaceholder: "Tulis pesan dukungan atau harapanmu di sini...",
+    messagePlaceholder: "Tulis pesan dukungan di sini...",
     roleLabel: "Peran (opsional)",
     rolePlaceholder: "Tidak dipilih",
     locationLabel: "Asal daerah (opsional)",
@@ -1348,10 +1389,10 @@ export const treeOfHopeContent = {
   toast: {
     empty: "Tulis pesanmu dulu sebelum mengirim.",
     success: "Pesan anonimmu berhasil dikirim.",
-    sendFailed: "Pesan belum bisa dikirim. Coba lagi sebentar lagi.",
-    loadFailed: "Pesan belum bisa dimuat. Coba muat ulang halaman.",
-    likeFailed: "Dukungan belum bisa disimpan. Coba lagi sebentar lagi.",
-    likeUnavailable: "Dukungan belum bisa disimpan untuk pesan ini.",
-    offline: "Sedang offline. Menampilkan pesan-pesan pilihan untukmu.",
+    sendFailed: "Maaf, Pesan  Dukunganmu belum bisa dikirim sekarang. Coba lagi dalam beberapa saat.",
+    loadFailed: "Maaf, Pesan Dukungan belum bisa dimuat. Coba muat ulang halaman.",
+    likeFailed: "Maaf, kamu belum bisa menyukai Pesan Dukungan ini sekarang. Coba lagi dalam beberapa saat.",
+    likeUnavailable: "Maaf, dukungan belum bisa disimpan untuk pesan ini.",
+    offline: "Maaf, jaringan sedang offline. Menampilkan pesan-pesan pilihan untukmu.",
   },
 };

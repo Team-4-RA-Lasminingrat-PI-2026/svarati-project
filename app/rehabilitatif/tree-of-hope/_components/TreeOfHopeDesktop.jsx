@@ -1,10 +1,11 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { ChevronDown, MousePointerClick } from "lucide-react";
 import { treeOfHopeContent as t } from "@/content/labels";
 import useScrollProgress from "../hooks/useScrollProgress";
 import { BackLink, INTRO_BADGE } from "./Intro";
-import { ChevronDownIcon, EnvelopeIcon } from "./icons";
+import { EnvelopeIcon } from "./icons";
 import { paletteOf } from "./treeTheme";
 import ComposeEnvelope from "./ComposeEnvelope";
 import LikeButton from "./LikeButton";
@@ -16,9 +17,24 @@ const IMG_ASPECT = 2530 / 1280;
 
 // Tiga level kartu: besar (3 pesan terbaru), sedang (3), kecil (3).
 const LEVELS = {
-  lg: { pad: "p-[1.1cqw]", text: "text-[length:clamp(0.75rem,1.15cqw,0.95rem)]", foot: "text-[length:clamp(0.65rem,0.9cqw,0.78rem)]", author: true },
-  md: { pad: "p-[0.9cqw]", text: "text-[length:clamp(0.68rem,1cqw,0.85rem)]", foot: "text-[length:clamp(0.62rem,0.85cqw,0.72rem)]", author: true },
-  sm: { pad: "p-[0.8cqw]", text: "text-[length:clamp(0.62rem,0.9cqw,0.78rem)]", foot: "text-[length:clamp(0.6rem,0.8cqw,0.7rem)]", author: false },
+  lg: {
+    pad: "p-[1.1cqw]",
+    text: "text-[length:clamp(0.75rem,1.15cqw,0.95rem)]",
+    foot: "text-[length:clamp(0.65rem,0.9cqw,0.78rem)]",
+    author: true,
+  },
+  md: {
+    pad: "p-[0.9cqw]",
+    text: "text-[length:clamp(0.68rem,1cqw,0.85rem)]",
+    foot: "text-[length:clamp(0.62rem,0.85cqw,0.72rem)]",
+    author: true,
+  },
+  sm: {
+    pad: "p-[0.8cqw]",
+    text: "text-[length:clamp(0.62rem,0.9cqw,0.78rem)]",
+    foot: "text-[length:clamp(0.6rem,0.8cqw,0.7rem)]",
+    author: false,
+  },
 };
 
 // 9 kartu, urut dari pesan terbaru. x,y = pojok kiri atas; w,h = ukuran (persen panggung).
@@ -35,7 +51,14 @@ const CARDS = [
 ];
 
 // Pagar tajuk: pasangan [y, setengah lebar] dalam persen panggung. Perkiraan; setel bila perlu.
-const CANOPY = [[22, 4], [30, 10], [40, 13.5], [50, 14.5], [60, 13], [67, 8]];
+const CANOPY = [
+  [22, 4],
+  [30, 10],
+  [40, 13.5],
+  [50, 14.5],
+  [60, 13],
+  [67, 8],
+];
 const CANOPY_CENTER = 50;
 const CANOPY_MIDDLE_Y = 44; // titik tengah tajuk, acuan kemiringan amplop polos
 const CANOPY_MARGIN = 2.5; // jarak aman dari tepi daun
@@ -59,12 +82,39 @@ const keepInside = ({ x, y }) => {
   };
 };
 
-// 12 amplop di pohon (indeks = urutan pesan). 0-8 punya kartu, 9-11 amplop polos.
+// 30 amplop di pohon (indeks = urutan pesan). 0-8 punya kartu, 9-29 amplop polos.
 const RAW_CHIPS = [
-  { x: 39.8, y: 28.6 }, { x: 55.8, y: 28.6 }, { x: 36.9, y: 52.6 },
-  { x: 37.5, y: 41.2 }, { x: 59.9, y: 47.3 }, { x: 35.2, y: 60.9 },
-  { x: 58.8, y: 38.1 }, { x: 40.9, y: 63.0 }, { x: 59.3, y: 58.9 },
-  { x: 48.0, y: 34.1 }, { x: 48.9, y: 39.8 }, { x: 46.5, y: 43.2 },
+  { x: 39.8, y: 28.6 },
+  { x: 55.8, y: 28.6 },
+  { x: 36.9, y: 52.6 },
+  { x: 37.5, y: 41.2 },
+  { x: 59.9, y: 47.3 },
+  { x: 35.2, y: 60.9 },
+  { x: 58.8, y: 38.1 },
+  { x: 40.9, y: 63.0 },
+  { x: 59.3, y: 58.9 },
+  // amplop polos
+  { x: 48.0, y: 34.1 },
+  { x: 48.9, y: 39.8 },
+  { x: 46.5, y: 43.2 },
+  { x: 50.5, y: 25.5 },
+  { x: 52.5, y: 32.5 },
+  { x: 44.0, y: 34.5 },
+  { x: 54.5, y: 42.5 },
+  { x: 52.8, y: 37.0 },
+  { x: 43.0, y: 38.5 },
+  { x: 42.0, y: 46.0 },
+  { x: 51.0, y: 46.5 },
+  { x: 56.5, y: 51.0 },
+  { x: 46.0, y: 50.0 },
+  { x: 42.8, y: 55.0 },
+  { x: 50.5, y: 54.0 },
+  { x: 47.0, y: 58.5 },
+  { x: 54.5, y: 60.5 },
+  { x: 50.5, y: 62.0 },
+  { x: 45.5, y: 63.0 },
+  { x: 56.0, y: 55.5 },
+  { x: 57.5, y: 33.5 },
 ];
 const CHIPS = RAW_CHIPS.map(keepInside);
 
@@ -74,7 +124,10 @@ const TILTS = CHIPS.map((c, i) => {
   if (i < CARDS.length) return ((i * 7) % 5) - 2; // -2..2 derajat
   const dx = c.x - CANOPY_CENTER;
   const dy = c.y - CANOPY_MIDDLE_Y;
-  const arc = Math.max(-24, Math.min(24, dx * 1.6 + dy * Math.sign(dx || 1) * 0.5));
+  const arc = Math.max(
+    -24,
+    Math.min(24, dx * 1.6 + dy * Math.sign(dx || 1) * 0.5),
+  );
   const jitter = ((i * 11) % 7) - 3; // -3..3 derajat
   return arc + jitter;
 });
@@ -100,7 +153,7 @@ const RANK = CHIPS.map((c, i) => ({
 }))
   .sort((a, b) => a.d - b.d)
   .reduce((acc, { i }, r) => ((acc[i] = r), acc), []);
-const chipStart = (i) => 0.05 + RANK[i] * 0.04;
+const chipStart = (i) => 0.05 + RANK[i] * (0.45 / CHIPS.length);
 const cardStart = (i) => chipStart(i) + 0.18; // kartu muncul setelah amplopnya
 
 // --o = seberapa "muncul" elemen (0..1), dari progres scroll --p dan titik mulai --start.
@@ -133,31 +186,43 @@ export default function TreeOfHopeDesktop({
   const cardsShown = shown.slice(0, CARDS.length);
 
   return (
-    <section ref={trackRef} className="hidden lg:block" style={{ height: "calc(100svh + 70svh)" }}>
+    <section
+      ref={trackRef}
+      className="hidden lg:block"
+      style={{ height: "calc(100svh + 70svh)" }}
+    >
       <div
         ref={stageRef}
         data-done="false"
         className="group/stage sticky top-0 h-svh overflow-hidden"
         style={{
           "--p": 0,
-          "--tree-h": "max(22rem, min(calc(100svh - 14.5rem), calc(min(100vw - 2rem, 84rem) / 1.8)))",
+          "--tree-h":
+            "max(22rem, min(calc(100svh - 17.5rem), calc(min(100vw - 2rem, 84rem) / 1.8)))",
         }}
       >
-        {/* ===== Lapisan pohon ===== */}
+        {/* ===== Lapisan pohon (bottom-12 menyisakan strip kosong untuk pager) ===== */}
         <div
-          className="absolute bottom-0 overflow-hidden will-change-transform [container-type:inline-size]"
+          className="absolute bottom-12 overflow-hidden will-change-transform [container-type:inline-size]"
           style={{
             width: "calc(var(--tree-h) * 1.8)",
             height: "var(--tree-h)",
             left: "calc(50% - var(--tree-h) * 0.9)",
             transformOrigin: "50% 100%",
             transform:
-              "translateY(calc((1 - var(--p)) * var(--tree-h) * 0.25)) scale(calc(0.88 + 0.12 * var(--p)))",
+              "translateY(calc((1 - var(--p)) * var(--tree-h) * 0.01)) scale(calc(0.88 + 0.12 * var(--p)))",
           }}
         >
-          <div className="absolute left-1/2 top-0 h-full -translate-x-1/2" style={{ aspectRatio: IMG_ASPECT }}>
+          <div
+            className="absolute left-1/2 top-0 h-full -translate-x-1/2"
+            style={{ aspectRatio: IMG_ASPECT }}
+          >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={t.image.src} alt={t.image.alt} className="absolute inset-0 h-full w-full object-contain" />
+            <img
+              src={t.image.src}
+              alt={t.image.alt}
+              className="absolute inset-0 h-full w-full object-contain"
+            />
           </div>
 
           {/* Tali penghubung: garis tipis transparan, di belakang amplop dan kartu */}
@@ -175,7 +240,11 @@ export default function TreeOfHopeDesktop({
                   strokeLinecap="round"
                   strokeWidth={active === i ? 0.4 : 0.22}
                   className={`${paletteOf(i).stroke} transition-[stroke-width] duration-200`}
-                  style={{ strokeDasharray: 1, strokeDashoffset: "calc(1 - var(--o))", opacity: 0.45 }}
+                  style={{
+                    strokeDasharray: 1,
+                    strokeDashoffset: "calc(1 - var(--o))",
+                    opacity: 0.45,
+                  }}
                 />
               </g>
             ))}
@@ -258,13 +327,22 @@ export default function TreeOfHopeDesktop({
                     “{m.text}”
                   </span>
                 </button>
-                <div className={`mt-[0.5cqw] flex items-center justify-between gap-2 border-t pt-[0.5cqw] ${lv.foot}`}>
+                <div
+                  className={`mt-[0.5cqw] flex items-center justify-between gap-2 border-t pt-[0.5cqw] ${lv.foot}`}
+                >
                   {lv.author ? (
-                    <span className={`min-w-0 truncate font-medium ${p.text}`}>{m.author}</span>
+                    <span className={`min-w-0 truncate font-medium ${p.text}`}>
+                      {m.author}
+                    </span>
                   ) : (
                     <span />
                   )}
-                  <LikeButton compact liked={m.liked} count={m.supportCount} onClick={() => onLike(m.id)} />
+                  <LikeButton
+                    compact
+                    liked={m.liked}
+                    count={m.supportCount}
+                    onClick={() => onLike(m.id)}
+                  />
                 </div>
               </article>
             );
@@ -290,12 +368,12 @@ export default function TreeOfHopeDesktop({
 
         {/* ===== Judul ===== */}
         <header className="absolute inset-x-0 top-0 z-20 px-4 pt-22">
-  <div className="relative mx-auto flex w-full max-w-[84rem] items-center justify-center">
-    <div className="absolute left-0 top-1/2 -translate-y-1/2">
-      <BackLink />
-    </div>
-    <span className={INTRO_BADGE}>{t.badge}</span>
-  </div>
+          <div className="relative mx-auto flex w-full max-w-[84rem] items-center justify-center">
+            <div className="absolute left-0 top-1/2 -translate-y-1/2">
+              <BackLink />
+            </div>
+            <span className={INTRO_BADGE}>{t.badge}</span>
+          </div>
 
           <h1
             className="mx-auto mt-3 max-w-3xl text-center font-bold leading-tight text-foreground"
@@ -304,7 +382,7 @@ export default function TreeOfHopeDesktop({
             {t.title}
           </h1>
           <p
-            className="mx-auto mt-3 text-center leading-relaxed text-foreground"
+            className="mx-auto mt-3 text-center leading-relaxed text-svarati-coral-dark"
             style={{
               fontSize: "calc(1.125rem - 0.25rem * var(--p))",
               maxWidth: "calc(42rem + 16rem * var(--p))",
@@ -312,31 +390,47 @@ export default function TreeOfHopeDesktop({
           >
             {t.description}
           </p>
+
+          {/* Satu slot di bawah description: "geser ke bawah" berubah jadi "klik pesan" setelah scroll */}
+          <div className="pointer-events-none mt-1 grid justify-items-center">
+            <span
+              className="col-start-1 row-start-1 inline-flex items-center gap-2 px-4 py-1.5 text-sm font-semibold text-svarati-teal/70"
+              style={{ opacity: "clamp(0, calc(1 - var(--p) * 5), 1)" }}
+            >
+              {t.scrollHint}
+              <ChevronDown
+                className="h-4 w-4 animate-float-slow"
+                aria-hidden="true"
+              />
+            </span>
+            <span
+              className="col-start-1 row-start-1 inline-flex items-center gap-2 px-4 py-1.5 text-center text-sm font-semibold text-svarati-teal/70"
+              style={{ opacity: "clamp(0, calc((var(--p) - 0.15) * 5), 1)" }}
+            >
+              {t.moreMessages}
+              <MousePointerClick
+                className="h-4 w-4 animate-pulse"
+                aria-hidden="true"
+              />
+            </span>
+          </div>
         </header>
 
-        {/* ===== Petunjuk scroll ===== */}
-        <div
-          className="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex flex-col items-center gap-1 bg-linear-to-t from-background via-background/90 to-transparent px-4 pb-4 pt-14 text-center text-sm font-medium text-muted-foreground"
-          style={{ opacity: "clamp(0, calc(1 - var(--p) * 4), 1)" }}
-        >
-          {t.scrollHint}
-          <ChevronDownIcon className="h-5 w-5 animate-float-slow" />
-        </div>
-
-        {/* ===== Panduan baca + pager ===== */}
-        <div
-          className="absolute inset-x-0 bottom-3 z-20 flex flex-col items-center gap-1 group-data-[done=false]/stage:invisible"
-          style={{ opacity: "clamp(0, calc((var(--p) - 0.8) * 5), 1)" }}
-        >
-          <p className="rounded-full bg-background/80 px-3 py-0.5 text-xs text-muted-foreground backdrop-blur">
-            {t.moreMessages}
-          </p>
-          {totalPages > 1 && (
-            <div className="rounded-full bg-background/85 p-1 shadow backdrop-blur">
-              <Pager page={page} totalPages={totalPages} onChange={onChangePage} />
+        {/* ===== Pager (di strip bawah pohon, tidak menimpa apa pun) ===== */}
+        {totalPages > 1 && (
+          <div
+            className="absolute inset-x-0 bottom-1.5 z-20 flex justify-center group-data-[done=false]/stage:invisible"
+            style={{ opacity: "clamp(0, calc((var(--p) - 0.8) * 5), 1)" }}
+          >
+            <div className="rounded-full bg-background/85 px-2 py-1 shadow backdrop-blur">
+              <Pager
+                page={page}
+                totalPages={totalPages}
+                onChange={onChangePage}
+              />
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </section>
   );

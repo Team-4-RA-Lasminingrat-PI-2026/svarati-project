@@ -22,8 +22,14 @@ export function Intro({ titleClassName = "text-4xl lg:text-5xl" }) {
   return (
     <>
       <span className={INTRO_BADGE}>{t.badge}</span>
-      <h1 className={`mt-4 font-bold leading-tight text-svarati-coral-darker ${titleClassName}`}>{t.title}</h1>
-      <p className="mt-4 text-lg leading-relaxed text-svarati-coral-darker">{t.description}</p>
+      <h1
+        className={`mt-4 font-bold leading-tight text-svarati-coral-darker ${titleClassName}`}
+      >
+        {t.title}
+      </h1>
+      <p className="mt-4 text-lg leading-relaxed text-svarati-coral-darker">
+        {t.description}
+      </p>
     </>
   );
 }

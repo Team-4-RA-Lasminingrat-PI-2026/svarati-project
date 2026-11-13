@@ -3,7 +3,8 @@
 import { useEffect } from "react";
 
 const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
-const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+const easeInOut = (t) =>
+  t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
 // Menghitung progres scroll 0..1 sepanjang "track" dan menulisnya ke CSS variable --p pada panggung.
 // Nilai dihaluskan (lerp) lewat requestAnimationFrame, tanpa setState React, jadi animasi tetap mulus.
@@ -75,7 +76,8 @@ export default function useScrollProgress({
     // Aktif hanya di desktop (track tinggi 0 di bawah breakpoint), di dalam track,
     // dan tidak saat modal terbuka (modal mengunci scroll body).
     const canSnap = () => {
-      if (!track.offsetHeight || document.body.style.overflow === "hidden") return false;
+      if (!track.offsetHeight || document.body.style.overflow === "hidden")
+        return false;
       const { start, end } = trackBounds();
       return window.scrollY >= start - 2 && window.scrollY < end - 4;
     };
@@ -88,7 +90,10 @@ export default function useScrollProgress({
       const step = (now) => {
         const k = Math.min(1, (now - t0) / snapDuration);
         // "instant": CSS html { scroll-behavior: smooth } tidak boleh memperlambat tiap frame
-        window.scrollTo({ top: from + (end - from) * easeInOut(k), behavior: "instant" });
+        window.scrollTo({
+          top: from + (end - from) * easeInOut(k),
+          behavior: "instant",
+        });
         if (k < 1) snapFrame = requestAnimationFrame(step);
         else snapping = false;
       };
@@ -105,7 +110,10 @@ export default function useScrollProgress({
 
     const onKey = (e) => {
       if (!["ArrowDown", "PageDown", " "].includes(e.key) || e.shiftKey) return;
-      if (/^(INPUT|TEXTAREA|SELECT|BUTTON)$/.test(document.activeElement?.tagName)) return;
+      if (
+        /^(INPUT|TEXTAREA|SELECT|BUTTON)$/.test(document.activeElement?.tagName)
+      )
+        return;
       if (snapping) return e.preventDefault();
       if (canSnap()) {
         e.preventDefault();

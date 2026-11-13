@@ -45,14 +45,19 @@ export default function ComposeEnvelope({
         />
       </svg>
       <span className="absolute inset-x-[8%] bottom-[7%] top-[50%] flex flex-col items-center justify-center gap-[5%] text-center">
-        <span className={`font-heading font-semibold leading-snug ${textClassName}`}>
+        <span
+          className={`font-heading font-semibold leading-snug ${textClassName}`}
+        >
           {t.composeEnvelope}
         </span>
         <span
           className={`inline-flex items-center gap-1 rounded-full bg-white px-[1.1em] py-[0.35em] font-semibold text-svarati-coral-dark ${ctaClassName}`}
         >
           {t.composeCta}
-          <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">
+          <span
+            aria-hidden="true"
+            className="transition-transform group-hover:translate-x-0.5"
+          >
             ›
           </span>
         </span>
