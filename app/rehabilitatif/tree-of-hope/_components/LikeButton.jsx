@@ -1,7 +1,7 @@
 "use client";
 
+import { Heart } from "lucide-react";
 import { treeOfHopeContent as t } from "@/content/labels";
-import { HeartIcon } from "./icons";
 
 export default function LikeButton({ liked, count, onClick, compact = false }) {
   return (
@@ -18,7 +18,11 @@ export default function LikeButton({ liked, count, onClick, compact = false }) {
           : "border-input bg-card text-foreground hover:bg-accent"
       }`}
     >
-      <HeartIcon filled={liked} className={compact ? "h-3.5 w-3.5" : "h-4 w-4"} />
+      <Heart
+        className={`shrink-0 ${compact ? "size-3.5" : "size-4"}`}
+        fill={liked ? "currentColor" : "none"}
+        aria-hidden="true"
+      />
       <span>{count}</span>
     </button>
   );

@@ -56,7 +56,7 @@ const pilar = [
     badge: "Rehabilitatif",
     judul: "Pemulihan",
     deskripsi: "Pemulihan & dukungan jangka panjang",
-    fitur: ["Jurnal Pemulihan", "Latihan Tenang", "Cerita dari Mereka"],
+    fitur: ["Jurnal Pemulihan", "Latihan Tenang", "Pohon Harapan"],
   },
 ];
 

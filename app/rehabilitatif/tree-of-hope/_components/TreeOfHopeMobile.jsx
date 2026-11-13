@@ -40,9 +40,16 @@ export default function TreeOfHopeMobile({
 
       {/* Gambar pohon dipotong ke bagian tengah supaya pohon terlihat besar */}
       <div className="relative mx-auto aspect-[5/4] w-full max-w-sm overflow-hidden">
-        <div className="absolute left-1/2 top-0 h-full -translate-x-1/2" style={{ aspectRatio: IMG_ASPECT }}>
+        <div
+          className="absolute left-1/2 top-0 h-full -translate-x-1/2"
+          style={{ aspectRatio: IMG_ASPECT }}
+        >
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={t.image.src} alt={t.image.alt} className="absolute inset-0 h-full w-full object-contain" />
+          <img
+            src={t.image.src}
+            alt={t.image.alt}
+            className="absolute inset-0 h-full w-full object-contain"
+          />
         </div>
       </div>
 
@@ -54,7 +61,9 @@ export default function TreeOfHopeMobile({
         ctaClassName="text-sm"
       />
 
-      <p className="text-center text-sm text-muted-foreground">{t.moreMessages}</p>
+      <p className="text-center text-sm text-muted-foreground">
+        {t.moreMessages}
+      </p>
 
       <ul ref={listRef} className="flex flex-col gap-3">
         {messages.map((m, i) => {
@@ -72,7 +81,9 @@ export default function TreeOfHopeMobile({
                 </span>
               )}
               <p className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
-                <EnvelopeIcon className={`block h-auto w-6 ${color.envelope}`} />
+                <EnvelopeIcon
+                  className={`block h-auto w-6 ${color.envelope}`}
+                />
                 {m.author}
               </p>
               <p className="mt-2 line-clamp-4 text-card-foreground">{m.text}</p>
@@ -85,7 +96,11 @@ export default function TreeOfHopeMobile({
                 >
                   {t.readMore}
                 </button>
-                <LikeButton liked={m.liked} count={m.supportCount} onClick={() => onLike(m.id)} />
+                <LikeButton
+                  liked={m.liked}
+                  count={m.supportCount}
+                  onClick={() => onLike(m.id)}
+                />
               </div>
             </li>
           );

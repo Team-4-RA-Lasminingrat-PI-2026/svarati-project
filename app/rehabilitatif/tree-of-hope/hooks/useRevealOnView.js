@@ -5,7 +5,13 @@ import { useEffect } from "react";
 // Memanggil onReveal sekali ketika elemen sudah terlihat minimal `minRatio`
 // (dihitung terhadap min(tinggi elemen, tinggi layar), jadi tetap jalan di layar pendek).
 // Elemen yang disembunyikan CSS (display: none) tingginya 0 dan diabaikan.
-export default function useRevealOnView(ref, revealed, onReveal, minRatio = 0.85, watch) {
+export default function useRevealOnView(
+  ref,
+  revealed,
+  onReveal,
+  minRatio = 0.85,
+  watch,
+) {
   useEffect(() => {
     if (revealed) return;
 

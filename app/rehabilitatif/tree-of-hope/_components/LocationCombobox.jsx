@@ -4,15 +4,26 @@ import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { shortPlace } from "@/lib/tree-of-hope/place";
 
 const MAX_SHOWN = 30;
-const norm = (s) => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+const norm = (s) =>
+  s
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
 
 // groups: [{ province, cities: [...] }] -> daftar datar
 function buildOptions(groups) {
   const out = [];
   for (const g of groups) {
-    out.push({ value: g.province, label: g.province, hint: "Seluruh provinsi", province: g.province, isProvince: true });
+    out.push({
+      value: g.province,
+      label: g.province,
+      hint: "Seluruh provinsi",
+      province: g.province,
+      isProvince: true,
+    });
     const counts = new Map();
-    for (const c of g.cities) counts.set(shortPlace(c), (counts.get(shortPlace(c)) ?? 0) + 1);
+    for (const c of g.cities)
+      counts.set(shortPlace(c), (counts.get(shortPlace(c)) ?? 0) + 1);
     for (const c of g.cities) {
       const short = shortPlace(c);
       const kind = /^Kota/i.test(c) ? "Kota" : "Kabupaten";
@@ -28,7 +39,13 @@ function buildOptions(groups) {
   return out;
 }
 
-export default function LocationCombobox({ label, value, onChange, groups, invalid }) {
+export default function LocationCombobox({
+  label,
+  value,
+  onChange,
+  groups,
+  invalid,
+}) {
   const uid = useId();
   const inputId = `${uid}-input`;
   const listId = `${uid}-list`;
@@ -45,7 +62,10 @@ export default function LocationCombobox({ label, value, onChange, groups, inval
     const q = norm(query.trim());
     if (!q) {
       // Belum mengetik: tampilkan provinsi saja, supaya daftar pendek
-      return [{ value: "", label: "Tidak dipilih", hint: "" }, ...options.filter((o) => o.isProvince)];
+      return [
+        { value: "", label: "Tidak dipilih", hint: "" },
+        ...options.filter((o) => o.isProvince),
+      ];
     }
     return options
       .filter((o) => norm(o.label).includes(q) || norm(o.province).includes(q))
@@ -71,7 +91,10 @@ export default function LocationCombobox({ label, value, onChange, groups, inval
 
   // Pastikan opsi aktif terlihat
   useEffect(() => {
-    if (open) document.getElementById(`${uid}-opt-${activeIndex}`)?.scrollIntoView({ block: "nearest" });
+    if (open)
+      document
+        .getElementById(`${uid}-opt-${activeIndex}`)
+        ?.scrollIntoView({ block: "nearest" });
   }, [activeIndex, open, uid]);
 
   function choose(opt) {
@@ -100,7 +123,7 @@ export default function LocationCombobox({ label, value, onChange, groups, inval
     }
   }
 
-  const shownText = open ? query : selected?.label ?? value ?? "";
+  const shownText = open ? query : (selected?.label ?? value ?? "");
 
   return (
     <div ref={rootRef} className="relative mt-4">
@@ -140,7 +163,9 @@ export default function LocationCombobox({ label, value, onChange, groups, inval
           className="absolute z-10 mt-1 max-h-60 w-full overflow-y-auto rounded-xl border border-input bg-card py-1 shadow-lg"
         >
           {results.length === 0 && (
-            <li className="px-3 py-2 text-sm text-muted-foreground">Daerah tidak ditemukan.</li>
+            <li className="px-3 py-2 text-sm text-muted-foreground">
+              Daerah tidak ditemukan.
+            </li>
           )}
           {results.map((o, i) => (
             <li
@@ -156,11 +181,18 @@ export default function LocationCombobox({ label, value, onChange, groups, inval
               }`}
             >
               <span className="font-medium">{o.label}</span>
-              {o.hint && <span className="shrink-0 text-xs text-muted-foreground">{o.hint}</span>}
+              {o.hint && (
+                <span className="shrink-0 text-xs text-muted-foreground">
+                  {o.hint}
+                </span>
+              )}
             </li>
           ))}
           {!query && (
-            <li className="px-3 py-1.5 text-xs text-muted-foreground" aria-hidden="true">
+            <li
+              className="px-3 py-1.5 text-xs text-muted-foreground"
+              aria-hidden="true"
+            >
               Ketik untuk mencari kota atau kabupaten.
             </li>
           )}
