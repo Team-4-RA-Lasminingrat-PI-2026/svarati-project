@@ -49,7 +49,7 @@ const exercises = [
 export default function TrainingPage() {
     return (
         // pt-28 / md:pt-36 memberi ruang untuk navbar yang melayang di atas
-         <main className="min-h-screen bg-svarati-cream px-4 pb-8 pt-24 font-sans md:px-8 md:pb-12 lg:px-12">
+         <main className="relative min-h-screen bg-svarati-cream px-4 pb-8 pt-24 font-sans md:px-8 md:pb-12 lg:px-12">
             <BackToPemulihan />
             <div className="mx-auto max-w-4xl space-y-8">
                 {/* Header: badge + ajakan latihan */}
