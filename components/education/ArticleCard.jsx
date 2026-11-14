@@ -13,8 +13,8 @@ const initials = (name) =>
     .toUpperCase();
 
 export default function ArticleCard({ article, categoryName }) {
-  // Kategori yang belum terdaftar memakai tema lavender
-  const theme = categoryTheme[article.category] ?? categoryTheme.rights;
+  // Kategori yang belum terdaftar memakai tema coral
+  const theme = categoryTheme[article.category] ?? categoryTheme.hak_perempuan;
 
   return (
     <Link

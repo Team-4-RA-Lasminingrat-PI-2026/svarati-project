@@ -28,7 +28,7 @@ export default function Tabs({
       className={cn(
         boxed
           ? "inline-flex flex-wrap items-center gap-4 rounded-full border border-svarati-lavender-light bg-white p-2 shadow-sm"
-          : "flex flex-wrap items-center gap-2",
+          : "flex w-max items-center gap-2",
         className
       )}
     >
