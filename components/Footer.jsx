@@ -10,7 +10,7 @@ export default function Footer() {
   const nomorDarurat = Object.values(DARURAT.nomor);
 
   return (
-    <footer className="bg-svarati-teal text-white mt-auto w-full overflow-x-hidden border-t border-svarati-teal-dark">
+    <footer className="tepi-aman bg-svarati-teal text-white mt-auto w-full overflow-x-hidden border-t border-svarati-teal-dark">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.3fr_1.2fr_1fr_1fr] gap-6 sm:gap-8 lg:gap-10">
 
         {/* Kolom 1: Brand */}
@@ -93,8 +93,8 @@ export default function Footer() {
 
       {/* Bottom Bar */}
       <div className="border-t border-white/15">
-        {/* Copyright & disclaimer (tombol aksesibilitas sudah melayang di pojok kiri bawah) */}
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-5 pb-24 sm:pb-5 flex flex-col items-center gap-1 text-center text-xs sm:text-sm text-svarati-lavender-light">
+        {/* Copyright & disclaimer */}
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-5 flex flex-col items-center gap-1 text-center text-xs sm:text-sm text-svarati-lavender-light">
           <span>
             © {BRAND.tahun} {BRAND.nama} · {BRAND.slogan}
           </span>

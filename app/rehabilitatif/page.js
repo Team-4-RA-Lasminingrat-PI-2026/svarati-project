@@ -61,7 +61,7 @@ export default function PemulihanPage() {
     }`;
 
   return (
-    <div className="relative scroll-mt-28 px-2 pb-8 pt-28 sm:px-3 sm:pb-12 sm:pt-22">
+    <div className="relative scroll-mt-28 px-4 pb-8 pt-28 sm:pb-12 sm:pt-22">
       <div className="mx-auto max-w-6xl">
         {/* Banner Utama */}
         <Card

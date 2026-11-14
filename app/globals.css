@@ -642,3 +642,39 @@ html[data-theme="dark"] :is(
     border-color: rgb(255 255 255 / 0.12);
   }
 }
+
+/* ============================================================
+   10. JARAK TEPI UNTUK TOMBOL AKSESIBILITAS
+   Tombol aksesibilitas melayang di pojok kiri bawah. Supaya tidak
+   pernah menutupi tulisan, isi halaman & footer diberi jarak tepi:
+   - HP      : kiri & kanan sama 1.75rem (tombol 36px dekat pojok)
+   - >= 768px: kiri & kanan sama 3.5rem (tombol 44px). Isi selalu di tengah.
+   Bagian berlatar selebar layar diberi class "lebar-penuh": latarnya
+   tetap penuh, hanya isinya yang ikut bergeser. Jarak bawaan bagian
+   itu diisi lewat variabel --pad-x (contoh: [--pad-x:1rem]).
+   ============================================================ */
+:root {
+  --tepi-kiri: 1.75rem;
+  --tepi-kanan: 1.75rem;
+}
+@media (min-width: 768px) {
+  :root {
+    --tepi-kiri: 3.5rem;
+    --tepi-kanan: 3.5rem;
+  }
+}
+.tepi-aman {
+  padding-left: var(--tepi-kiri);
+  padding-right: var(--tepi-kanan);
+}
+/* Hanya keluar dari jarak tepi (latar penuh), isinya tidak ikut bergeser. Dipakai hero beranda. */
+.tepi-aman .keluar-tepi {
+  margin-left: calc(-1 * var(--tepi-kiri));
+  margin-right: calc(-1 * var(--tepi-kanan));
+}
+.tepi-aman .lebar-penuh {
+  margin-left: calc(-1 * var(--tepi-kiri));
+  margin-right: calc(-1 * var(--tepi-kanan));
+  padding-left: calc(var(--tepi-kiri) + var(--pad-x, 0px));
+  padding-right: calc(var(--tepi-kanan) + var(--pad-x, 0px));
+}

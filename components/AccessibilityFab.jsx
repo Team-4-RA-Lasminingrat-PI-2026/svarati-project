@@ -24,7 +24,9 @@ export function IkonAksesibilitas({ className = "size-5" }) {
   );
 }
 
-// Tombol melayang di pojok kiri bawah untuk membuka Pengaturan Aksesibilitas
+// Tombol melayang di pojok kiri bawah untuk membuka Pengaturan Aksesibilitas.
+// HP: 36px di 6px dari pojok. >= 768px: 44px di 20px dari pojok (sejajar penanda Next.js).
+// Isi halaman diberi jarak tepi (class "tepi-aman" di globals.css) supaya tombol ini tidak menutupi tulisan.
 export default function AccessibilityFab() {
   const { openModal } = useAccessibility();
 
@@ -35,10 +37,10 @@ export default function AccessibilityFab() {
       aria-haspopup="dialog"
       aria-label={T.judul}
       title={T.judul}
-      className="group fixed bottom-4 left-4 z-50 flex size-14 cursor-pointer items-center justify-center rounded-full bg-svarati-teal text-white shadow-lg ring-4 ring-svarati-lavender-light transition hover:scale-105 hover:bg-svarati-teal-light focus-visible:outline-none focus-visible:ring-svarati-lavender-dark sm:bottom-6 sm:left-6"
+      className="fixed bottom-1.5 left-1.5 z-50 flex size-9 cursor-pointer items-center justify-center rounded-full bg-svarati-teal text-white shadow-lg ring-2 ring-svarati-lavender-light transition hover:scale-105 hover:bg-svarati-teal-light focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-svarati-lavender-dark md:bottom-5 md:left-5 md:size-11 md:ring-4"
     >
-      <span className="flex size-11 items-center justify-center rounded-full border-2 border-white/80">
-        <IkonAksesibilitas className="size-7" />
+      <span className="flex size-7 items-center justify-center rounded-full border-2 border-white/80 md:size-9">
+        <IkonAksesibilitas className="size-5 md:size-6" />
       </span>
     </button>
   );

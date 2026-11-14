@@ -9,7 +9,7 @@ export default function MythsFacts() {
   return (
     <section
       id="mitos"
-      className="scroll-mt-24 bg-svarati-teal-soft px-4 pb-16 pt-10 sm:px-6 lg:pb-24 lg:pt-12"
+      className="lebar-penuh scroll-mt-24 bg-svarati-teal-soft px-4 pb-16 pt-10 sm:px-6 [--pad-x:1rem] sm:[--pad-x:1.5rem] lg:pb-24 lg:pt-12"
     >
       <div className="mx-auto w-full max-w-6xl">
         {/* Header */}

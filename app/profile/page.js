@@ -210,7 +210,7 @@ export default function TentangKamiPage() {
       </section>
 
       {/* 5. Tim Pengembang */}
-      <section className="bg-svarati-teal-soft px-6 py-20">
+      <section className="lebar-penuh bg-svarati-teal-soft px-6 py-20 [--pad-x:1.5rem]">
         <div className="mx-auto max-w-5xl">
           <div className="mb-8 text-center">
             <Badge variant="teal">Tim Pengembangan Website</Badge>
