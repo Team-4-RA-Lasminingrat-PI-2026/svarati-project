@@ -153,9 +153,9 @@ export const serviceContent = {
       href: "/rehabilitatif",
       variant: "coral",
       badge: "Pemulihan",
-      title: "Ruang Pemulihan & Tree of Hope",
+      title: "Ruang Pemulihan & Pohon Harapan",
       description:
-        "Buat jurnal harian tentang emosional diri, belajar cara menenangkan diri, serta baca pesan-pesan dukungan dari komunitas (Tree of Hope).",
+        "Buat jurnal harian tentang emosional diri, belajar cara menenangkan diri, serta baca pesan-pesan dukungan dari komunitas (Pohon Harapan).",
       cta: "Masuk Ruang Pulih",
       image: "/rehab2.jpg",
     },
