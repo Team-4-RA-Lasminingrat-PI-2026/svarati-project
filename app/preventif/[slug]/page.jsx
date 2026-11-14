@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardTitle, CardDescription } from "@/components/Card";
 import ArticleCard from "@/components/education/ArticleCard";
 import ArticleActions from "@/components/education/ArticleActions";
-import { educationContent as edu } from "@/content/labels";
+import { educationContent as edu, categoryTheme } from "@/content/labels";
 import { getArticleBySlug, listArticles } from "@/lib/articles";
 
 // Satu kali query untuk generateMetadata dan halaman
@@ -65,6 +65,7 @@ export default async function ArticlePage({ params }) {
   const { slug } = await params;
   const article = await getArticle(slug);
   if (!article) notFound();
+  const theme = categoryTheme[article.category] ?? categoryTheme.hak_perempuan;
 
   const related = await getRelated(article);
 
@@ -98,7 +99,7 @@ export default async function ArticlePage({ params }) {
 
         {/* Header artikel */}
         <header className="mx-auto w-full max-w-3xl px-5 pt-12 sm:px-6">
-          <p className="text-xs font-semibold uppercase tracking-wider text-svarati-lavender-dark">
+          <p className={`text-xs font-semibold uppercase tracking-wider ${theme.text}`}>
             {article.categoryLabel}
           </p>
           <h1 className="mt-3 text-3xl font-bold leading-tight text-svarati-teal md:text-4xl lg:text-5xl">
@@ -113,7 +114,7 @@ export default async function ArticlePage({ params }) {
           <div className="mt-6 flex items-center gap-3 border-b border-svarati-lavender-light pb-8">
             <span
               aria-hidden="true"
-              className="flex size-12 shrink-0 items-center justify-center rounded-full bg-svarati-lavender-dark text-sm font-bold text-white"
+              className={`flex size-12 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white ${theme.avatarBg}`}
             >
               {initials(article.author)}
             </span>
