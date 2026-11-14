@@ -37,8 +37,15 @@ function adaTulisanDiBawah(tombol) {
   const kanan = JARAK + UKURAN + BINGKAI;
   const atas = vh - JARAK - UKURAN - BINGKAI;
   const bawah = vh - JARAK + BINGKAI;
-  for (let x = kiri; x <= kanan; x += 6) {
-    for (let y = atas; y <= bawah; y += 6) {
+  // Titik-titik pengecekan tiap 6px, selalu termasuk tepi paling luar bingkai
+  const titik = (a, b) => {
+    const hasil = [];
+    for (let v = a; v < b; v += 6) hasil.push(v);
+    hasil.push(b);
+    return hasil;
+  };
+  for (const x of titik(kiri, kanan)) {
+    for (const y of titik(atas, bawah)) {
       // Beberapa elemen teratas di titik ini (selain tombol sendiri dan penanda Next.js).
       // Lebih dari satu, karena tulisan bisa berada di bawah lapisan transparan (misalnya link selebar kartu).
       const tumpukan = document
@@ -79,12 +86,17 @@ export default function AccessibilityFab() {
     cek();
     window.addEventListener("scroll", cek, { passive: true });
     window.addEventListener("resize", cek);
+    // Elemen yang muncul dengan animasi baru sampai di posisi akhirnya setelah animasi selesai
+    document.addEventListener("transitionend", cek, true);
+    document.addEventListener("animationend", cek, true);
     // Isi halaman bisa berubah tanpa scroll (pindah halaman, data selesai dimuat)
     const interval = setInterval(cek, 1000);
     return () => {
       cancelAnimationFrame(frame);
       window.removeEventListener("scroll", cek);
       window.removeEventListener("resize", cek);
+      document.removeEventListener("transitionend", cek, true);
+      document.removeEventListener("animationend", cek, true);
       clearInterval(interval);
     };
   }, []);
