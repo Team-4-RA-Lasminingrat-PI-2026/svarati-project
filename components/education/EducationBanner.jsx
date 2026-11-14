@@ -6,7 +6,7 @@ import Link from "next/link";
 import { BookOpen, ChevronLeft, ChevronRight } from "lucide-react";
 import Badge from "@/components/Badge";
 import { Button } from "@/components/ui/button";
-import { educationContent as edu, categoryLabel } from "@/content/labels";
+import { educationContent as edu } from "@/content/labels";
 
 export default function EducationBanner({ headlines }) {
   const totalSlides = headlines.length + 1; // 1 slide intro + artikel headline
@@ -78,7 +78,7 @@ export default function EducationBanner({ headlines }) {
           
             <div className="flex min-w-0 flex-1 flex-col justify-center px-8 pb-14 pt-5 sm:px-14 md:py-5 lg:px-20">
               <Badge variant="lavender" styleType="white" className="mb-3 w-fit">
-                {categoryLabel[a.category]}
+                {a.categoryLabel}
               </Badge>
               <h2 className="text-xl font-bold leading-snug text-svarati-teal md:text-2xl lg:text-3xl">
                 {a.title}
