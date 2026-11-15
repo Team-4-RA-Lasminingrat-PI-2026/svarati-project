@@ -110,21 +110,23 @@ export default function GroundingPage() {
 
     return (
         <main
-            className="min-h-screen bg-svarati-cream px-4 pb-12 md:px-8 lg:px-12 font-sans"
+            className="min-h-screen bg-svarati-cream px-4 pb-8 md:px-8 lg:px-12 font-sans"
             style={{ paddingTop: "5rem" }}
         >
-            <div className="mx-auto max-w-4xl space-y-8">
+            {/* Jarak dirapatkan supaya satu langkah muat dalam satu layar
+                dan tombol Lanjut tidak perlu digulir */}
+            <div className="mx-auto max-w-4xl space-y-5">
                 <div>
                     <Link
                         href="/rehabilitatif/training"
-                        className={buttonVariants({ variant: "ghost", size: "sm", className: "mb-6" })}
+                        className={buttonVariants({ variant: "ghost", size: "sm", className: "mb-4" })}
                     >
                         <ArrowLeft className="size-4" /> Semua latihan
                     </Link>
-                    <h1 className="text-4xl font-bold text-svarati-teal mb-4 font-heading">
+                    <h1 className="text-3xl font-bold text-svarati-teal mb-2 font-heading">
                         Grounding 5-4-3-2-1
                     </h1>
-                    <p className="text-svarati-teal/80 text-lg leading-relaxed max-w-2xl">
+                    <p className="text-svarati-teal/80 leading-relaxed max-w-2xl">
                         Membantumu mengendalikan panik atau kecemasan dengan mengalihkan fokus ke
                         apa yang ada di sekitarmu sekarang.
                     </p>
@@ -132,14 +134,14 @@ export default function GroundingPage() {
 
                 <Card
                     variant="white"
-                    size="lg"
-                    className="mx-auto flex min-h-[480px] max-w-2xl flex-col items-center justify-center text-center"
+                    size="md"
+                    className="mx-auto flex min-h-[21rem] max-w-2xl flex-col items-center justify-center text-center"
                 >
                     {/* Intro */}
                     {stage === -1 && (
                         <div className="flex flex-col items-center">
-                            <CardTitle className="mb-3 text-2xl">Duduk dan pijakkan kaki</CardTitle>
-                            <CardDescription className="mx-auto mb-8 max-w-md text-base">
+                            <CardTitle className="mb-2 text-xl">Duduk dan pijakkan kaki</CardTitle>
+                            <CardDescription className="mx-auto mb-5 max-w-md">
                                 Duduklah dengan nyaman, pijakkan kedua kaki ke lantai, lalu tarik napas
                                 perlahan. Kita akan melewati 5 langkah singkat, tanpa terburu-buru.
                             </CardDescription>
@@ -153,7 +155,7 @@ export default function GroundingPage() {
                     {step && (
                         <div className="flex w-full flex-col items-center">
                             {/* Progres */}
-                            <div className="mb-8 flex gap-2" aria-label={`Langkah ${stage + 1} dari ${STEPS.length}`}>
+                            <div className="mb-5 flex gap-2" aria-label={`Langkah ${stage + 1} dari ${STEPS.length}`}>
                                 {STEPS.map((_, i) => (
                                     <span
                                         key={i}
@@ -162,16 +164,16 @@ export default function GroundingPage() {
                                 ))}
                             </div>
 
-                            <div className="mb-4 flex size-16 items-center justify-center rounded-full bg-svarati-teal/10 text-svarati-teal">
-                                <step.Icon className="size-8" />
+                            <div className="mb-3 flex size-14 items-center justify-center rounded-full bg-svarati-teal/10 text-svarati-teal">
+                                <step.Icon className="size-7" />
                             </div>
-                            <CardTitle className="mb-3 text-2xl">{step.title}</CardTitle>
-                            <CardDescription className="mx-auto mb-8 max-w-md text-base">
+                            <CardTitle className="mb-2 text-xl">{step.title}</CardTitle>
+                            <CardDescription className="mx-auto mb-5 max-w-md">
                                 {step.hint}
                             </CardDescription>
 
                             {/* Tap tiap kali menemukan satu */}
-                            <div className="mb-3 flex flex-wrap justify-center gap-3">
+                            <div className="mb-2 flex flex-wrap justify-center gap-2.5">
                                 {Array.from({ length: step.count }, (_, i) => {
                                     const done = i < marked;
                                     return (
@@ -180,7 +182,7 @@ export default function GroundingPage() {
                                             onClick={() => setMarked(i < marked ? i : i + 1)}
                                             aria-pressed={done}
                                             aria-label={`Tandai ke-${i + 1}`}
-                                            className={`flex size-12 items-center justify-center rounded-full border-2 font-bold transition-colors ${done
+                                            className={`flex size-11 items-center justify-center rounded-full border-2 font-bold transition-colors ${done
                                                 ? "border-svarati-teal bg-svarati-teal text-white"
                                                 : "border-svarati-teal/40 text-svarati-teal hover:bg-svarati-teal/10"
                                                 }`}
@@ -190,7 +192,7 @@ export default function GroundingPage() {
                                     );
                                 })}
                             </div>
-                            <CardDescription className="mb-8 text-xs">
+                            <CardDescription className="mb-5 text-xs">
                                 Ketuk lingkaran setiap kali kamu menemukannya ({marked}/{step.count})
                             </CardDescription>
 
@@ -208,11 +210,11 @@ export default function GroundingPage() {
                     {/* Selesai */}
                     {stage === STEPS.length && (
                         <div className="flex w-full flex-col items-center">
-                            <div className="mb-4 flex size-16 items-center justify-center rounded-full bg-svarati-teal/10 text-svarati-teal">
-                                <Check className="size-8" />
+                            <div className="mb-3 flex size-14 items-center justify-center rounded-full bg-svarati-teal/10 text-svarati-teal">
+                                <Check className="size-7" />
                             </div>
-                            <CardTitle className="mb-3 text-2xl">Kamu sudah melewati semuanya</CardTitle>
-                            <CardDescription className="mx-auto mb-8 max-w-md text-base">
+                            <CardTitle className="mb-2 text-xl">Kamu sudah melewati semuanya</CardTitle>
+                            <CardDescription className="mx-auto mb-5 max-w-md">
                                 Tarik napas pelan sekali lagi. Kamu berada di sini, di saat ini, dan kamu
                                 aman untuk beristirahat sejenak.
                             </CardDescription>
