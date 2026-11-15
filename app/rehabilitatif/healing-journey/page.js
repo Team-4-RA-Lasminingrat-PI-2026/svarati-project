@@ -79,6 +79,9 @@ const moodDetails = {
 
 export default function JurnalPemulihanPage() {
     const [date, setDate] = useState(new Date());
+    // Bulan yang sedang ditampilkan kalender. Dipisah dari tanggal terpilih,
+    // karena pengguna bisa menengok bulan lain tanpa memilih tanggal.
+    const [bulanTampil, setBulanTampil] = useState(new Date());
     const [moodHistory, setMoodHistory, removeMoods] = useLocalStorageState(STORAGE_KEY, initialMoods);
     const [noteHistory, setNoteHistory, removeNotes] = useLocalStorageState(NOTES_KEY, EMPTY);
     const [draftHistory, setDraftHistory, removeDrafts] = useLocalStorageState(DRAFTS_KEY, EMPTY);
@@ -190,8 +193,9 @@ export default function JurnalPemulihanPage() {
         Object.keys(noteHistory).length > 0 ||
         Object.keys(draftHistory).length > 0;
 
-    // Ringkasan bulan yang sedang dilihat, diambil dari bulan tanggal terpilih
-    const bulanKey = (dateKey ?? todayKey).slice(0, 7);
+    // Ringkasan mengikuti bulan yang sedang tampil di kalender,
+    // bukan bulan tanggal terpilih
+    const bulanKey = format(bulanTampil, "yyyy-MM");
     const jumlahBulanIni = new Set(
         [...Object.keys(moodHistory), ...Object.keys(noteHistory)].filter((k) =>
             k.startsWith(bulanKey)
@@ -202,7 +206,9 @@ export default function JurnalPemulihanPage() {
     const labelHari = dateKey === todayKey ? `Hari ini, ${namaHari}` : namaHari;
 
     return (
-        <main className="relative min-h-screen bg-svarati-cream px-4 pb-12 pt-24 font-sans md:px-8 lg:px-12">
+        // lg:pt-36 memberi ruang untuk tautan "Pemulihan" yang di layar lebar
+        // melayang absolut di atas konten, supaya tidak menempel ke judul
+        <main className="relative min-h-screen bg-svarati-cream px-4 pb-12 pt-24 font-sans md:px-8 lg:px-12 lg:pt-36">
             <BackToPemulihan />
 
             <div className="mx-auto max-w-5xl">
@@ -217,7 +223,7 @@ export default function JurnalPemulihanPage() {
                     {/* Lembar tanggal terpilih */}
                     <section
                         aria-labelledby="judul-tanggal"
-                        className="rounded-3xl border border-svarati-lavender-light/60 bg-white p-6 sm:p-8"
+                        className="rounded-3xl border border-svarati-lavender-light/60 border-t-4 border-t-svarati-coral bg-white p-6 sm:p-8"
                     >
                         <p className="text-sm font-bold text-svarati-coral-dark">{labelHari}</p>
                         <h2
@@ -228,7 +234,7 @@ export default function JurnalPemulihanPage() {
                         </h2>
 
                         {/* Pilihan mood */}
-                        <p id="tanya-mood" className="mt-6 font-bold text-svarati-teal">
+                        <p id="tanya-mood" className="mt-6 font-bold text-svarati-coral-dark">
                             Bagaimana perasaanmu?
                         </p>
                         <div
@@ -249,8 +255,10 @@ export default function JurnalPemulihanPage() {
                                     >
                                         <span
                                             aria-hidden="true"
+                                            // Warna coral, senada dengan penanda tanggal
+                                            // berisi catatan di kalender
                                             className={`grid size-12 place-items-center rounded-full text-3xl leading-none transition ${isActive
-                                                ? "bg-svarati-teal-soft ring-2 ring-svarati-teal"
+                                                ? "bg-svarati-coral-soft ring-2 ring-svarati-coral"
                                                 : "opacity-75 grayscale hover:opacity-100 hover:grayscale-0"
                                                 }`}
                                         >
@@ -258,7 +266,7 @@ export default function JurnalPemulihanPage() {
                                         </span>
                                         <span
                                             className={`text-center text-xs leading-tight ${isActive
-                                                ? "font-bold text-svarati-teal"
+                                                ? "font-bold text-svarati-coral-dark"
                                                 : "text-svarati-teal/70"
                                                 }`}
                                         >
@@ -295,7 +303,7 @@ export default function JurnalPemulihanPage() {
                                     <div className="mt-8">
                                         <label
                                             htmlFor="mood-note"
-                                            className="mb-2 block font-bold text-svarati-teal"
+                                            className="mb-2 block font-bold text-svarati-coral-dark"
                                         >
                                             Mau cerita lebih banyak?
                                         </label>
@@ -391,14 +399,23 @@ export default function JurnalPemulihanPage() {
                             mode="single"
                             selected={date}
                             onSelect={(d) => d && setDate(d)}
+                            month={bulanTampil}
+                            onMonthChange={setBulanTampil}
                             locale={id}
                             moodData={moodHistory}
                         />
 
                         <p className="mt-3 text-sm text-svarati-teal/70">
-                            {jumlahBulanIni > 0
-                                ? `${jumlahBulanIni} catatan bulan ini`
-                                : "Belum ada catatan bulan ini"}
+                            {jumlahBulanIni > 0 ? (
+                                <>
+                                    <span className="font-bold text-svarati-coral-dark">
+                                        {jumlahBulanIni} catatan
+                                    </span>{" "}
+                                    pada {format(bulanTampil, "MMMM yyyy", { locale: id })}
+                                </>
+                            ) : (
+                                `Belum ada catatan pada ${format(bulanTampil, "MMMM yyyy", { locale: id })}`
+                            )}
                         </p>
 
                         {hasAnyData && (
