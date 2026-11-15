@@ -244,8 +244,6 @@ const rutePemulihan = (id) => SUBMENU_PEMULIHAN.find((sub) => sub.id === id).hre
 export const pemulihanContent = {
   badge: "Ruang Pemulihan",
   judul: "Mari Sembuh Bersama, Perlahan-lahan",
-  // Bagian judul yang diberi coretan lengkung di halaman /rehabilitatif
-  judulTekanan: "Perlahan-lahan",
   deskripsi:
     "Ambil jeda sejenak untuk dirimu. Pilih fitur yang paling sesuai dengan kondisimu. Kamu tidak berjuang sendirian.",
   cta: { label: "Mulai Pemulihan", href: "/rehabilitatif" },

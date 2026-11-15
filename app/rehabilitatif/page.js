@@ -86,36 +86,6 @@ function renderDeskripsi(deskripsi) {
   );
 }
 
-// Judul dengan coretan lengkung di bagian akhir.
-// Kalau bagian yang ditekankan tidak ditemukan, judul tampil apa adanya.
-function JudulBanner({ judul, tekanan }) {
-  const potong = tekanan ? judul.lastIndexOf(tekanan) : -1;
-  if (potong < 0) return judul;
-
-  return (
-    <>
-      {judul.slice(0, potong)}
-      <span className="relative whitespace-nowrap">
-        {judul.slice(potong)}
-        <svg
-          viewBox="0 0 200 14"
-          preserveAspectRatio="none"
-          aria-hidden="true"
-          className="absolute inset-x-0 -bottom-2 h-3.5 w-full text-svarati-coral"
-        >
-          <path
-            d="M3 9c20-6 38 4 58-1s36-5 56 0 40 3 80-3"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="3"
-            strokeLinecap="round"
-          />
-        </svg>
-      </span>
-    </>
-  );
-}
-
 export default function PemulihanPage() {
   // Mulai dari paling atas
   useEffect(() => {
@@ -141,7 +111,7 @@ export default function PemulihanPage() {
             </p>
 
             <h1 className="mb-5 text-2xl font-semibold leading-[1.18] tracking-tight text-svarati-teal sm:text-3xl lg:text-4xl">
-              <JudulBanner judul={t.judul} tekanan={t.judulTekanan} />
+              {t.judul}
             </h1>
 
             <p className="max-w-lg text-sm leading-relaxed text-svarati-coral-dark sm:text-base">
