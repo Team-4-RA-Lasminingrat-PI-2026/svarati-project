@@ -455,11 +455,12 @@ export const KURATIF = {
   },
 
   menu: {
-    title: "Dukungan untuk Kasus yang Kamu Alami.",
+    title: "Ada yang bisa menemanimu, kapan pun kamu mau.",
     intro: "Pilih langkah yang paling sesuai dengan kondisimu saat ini. Kamu bisa mulai dari mana saja.",
     disclaimer: "Layanan di halaman ini membantu kamu memahami situasi. Hasilnya bukan diagnosis dan bukan penilaian hukum.",
-    // Bagian judul yang diberi coretan lengkung
-    judulTekanan: "Kamu Alami.",
+    // Bagian judul yang diberi coretan lengkung. Sengaja menyorot bagian
+    // yang menenangkan, bukan bagian yang menyebut pengalaman pengguna.
+    judulTekanan: "kapan pun kamu mau.",
     // Deskripsi per item, dicocokkan dengan id di submenu
     desc: {
       "cek-kondisi": "Enam pertanyaan singkat, satu per layar. Kamu bisa melewati atau kembali kapan saja.",

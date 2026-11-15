@@ -1,6 +1,45 @@
 import Link from "next/link";
 import { MENU_UTAMA, KURATIF, serviceContent } from "@/content/labels";
-import { ArrowRight, Bot, ClipboardCheck, Clock, Info, MapPin, Users } from "lucide-react";
+import { ArrowRight, Clock, Info, Users } from "lucide-react";
+
+// Ikon padat buatan sendiri. Warnanya ikut text-* dari pemanggil,
+// bagian putih sengaja putih karena ditaruh di atas ubin putih.
+function IkonPapan({ className }) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={className} fill="none">
+      <rect x="4" y="3.6" width="16" height="18.4" rx="3.2" fill="currentColor" />
+      <rect x="8.4" y="1.4" width="7.2" height="4.2" rx="1.7" fill="currentColor" />
+      <path d="M7.6 10.6l1.5 1.5 2.6-2.9" stroke="#fff" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M14.2 10.4h2.3" stroke="#fff" strokeWidth="1.7" strokeLinecap="round" />
+      <path d="M7.6 16.4l1.5 1.5 2.6-2.9" stroke="#fff" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M14.2 16.2h2.3" stroke="#fff" strokeWidth="1.7" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function IkonRobot({ className }) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={className} fill="none">
+      <circle cx="12" cy="3.1" r="1.6" fill="currentColor" />
+      <path d="M12 4.5v2.3" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" />
+      <rect x="1.5" y="11" width="2.8" height="5.2" rx="1.4" fill="currentColor" />
+      <rect x="19.7" y="11" width="2.8" height="5.2" rx="1.4" fill="currentColor" />
+      <rect x="4" y="6.8" width="16" height="13.4" rx="4.6" fill="currentColor" />
+      <circle cx="9" cy="12.4" r="1.6" fill="#fff" />
+      <circle cx="15" cy="12.4" r="1.6" fill="#fff" />
+      <path d="M9.5 16.3c1.4 1.1 3.6 1.1 5 0" stroke="#fff" strokeWidth="1.7" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function IkonPenandaHati({ className }) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={className} fill="none">
+      <path d="M12 22.2s7.6-7.4 7.6-12.8a7.6 7.6 0 1 0-15.2 0c0 5.4 7.6 12.8 7.6 12.8z" fill="currentColor" />
+      <path d="M12 13.9 9.2 11.2c-1.1-1.1-.4-3 1.2-3 .6 0 1.2.3 1.6.9.4-.6 1-.9 1.6-.9 1.6 0 2.3 1.9 1.2 3z" fill="#fff" />
+    </svg>
+  );
+}
 
 const menuKuratif = KURATIF.menu;
 const daftarSubmenu = MENU_UTAMA.find((menu) => menu.id === "pendampingan").submenu;
@@ -9,7 +48,7 @@ const badgeKuratif = serviceContent.items.find((item) => item.id === "kuratif").
 // Warna per layanan. Class ditulis lengkap agar terbaca oleh Tailwind.
 const TEMA = {
   "cek-kondisi": {
-    icon: ClipboardCheck,
+    icon: IkonPapan,
     kartu: "bg-svarati-teal-soft",
     ikon: "text-svarati-teal",
     judul: "text-svarati-teal",
@@ -18,7 +57,7 @@ const TEMA = {
     aksi: "text-svarati-teal",
   },
   "svarati-ai": {
-    icon: Bot,
+    icon: IkonRobot,
     kartu: "bg-svarati-lavender/15",
     ikon: "text-svarati-lavender-dark",
     judul: "text-svarati-lavender-dark",
@@ -27,7 +66,7 @@ const TEMA = {
     aksi: "text-svarati-lavender-dark",
   },
   "cari-layanan": {
-    icon: MapPin,
+    icon: IkonPenandaHati,
     // Coral paling muda di antara ketiganya, jadi dipertua satu tingkat
     kartu: "bg-svarati-coral-soft",
     ikon: "text-svarati-coral-dark",
@@ -110,7 +149,7 @@ export default function Page() {
                   <div className="min-w-0">
                     <div className="mb-2.5 flex items-center gap-2.5">
                       <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-white">
-                        <Icon className={`size-4 ${warna.ikon}`} aria-hidden="true" />
+                        <Icon className={`size-5 ${warna.ikon}`} />
                       </span>
                       <span
                         className={`inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-semibold leading-none ${warna.chip}`}
