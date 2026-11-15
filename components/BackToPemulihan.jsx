@@ -1,4 +1,5 @@
-import { BackLink, INTRO_BADGE } from "@/app/rehabilitatif/tree-of-hope/_components/Intro";
+import { BackLink } from "@/app/rehabilitatif/tree-of-hope/_components/Intro";
+import Badge from "@/components/Badge";
 
 // Tombol "< Pemulihan" dengan posisi yang sama persis dengan halaman Pohon Harapan (acuan).
 // Strukturnya meniru Pohon Harapan: pembungkus halaman px-4, lalu
@@ -17,7 +18,7 @@ export default function BackToPemulihan() {
                 <BackLink />
               </div>
               {/* Pengganti badge Pohon Harapan: tidak terlihat, hanya supaya tinggi barisnya sama */}
-              <span aria-hidden="true" className={`invisible ${INTRO_BADGE}`}>&nbsp;</span>
+              <Badge variant="coral" styleType="soft" className="invisible"> &nbsp; </Badge>
             </div>
           </header>
         </div>
