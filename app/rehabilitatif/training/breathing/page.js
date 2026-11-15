@@ -8,9 +8,8 @@ import { ArrowLeft } from "lucide-react";
 const TECHNIQUES = [
     {
         key: "478",
-        label: "4-7-8",
-        description:
-            "Tarik 4 detik, tahan 7, hembus 8. Cocok untuk meredakan cemas dan sebelum tidur.",
+        label: "Teknik 4-7-8",
+        description: "Untuk meredakan cemas dan sebelum tidur.",
         phases: [
             { nama: "Tarik napas", text: "Tarik napas perlahan lewat hidung", seconds: 4, scale: 1.7 },
             { nama: "Tahan", text: "Tahan napas", seconds: 7, scale: 1.7 },
@@ -19,9 +18,8 @@ const TECHNIQUES = [
     },
     {
         key: "box",
-        label: "Kotak 4-4-4-4",
-        description:
-            "Tarik, tahan, hembus, tahan, masing-masing 4 detik. Cocok untuk menenangkan pikiran yang berpacu.",
+        label: "Box Breathing",
+        description: "Untuk menenangkan pikiran yang berpacu.",
         phases: [
             { nama: "Tarik napas", text: "Tarik napas perlahan lewat hidung", seconds: 4, scale: 1.7 },
             { nama: "Tahan", text: "Tahan napas", seconds: 4, scale: 1.7 },
@@ -74,21 +72,12 @@ export default function BreathingPage() {
     const scale = current ? current.scale : 1;
     const duration = current ? current.seconds : 0.6;
 
-    // Batang kemajuan: fase lewat terisi penuh, fase berjalan mengisi,
-    // fase berikutnya masih kosong.
-    const lebarBatang = (i) => {
-        if (!running || i > state.phase) return "0%";
-        if (i < state.phase) return "100%";
-        const { seconds } = phases[i];
-        return `${((seconds - state.left + 1) / seconds) * 100}%`;
-    };
-
     return (
-        <main className="min-h-screen bg-svarati-cream px-4 pb-12 pt-20 font-sans md:px-8 lg:px-12">
+        <main className="min-h-screen bg-svarati-cream px-4 pb-8 pt-20 font-sans md:px-8 lg:px-12">
             <Link
                 href="/rehabilitatif/training"
                 aria-label="Kembali ke Semua latihan"
-                className="group mb-6 inline-flex items-center gap-1.5 rounded text-sm font-semibold text-svarati-teal hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-svarati-teal"
+                className="group mb-4 inline-flex items-center gap-1.5 rounded text-sm font-semibold text-svarati-teal hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-svarati-teal"
             >
                 <ArrowLeft
                     className="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-0.5"
@@ -97,20 +86,18 @@ export default function BreathingPage() {
                 Semua latihan
             </Link>
 
-            <div className="mx-auto max-w-2xl">
-                <h1 className="mb-3 text-3xl font-semibold leading-[1.18] tracking-tight text-svarati-teal md:text-4xl">
+            {/* Seluruh isi dipusatkan: lingkarannya memang di tengah, jadi
+                teks yang rata kiri membuat sisi kiri terasa kosong melompong */}
+            <div className="mx-auto flex max-w-xl flex-col items-center text-center">
+                <h1 className="text-3xl font-semibold leading-[1.18] tracking-tight text-svarati-teal">
                     Latihan Pernapasan
                 </h1>
-                <p className="max-w-xl text-base leading-relaxed text-svarati-teal/80">
-                    Duduk dengan nyaman, lalu ikuti lingkarannya: membesar saat tarik napas,
-                    mengecil saat hembus.
-                </p>
 
                 {/* Pilihan teknik */}
                 <div
                     role="group"
                     aria-label="Pilih teknik pernapasan"
-                    className="mt-6 inline-flex gap-1 rounded-full bg-white p-1 shadow-sm"
+                    className="mt-5 inline-flex gap-1 rounded-full bg-white p-1 shadow-sm"
                 >
                     {TECHNIQUES.map((t) => {
                         const aktif = t.key === techniqueKey;
@@ -131,69 +118,84 @@ export default function BreathingPage() {
                     })}
                 </div>
 
-                <p className="mt-3 text-sm leading-relaxed text-svarati-coral-dark">
+                <p className="mt-2.5 text-sm text-svarati-coral-dark">
                     {technique.description}
                 </p>
 
+                {/* Urutan fase ditaruh di sini, menempel pada pilihan teknik,
+                    karena memang keterangan tekniknya. Di bawah lingkaran
+                    tumpukan teksnya jadi terlalu padat.
+                    Sengaja tanpa batang yang terisi: bilah yang berlomba penuh
+                    terasa mengejar waktu, bukan menenangkan.
+                    Pemisahnya berupa karakter, bukan jarak CSS, supaya tidak
+                    pernah berdempetan kalau satu kelas gagal termuat. */}
+                <p className="mt-2 text-xs leading-relaxed">
+                    {phases.map((p, i) => {
+                        const aktif = running && i === state.phase;
+                        return (
+                            <span key={`${p.nama}-${i}`}>
+                                {i > 0 && (
+                                    <span aria-hidden="true" className="text-svarati-teal/30">
+                                        {"  ·  "}
+                                    </span>
+                                )}
+                                <span
+                                    className={
+                                        aktif
+                                            ? "font-semibold text-svarati-teal"
+                                            : "text-svarati-teal/45"
+                                    }
+                                >
+                                    {p.nama} {p.seconds}
+                                </span>
+                            </span>
+                        );
+                    })}
+                </p>
+
                 {/* Lingkaran yang membesar dan mengecil */}
-                <div className="mt-10 flex flex-col items-center">
+                <div className="mt-5 flex flex-col items-center">
                     <button
                         type="button"
                         onClick={toggleLatihan}
                         aria-label={running ? "Hentikan latihan" : "Mulai latihan"}
-                        className="relative flex size-64 cursor-pointer items-center justify-center rounded-full bg-svarati-teal-soft focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-svarati-teal/40"
+                        // Ukuran ikut tinggi layar supaya seluruh halaman tetap
+                        // muat satu layar di laptop pendek, tanpa mengecil berlebihan
+                        style={{ width: "clamp(10rem, 29vh, 17rem)", height: "clamp(10rem, 29vh, 17rem)" }}
+                        className="relative flex cursor-pointer items-center justify-center rounded-full bg-svarati-teal-soft focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-svarati-teal/40"
                     >
                         <span
                             aria-hidden="true"
-                            className="absolute size-36 rounded-full bg-svarati-teal shadow-lg"
+                            className="absolute rounded-full bg-svarati-teal shadow-lg"
                             style={{
+                                width: "56%",
+                                height: "56%",
                                 transform: `scale(${scale})`,
                                 transition: `transform ${duration}s linear`,
                             }}
                         />
                         <span className="relative z-10 font-semibold text-white drop-shadow-sm">
                             {running ? (
-                                <span className="text-6xl font-bold tabular-nums">{state.left}</span>
+                                <span className="text-5xl font-bold tabular-nums">{state.left}</span>
                             ) : (
                                 <span className="text-xl">Mulai</span>
                             )}
                         </span>
                     </button>
 
-                    <p className="mt-5 text-sm text-svarati-teal/70">
-                        {running ? "Ketuk lingkaran untuk berhenti." : "Ketuk lingkaran untuk mulai."}
+                    <p className="mt-4 text-sm text-svarati-teal/70">
+                        {running
+                            ? "Ketuk lingkaran untuk berhenti."
+                            : "Ketuk lingkaran untuk mulai. Lingkarannya membesar saat tarik napas."}
                     </p>
                 </div>
-
-                {/* Fase: batang kemajuan dan takarannya */}
-                <ul
-                    className="mt-8 grid gap-x-4"
-                    style={{ gridTemplateColumns: `repeat(${phases.length}, minmax(0, 1fr))` }}
-                >
-                    {phases.map((p, i) => (
-                        <li key={`${p.nama}-${i}`}>
-                            <span
-                                aria-hidden="true"
-                                className="block h-1.5 overflow-hidden rounded-full bg-svarati-teal/15"
-                            >
-                                <span
-                                    className="block h-full rounded-full bg-svarati-teal transition-[width] duration-1000 ease-linear"
-                                    style={{ width: lebarBatang(i) }}
-                                />
-                            </span>
-                            <span className="mt-2 block text-xs leading-snug text-svarati-teal/70">
-                                {p.nama} {p.seconds}
-                            </span>
-                        </li>
-                    ))}
-                </ul>
 
                 {/* Hanya untuk pembaca layar: mengumumkan pergantian fase */}
                 <p aria-live="polite" className="sr-only">
                     {current ? `${current.text}, ${state.left} detik` : ""}
                 </p>
 
-                <p className="mt-8 text-sm leading-relaxed text-svarati-coral-dark">
+                <p className="mt-6 max-w-xs text-xs leading-relaxed text-svarati-teal/60">
                     Kalau pusing atau tidak nyaman, berhenti dan bernapaslah seperti biasa.
                 </p>
             </div>
