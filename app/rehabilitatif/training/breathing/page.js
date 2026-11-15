@@ -9,8 +9,7 @@ const TECHNIQUES = [
     {
         key: "478",
         label: "Teknik 4-7-8",
-        description:
-            "Tarik 4 detik, tahan 7, hembus 8. Cocok untuk meredakan cemas dan sebelum tidur.",
+        description: "Untuk meredakan cemas dan sebelum tidur.",
         phases: [
             { nama: "Tarik napas", text: "Tarik napas perlahan lewat hidung", seconds: 4, scale: 1.7 },
             { nama: "Tahan", text: "Tahan napas", seconds: 7, scale: 1.7 },
@@ -20,8 +19,7 @@ const TECHNIQUES = [
     {
         key: "box",
         label: "Box Breathing",
-        description:
-            "Tarik, tahan, hembus, tahan, masing-masing 4 detik. Cocok untuk menenangkan pikiran yang berpacu.",
+        description: "Untuk menenangkan pikiran yang berpacu.",
         phases: [
             { nama: "Tarik napas", text: "Tarik napas perlahan lewat hidung", seconds: 4, scale: 1.7 },
             { nama: "Tahan", text: "Tahan napas", seconds: 4, scale: 1.7 },
@@ -91,13 +89,9 @@ export default function BreathingPage() {
             {/* Seluruh isi dipusatkan: lingkarannya memang di tengah, jadi
                 teks yang rata kiri membuat sisi kiri terasa kosong melompong */}
             <div className="mx-auto flex max-w-xl flex-col items-center text-center">
-                <h1 className="mb-2 text-3xl font-semibold leading-[1.18] tracking-tight text-svarati-teal">
+                <h1 className="text-3xl font-semibold leading-[1.18] tracking-tight text-svarati-teal">
                     Latihan Pernapasan
                 </h1>
-                <p className="text-base leading-relaxed text-svarati-teal/80">
-                    Duduk dengan nyaman, lalu ikuti lingkarannya: membesar saat tarik napas,
-                    mengecil saat hembus.
-                </p>
 
                 {/* Pilihan teknik */}
                 <div
@@ -124,7 +118,7 @@ export default function BreathingPage() {
                     })}
                 </div>
 
-                <p className="mt-3 text-sm leading-relaxed text-svarati-coral-dark">
+                <p className="mt-2.5 text-sm text-svarati-coral-dark">
                     {technique.description}
                 </p>
 
@@ -158,8 +152,10 @@ export default function BreathingPage() {
                         </span>
                     </button>
 
-                    <p className="mt-3 text-sm text-svarati-teal/70">
-                        {running ? "Ketuk lingkaran untuk berhenti." : "Ketuk lingkaran untuk mulai."}
+                    <p className="mt-4 text-sm text-svarati-teal/70">
+                        {running
+                            ? "Ketuk lingkaran untuk berhenti."
+                            : "Ketuk lingkaran untuk mulai. Lingkarannya membesar saat tarik napas."}
                     </p>
                 </div>
 
@@ -168,7 +164,7 @@ export default function BreathingPage() {
                     Fase yang sedang berjalan cukup ditandai dengan warna. */}
                 {/* Pemisahnya berupa karakter, bukan jarak CSS, supaya tidak
                     pernah berdempetan kalau satu kelas gagal termuat */}
-                <p className="mt-4 text-sm leading-relaxed">
+                <p className="mt-3 text-xs leading-relaxed">
                     {phases.map((p, i) => {
                         const aktif = running && i === state.phase;
                         return (
@@ -197,7 +193,7 @@ export default function BreathingPage() {
                     {current ? `${current.text}, ${state.left} detik` : ""}
                 </p>
 
-                <p className="mt-4 text-sm leading-relaxed text-svarati-coral-dark">
+                <p className="mt-6 max-w-xs text-xs leading-relaxed text-svarati-teal/60">
                     Kalau pusing atau tidak nyaman, berhenti dan bernapaslah seperti biasa.
                 </p>
             </div>
