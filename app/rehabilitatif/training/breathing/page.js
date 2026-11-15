@@ -88,11 +88,13 @@ export default function BreathingPage() {
                 Semua latihan
             </Link>
 
-            <div className="mx-auto max-w-2xl">
+            {/* Seluruh isi dipusatkan: lingkarannya memang di tengah, jadi
+                teks yang rata kiri membuat sisi kiri terasa kosong melompong */}
+            <div className="mx-auto flex max-w-xl flex-col items-center text-center">
                 <h1 className="mb-2 text-3xl font-semibold leading-[1.18] tracking-tight text-svarati-teal">
                     Latihan Pernapasan
                 </h1>
-                <p className="max-w-xl text-base leading-relaxed text-svarati-teal/80">
+                <p className="text-base leading-relaxed text-svarati-teal/80">
                     Duduk dengan nyaman, lalu ikuti lingkarannya: membesar saat tarik napas,
                     mengecil saat hembus.
                 </p>
@@ -127,14 +129,14 @@ export default function BreathingPage() {
                 </p>
 
                 {/* Lingkaran yang membesar dan mengecil */}
-                <div className="mt-6 flex flex-col items-center">
+                <div className="mt-5 flex flex-col items-center">
                     <button
                         type="button"
                         onClick={toggleLatihan}
                         aria-label={running ? "Hentikan latihan" : "Mulai latihan"}
                         // Ukuran ikut tinggi layar supaya seluruh halaman tetap
                         // muat satu layar di laptop pendek, tanpa mengecil berlebihan
-                        style={{ width: "clamp(9rem, 26vh, 16rem)", height: "clamp(9rem, 26vh, 16rem)" }}
+                        style={{ width: "clamp(10rem, 29vh, 17rem)", height: "clamp(10rem, 29vh, 17rem)" }}
                         className="relative flex cursor-pointer items-center justify-center rounded-full bg-svarati-teal-soft focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-svarati-teal/40"
                     >
                         <span
@@ -164,35 +166,38 @@ export default function BreathingPage() {
                 {/* Urutan fase. Sengaja tanpa batang yang terisi: bilah yang
                     berlomba penuh terasa mengejar waktu, bukan menenangkan.
                     Fase yang sedang berjalan cukup ditandai dengan warna. */}
-                <ul className="mt-5 flex flex-wrap justify-center gap-x-7 gap-y-2 text-sm">
+                {/* Pemisahnya berupa karakter, bukan jarak CSS, supaya tidak
+                    pernah berdempetan kalau satu kelas gagal termuat */}
+                <p className="mt-4 text-sm leading-relaxed">
                     {phases.map((p, i) => {
                         const aktif = running && i === state.phase;
                         return (
-                            <li
-                                key={`${p.nama}-${i}`}
-                                className={
-                                    aktif
-                                        ? "font-semibold text-svarati-teal"
-                                        : "text-svarati-teal/45"
-                                }
-                            >
+                            <span key={`${p.nama}-${i}`}>
+                                {i > 0 && (
+                                    <span aria-hidden="true" className="text-svarati-teal/30">
+                                        {"  ·  "}
+                                    </span>
+                                )}
                                 <span
-                                    aria-hidden="true"
-                                    className={`mr-2 inline-block size-1.5 rounded-full align-middle transition-colors duration-500 ${aktif ? "bg-svarati-teal" : "bg-svarati-teal/25"
-                                        }`}
-                                />
-                                {p.nama} {p.seconds}
-                            </li>
+                                    className={
+                                        aktif
+                                            ? "font-semibold text-svarati-teal"
+                                            : "text-svarati-teal/45"
+                                    }
+                                >
+                                    {p.nama} {p.seconds}
+                                </span>
+                            </span>
                         );
                     })}
-                </ul>
+                </p>
 
                 {/* Hanya untuk pembaca layar: mengumumkan pergantian fase */}
                 <p aria-live="polite" className="sr-only">
                     {current ? `${current.text}, ${state.left} detik` : ""}
                 </p>
 
-                <p className="mt-5 text-sm leading-relaxed text-svarati-coral-dark">
+                <p className="mt-4 text-sm leading-relaxed text-svarati-coral-dark">
                     Kalau pusing atau tidak nyaman, berhenti dan bernapaslah seperti biasa.
                 </p>
             </div>
