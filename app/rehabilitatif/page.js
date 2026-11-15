@@ -123,34 +123,36 @@ export default function PemulihanPage() {
   }, []);
 
   return (
-    <div className="relative scroll-mt-28 px-4 pb-12 pt-28 sm:pt-22">
-      <div className="mx-auto max-w-5xl">
-        {/* Banner Utama */}
-        <section className="relative mb-10 overflow-hidden rounded-3xl border border-svarati-coral/20 bg-svarati-coral-soft px-7 py-9 sm:px-14 sm:py-14">
+    <div className="relative scroll-mt-28 px-4 pb-10 pt-24 sm:pt-20">
+      <div className="mx-auto max-w-6xl">
+        {/* Banner Utama. Dibuat ringkas supaya banner dan ketiga kartu
+            muat dalam satu layar tanpa perlu menggulir. */}
+        <section className="relative mb-5 overflow-hidden rounded-3xl border border-svarati-coral/20 bg-svarati-coral-soft px-6 py-7 sm:px-10 sm:py-9">
           {/* Lingkaran dekoratif */}
           <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-            <div className="absolute -right-24 -top-32 size-52 rounded-full bg-svarati-coral/20 sm:size-80" />
-            <div className="absolute -bottom-28 right-0 size-44 rounded-full bg-svarati-coral/25 sm:right-12 sm:size-72" />
+            <div className="absolute -right-24 -top-28 size-48 rounded-full bg-svarati-coral/20 sm:size-64" />
+            <div className="absolute -bottom-24 right-0 size-40 rounded-full bg-svarati-coral/25 sm:right-12 sm:size-56" />
           </div>
 
           <div className="relative z-10 max-w-xl">
-            <p className="mb-3.5 flex items-center gap-2 text-sm font-semibold text-svarati-coral-dark">
+            <p className="mb-2.5 flex items-center gap-2 text-sm font-semibold text-svarati-coral-dark">
               <Sprout className="size-4.5" aria-hidden="true" />
               {t.badge}
             </p>
 
-            <h1 className="mb-5 text-3xl font-semibold leading-[1.18] tracking-tight text-svarati-teal sm:text-4xl lg:text-5xl">
+            <h1 className="mb-5 text-2xl font-semibold leading-[1.18] tracking-tight text-svarati-teal sm:text-3xl lg:text-4xl">
               <JudulBanner judul={t.judul} tekanan={t.judulTekanan} />
             </h1>
 
-            <p className="max-w-lg text-base leading-relaxed text-svarati-coral-dark sm:text-lg">
+            <p className="max-w-lg text-sm leading-relaxed text-svarati-coral-dark sm:text-base">
               {t.deskripsi}
             </p>
           </div>
         </section>
 
-        {/* Pilihan fitur pemulihan */}
-        <div className="grid gap-3.5">
+        {/* Pilihan fitur pemulihan: berjejer ke samping, bukan bertumpuk,
+            supaya ketiganya terlihat sekaligus */}
+        <div className="grid gap-4 md:grid-cols-3">
           {t.fitur.map((item) => {
             const Ikon = IKON[item.id];
             const warna = TEMA[item.variant];
@@ -159,27 +161,26 @@ export default function PemulihanPage() {
               <Link
                 key={item.id}
                 href={item.href}
-                className={`group grid gap-5 rounded-3xl border border-transparent px-6 py-6 transition-colors sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end sm:gap-8 sm:px-8 ${warna.kartu}`}
+                className={`group flex h-full flex-col rounded-3xl border border-transparent px-6 py-6 transition-colors ${warna.kartu}`}
               >
-                <div>
-                  <div className="mb-3 flex items-center gap-3">
-                    <Ikon className={`size-7 shrink-0 ${warna.aksen}`} />
-                    <span className={`text-[13.5px] font-semibold leading-none ${TEKS_LEMBUT}`}>
-                      {item.badge}
-                    </span>
-                  </div>
-
-                  <h2 className={`mb-1.5 text-xl font-semibold leading-snug sm:text-2xl ${TEKS_JUDUL}`}>
-                    {item.title}
-                  </h2>
-
-                  <p className={`max-w-2xl text-sm leading-relaxed sm:text-base ${TEKS_LEMBUT}`}>
-                    {renderDeskripsi(item.description)}
-                  </p>
+                <div className="mb-3 flex items-center gap-3">
+                  <Ikon className={`size-7 shrink-0 ${warna.aksen}`} />
+                  <span className={`text-[13.5px] font-semibold leading-none ${TEKS_LEMBUT}`}>
+                    {item.badge}
+                  </span>
                 </div>
 
+                <h2 className={`mb-1.5 text-xl font-semibold leading-snug ${TEKS_JUDUL}`}>
+                  {item.title}
+                </h2>
+
+                {/* flex-1 mendorong tautan ke dasar kartu, jadi ketiganya sejajar */}
+                <p className={`flex-1 text-sm leading-relaxed ${TEKS_LEMBUT}`}>
+                  {renderDeskripsi(item.description)}
+                </p>
+
                 <span
-                  className={`inline-flex items-center gap-2 whitespace-nowrap text-base font-bold ${warna.aksen}`}
+                  className={`mt-5 inline-flex items-center gap-2 whitespace-nowrap text-[15px] font-bold ${warna.aksen}`}
                 >
                   <span className="underline-offset-4 group-hover:underline">{item.cta}</span>
                   <ArrowRight
