@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Link from "next/link";
 import { ArrowRight, Sprout } from "lucide-react";
-import EmergencyModal from "@/components/modals/EmergencyModal";
 import { pemulihanContent as t } from "@/content/labels";
 
 // Ikon padat buatan sendiri. Warnanya ikut text-* dari pemanggil,
@@ -122,8 +121,6 @@ function JudulBanner({ judul, tekanan }) {
 }
 
 export default function PemulihanPage() {
-  const [daruratOpen, setDaruratOpen] = useState(false);
-
   // Mulai dari paling atas
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -201,20 +198,7 @@ export default function PemulihanPage() {
           })}
         </div>
 
-        {/* Jalan pintas ke bantuan darurat */}
-        <p className="mt-10 max-w-xl border-t border-dashed border-svarati-lavender-light pt-6 text-svarati-teal/70">
-          {t.tanyaDarurat}{" "}
-          <button
-            type="button"
-            onClick={() => setDaruratOpen(true)}
-            className="cursor-pointer font-semibold text-svarati-danger underline underline-offset-4 transition hover:text-svarati-danger-darker"
-          >
-            {t.ctaDarurat}
-          </button>
-        </p>
       </div>
-
-      <EmergencyModal open={daruratOpen} onClose={() => setDaruratOpen(false)} />
     </div>
   );
 }
