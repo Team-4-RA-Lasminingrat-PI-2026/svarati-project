@@ -74,15 +74,6 @@ export default function BreathingPage() {
     const scale = current ? current.scale : 1;
     const duration = current ? current.seconds : 0.6;
 
-    // Batang kemajuan: fase lewat terisi penuh, fase berjalan mengisi,
-    // fase berikutnya masih kosong.
-    const lebarBatang = (i) => {
-        if (!running || i > state.phase) return "0%";
-        if (i < state.phase) return "100%";
-        const { seconds } = phases[i];
-        return `${((seconds - state.left + 1) / seconds) * 100}%`;
-    };
-
     return (
         <main className="min-h-screen bg-svarati-cream px-4 pb-8 pt-20 font-sans md:px-8 lg:px-12">
             <Link
@@ -170,27 +161,30 @@ export default function BreathingPage() {
                     </p>
                 </div>
 
-                {/* Fase: batang kemajuan dan takarannya */}
-                <ul
-                    className="mt-5 grid gap-x-4"
-                    style={{ gridTemplateColumns: `repeat(${phases.length}, minmax(0, 1fr))` }}
-                >
-                    {phases.map((p, i) => (
-                        <li key={`${p.nama}-${i}`}>
-                            <span
-                                aria-hidden="true"
-                                className="block h-1.5 overflow-hidden rounded-full bg-svarati-teal/15"
+                {/* Urutan fase. Sengaja tanpa batang yang terisi: bilah yang
+                    berlomba penuh terasa mengejar waktu, bukan menenangkan.
+                    Fase yang sedang berjalan cukup ditandai dengan warna. */}
+                <ul className="mt-5 flex flex-wrap justify-center gap-x-7 gap-y-2 text-sm">
+                    {phases.map((p, i) => {
+                        const aktif = running && i === state.phase;
+                        return (
+                            <li
+                                key={`${p.nama}-${i}`}
+                                className={
+                                    aktif
+                                        ? "font-semibold text-svarati-teal"
+                                        : "text-svarati-teal/45"
+                                }
                             >
                                 <span
-                                    className="block h-full rounded-full bg-svarati-teal transition-[width] duration-1000 ease-linear"
-                                    style={{ width: lebarBatang(i) }}
+                                    aria-hidden="true"
+                                    className={`mr-2 inline-block size-1.5 rounded-full align-middle transition-colors duration-500 ${aktif ? "bg-svarati-teal" : "bg-svarati-teal/25"
+                                        }`}
                                 />
-                            </span>
-                            <span className="mt-2 block text-xs leading-snug text-svarati-teal/70">
                                 {p.nama} {p.seconds}
-                            </span>
-                        </li>
-                    ))}
+                            </li>
+                        );
+                    })}
                 </ul>
 
                 {/* Hanya untuk pembaca layar: mengumumkan pergantian fase */}
