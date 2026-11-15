@@ -23,6 +23,25 @@ function IkonNapas({ className }) {
     );
 }
 
+// Ikon kecil di label atas judul: awan dengan satu hembusan napas
+function IkonNapasKecil({ className }) {
+    return (
+        <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+            className={className}
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        >
+            <path d="M7.5 14.5a3.4 3.4 0 0 1 .5-6.8 4.4 4.4 0 0 1 8.2 1.1 3 3 0 0 1-.7 5.7z" />
+            <path d="M8.5 18.8c1.7 0 1.7 1.9 3.5 1.9s1.8-1.9 3.5-1.9" />
+        </svg>
+    );
+}
+
 function IkonHeadphone({ className }) {
     return (
         <svg viewBox="0 0 24 24" aria-hidden="true" className={className} fill="none">
@@ -92,10 +111,12 @@ const exercises = [
         cocok: "Saat panik atau kewalahan.",
         takaran: "5 langkah, sekitar 3 menit",
         warna: {
+            // Coral paling muda di antara ketiganya, jadi dipertua satu tingkat
+            // supaya bobotnya setara ikon teal dan lavender
             kartu: "bg-svarati-coral-soft",
-            ikon: "text-svarati-coral-dark",
-            takaran: "text-svarati-coral-dark",
-            tombol: "bg-svarati-coral-dark",
+            ikon: "text-svarati-coral-darker",
+            takaran: "text-svarati-coral-darker",
+            tombol: "bg-svarati-coral-darker",
         },
     },
 ];
@@ -107,6 +128,11 @@ export default function TrainingPage() {
 
             <div className="mx-auto max-w-3xl">
                 <header className="mb-7 max-w-xl">
+                    <p className="mb-2.5 flex items-center gap-2 text-sm font-semibold text-svarati-coral-dark">
+                        <IkonNapasKecil className="size-4.5" />
+                        Latihan Tenang
+                    </p>
+
                     <h1 className="mb-4 text-3xl font-semibold leading-[1.18] tracking-tight text-svarati-teal md:text-4xl">
                         Beri dirimu ruang tenang sebentar.
                     </h1>
