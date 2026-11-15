@@ -14,7 +14,7 @@ export async function GET(request) {
     });
     return NextResponse.json({ data }, { headers });
   } catch (e) {
-    console.error("GET /api/cities gagal:", e?.message);
+    console.error("GET /api/kuratif/help-directory/cities gagal:", e?.message);
     return NextResponse.json({ error: "Gagal memuat kota" }, { status: 500, headers });
   }
 }

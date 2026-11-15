@@ -198,10 +198,9 @@ export default function useTreeOfHope() {
         : "";
       showToast(
         TOAST_TYPE.SUCCESS,
-        isEdit
-          ? `Pesanmu berhasil diubah.${deadline}`
-          : `${t.toast.success}${deadline}`,
+        isEdit ? `${t.manage.editedToast}${deadline}` : `${t.toast.success}${deadline}`
       );
+
       return true;
     } catch (err) {
       showToast(
@@ -213,6 +212,32 @@ export default function useTreeOfHope() {
       return false;
     }
   }
+  async function remove(id) {
+  const token = await ensureAnonymousSession();
+  if (!token) {
+    showToast(TOAST_TYPE.ERROR, t.toast.sendFailed);
+    return false;
+  }
+  try {
+    const res = await fetch(`${API_URL}/${id}`, {
+      method: "DELETE",
+      headers: { "x-session-token": token },
+    });
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(res.status === 403 ? json.error : t.toast.sendFailed);
+
+    setActiveIndex(null);
+    setReloadKey((n) => n + 1);
+    showToast(TOAST_TYPE.SUCCESS, t.manage.deletedToast);
+    return true;
+  } catch (err) {
+    showToast(
+      TOAST_TYPE.ERROR,
+      err instanceof TypeError ? t.toast.sendFailed : err.message || t.toast.sendFailed
+    );
+    return false;
+  }
+}
 
   return {
     revealed,
@@ -252,5 +277,6 @@ export default function useTreeOfHope() {
     warnEmpty: () => showToast(TOAST_TYPE.WARNING, t.toast.empty),
     toast,
     closeToast,
+    remove,
   };
 }

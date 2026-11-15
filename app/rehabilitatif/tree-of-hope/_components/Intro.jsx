@@ -1,35 +1,31 @@
 import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+import Badge from "@/components/Badge";
 import { treeOfHopeContent as t } from "@/content/labels";
-import { ChevronLeftIcon } from "./icons";
 
+export const BACK_LINK_CLASS =
+  "inline-flex items-center gap-1.5 rounded-full py-2 pr-3 text-sm font-semibold text-svarati-coral-dark hover:underline";
+export const BACK_ICON_CLASS = "size-4";
+
+// Tombol kembali ke halaman Pemulihan
 export function BackLink() {
   return (
-    <Link
-      href={t.back.href}
-      aria-label={t.back.aria}
-      className="inline-flex items-center gap-1 rounded-full py-2 pr-3 font-semibold text-svarati-coral-dark hover:text-svarati-coral-darker hover:underline"
-    >
-      <ChevronLeftIcon />
+    <Link href={t.back.href} aria-label={t.back.aria} className={BACK_LINK_CLASS}>
+      <ArrowLeft className={BACK_ICON_CLASS} aria-hidden="true" />
       {t.back.label}
     </Link>
   );
 }
 
-export const INTRO_BADGE =
-  "inline-block rounded-full bg-svarati-coral/20 px-4 py-1.5 text-sm font-semibold text-svarati-coral-darker/80";
-
+// Badge, judul, dan deskripsi (dipakai versi mobile)
 export function Intro({ titleClassName = "text-4xl lg:text-5xl" }) {
   return (
     <>
-      <span className={INTRO_BADGE}>{t.badge}</span>
-      <h1
-        className={`mt-4 font-bold leading-tight text-svarati-coral-darker ${titleClassName}`}
-      >
-        {t.title}
-      </h1>
-      <p className="mt-4 text-lg leading-relaxed text-svarati-coral-darker">
-        {t.description}
-      </p>
+      <Badge variant="coral" styleType="soft" className="mb-3">
+        {t.badge}
+      </Badge>
+      <h1 className={`font-bold leading-tight text-svarati-teal ${titleClassName}`}>{t.title}</h1>
+      <p className="mt-3 text-base leading-relaxed text-svarati-coral-dark">{t.description}</p>
     </>
   );
 }

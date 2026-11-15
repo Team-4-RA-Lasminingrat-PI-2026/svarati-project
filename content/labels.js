@@ -818,7 +818,13 @@ export const treeOfHopeContent = {
     submit: "Kirim Pesan",
     sending: "Mengirim...",
     cancel: "Batal",
-  },
+    editTitle: "Ubah pesanmu",
+    save: "Simpan perubahan",
+    note: (menit) =>
+      `Kamu dapat mengubah atau menghapus pesanmu sampai ${menit} menit setelah dikirim, dari perangkat dan peramban yang sama. Setelah itu, pesan akan tersimpan permanen di Pohon Harapan.`,
+    terms:
+      "Pesanku tidak mengandung unsur SARA, ujaran kebencian, atau kekerasan, dan tidak memuat data yang dapat mengidentifikasi seseorang (nama, nomor telepon, alamat, nama pelaku). Aku menulisnya untuk memberi motivasi atau inspirasi bagi rekan penyintas. Tim Svarati berhak menghapus pesan yang dinilai melanggar ketentuan ini.",
+      },
 
   toast: {
     empty: "Tulis pesanmu dulu sebelum mengirim.",
@@ -828,5 +834,29 @@ export const treeOfHopeContent = {
     likeFailed: "Maaf, kamu belum bisa menyukai Pesan Dukungan ini sekarang. Coba lagi dalam beberapa saat.",
     likeUnavailable: "Maaf, dukungan belum bisa disimpan untuk pesan ini.",
     offline: "Maaf, jaringan sedang offline. Menampilkan pesan-pesan pilihan untukmu.",
+  },
+
+  manage: {
+    editButton: "Ubah pesan",
+    deleteButton: "Hapus pesan",
+    confirmDelete: "Hapus pesan ini? Tindakan ini tidak bisa dibatalkan.",
+    confirmYes: "Ya, hapus",
+    confirmNo: "Batal",
+    deleting: "Menghapus...",
+    deadline: (tanggal, jam) =>
+      `Kamu dapat mengubah atau menghapus pesanmu sampai tanggal ${tanggal} jam ${jam}. Setelah itu, pesan akan tersimpan permanen di Pohon Svarati.`,
+    editedToast: "Pesanmu berhasil diubah.",
+    deletedToast: "Pesanmu sudah dihapus.",
+  },
+  
+  location: {
+    placeholder: "Ketik nama kota atau provinsi",
+    none: "Tidak dipilih",
+    wholeProvince: "Seluruh provinsi",
+    notFound: "Daerah tidak ditemukan.",
+    typeHint: "Ketik untuk mencari kota atau kabupaten.",
+    notInList: (v) => `"${v}" tidak ada di daftar. Pilih daerah dari daftar, atau kosongkan.`,
+    city: "Kota",
+    regency: "Kabupaten",
   },
 };

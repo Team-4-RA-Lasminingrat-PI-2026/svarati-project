@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Link from "next/link";
 import { BookOpen, Wind, HeartHandshake } from "lucide-react";
 import Badge from "@/components/Badge";
@@ -42,23 +42,10 @@ function renderDeskripsi(deskripsi) {
 }
 
 export default function PemulihanPage() {
-  const [tampil, setTampil] = useState(false);
-
+  // Mulai dari paling atas
   useEffect(() => {
     window.scrollTo(0, 0);
-    const id = requestAnimationFrame(() => setTampil(true));
-    return () => cancelAnimationFrame(id);
   }, []);
-
-  const muncul = (delay) =>
-    `transition-all duration-700 ease-out ${delay} ${
-      tampil ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-    }`;
-
-  const munculGambar = (delay) =>
-    `transition-all duration-1000 ease-out ${delay} ${
-      tampil ? "translate-x-0 scale-100 opacity-100" : "translate-x-8 scale-95 opacity-0"
-    }`;
 
   return (
     <div className="relative scroll-mt-28 px-4 pb-8 pt-28 sm:pb-12 sm:pt-22">
@@ -67,35 +54,31 @@ export default function PemulihanPage() {
         <Card
           variant="coral"
           size="lg"
-          className={`relative mb-8 overflow-hidden border-0 from-svarati-coral-soft via-white to-svarati-coral/20 shadow-sm sm:p-10 ${muncul("")}`}
+          className="relative mb-8 overflow-hidden border-0 from-svarati-coral-soft via-white to-svarati-coral/20 shadow-sm sm:p-10"
         >
           {/* Lingkaran dekoratif */}
           <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-            <div
-              className={`absolute -right-16 -top-24 size-56 rounded-full bg-svarati-coral/15 sm:size-72 ${munculGambar("delay-300")}`}
-            />
-            <div
-              className={`absolute -bottom-20 right-16 size-40 rounded-full bg-svarati-coral/25 sm:right-24 sm:size-56 ${munculGambar("delay-500")}`}
-            />
+            <div className="absolute -right-16 -top-24 size-56 rounded-full bg-svarati-coral/15 sm:size-72" />
+            <div className="absolute -bottom-20 right-16 size-40 rounded-full bg-svarati-coral/25 sm:right-24 sm:size-56" />
           </div>
 
           <div className="relative z-10 max-w-xl">
-            <Badge variant="coral" styleType="soft" className={muncul("delay-150")}>
+            <Badge variant="coral" styleType="soft">
               {t.badge}
             </Badge>
 
-            <h1 className={`mb-3 mt-4 text-3xl font-extrabold tracking-tight text-svarati-teal sm:text-4xl ${muncul("delay-300")}`}>
+            <h1 className="mb-3 mt-4 text-3xl font-extrabold tracking-tight text-svarati-teal sm:text-4xl">
               {t.judul}
             </h1>
 
-            <p className={`text-base leading-relaxed text-svarati-coral-dark ${muncul("delay-500")}`}>
+            <p className="text-base leading-relaxed text-svarati-coral-dark">
               {t.deskripsi}
             </p>
           </div>
         </Card>
 
         {/* Grid Opsi Fitur Pemulihan */}
-        <div className={`grid gap-6 sm:grid-cols-2 lg:grid-cols-3 ${muncul("delay-500")}`}>
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {t.fitur.map((item) => {
             const Ikon = IKON[item.id];
             const warna = TEMA[item.variant];

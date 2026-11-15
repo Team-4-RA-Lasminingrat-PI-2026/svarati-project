@@ -678,3 +678,65 @@ html[data-theme="dark"] :is(
   padding-left: calc(var(--tepi-kiri) + var(--pad-x, 0px));
   padding-right: calc(var(--tepi-kanan) + var(--pad-x, 0px));
 }
+
+/* ============================================================
+   11. TREE OF HOPE (responsive)
+   --toh-top : jarak navbar ke tulisan paling atas (5.5rem = pt-22 di kuratif/page.js)
+   --u       : 1% lebar panggung pohon. Ukuran kartu, amplop, dan tali memakai --u.
+   --fu      : satuan huruf, ikut --u tapi dibatasi bawah dan atas (seperti --u di .hero).
+   ============================================================ */
+.toh {
+  --toh-top: 5.5rem;
+  --toh-reserve: calc(var(--toh-top) + 11rem); /* jatah tinggi judul + deskripsi + petunjuk */
+}
+
+.toh-stage {
+  --tree-h: max(
+    20rem,
+    min(calc(100svh - var(--toh-reserve)), calc(min(100vw - 2rem, 84rem) / 1.8))
+  );
+  --u: calc(var(--tree-h) * 0.018);
+  --fu: clamp(0.58rem, var(--u), 1.05rem);
+}
+
+.toh-tree {
+  position: absolute;
+  bottom: 0;
+  width: calc(var(--tree-h) * 1.8);
+  height: var(--tree-h);
+  left: calc(50% - var(--tree-h) * 0.9);
+  overflow: hidden;
+  transform-origin: 50% 100%;
+  transform: translateY(calc((1 - var(--p)) * var(--tree-h) * 0.04))
+    scale(calc(0.9 + 0.1 * var(--p)));
+  will-change: transform;
+}
+
+.toh-title {
+  font-size: calc(clamp(2rem, min(3.4vw, 5.4svh), 3rem) * (1 - 0.35 * var(--p)));
+}
+.toh-desc {
+  font-size: calc(clamp(0.875rem, min(1.35vw, 2.3svh), 1.125rem) * (1 - 0.1 * var(--p)));
+  max-width: calc(42rem + 16rem * var(--p));
+}
+
+/* ============================================================
+   UKURAN HURUF KARTU (edit angka di sini)
+   Rumus tiap baris: clamp( TERKECIL , DASAR + LAJU × --u , TERBESAR )
+   - TERKECIL : ukuran huruf di layar kecil (laptop 1280×800). Mau lebih kecil? Kecilkan angka ini.
+   - TERBESAR : ukuran huruf di layar besar (monitor).
+   - DASAR + LAJU : seberapa cepat huruf membesar saat pohon membesar.
+   --u = 1% lebar panggung pohon (±6px di 1280×800, ±12px di 1920×1080).
+   ============================================================ */
+.toh-t-lg { font-size: clamp(0.62rem, calc(0.3rem + 0.74 * var(--u)), 0.95rem); }
+.toh-t-md { font-size: clamp(0.58rem, calc(0.28rem + 0.66 * var(--u)), 0.85rem); }
+.toh-t-sm { font-size: clamp(0.56rem, calc(0.26rem + 0.6 * var(--u)), 0.78rem); }
+.toh-f-lg { font-size: clamp(0.56rem, calc(0.25rem + 0.7 * var(--u)), 0.8rem); }
+.toh-f-md { font-size: clamp(0.54rem, calc(0.25rem + 0.62 * var(--u)), 0.74rem); }
+.toh-f-sm { font-size: clamp(0.54rem, calc(0.25rem + 0.56 * var(--u)), 0.7rem); }
+
+/* Tulisan petunjuk di bawah deskripsi */
+.toh-hint { font-size: clamp(0.72rem, min(1.1vw, 2svh), 0.875rem); }
+
+/* Tulisan di amplop besar "Kirim pesan dukungan..." (sebelumnya terpotong di layar kecil) */
+.toh-compose { font-size: clamp(0.62rem, calc(0.2rem + 0.95 * var(--u)), 1.1rem); }

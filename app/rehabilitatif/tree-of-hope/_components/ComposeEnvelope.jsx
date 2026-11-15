@@ -1,66 +1,24 @@
 "use client";
 
+import { Mail } from "lucide-react";
 import { treeOfHopeContent as t } from "@/content/labels";
 
-// Amplop besar sebagai tombol "kirim pesan". Teks putih di atas coral-dark (kontras ~5:1).
-// aspect = lebar / tinggi kotak tombol, agar gambar SVG tidak gepeng.
-export default function ComposeEnvelope({
-  onClick,
-  aspect = 4 / 3,
-  className = "",
-  style,
-  textClassName = "text-base",
-  ctaClassName = "text-sm",
-}) {
-  const w = Math.round(aspect * 10000) / 100; // lebar viewBox untuk tinggi 100
+export default function ComposeEnvelope({ onClick, className = "", style }) {
   return (
     <button
       type="button"
       onClick={onClick}
       style={style}
-      className={`group relative block text-white transition-transform duration-200 hover:-translate-y-1 motion-reduce:transform-none ${className}`}
+      className={`group relative block cursor-pointer overflow-hidden rounded-2xl border-2 border-svarati-coral bg-white text-center shadow-xl transition hover:-translate-y-1 hover:shadow-2xl motion-reduce:transform-none ${className}`}
     >
-      <svg
-        viewBox={`0 0 ${w} 100`}
-        preserveAspectRatio="none"
-        className="absolute inset-0 h-full w-full drop-shadow-lg"
+      {/* tutup amplop */}
+      <span
         aria-hidden="true"
-      >
-        <rect
-          x="1"
-          y="1"
-          width={w - 2}
-          height="98"
-          rx="7"
-          className="fill-svarati-coral-dark transition-colors group-hover:fill-svarati-coral-darker"
-        />
-        <path
-          d={`M6 10 L${w / 2} 42 L${w - 6} 10`}
-          fill="none"
-          stroke="white"
-          strokeOpacity="0.75"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-      <span className="absolute inset-x-[8%] bottom-[7%] top-[50%] flex flex-col items-center justify-center gap-[5%] text-center">
-        <span
-          className={`font-heading font-semibold leading-snug ${textClassName}`}
-        >
-          {t.composeEnvelope}
-        </span>
-        <span
-          className={`inline-flex items-center gap-1 rounded-full bg-white px-[1.1em] py-[0.35em] font-semibold text-svarati-coral-dark ${ctaClassName}`}
-        >
-          {t.composeCta}
-          <span
-            aria-hidden="true"
-            className="transition-transform group-hover:translate-x-0.5"
-          >
-            ›
-          </span>
-        </span>
+        className="absolute inset-x-0 top-0 h-[30%] bg-svarati-coral/25 [clip-path:polygon(0_0,100%_0,50%_100%)]"
+      />
+      <span className="absolute inset-x-[6%] bottom-[6%] top-[32%] flex flex-col items-center justify-center gap-[0.35em]">
+        <Mail className="size-[1.6em] text-svarati-coral-dark" aria-hidden="true" />
+        <span className="font-bold leading-snug text-svarati-teal">{t.composeEnvelope}</span>
       </span>
     </button>
   );

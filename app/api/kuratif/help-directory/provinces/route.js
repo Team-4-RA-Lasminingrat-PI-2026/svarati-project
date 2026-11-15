@@ -10,7 +10,7 @@ export async function GET() {
       { headers: { "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400" } }
     );
   } catch (e) {
-    console.error("GET /api/provinces gagal:", e?.message);
+    console.error("GET /api/kuratif/help-directory/provinces gagal:", e?.message);
     return NextResponse.json({ error: "Gagal memuat provinsi" }, { status: 500 });
   }
 }
