@@ -51,30 +51,24 @@ const IKON = {
   "pohon-harapan": IkonTanganHati,
 };
 
-// Warna per varian. Class ditulis lengkap agar terbaca oleh Tailwind.
+// Semua teks memakai tinta netral svarati-teal supaya tidak senada dengan
+// latar kartunya. Warna khas tiap pilar dipakai di ikon dan tautan saja.
+// Class ditulis lengkap agar terbaca oleh Tailwind.
+const TEKS_JUDUL = "text-svarati-teal";
+const TEKS_LEMBUT = "text-svarati-teal/80";
+
 const TEMA = {
   lavender: {
     kartu: "bg-svarati-lavender/15 hover:border-svarati-lavender-light",
-    ikon: "text-svarati-lavender-dark",
-    judul: "text-svarati-lavender-darker",
-    teks: "text-svarati-lavender-dark",
-    label: "bg-white/65 text-svarati-lavender-darker",
+    aksen: "text-svarati-lavender-dark",
   },
   teal: {
     kartu: "bg-svarati-teal-soft hover:border-svarati-teal/25",
-    ikon: "text-svarati-teal",
-    judul: "text-svarati-teal",
-    teks: "text-svarati-teal/85",
-    label: "bg-white/65 text-svarati-teal",
+    aksen: "text-svarati-teal",
   },
   coral: {
-    // Latar coral paling terang di antara ketiganya, jadi warna teksnya
-    // dipertua supaya kontrasnya tetap lolos WCAG AA.
     kartu: "bg-svarati-coral-soft hover:border-svarati-coral/30",
-    ikon: "text-svarati-coral-dark",
-    judul: "text-svarati-coral-dark",
-    teks: "text-svarati-coral-darker",
-    label: "bg-svarati-coral/20 text-svarati-coral-darker",
+    aksen: "text-svarati-coral-dark",
   },
 };
 
@@ -169,25 +163,23 @@ export default function PemulihanPage() {
               >
                 <div>
                   <div className="mb-3 flex items-center gap-3">
-                    <Ikon className={`size-7 shrink-0 ${warna.ikon}`} />
-                    <span
-                      className={`rounded-md px-2.5 py-1.5 text-[13.5px] font-semibold leading-none ${warna.label}`}
-                    >
+                    <Ikon className={`size-7 shrink-0 ${warna.aksen}`} />
+                    <span className={`text-[13.5px] font-semibold leading-none ${TEKS_LEMBUT}`}>
                       {item.badge}
                     </span>
                   </div>
 
-                  <h2 className={`mb-1.5 text-xl font-semibold leading-snug sm:text-2xl ${warna.judul}`}>
+                  <h2 className={`mb-1.5 text-xl font-semibold leading-snug sm:text-2xl ${TEKS_JUDUL}`}>
                     {item.title}
                   </h2>
 
-                  <p className={`max-w-2xl text-sm leading-relaxed sm:text-base ${warna.teks}`}>
+                  <p className={`max-w-2xl text-sm leading-relaxed sm:text-base ${TEKS_LEMBUT}`}>
                     {renderDeskripsi(item.description)}
                   </p>
                 </div>
 
                 <span
-                  className={`inline-flex items-center gap-2 whitespace-nowrap text-base font-bold ${warna.judul}`}
+                  className={`inline-flex items-center gap-2 whitespace-nowrap text-base font-bold ${warna.aksen}`}
                 >
                   <span className="underline-offset-4 group-hover:underline">{item.cta}</span>
                   <ArrowRight
