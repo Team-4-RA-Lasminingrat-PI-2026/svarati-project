@@ -242,8 +242,6 @@ export const pemulihanContent = {
   judulTekanan: "Perlahan-lahan",
   deskripsi:
     "Ambil jeda sejenak untuk dirimu. Pilih fitur yang paling sesuai dengan kondisimu. Kamu tidak berjuang sendirian.",
-  tanyaDarurat: "Dalam bahaya sekarang?",
-  ctaDarurat: "Minta bantuan darurat",
   cta: { label: "Mulai Pemulihan", href: "/rehabilitatif" },
   gambar: { src: "/tree-of-hope-transparent.svg", alt: "Ilustrasi pohon harapan" },
   labelDukungan: "Dukungan",
@@ -275,7 +273,7 @@ export const pemulihanContent = {
     {
       id: "jurnal-pemulihan",
       variant: "lavender",
-      badge: "Refleksi Diri",
+      badge: "Ruang Pribadi",
       title: "Jurnal Pemulihan",
       description:
         "Ruang aman dan privat untuk mencatat perasaanmu hari demi hari, melihat perkembangan emosionalmu, serta memproses pengalaman secara berkala.",
