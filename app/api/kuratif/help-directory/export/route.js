@@ -37,7 +37,7 @@ export async function GET(request) {
       },
     });
   } catch (e) {
-    console.error("GET /api/help-directory/export gagal:", e?.message);
+    console.error("GET /api/kuratif/help-directory/export gagal:", e?.message);
     return NextResponse.json(
       { error: "Gagal membuat file" },
       { status: 500, headers: { "Cache-Control": "no-store" } }

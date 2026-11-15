@@ -119,7 +119,7 @@ export default function HelpDirectoryClient({
     setGalat(null);
 
     ambilJson(
-      `/api/help-directory?${buatParams({ cari: cariTunda, provinsi, kota, tipe }, halaman)}`,
+      `/api/kuratif/help-directory?${buatParams({ cari: cariTunda, provinsi, kota, tipe }, halaman)}`,
       { signal: ctrl.signal },
     )
       .then((j) => {
