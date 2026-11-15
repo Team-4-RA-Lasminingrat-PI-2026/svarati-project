@@ -1,12 +1,28 @@
 "use client";
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import Link from "next/link";
-import { ArrowLeft, Play, Pause, Volume2, Timer, AlertCircle, CheckCircle2 } from "lucide-react";
-import Badge from "@/components/Badge";
-import { Card, CardDescription, cardVariants } from "@/components/Card";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { AlertCircle, ArrowLeft, CheckCircle2, Music2, Pause, Play } from "lucide-react";
+import { buttonVariants } from "@/components/ui/button";
 import MiniPlayer from "./_components/MiniPlayer";
+
+// Bagian judul yang diberi coretan lengkung
+const JUDUL = "Biarkan Suara Menemanimu ";
+const JUDUL_TEKANAN = "Menemukan Tenang";
+
+// Tiga batang kecil yang bergerak di baris suara yang sedang diputar
+function Equalizer() {
+    return (
+        <span aria-hidden="true" className="mr-1 flex h-4 items-end gap-[3px]">
+            {[0, 1, 2].map((i) => (
+                <span
+                    key={i}
+                    className="eq-batang w-[3px] rounded-sm bg-svarati-teal"
+                    style={{ height: "25%", animationDelay: `${-i * 0.4}s` }}
+                />
+            ))}
+        </span>
+    );
+}
 
 // Kode kategori di database (relaxation_tracks.category) dan judul yang tampil di halaman
 const GROUPS = [
@@ -701,7 +717,6 @@ export default function SoundPage() {
     const currentSound = activeSound ?? pausedSound;
     const remaining =
         endAt !== null ? Math.max(0, Math.ceil((endAt - now) / 1000)) : pausedLeft;
-    const isPaused = !isPlaying && pausedLeft !== null;
 
     // Hentikan suara yang sedang diputar; fade = memudar pelan dulu
     const stopAudio = useCallback((fade = true) => {
@@ -800,14 +815,12 @@ export default function SoundPage() {
         }
     };
 
-    // Tutup bilah pemutar: suara berhenti dan hitung mundur dilupakan
-    const closePlayer = () => {
-        stopAudio(true);
-        setActiveSound(null);
-        setPausedSound(null);
-        setEndAt(null);
-        setPausedLeft(null);
-        setNotice("");
+    // Pindah ke suara sebelumnya atau berikutnya di daftar
+    const pindahSuara = (arah) => {
+        if (!sounds?.length) return;
+        const posisi = sounds.findIndex((s) => s.id === currentSound?.id);
+        const berikutnya = sounds[(posisi + arah + sounds.length) % sounds.length];
+        if (berikutnya) playSound(berikutnya);
     };
 
     const chooseTimer = (minutes) => {
@@ -832,6 +845,13 @@ export default function SoundPage() {
             });
         return () => controller.abort();
     }, []);
+
+    // Tombol aksesibilitas dinaikkan selama pemutar tampil (aturan di globals.css)
+    useEffect(() => {
+        if (!currentSound) return;
+        document.body.classList.add("ada-pemutar");
+        return () => document.body.classList.remove("ada-pemutar");
+    }, [currentSound]);
 
     // Volume langsung berubah saat slider digeser
     useEffect(() => {
@@ -872,193 +892,136 @@ export default function SoundPage() {
         };
     }, []);
 
+
     return (
-        // pt-28 / md:pt-36 memberi ruang untuk navbar yang melayang di atas
-        <main className="min-h-screen bg-svarati-cream px-4 pb-12 pt-28 font-sans md:px-8 md:pt-36 lg:px-12">
-            <div className="mx-auto max-w-4xl space-y-8">
-                <div className="max-w-2xl">
-                    <Link
-                        href="/rehabilitatif/training"
-                        className={buttonVariants({ variant: "ghost", size: "sm", className: "mb-6" })}
+        // pb besar memberi ruang untuk pemutar yang menempel di bawah
+        <main className="min-h-screen bg-svarati-cream px-4 pb-40 pt-28 font-sans md:px-8 md:pt-36">
+            <div className="mx-auto max-w-3xl">
+                <Link
+                    href="/rehabilitatif/training"
+                    className={buttonVariants({ variant: "ghost", size: "sm", className: "mb-7" })}
+                >
+                    <ArrowLeft className="size-4" /> Semua latihan
+                </Link>
+
+                {/* Judul halaman */}
+                <header className="mb-8">
+                    <p className="mb-3 flex items-center gap-2 text-sm font-semibold text-svarati-coral-dark">
+                        <Music2 className="size-4.5" aria-hidden="true" />
+                        Suara Terapi
+                    </p>
+
+                    <h1 className="mb-4 text-3xl font-semibold leading-[1.18] tracking-tight text-svarati-teal md:text-4xl lg:text-5xl">
+                        {JUDUL}
+                        <span className="relative whitespace-nowrap">
+                            {JUDUL_TEKANAN}
+                            <svg
+                                viewBox="0 0 200 14"
+                                preserveAspectRatio="none"
+                                aria-hidden="true"
+                                className="absolute inset-x-0 -bottom-2 h-3.5 w-full text-svarati-coral"
+                            >
+                                <path
+                                    d="M3 9c20-6 38 4 58-1s36-5 56 0 40 3 80-3"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="3"
+                                    strokeLinecap="round"
+                                />
+                            </svg>
+                        </span>
+                    </h1>
+
+                    <p className="max-w-xl text-base leading-relaxed text-svarati-coral-dark sm:text-lg">
+                        Pilih suara yang membuatmu nyaman untuk membantu rileks, mengurangi rasa
+                        cemas, dan menjaga keseimbangan emosi.
+                    </p>
+                </header>
+
+                {/* Pesan error (browser tidak mendukung / gagal memutar) */}
+                {error && (
+                    <p
+                        role="alert"
+                        className="mb-6 flex items-start gap-2 rounded-2xl bg-svarati-danger-soft p-4 text-sm text-svarati-danger-darker"
                     >
-                        <ArrowLeft className="size-4" /> Semua latihan
-                    </Link>
+                        <AlertCircle className="mt-0.5 size-4 shrink-0" /> {error}
+                    </p>
+                )}
 
-                    {/* Header: badge + ajakan */}
-                    <div>
-                        <Badge variant="coral" className="mb-5">
-                            Suara Terapi
-                        </Badge>
-                        <h1 className="mb-5 text-4xl font-bold leading-tight text-svarati-teal font-heading md:text-5xl">
-                            Biarkan Suara Menemanimu Menemukan Tenang
-                        </h1>
-                        <p className="text-lg leading-relaxed text-svarati-coral">
-                            Pilih suara yang membuatmu nyaman untuk membantu rileks, mengurangi rasa
-                            cemas, dan menjaga keseimbangan emosi.
-                        </p>
-                    </div>
-                </div>
-
-                <Card variant="white" size="lg" className="mx-auto max-w-2xl space-y-6">
-                    {/* Pesan error (browser tidak mendukung / gagal memutar) */}
-                    {error && (
-                        <p
-                            role="alert"
-                            className="flex items-start gap-2 rounded-2xl bg-svarati-danger-soft p-4 text-sm text-svarati-danger-darker"
-                        >
-                            <AlertCircle className="mt-0.5 size-4 shrink-0" /> {error}
-                        </p>
-                    )}
-
-                    {/* Daftar suara per kelompok: tombol bergaya card */}
-                    {sounds === null ? (
-                        <div role="status" aria-label="Memuat daftar suara" className="space-y-3">
-                            {[0, 1, 2].map((i) => (
-                                <div key={i} className="h-[76px] animate-pulse rounded-2xl bg-svarati-cream" />
-                            ))}
-                        </div>
-                    ) : (
-                    <div className="space-y-6">
-                        {GROUPS.filter((g) => sounds.some((s) => s.kategori === g.kategori)).map((group) => (
-                            <div key={group.kategori}>
-                                <p className="mb-3 text-xs font-bold uppercase tracking-widest text-svarati-teal/60">
-                                    {group.label}
-                                </p>
-                                <div className="space-y-3">
-                                    {sounds.filter((s) => s.kategori === group.kategori).map((sound) => {
-                                        const isActive = activeId === sound.id;
-                                        return (
-                                            <button
-                                                key={sound.id}
-                                                onClick={() => (isActive ? pauseSound() : playSound(sound))}
-                                                aria-pressed={isActive}
-                                                className={cn(
-                                                    cardVariants({
-                                                        variant: isActive ? "teal" : "cream",
-                                                        size: "sm",
-                                                        interactive: true,
-                                                    }),
-                                                    "flex w-full items-center gap-4 text-left"
-                                                )}
-                                            >
-                                                <span
-                                                    className={`flex size-11 shrink-0 items-center justify-center rounded-full ${isActive
-                                                        ? "bg-svarati-teal text-white"
-                                                        : "bg-white text-svarati-lavender-dark shadow-sm"
-                                                        }`}
-                                                >
-                                                    {isActive ? <Pause className="size-5" /> : <Play className="size-5" />}
-                                                </span>
-                                                <span>
-                                                    <span className="block font-bold text-svarati-teal">{sound.label}</span>
-                                                    <span className="block text-sm text-svarati-teal/80">{sound.desc}</span>
-                                                </span>
-                                            </button>
-                                        );
-                                    })}
-                                </div>
-                            </div>
+                {/* Daftar suara per kelompok */}
+                {sounds === null ? (
+                    <div role="status" aria-label="Memuat daftar suara" className="space-y-3">
+                        {[0, 1, 2].map((i) => (
+                            <div key={i} className="h-16 animate-pulse rounded-2xl bg-white" />
                         ))}
                     </div>
-                    )}
+                ) : (
+                    <div className="space-y-8">
+                        {GROUPS.filter((g) => sounds.some((s) => s.kategori === g.kategori)).map((group) => (
+                            <section key={group.kategori}>
+                                <h2 className="mb-2.5 ml-1 text-sm font-semibold text-svarati-teal/70">
+                                    {group.label}
+                                </h2>
 
-                    {/* Volume */}
-                    <div>
-                        <div className="mb-2 flex items-center justify-between gap-2">
-                            <label htmlFor="volume" className="flex items-center gap-2 text-sm font-bold text-svarati-teal">
-                                <Volume2 className="size-4" /> Volume
-                            </label>
-                            <span className="text-sm font-medium tabular-nums text-svarati-teal/80" aria-hidden="true">
-                                {Math.round(volume * 100)}%
-                            </span>
-                        </div>
-                        <input
-                            id="volume"
-                            type="range"
-                            min="0"
-                            max="1"
-                            step="0.05"
-                            value={volume}
-                            aria-valuetext={`${Math.round(volume * 100)} persen`}
-                            onChange={(e) => setVolume(Number(e.target.value))}
-                            className="w-full accent-svarati-teal"
-                        />
+                                <ul className="rounded-3xl border border-svarati-lavender-light/60 bg-white p-1.5">
+                                    {sounds.filter((s) => s.kategori === group.kategori).map((sound) => {
+                                        const isActive = activeId === sound.id;
+                                        const isDipilih = currentSound?.id === sound.id;
+                                        return (
+                                            <li
+                                                key={sound.id}
+                                                className="border-t border-svarati-cream first:border-t-0"
+                                            >
+                                                <button
+                                                    onClick={() => (isActive ? pauseSound() : playSound(sound))}
+                                                    aria-pressed={isActive}
+                                                    className={`grid w-full cursor-pointer grid-cols-[2.25rem_minmax(0,1fr)_auto] items-center gap-3 rounded-2xl px-3 py-3 text-left transition sm:grid-cols-[2.5rem_minmax(0,1fr)_auto] sm:gap-3.5 sm:px-3.5 ${isDipilih ? "bg-svarati-teal-soft" : "hover:bg-svarati-cream"}`}
+                                                >
+                                                    <span
+                                                        className={`grid size-9 shrink-0 place-items-center rounded-full transition sm:size-10 ${isActive
+                                                            ? "bg-svarati-teal text-white"
+                                                            : "bg-svarati-cream text-svarati-teal"
+                                                            }`}
+                                                    >
+                                                        {isActive ? (
+                                                            <Pause className="size-4 fill-current" />
+                                                        ) : (
+                                                            <Play className="size-4 fill-current" />
+                                                        )}
+                                                    </span>
+
+                                                    <span className="min-w-0">
+                                                        <span className="block font-semibold leading-snug text-svarati-teal">
+                                                            {sound.label}
+                                                        </span>
+                                                        <span className="mt-0.5 block text-sm leading-snug text-svarati-teal/70">
+                                                            {sound.desc}
+                                                        </span>
+                                                    </span>
+
+                                                    {isActive ? <Equalizer /> : <span />}
+                                                </button>
+                                            </li>
+                                        );
+                                    })}
+                                </ul>
+                            </section>
+                        ))}
                     </div>
+                )}
 
-                    {/* Timer */}
-                    <div>
-                        <p className="mb-2 text-sm font-bold text-svarati-teal">Berhenti otomatis</p>
-                        <div className="flex flex-wrap gap-2">
-                            {TIMERS.map((t) => (
-                                <Button
-                                    key={t.minutes}
-                                    variant={timerMin === t.minutes ? "secondary" : "ghost"}
-                                    size="sm"
-                                    aria-pressed={timerMin === t.minutes}
-                                    onClick={() => chooseTimer(t.minutes)}
-                                >
-                                    {t.label}
-                                </Button>
-                            ))}
-                        </div>
-
-                        {/* Sisa waktu: berjalan, dijeda, atau belum mulai */}
-                        {isPaused ? (
-                            <Card
-                                variant="cream"
-                                size="sm"
-                                className="mt-4 flex items-center justify-between gap-3"
-                            >
-                                <span className="text-sm font-medium text-svarati-teal">
-                                    <span className="flex items-center gap-2">
-                                        <Pause className="size-4" /> Dijeda
-                                    </span>
-                                    <span className="mt-0.5 block text-xs text-svarati-teal/70">
-                                        Putar suara untuk melanjutkan hitung mundur.
-                                    </span>
-                                </span>
-                                <span className="text-right">
-                                    <span className="block text-xs text-svarati-teal/70">Sisa</span>
-                                    <span className="text-2xl font-bold tabular-nums text-svarati-teal">
-                                        {formatTime(pausedLeft)}
-                                    </span>
-                                </span>
-                            </Card>
-                        ) : remaining !== null ? (
-                            <Card
-                                variant="teal"
-                                size="sm"
-                                role="timer"
-                                className="mt-4 flex items-center justify-between gap-3"
-                            >
-                                <span className="flex items-center gap-2 text-sm font-medium text-svarati-teal">
-                                    <Timer className="size-4" /> Berhenti otomatis dalam
-                                </span>
-                                <span className="text-2xl font-bold tabular-nums text-svarati-teal">
-                                    {formatTime(remaining)}
-                                </span>
-                            </Card>
-                        ) : (
-                            timerMin > 0 && (
-                                <CardDescription className="mt-3 text-xs">
-                                    Hitung mundur dimulai saat kamu memutar suara.
-                                </CardDescription>
-                            )
-                        )}
-
-                        {/* Pesan saat timer selesai; selalu ada supaya dibacakan screen reader */}
-                        <p
-                            role="status"
-                            className={notice ? "mt-4 flex items-center gap-2 text-sm font-medium text-svarati-teal" : "sr-only"}
-                        >
-                            {notice && <CheckCircle2 className="size-4 shrink-0" />}
-                            {notice}
-                        </p>
-                    </div>
-                </Card>
-
-                {/* Ruang kosong supaya isi terakhir tidak tertutup bilah pemutar */}
-                {currentSound && <div aria-hidden="true" className="h-20" />}
+                {/* Pesan saat timer selesai; selalu ada supaya dibacakan screen reader */}
+                <p
+                    role="status"
+                    className={
+                        notice
+                            ? "mt-6 flex items-center gap-2 text-sm font-medium text-svarati-teal"
+                            : "sr-only"
+                    }
+                >
+                    {notice && <CheckCircle2 className="size-4 shrink-0" />}
+                    {notice}
+                </p>
             </div>
 
             {currentSound && (
@@ -1066,11 +1029,14 @@ export default function SoundPage() {
                     sound={currentSound}
                     isPlaying={isPlaying}
                     onToggle={() => (isPlaying ? pauseSound() : playSound(currentSound))}
-                    onClose={closePlayer}
+                    onPrev={() => pindahSuara(-1)}
+                    onNext={() => pindahSuara(1)}
                     volume={volume}
                     onVolume={setVolume}
-                    elapsed={remaining !== null ? timerMin * 60 - remaining : 0}
-                    total={remaining !== null ? timerMin * 60 : 0}
+                    timers={TIMERS}
+                    timerMin={timerMin}
+                    onChooseTimer={chooseTimer}
+                    remaining={remaining}
                     formatTime={formatTime}
                 />
             )}
