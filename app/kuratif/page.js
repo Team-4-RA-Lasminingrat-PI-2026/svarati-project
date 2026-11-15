@@ -53,7 +53,7 @@ const TEMA = {
     ikon: "text-svarati-teal",
     judul: "text-svarati-teal",
     teks: "text-svarati-teal/80",
-    chip: "bg-white text-svarati-teal",
+    chip: "bg-svarati-teal/15 text-svarati-teal",
     aksi: "text-svarati-teal",
   },
   "svarati-ai": {
@@ -109,33 +109,34 @@ function JudulBanner({ judul, tekanan }) {
 
 export default function Page() {
   return (
-    <div className="w-full px-4 pb-12 pt-22">
+    // Banner dan ketiga kartu dirapatkan supaya muat satu layar di laptop
+    <div className="w-full px-4 pb-8 pt-20">
       <div className="mx-auto max-w-4xl">
         {/* Banner */}
-        <section className="relative overflow-hidden rounded-3xl bg-svarati-teal-dark px-6 py-8 sm:px-10 sm:py-10">
+        <section className="relative overflow-hidden rounded-3xl bg-svarati-teal-dark px-6 py-7 sm:px-9 sm:py-8">
           <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-            <div className="absolute -right-16 -top-24 size-40 rounded-full bg-svarati-teal/30 sm:size-56" />
-            <div className="absolute -bottom-24 right-10 size-44 rounded-full bg-svarati-teal/25 sm:right-20 sm:size-64" />
+            <div className="absolute -right-16 -top-20 size-36 rounded-full bg-svarati-teal/30 sm:size-48" />
+            <div className="absolute -bottom-20 right-10 size-40 rounded-full bg-svarati-teal/25 sm:right-20 sm:size-56" />
           </div>
 
           <div className="relative max-w-lg">
-            <p className="mb-3 flex items-center gap-2 text-sm font-semibold text-svarati-teal-soft/90">
+            <p className="mb-2.5 flex items-center gap-2 text-sm font-semibold text-svarati-teal-soft/90">
               <Users className="size-4" aria-hidden="true" />
               {badgeKuratif}
             </p>
 
-            <h1 className="text-3xl font-semibold leading-[1.15] tracking-tight text-white sm:text-4xl">
+            <h1 className="text-2xl font-semibold leading-[1.18] tracking-tight text-white sm:text-3xl">
               <JudulBanner judul={menuKuratif.title} tekanan={menuKuratif.judulTekanan} />
             </h1>
 
-            <p className="mt-6 max-w-md text-sm leading-relaxed text-white/80">
+            <p className="mt-5 max-w-md text-sm leading-relaxed text-white/80">
               {menuKuratif.intro}
             </p>
           </div>
         </section>
 
         {/* Daftar layanan */}
-        <ul className="mt-5 grid gap-3.5">
+        <ul className="mt-4 grid gap-3">
           {daftarSubmenu.map((item) => {
             const warna = TEMA[item.id];
             const Icon = warna.icon;
@@ -144,24 +145,24 @@ export default function Page() {
               <li key={item.id}>
                 <Link
                   href={item.href}
-                  className={`group flex items-center justify-between gap-5 rounded-3xl p-5 transition hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-svarati-teal sm:gap-8 sm:p-6 ${warna.kartu}`}
+                  className={`group flex items-center justify-between gap-4 rounded-3xl p-4 transition hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-svarati-teal sm:gap-7 sm:p-5 ${warna.kartu}`}
                 >
                   {/* Ikon berdiri sendiri tanpa ubin latar */}
                   <Icon className={`size-7 shrink-0 ${warna.ikon}`} />
 
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
-                      <h2 className={`text-xl font-semibold leading-snug ${warna.judul}`}>
+                      <h2 className={`text-lg font-semibold leading-snug ${warna.judul}`}>
                         {item.nama}
                       </h2>
-                      <span
-                        className={`inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-semibold leading-none ${warna.chip}`}
-                      >
-                        {item.id === "cek-kondisi" && (
-                          <Clock className="size-3" aria-hidden="true" />
-                        )}
-                        {menuKuratif.chip[item.id]}
-                      </span>
+                      {menuKuratif.chip[item.id] && (
+                        <span
+                          className={`inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-bold leading-none ${warna.chip}`}
+                        >
+                          <Clock className="size-3.5" aria-hidden="true" />
+                          {menuKuratif.chip[item.id]}
+                        </span>
+                      )}
                     </div>
 
                     <p className={`mt-1.5 text-sm leading-relaxed ${warna.teks}`}>

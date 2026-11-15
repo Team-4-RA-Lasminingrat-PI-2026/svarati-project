@@ -455,22 +455,21 @@ export const KURATIF = {
   },
 
   menu: {
-    title: "Ada yang bisa menemanimu, kapan pun kamu mau.",
+    title: "Dukungan untuk kamu menghadapi hari ini.",
     intro: "Pilih langkah yang paling sesuai dengan kondisimu saat ini. Kamu bisa mulai dari mana saja.",
     // Bagian judul yang diberi coretan lengkung. Sengaja menyorot bagian
     // yang menenangkan, bukan bagian yang menyebut pengalaman pengguna.
-    judulTekanan: "kapan pun kamu mau.",
+    judulTekanan: "menghadapi hari ini.",
     // Deskripsi per item, dicocokkan dengan id di submenu
     desc: {
       "cek-kondisi": "Enam pertanyaan singkat, satu per layar. Kamu bisa melewati atau kembali kapan saja.",
       "svarati-ai": "Ceritakan apa yang kamu alami, atau tanyakan langkah berikutnya.",
       "cari-layanan": "Daftar layanan pendampingan dan hukum yang sudah diverifikasi.",
     },
-    // Label kecil di atas nama tiap layanan
+    // Label kecil di samping nama layanan. Hanya Cek Kondisimu yang punya,
+    // karena hanya layanan itu yang punya takaran waktu.
     chip: {
       "cek-kondisi": "±2 menit",
-      "svarati-ai": "Anonim",
-      "cari-layanan": "Sudah diverifikasi",
     },
     cta: {
       "cek-kondisi": "Mulai cek",
