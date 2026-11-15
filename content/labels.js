@@ -628,13 +628,30 @@ export const KURATIF = {
       langkah: "Kalau kamu ingin tahu langkah berikutnya, kita bisa mulai dari yang paling mendesak. Apakah kamu sedang merasa aman sekarang?",
       istirahat: "Tidak apa-apa untuk berhenti dulu. Halaman ini akan tetap di sini saat kamu siap kembali.",
       hak: "Sebagai korban, kamu memiliki hak untuk mendapatkan perlindungan, bantuan, dan keadilan. Kamu berhak melaporkan kejadian ini dan meminta bantuan dari pihak berwenang.",
-      urgent: "Aku mendengarmu, dan keselamatanmu yang paling penting sekarang. Kalau kamu dalam bahaya, tekan tombol Bantuan Darurat di bawah ini. Kamu tidak harus menghadapinya sendirian.",
+      urgent: "Aku mendengarmu, dan keselamatanmu yang paling penting sekarang. Kalau kamu dalam bahaya, tekan tombol Bantuan Darurat di atas. Kamu tidak harus menghadapinya sendirian.",
       default: "Terima kasih sudah menuliskan itu. Kamu boleh melanjutkan kapan saja, atau memilih langkah lain di atas.",
     },
     errorText: "Maaf, balasan belum bisa dikirim. Coba lagi sebentar lagi, atau gunakan tombol bantuan darurat jika kamu butuh bantuan sekarang.",
-    urgentNotice: "Kedengarannya situasimu mendesak. Kamu tidak harus menghadapinya sendiri. Hubungi layanan bantuan sekarang.",
+    urgentNotice: "Situasimu mendesak. Hubungi layanan bantuan sekarang.",
+    feedback: {
+      question: "Boleh tahu alasannya? (opsional)",
+      group: "Alasan (opsional)",
+      // Kode harus sama dengan ALASAN_VALID di backend (storage.py)
+      options: [
+        { code: "tidak_sesuai", label: "Kurang sesuai dengan kondisiku" },
+        { code: "terlalu_panjang", label: "Terlalu panjang" },
+        { code: "kurang_jelas", label: "Kurang jelas" },
+        { code: "layanan_tidak_tepat", label: "Layanan yang disebut tidak tepat" },
+        { code: "lainnya", label: "Lainnya" },
+      ],
+      otherHint: (max) => `Tulis alasanmu (maks. ${max} karakter). Jangan tulis data pribadi atau identitasmu.`,
+      send: "Kirim",
+      skip: "Lewati",
+      thanks: "Terima kasih, masukanmu membantu kami memperbaiki jawaban.",
+    },
   },
 };
+
 
 // ===== DIREKTORI LAYANAN BANTUAN =====
 export const DIREKTORI = {
@@ -711,7 +728,7 @@ export const DIREKTORI = {
     namaFile: "daftar-kontak.csv",
     peringatan:
       "File akan tersimpan di perangkat ini dan bisa dilihat orang lain yang memakai perangkat ini. Lanjutkan unduh?",
-    gagal: "File belum bisa diunduh. Coba lagi sebentar lagi.",
+    gagal: "File belum bisa diunduh. Coba lagi nanti ya.",
   },
 };
 

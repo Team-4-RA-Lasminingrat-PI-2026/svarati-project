@@ -14,8 +14,8 @@ import { KURATIF, MENU_UTAMA } from "@/content/labels";
 import { Button } from "@/components/ui/button";
 import { Card, CardIcon, CardTitle, CardDescription, CardLink } from "@/components/Card";
 import Badge from "@/components/Badge";
-import Split from "@/components/kuratif/Split";
-import NomorDarurat from "@/components/kuratif/NomorDarurat";
+import Split from "./Split";
+import NomorDarurat from "./NomorDarurat";
 
 const common = KURATIF.common;
 const quiz = KURATIF.selfAssessment;
