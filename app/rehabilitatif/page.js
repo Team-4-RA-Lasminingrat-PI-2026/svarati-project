@@ -64,15 +64,17 @@ const TEMA = {
     kartu: "bg-svarati-teal-soft hover:border-svarati-teal/25",
     ikon: "text-svarati-teal",
     judul: "text-svarati-teal",
-    teks: "text-svarati-teal/80",
+    teks: "text-svarati-teal/85",
     label: "bg-white/65 text-svarati-teal",
   },
   coral: {
+    // Latar coral paling terang di antara ketiganya, jadi warna teksnya
+    // dipertua supaya kontrasnya tetap lolos WCAG AA.
     kartu: "bg-svarati-coral-soft hover:border-svarati-coral/30",
-    ikon: "text-svarati-coral",
+    ikon: "text-svarati-coral-dark",
     judul: "text-svarati-coral-dark",
-    teks: "text-svarati-coral-dark/85",
-    label: "bg-svarati-coral/20 text-svarati-coral-dark",
+    teks: "text-svarati-coral-darker",
+    label: "bg-svarati-coral/20 text-svarati-coral-darker",
   },
 };
 
