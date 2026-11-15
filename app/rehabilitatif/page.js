@@ -2,16 +2,54 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, BookOpen, HeartHandshake, Sprout, Wind } from "lucide-react";
-import Badge from "@/components/Badge";
+import { ArrowRight, Sprout } from "lucide-react";
 import EmergencyModal from "@/components/modals/EmergencyModal";
 import { pemulihanContent as t } from "@/content/labels";
 
+// Ikon padat buatan sendiri. Warnanya ikut text-* dari pemanggil,
+// garis putih di atasnya dipakai sebagai detail.
+function IkonJurnal({ className }) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={className} fill="none">
+      <rect x="4.5" y="2.5" width="15" height="19" rx="3" fill="currentColor" />
+      <path d="M9 8h6.5M9 11.5h6.5M9 15h4" stroke="#fff" strokeWidth="1.7" strokeLinecap="round" />
+      <path d="M7.2 2.5v19" stroke="#fff" strokeOpacity=".35" strokeWidth="1" />
+    </svg>
+  );
+}
+
+function IkonDaun({ className }) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={className} fill="none">
+      <path
+        d="M20.5 3.5C11 3.5 4.5 7.5 4.5 14.5c0 2.3.7 4.1 1.8 5.3 1.4-5 5-8.8 10.2-11.3-4 2.6-6.9 6.3-8 11.9 1 .4 2.2.6 3.5.6 6.5 0 8.5-6.5 8.5-17.5z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
+function IkonTanganHati({ className }) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={className} fill="none">
+      <path
+        d="M12 13.4 8.3 9.9C6.6 8.3 7.5 5.2 9.9 5.2c.9 0 1.6.4 2.1 1.1.5-.7 1.2-1.1 2.1-1.1 2.4 0 3.3 3.1 1.6 4.7z"
+        fill="currentColor"
+      />
+      <path
+        d="M2.6 12.9c.6-.6 1.5-.6 2.1-.1L7.8 15.6H13c1 0 1.7.7 1.7 1.6 0 .2 0 .4-.1.5l4.3-2.3c.9-.5 2-.1 2.3.9.2.7-.1 1.4-.7 1.8l-5.9 3.5c-.6.4-1.3.6-2.1.6H7.4c-.9 0-1.7-.3-2.3-.9L2.6 15c-.6-.6-.6-1.5 0-2.1z"
+        fill="currentColor"
+      />
+      <path d="M9.4 18.8h3.6" stroke="#fff" strokeWidth="1.4" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 // Ikon per fitur, dicocokkan dengan id di labels.
 const IKON = {
-  "jurnal-pemulihan": BookOpen,
-  "latihan-tenang": Wind,
-  "pohon-harapan": HeartHandshake,
+  "jurnal-pemulihan": IkonJurnal,
+  "latihan-tenang": IkonDaun,
+  "pohon-harapan": IkonTanganHati,
 };
 
 // Warna per varian. Class ditulis lengkap agar terbaca oleh Tailwind.
@@ -21,18 +59,21 @@ const TEMA = {
     ikon: "text-svarati-lavender-dark",
     judul: "text-svarati-lavender-darker",
     teks: "text-svarati-lavender-dark",
+    label: "bg-white/65 text-svarati-lavender-darker",
   },
   teal: {
     kartu: "bg-svarati-teal-soft hover:border-svarati-teal/25",
     ikon: "text-svarati-teal",
     judul: "text-svarati-teal",
     teks: "text-svarati-teal/80",
+    label: "bg-white/65 text-svarati-teal",
   },
   coral: {
     kartu: "bg-svarati-coral-soft hover:border-svarati-coral/30",
     ikon: "text-svarati-coral",
     judul: "text-svarati-coral-dark",
     teks: "text-svarati-coral-dark/85",
+    label: "bg-svarati-coral/20 text-svarati-coral-dark",
   },
 };
 
@@ -129,14 +170,12 @@ export default function PemulihanPage() {
               >
                 <div>
                   <div className="mb-3 flex items-center gap-3">
-                    <Ikon className={`size-7 shrink-0 ${warna.ikon}`} aria-hidden="true" />
-                    <Badge
-                      variant={item.variant}
-                      styleType="white"
-                      className="normal-case tracking-normal"
+                    <Ikon className={`size-7 shrink-0 ${warna.ikon}`} />
+                    <span
+                      className={`rounded-md px-2.5 py-1.5 text-[13.5px] font-semibold leading-none ${warna.label}`}
                     >
                       {item.badge}
-                    </Badge>
+                    </span>
                   </div>
 
                   <h2 className={`mb-1.5 text-xl font-semibold leading-snug sm:text-2xl ${warna.judul}`}>
