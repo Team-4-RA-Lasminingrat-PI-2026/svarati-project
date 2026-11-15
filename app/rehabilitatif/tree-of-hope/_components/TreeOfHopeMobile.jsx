@@ -1,11 +1,11 @@
 "use client";
 
 import { useRef } from "react";
+import { Mail } from "lucide-react";
 import { treeOfHopeContent as t } from "@/content/labels";
+import { Card, CardFooter } from "@/components/Card";
 import useRevealOnView from "../hooks/useRevealOnView";
 import { BackLink, Intro } from "./Intro";
-import { EnvelopeIcon } from "./icons";
-import { TREE_COLORS } from "./treeTheme";
 import ComposeEnvelope from "./ComposeEnvelope";
 import LikeButton from "./LikeButton";
 import Pager from "./Pager";
@@ -29,16 +29,18 @@ export default function TreeOfHopeMobile({
   useRevealOnView(listRef, revealed, onReveal, 0.5, messages.length);
 
   return (
-    <section className="mx-auto flex max-w-xl flex-col gap-5 pt-22 lg:hidden">
+    <section
+      className="mx-auto flex max-w-xl flex-col gap-5 lg:hidden"
+      style={{ paddingTop: "var(--toh-top)" }}
+    >
       <div>
         <BackLink />
       </div>
 
       <header className="flex flex-col items-center text-center">
-        <Intro titleClassName="text-3xl" />
+        <Intro titleClassName="text-balance text-3xl" />
       </header>
 
-      {/* Gambar pohon dipotong ke bagian tengah supaya pohon terlihat besar */}
       <div className="relative mx-auto aspect-[5/4] w-full max-w-sm overflow-hidden">
         <div
           className="absolute left-1/2 top-0 h-full -translate-x-1/2"
@@ -55,39 +57,40 @@ export default function TreeOfHopeMobile({
 
       <ComposeEnvelope
         onClick={onCompose}
-        aspect={4 / 3}
-        className="mx-auto aspect-[4/3] w-full max-w-xs"
-        textClassName="text-[0.95rem]"
-        ctaClassName="text-sm"
+        className="mx-auto aspect-[4/3] w-full max-w-xs text-base"
       />
 
-      <p className="text-center text-sm text-muted-foreground">
+      <p className="text-center text-sm text-svarati-lavender-dark">
         {t.moreMessages}
       </p>
 
       <ul ref={listRef} className="flex flex-col gap-3">
-        {messages.map((m, i) => {
-          const color = TREE_COLORS[i % TREE_COLORS.length];
-          return (
-            <li
-              key={m.id}
-              className={`relative rounded-3xl border border-border border-l-4 bg-card p-4 text-card-foreground shadow-sm ${color.accent} ${
-                m.id === pingId ? "ring-2 ring-ring" : ""
-              }`}
+        {messages.map((m, i) => (
+          <li key={m.id}>
+            <Card
+              variant="white"
+              size="sm"
+              topBorder="coral"
+              className={`shadow-lg ${m.id === pingId ? "ring-2 ring-ring" : ""}`}
             >
               {m.id === newId && (
                 <span className="absolute right-3 top-3 rounded-full bg-svarati-coral-dark px-2 py-0.5 text-xs font-semibold text-white">
                   {t.newLabel}
                 </span>
               )}
-              <p className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
-                <EnvelopeIcon
-                  className={`block h-auto w-6 ${color.envelope}`}
-                />
+              <p className="flex items-center gap-2 text-sm font-semibold text-svarati-lavender-dark">
+                <span className="flex size-7 shrink-0 items-center justify-center rounded-md border border-svarati-coral-dark/60 bg-white shadow-sm">
+                  <Mail
+                    className="size-4 text-svarati-coral-dark"
+                    aria-hidden="true"
+                  />
+                </span>
                 {m.author}
               </p>
-              <p className="mt-2 line-clamp-4 text-card-foreground">{m.text}</p>
-              <div className="mt-3 flex items-center justify-between gap-2">
+              <p className="mt-2 line-clamp-4 italic leading-relaxed text-svarati-coral-dark">
+                “{m.text}”
+              </p>
+              <CardFooter>
                 <button
                   type="button"
                   onClick={() => onOpen(i)}
@@ -101,10 +104,10 @@ export default function TreeOfHopeMobile({
                   count={m.supportCount}
                   onClick={() => onLike(m.id)}
                 />
-              </div>
-            </li>
-          );
-        })}
+              </CardFooter>
+            </Card>
+          </li>
+        ))}
       </ul>
 
       <Pager page={page} totalPages={totalPages} onChange={onChangePage} />

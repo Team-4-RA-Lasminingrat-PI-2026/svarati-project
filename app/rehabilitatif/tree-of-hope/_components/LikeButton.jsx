@@ -10,18 +10,17 @@ export default function LikeButton({ liked, count, onClick, compact = false }) {
       onClick={onClick}
       aria-pressed={liked}
       aria-label={t.like.aria(liked, count, t.supportLabel)}
-      className={`inline-flex items-center gap-1.5 rounded-full border font-semibold transition-colors ${
-        compact ? "px-2 py-0.5 text-xs" : "px-3 py-1.5 text-sm"
-      } ${
-        liked
-          ? "border-svarati-coral-dark bg-svarati-coral-dark text-white"
-          : "border-input bg-card text-foreground hover:bg-accent"
-      }`}
+      className={`relative z-20 inline-flex shrink-0 cursor-pointer items-center font-bold transition-transform hover:scale-110 active:scale-95 ${
+        compact ? "gap-[0.3em] p-[0.3em]" : "gap-1.5 p-1.5 text-sm"
+      } ${liked ? "text-svarati-danger" : "text-svarati-teal"}`}
     >
       <Heart
-        className={`shrink-0 ${compact ? "size-3.5" : "size-4"}`}
-        fill={liked ? "currentColor" : "none"}
         aria-hidden="true"
+        className={`shrink-0 transition-colors ${compact ? "size-[1.25em]" : "size-5"} ${
+          liked
+            ? "animate-in zoom-in-75 fill-svarati-danger stroke-svarati-danger duration-200"
+            : "fill-card stroke-svarati-teal"
+        }`}
       />
       <span>{count}</span>
     </button>

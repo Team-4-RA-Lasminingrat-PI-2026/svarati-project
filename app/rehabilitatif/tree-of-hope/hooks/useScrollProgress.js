@@ -76,6 +76,8 @@ export default function useScrollProgress({
     // Aktif hanya di desktop (track tinggi 0 di bawah breakpoint), di dalam track,
     // dan tidak saat modal terbuka (modal mengunci scroll body).
     const canSnap = () => {
+      if (document.querySelector('[role="dialog"], [aria-modal="true"]'))
+        return false;
       if (!track.offsetHeight || document.body.style.overflow === "hidden")
         return false;
       const { start, end } = trackBounds();

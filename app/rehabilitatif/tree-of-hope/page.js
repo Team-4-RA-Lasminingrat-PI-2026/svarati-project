@@ -11,7 +11,7 @@ export default function TreeOfHopePage() {
   const tree = useTreeOfHope();
 
   return (
-    <div className="px-4 pb-10">
+    <div className="toh px-2 pb-10 sm:px-3">
       <TreeOfHopeDesktop
         onReveal={tree.reveal}
         messages={tree.messages}
@@ -49,6 +49,7 @@ export default function TreeOfHopePage() {
         onNavigate={tree.navigate}
         onLike={tree.like}
         onEdit={tree.startEdit}
+        onDelete={tree.remove}
         onClose={tree.closeMessage}
       />
 
