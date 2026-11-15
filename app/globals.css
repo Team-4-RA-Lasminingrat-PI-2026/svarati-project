@@ -448,6 +448,36 @@
   animation: float 3.8s ease-in-out infinite 1s;
 }
 
+/*=====================================
+
+  Suara Terapi (RLA029)
+
+  ======================================*/
+
+/* Batang equalizer kecil di baris suara yang sedang diputar */
+@keyframes eq-batang {
+
+  0%,
+  100% {
+    height: 25%;
+  }
+
+  50% {
+    height: 100%;
+  }
+}
+
+.eq-batang {
+  animation: eq-batang 1.1s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eq-batang {
+    animation: none;
+    height: 60%;
+  }
+}
+
 /* ============================================================
    7. TEMA KONTRAS TINGGI (RLA034)
    Aktif lewat <html data-contrast="high">. Cukup menimpa palet
