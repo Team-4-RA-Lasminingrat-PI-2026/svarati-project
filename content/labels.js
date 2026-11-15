@@ -455,11 +455,8 @@ export const KURATIF = {
   },
 
   menu: {
-    title: "Dukungan untuk kamu menghadapi hari ini.",
+    title: "Dukungan untuk kamu menghadapi apa pun yang sedang kamu jalani.",
     intro: "Pilih langkah yang paling sesuai dengan kondisimu saat ini. Kamu bisa mulai dari mana saja.",
-    // Bagian judul yang diberi coretan lengkung. Sengaja menyorot bagian
-    // yang menenangkan, bukan bagian yang menyebut pengalaman pengguna.
-    judulTekanan: "menghadapi hari ini.",
     // Deskripsi per item, dicocokkan dengan id di submenu
     desc: {
       "cek-kondisi": "Enam pertanyaan singkat, satu per layar. Kamu bisa melewati atau kembali kapan saja.",
