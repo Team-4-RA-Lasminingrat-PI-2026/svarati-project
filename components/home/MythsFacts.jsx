@@ -1,7 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, BookOpen } from "lucide-react";
-import Badge from "@/components/Badge";
-import { Button } from "@/components/ui/button";
+import { ArrowRight, ArrowUp } from "lucide-react";
 import { Card, CardTitle, CardDescription } from "@/components/Card";
 import { mitosContent as m } from "@/content/labels";
 
@@ -13,11 +11,7 @@ export default function MythsFacts() {
     >
       <div className="mx-auto w-full max-w-6xl">
         {/* Header */}
-        <div className="mx-auto mb-6 flex max-w-3xl flex-col items-center text-center">
-          <Badge variant="teal" styleType="white" className="mb-3 gap-1.5 shadow-sm">
-            <BookOpen className="size-3.5" aria-hidden="true" />
-            {m.badge}
-          </Badge>
+        <div className="mb-6 max-w-3xl">
           <h2 className="text-2xl font-bold text-svarati-teal md:text-3xl">
             {m.judul}
           </h2>
@@ -43,16 +37,26 @@ export default function MythsFacts() {
                     {m.labelMitos}
                   </CardTitle>
                   <CardDescription className="text-sm leading-relaxed text-svarati-lavender-dark">
-                    {item.mitos}
+                    “{item.mitos}”
                   </CardDescription>
                 </Card>
 
                 {/* Fakta: lavender, teks putih. Naik saat hover/fokus */}
                 <div className="absolute inset-0 flex translate-y-[calc(100%-3.5rem)] flex-col bg-svarati-lavender-dark shadow-[0_-4px_20px_rgba(0,0,0,0.08)] transition-transform duration-500 ease-in-out group-hover:translate-y-0 group-focus-within:translate-y-0">
-                  <div className="flex h-14 shrink-0 items-center px-5">
+                  <div className="flex h-14 shrink-0 items-center justify-between gap-3 px-5">
                     <h3 className="text-lg font-black uppercase text-white">
                       {m.labelFakta}
                     </h3>
+                    {/* Petunjuk ketuk, hanya di layar kecil karena di desktop
+                        faktanya sudah terbuka saat kursor diarahkan.
+                        Hilang saat fakta terbuka. */}
+                    <span
+                      aria-hidden="true"
+                      className="flex shrink-0 items-center gap-1 text-xs font-medium text-white/80 transition-opacity duration-300 group-hover:opacity-0 group-focus-within:opacity-0 md:hidden"
+                    >
+                      {m.labelLihat}
+                      <ArrowUp className="size-3.5" />
+                    </span>
                   </div>
                   <p className="flex-1 px-5 pb-5 pt-1 text-sm font-medium leading-relaxed text-white opacity-0 transition-opacity delay-100 duration-500 group-hover:opacity-100 group-focus-within:opacity-100">
                     {item.fakta}
@@ -64,18 +68,14 @@ export default function MythsFacts() {
         </ul>
 
         {/* CTA */}
-        <div className="mt-6 text-center">
-          <Button
-            render={<Link href={m.cta.href} />}
-            nativeButton={false}
-            variant="tertiary"
-            size="lg"
-            className="gap-2 font-bold"
-            icon={<ArrowRight size={16} aria-hidden="true" />}
-            iconPosition="right"
+        <div className="mt-6">
+          <Link
+            href={m.cta.href}
+            className="inline-flex items-center gap-2 text-sm font-bold text-svarati-lavender-dark underline underline-offset-4 transition hover:text-svarati-teal"
           >
             {m.cta.label}
-          </Button>
+            <ArrowRight size={16} aria-hidden="true" />
+          </Link>
         </div>
       </div>
     </section>
