@@ -122,6 +122,37 @@ export default function BreathingPage() {
                     {technique.description}
                 </p>
 
+                {/* Urutan fase ditaruh di sini, menempel pada pilihan teknik,
+                    karena memang keterangan tekniknya. Di bawah lingkaran
+                    tumpukan teksnya jadi terlalu padat.
+                    Sengaja tanpa batang yang terisi: bilah yang berlomba penuh
+                    terasa mengejar waktu, bukan menenangkan.
+                    Pemisahnya berupa karakter, bukan jarak CSS, supaya tidak
+                    pernah berdempetan kalau satu kelas gagal termuat. */}
+                <p className="mt-2 text-xs leading-relaxed">
+                    {phases.map((p, i) => {
+                        const aktif = running && i === state.phase;
+                        return (
+                            <span key={`${p.nama}-${i}`}>
+                                {i > 0 && (
+                                    <span aria-hidden="true" className="text-svarati-teal/30">
+                                        {"  ·  "}
+                                    </span>
+                                )}
+                                <span
+                                    className={
+                                        aktif
+                                            ? "font-semibold text-svarati-teal"
+                                            : "text-svarati-teal/45"
+                                    }
+                                >
+                                    {p.nama} {p.seconds}
+                                </span>
+                            </span>
+                        );
+                    })}
+                </p>
+
                 {/* Lingkaran yang membesar dan mengecil */}
                 <div className="mt-5 flex flex-col items-center">
                     <button
@@ -158,35 +189,6 @@ export default function BreathingPage() {
                             : "Ketuk lingkaran untuk mulai. Lingkarannya membesar saat tarik napas."}
                     </p>
                 </div>
-
-                {/* Urutan fase. Sengaja tanpa batang yang terisi: bilah yang
-                    berlomba penuh terasa mengejar waktu, bukan menenangkan.
-                    Fase yang sedang berjalan cukup ditandai dengan warna. */}
-                {/* Pemisahnya berupa karakter, bukan jarak CSS, supaya tidak
-                    pernah berdempetan kalau satu kelas gagal termuat */}
-                <p className="mt-3 text-xs leading-relaxed">
-                    {phases.map((p, i) => {
-                        const aktif = running && i === state.phase;
-                        return (
-                            <span key={`${p.nama}-${i}`}>
-                                {i > 0 && (
-                                    <span aria-hidden="true" className="text-svarati-teal/30">
-                                        {"  ·  "}
-                                    </span>
-                                )}
-                                <span
-                                    className={
-                                        aktif
-                                            ? "font-semibold text-svarati-teal"
-                                            : "text-svarati-teal/45"
-                                    }
-                                >
-                                    {p.nama} {p.seconds}
-                                </span>
-                            </span>
-                        );
-                    })}
-                </p>
 
                 {/* Hanya untuk pembaca layar: mengumumkan pergantian fase */}
                 <p aria-live="polite" className="sr-only">
