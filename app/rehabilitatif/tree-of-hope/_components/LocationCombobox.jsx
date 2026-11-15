@@ -1,32 +1,25 @@
 "use client";
 
 import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { treeOfHopeContent as t } from "@/content/labels";
 import { shortPlace } from "@/lib/tree-of-hope/place";
 
 const MAX_SHOWN = 30;
-const norm = (s) =>
-  s
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
+const norm = (s) => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+const L = t.location;
 
 // groups: [{ province, cities: [...] }] -> daftar datar
 function buildOptions(groups) {
   const out = [];
   for (const g of groups) {
-    out.push({
-      value: g.province,
-      label: g.province,
-      hint: "Seluruh provinsi",
-      province: g.province,
-      isProvince: true,
-    });
+    out.push({ value: g.province, label: g.province, hint: L.wholeProvince, province: g.province, isProvince: true });
     const counts = new Map();
-    for (const c of g.cities)
-      counts.set(shortPlace(c), (counts.get(shortPlace(c)) ?? 0) + 1);
+    for (const c of g.cities) counts.set(shortPlace(c), (counts.get(shortPlace(c)) ?? 0) + 1);
     for (const c of g.cities) {
       const short = shortPlace(c);
-      const kind = /^Kota/i.test(c) ? "Kota" : "Kabupaten";
+      const kind = /^Kota/i.test(c) ? L.city : L.regency;
       out.push({
         value: c,
         label: counts.get(short) > 1 ? `${short} (${kind})` : short, // awalan hanya bila nama kembar
@@ -39,13 +32,7 @@ function buildOptions(groups) {
   return out;
 }
 
-export default function LocationCombobox({
-  label,
-  value,
-  onChange,
-  groups,
-  invalid,
-}) {
+export default function LocationCombobox({ label, value, onChange, groups, invalid }) {
   const uid = useId();
   const inputId = `${uid}-input`;
   const listId = `${uid}-list`;
@@ -61,11 +48,7 @@ export default function LocationCombobox({
   const results = useMemo(() => {
     const q = norm(query.trim());
     if (!q) {
-      // Belum mengetik: tampilkan provinsi saja, supaya daftar pendek
-      return [
-        { value: "", label: "Tidak dipilih", hint: "" },
-        ...options.filter((o) => o.isProvince),
-      ];
+      return [{ value: "", label: L.none, hint: "" }, ...options.filter((o) => o.isProvince)];
     }
     return options
       .filter((o) => norm(o.label).includes(q) || norm(o.province).includes(q))
@@ -77,10 +60,8 @@ export default function LocationCombobox({
       .slice(0, MAX_SHOWN);
   }, [options, query]);
 
-  // Dijaga agar tidak melewati panjang daftar (tanpa setState di dalam effect)
   const activeIndex = Math.min(active, Math.max(results.length - 1, 0));
 
-  // Tutup saat klik di luar
   useEffect(() => {
     const onDown = (e) => {
       if (!rootRef.current?.contains(e.target)) setOpen(false);
@@ -89,12 +70,8 @@ export default function LocationCombobox({
     return () => document.removeEventListener("mousedown", onDown);
   }, []);
 
-  // Pastikan opsi aktif terlihat
   useEffect(() => {
-    if (open)
-      document
-        .getElementById(`${uid}-opt-${activeIndex}`)
-        ?.scrollIntoView({ block: "nearest" });
+    if (open) document.getElementById(`${uid}-opt-${activeIndex}`)?.scrollIntoView({ block: "nearest" });
   }, [activeIndex, open, uid]);
 
   function choose(opt) {
@@ -113,7 +90,7 @@ export default function LocationCombobox({
       e.preventDefault();
       setActive(Math.max(activeIndex - 1, 0));
     } else if (e.key === "Enter" && open) {
-      e.preventDefault(); // jangan mengirim form
+      e.preventDefault();
       if (results[activeIndex]) choose(results[activeIndex]);
     } else if (e.key === "Escape" && open) {
       e.stopPropagation(); // hanya menutup daftar, bukan seluruh form
@@ -123,16 +100,16 @@ export default function LocationCombobox({
     }
   }
 
-  const shownText = open ? query : (selected?.label ?? value ?? "");
+  const shownText = open ? query : selected?.label ?? value ?? "";
 
   return (
-    <div ref={rootRef} className="relative mt-4">
-      <label htmlFor={inputId} className="block text-sm font-semibold">
+    <div ref={rootRef} className="relative space-y-1.5">
+      <Label htmlFor={inputId} className="text-svarati-teal">
         {label}
-      </label>
-      <input
+      </Label>
+      <Input
         id={inputId}
-        type="text"
+        tone="coral"
         role="combobox"
         aria-expanded={open}
         aria-controls={listId}
@@ -141,7 +118,7 @@ export default function LocationCombobox({
         aria-invalid={invalid || undefined}
         autoComplete="off"
         value={shownText}
-        placeholder="Ketik nama kota atau provinsi"
+        placeholder={L.placeholder}
         onFocus={() => {
           setActive(0);
           setOpen(true);
@@ -152,7 +129,6 @@ export default function LocationCombobox({
           setOpen(true);
         }}
         onKeyDown={onKeyDown}
-        className="mt-1 w-full rounded-xl border border-input bg-card px-3 py-2 font-normal text-card-foreground"
       />
 
       {open && (
@@ -163,9 +139,7 @@ export default function LocationCombobox({
           className="absolute z-10 mt-1 max-h-60 w-full overflow-y-auto rounded-xl border border-input bg-card py-1 shadow-lg"
         >
           {results.length === 0 && (
-            <li className="px-3 py-2 text-sm text-muted-foreground">
-              Daerah tidak ditemukan.
-            </li>
+            <li className="px-3 py-2 text-sm text-svarati-lavender-dark">{L.notFound}</li>
           )}
           {results.map((o, i) => (
             <li
@@ -173,27 +147,20 @@ export default function LocationCombobox({
               id={`${uid}-opt-${i}`}
               role="option"
               aria-selected={o.value === value}
-              onMouseDown={(e) => e.preventDefault()} // input tidak kehilangan fokus
+              onMouseDown={(e) => e.preventDefault()}
               onClick={() => choose(o)}
               onMouseEnter={() => setActive(i)}
               className={`flex cursor-pointer items-baseline justify-between gap-3 px-3 py-2 text-sm ${
-                i === activeIndex ? "bg-accent text-accent-foreground" : ""
+                i === activeIndex ? "bg-svarati-lavender-light text-svarati-teal" : "text-svarati-teal"
               }`}
             >
               <span className="font-medium">{o.label}</span>
-              {o.hint && (
-                <span className="shrink-0 text-xs text-muted-foreground">
-                  {o.hint}
-                </span>
-              )}
+              {o.hint && <span className="shrink-0 text-xs text-svarati-lavender-dark">{o.hint}</span>}
             </li>
           ))}
           {!query && (
-            <li
-              className="px-3 py-1.5 text-xs text-muted-foreground"
-              aria-hidden="true"
-            >
-              Ketik untuk mencari kota atau kabupaten.
+            <li className="px-3 py-1.5 text-xs text-svarati-lavender-dark" aria-hidden="true">
+              {L.typeHint}
             </li>
           )}
         </ul>

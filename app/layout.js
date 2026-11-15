@@ -60,7 +60,7 @@ export default function RootLayout({ children }) {
           <div className="flex flex-col min-h-screen w-full">
             <Navbar />
 
-            <main id="konten-utama" className="flex-1 w-full">
+            <main id="konten-utama" className="tepi-aman flex-1 w-full">
               {children}
             </main>
 

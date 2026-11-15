@@ -169,6 +169,7 @@ export const mitosContent = {
     "Mari pahami fakta objektif untuk mengikis stigma dan membangun ruang aman di masyarakat.",
   labelMitos: "Mitos",
   labelFakta: "Fakta",
+  labelLihat: "Lihat",
   cta: { label: "Pelajari lebih lanjut? Buka Edukasi", href: "/preventif" },
   items: [
     {
@@ -214,18 +215,23 @@ export const svaratiAiContent = {
       id: 1,
       teks: "Halo! Aku Svarati AI",
       posisi: "-top-3 -left-4 sm:-top-5 sm:-left-8",
+      // Ekor gelembung: kotak diputar 45 derajat, mengarah ke maskot.
+      // Sisi border yang dipakai adalah dua sisi luar setelah diputar.
+      ekor: "-bottom-1.5 right-8 border-b border-r",
       delay: "animate-float-slow",
     },
     {
       id: 2,
       teks: "Aku siap menjawab semua pertanyaanmu dengan ramah",
       posisi: "top-1/4 -right-20 sm:-right-28",
+      ekor: "-left-1.5 top-7 border-b border-l",
       delay: "animate-float-medium",
     },
     {
       id: 3,
       teks: "Tenang saja, semua rahasiamu aman terjaga denganku",
       posisi: "-bottom-6 -left-8 sm:-bottom-8 sm:-left-12 lg:-left-16",
+      ekor: "-top-1.5 right-8 border-l border-t",
       delay: "animate-float-fast",
     },
   ],
@@ -238,6 +244,8 @@ const rutePemulihan = (id) => SUBMENU_PEMULIHAN.find((sub) => sub.id === id).hre
 export const pemulihanContent = {
   badge: "Ruang Pemulihan",
   judul: "Mari Sembuh Bersama, Perlahan-lahan",
+  // Bagian judul yang diberi coretan lengkung di halaman /rehabilitatif
+  judulTekanan: "Perlahan-lahan",
   deskripsi:
     "Ambil jeda sejenak untuk dirimu. Pilih fitur yang paling sesuai dengan kondisimu. Kamu tidak berjuang sendirian.",
   cta: { label: "Mulai Pemulihan", href: "/rehabilitatif" },
@@ -271,7 +279,7 @@ export const pemulihanContent = {
     {
       id: "jurnal-pemulihan",
       variant: "lavender",
-      badge: "Refleksi Diri",
+      badge: "Ruang Pribadi",
       title: "Jurnal Pemulihan",
       description:
         "Ruang aman dan privat untuk mencatat perasaanmu hari demi hari, melihat perkembangan emosionalmu, serta memproses pengalaman secara berkala.",
@@ -628,13 +636,30 @@ export const KURATIF = {
       langkah: "Kalau kamu ingin tahu langkah berikutnya, kita bisa mulai dari yang paling mendesak. Apakah kamu sedang merasa aman sekarang?",
       istirahat: "Tidak apa-apa untuk berhenti dulu. Halaman ini akan tetap di sini saat kamu siap kembali.",
       hak: "Sebagai korban, kamu memiliki hak untuk mendapatkan perlindungan, bantuan, dan keadilan. Kamu berhak melaporkan kejadian ini dan meminta bantuan dari pihak berwenang.",
-      urgent: "Aku mendengarmu, dan keselamatanmu yang paling penting sekarang. Kalau kamu dalam bahaya, tekan tombol Bantuan Darurat di bawah ini. Kamu tidak harus menghadapinya sendirian.",
+      urgent: "Aku mendengarmu, dan keselamatanmu yang paling penting sekarang. Kalau kamu dalam bahaya, tekan tombol Bantuan Darurat di atas. Kamu tidak harus menghadapinya sendirian.",
       default: "Terima kasih sudah menuliskan itu. Kamu boleh melanjutkan kapan saja, atau memilih langkah lain di atas.",
     },
     errorText: "Maaf, balasan belum bisa dikirim. Coba lagi sebentar lagi, atau gunakan tombol bantuan darurat jika kamu butuh bantuan sekarang.",
-    urgentNotice: "Kedengarannya situasimu mendesak. Kamu tidak harus menghadapinya sendiri. Hubungi layanan bantuan sekarang.",
+    urgentNotice: "Situasimu mendesak. Hubungi layanan bantuan sekarang.",
+    feedback: {
+      question: "Boleh tahu alasannya? (opsional)",
+      group: "Alasan (opsional)",
+      // Kode harus sama dengan ALASAN_VALID di backend (storage.py)
+      options: [
+        { code: "tidak_sesuai", label: "Kurang sesuai dengan kondisiku" },
+        { code: "terlalu_panjang", label: "Terlalu panjang" },
+        { code: "kurang_jelas", label: "Kurang jelas" },
+        { code: "layanan_tidak_tepat", label: "Layanan yang disebut tidak tepat" },
+        { code: "lainnya", label: "Lainnya" },
+      ],
+      otherHint: (max) => `Tulis alasanmu (maks. ${max} karakter). Jangan tulis data pribadi atau identitasmu.`,
+      send: "Kirim",
+      skip: "Lewati",
+      thanks: "Terima kasih, masukanmu membantu kami memperbaiki jawaban.",
+    },
   },
 };
+
 
 // ===== DIREKTORI LAYANAN BANTUAN =====
 export const DIREKTORI = {
@@ -711,7 +736,7 @@ export const DIREKTORI = {
     namaFile: "daftar-kontak.csv",
     peringatan:
       "File akan tersimpan di perangkat ini dan bisa dilihat orang lain yang memakai perangkat ini. Lanjutkan unduh?",
-    gagal: "File belum bisa diunduh. Coba lagi sebentar lagi.",
+    gagal: "File belum bisa diunduh. Coba lagi nanti ya.",
   },
 };
 
@@ -801,7 +826,13 @@ export const treeOfHopeContent = {
     submit: "Kirim Pesan",
     sending: "Mengirim...",
     cancel: "Batal",
-  },
+    editTitle: "Ubah pesanmu",
+    save: "Simpan perubahan",
+    note: (menit) =>
+      `Kamu dapat mengubah atau menghapus pesanmu sampai ${menit} menit setelah dikirim, dari perangkat dan peramban yang sama. Setelah itu, pesan akan tersimpan permanen di Pohon Harapan.`,
+    terms:
+      "Pesanku tidak mengandung unsur SARA, ujaran kebencian, atau kekerasan, dan tidak memuat data yang dapat mengidentifikasi seseorang (nama, nomor telepon, alamat, nama pelaku). Aku menulisnya untuk memberi motivasi atau inspirasi bagi rekan penyintas. Tim Svarati berhak menghapus pesan yang dinilai melanggar ketentuan ini.",
+      },
 
   toast: {
     empty: "Tulis pesanmu dulu sebelum mengirim.",
@@ -811,5 +842,29 @@ export const treeOfHopeContent = {
     likeFailed: "Maaf, kamu belum bisa menyukai Pesan Dukungan ini sekarang. Coba lagi dalam beberapa saat.",
     likeUnavailable: "Maaf, dukungan belum bisa disimpan untuk pesan ini.",
     offline: "Maaf, jaringan sedang offline. Menampilkan pesan-pesan pilihan untukmu.",
+  },
+
+  manage: {
+    editButton: "Ubah pesan",
+    deleteButton: "Hapus pesan",
+    confirmDelete: "Hapus pesan ini? Tindakan ini tidak bisa dibatalkan.",
+    confirmYes: "Ya, hapus",
+    confirmNo: "Batal",
+    deleting: "Menghapus...",
+    deadline: (tanggal, jam) =>
+      `Kamu dapat mengubah atau menghapus pesanmu sampai tanggal ${tanggal} jam ${jam}. Setelah itu, pesan akan tersimpan permanen di Pohon Svarati.`,
+    editedToast: "Pesanmu berhasil diubah.",
+    deletedToast: "Pesanmu sudah dihapus.",
+  },
+  
+  location: {
+    placeholder: "Ketik nama kota atau provinsi",
+    none: "Tidak dipilih",
+    wholeProvince: "Seluruh provinsi",
+    notFound: "Daerah tidak ditemukan.",
+    typeHint: "Ketik untuk mencari kota atau kabupaten.",
+    notInList: (v) => `"${v}" tidak ada di daftar. Pilih daerah dari daftar, atau kosongkan.`,
+    city: "Kota",
+    regency: "Kabupaten",
   },
 };

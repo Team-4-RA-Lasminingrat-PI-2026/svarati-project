@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getSessionId } from "@/lib/tree-of-hope/session";
-import { updateMessage } from "@/lib/tree-of-hope/services/messageService";
+import { updateMessage, deleteMessage } from "@/lib/tree-of-hope/services/messageService";
 import { validateMessage } from "@/lib/tree-of-hope/validations/messageValidation";
 
 export const dynamic = "force-dynamic";
@@ -33,5 +33,26 @@ export async function PATCH(request, { params }) {
     }
     console.error("[PATCH message]", err);
     return NextResponse.json({ error: "Pesan belum bisa diubah." }, { status: 503 });
+  }
+}
+
+export async function DELETE(request, { params }) {
+  const id = Number((await params).id);
+  if (!Number.isSafeInteger(id) || id <= 0) {
+    return NextResponse.json({ error: "ID tidak valid." }, { status: 400 });
+  }
+
+  const sessionId = await getSessionId(request);
+  if (!sessionId) return NextResponse.json({ error: "Sesi tidak valid." }, { status: 401 });
+
+  try {
+    const ok = await deleteMessage(id, sessionId);
+    if (!ok) {
+      return NextResponse.json({ error: "Waktu untuk menghapus pesan sudah habis." }, { status: 403 });
+    }
+    return NextResponse.json({ ok: true });
+  } catch (err) {
+    console.error("[DELETE message]", err);
+    return NextResponse.json({ error: "Pesan belum bisa dihapus." }, { status: 503 });
   }
 }

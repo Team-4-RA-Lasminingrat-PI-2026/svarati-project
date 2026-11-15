@@ -70,7 +70,6 @@ export default function HelpDirectoryClient({
   const [memuat, setMemuat] = useState(false);
 
   const [galat, setGalat] = useState(gagal ? "muat" : null); // null | "muat" | "unduh"
-  const [tampil, setTampil] = useState(false);
 
   const pertama = useRef(true);
   const kunciFilter = `${cariTunda}|${provinsi}|${kota}|${tipe}`;
@@ -82,17 +81,10 @@ export default function HelpDirectoryClient({
     setPilihan({ kunci: kunciFilter, nomor });
   }
 
-  // Animasi masuk
+  // Mulai dari paling atas
   useEffect(() => {
     window.scrollTo(0, 0);
-    const id = requestAnimationFrame(() => setTampil(true));
-    return () => cancelAnimationFrame(id);
   }, []);
-
-  const muncul = (delay) =>
-    `transition-all duration-700 ease-out ${delay} ${
-      tampil ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-    }`;
 
   // Debounce kolom pencarian
   useEffect(() => {
@@ -105,7 +97,7 @@ export default function HelpDirectoryClient({
     if (!provinsi || provinsi === NASIONAL) return;
 
     const ctrl = new AbortController();
-    ambilJson(`/api/cities?provinsi=${encodeURIComponent(provinsi)}`, {
+    ambilJson(`/api/kuratif/help-directory/cities?provinsi=${encodeURIComponent(provinsi)}`, {
       signal: ctrl.signal,
     })
       .then((j) => setKotaData({ provinsi, daftar: j.data }))
@@ -116,7 +108,7 @@ export default function HelpDirectoryClient({
     return () => ctrl.abort();
   }, [provinsi]);
 
-  // RLA046: ambil daftar setiap filter atau halaman berubah
+  // Ambil daftar setiap filter atau halaman berubah
   useEffect(() => {
     if (pertama.current) {
       pertama.current = false; // data awal sudah dari server
@@ -127,7 +119,7 @@ export default function HelpDirectoryClient({
     setGalat(null);
 
     ambilJson(
-      `/api/help-directory?${buatParams({ cari: cariTunda, provinsi, kota, tipe }, halaman)}`,
+      `/api/kuratif/help-directory?${buatParams({ cari: cariTunda, provinsi, kota, tipe }, halaman)}`,
       { signal: ctrl.signal },
     )
       .then((j) => {
@@ -157,13 +149,13 @@ export default function HelpDirectoryClient({
     setTipe(SEMUA);
   }
 
-  // RLA047: unduh CSV dari endpoint, lewat blob agar URL filter tidak tercatat di riwayat unduhan
+  // Unduh CSV dari endpoint, lewat blob agar URL filter tidak tercatat di riwayat unduhan
   async function unduhCSV() {
     if (!window.confirm(L.csv.peringatan)) return;
     setGalat(null);
     try {
       const res = await fetch(
-        `/api/help-directory/export?${buatParams({ cari, provinsi, kota, tipe })}`,
+        `/api/kuratif/help-directory/export?${buatParams({ cari, provinsi, kota, tipe })}`,
         { cache: "no-store" },
       );
       if (!res.ok) throw new Error("Gagal");
@@ -199,25 +191,19 @@ export default function HelpDirectoryClient({
         <Card variant="teal" size="lg" className="mb-6 p-6 sm:p-8">
           <Link
             href={L.back.href}
-            className={`mb-4 flex w-fit items-center gap-1.5 text-sm font-semibold text-svarati-teal transition-colors hover:text-svarati-teal-dark ${muncul("")}`}
+            className="mb-4 flex w-fit items-center gap-1.5 text-sm font-semibold text-svarati-teal transition-colors hover:text-svarati-teal-dark"
           >
             <ArrowLeft className="size-4" aria-hidden="true" />
             {L.back.label}
           </Link>
 
-          <Badge variant="teal" className={muncul("")}>
-            {L.badge}
-          </Badge>
+          <Badge variant="teal">{L.badge}</Badge>
 
-          <h1
-            className={`mb-3 mt-3 text-2xl font-extrabold text-svarati-teal sm:text-3xl ${muncul("delay-150")}`}
-          >
+          <h1 className="mb-3 mt-3 text-2xl font-extrabold text-svarati-teal sm:text-3xl">
             {L.judul}
           </h1>
 
-          <p
-            className={`text-sm leading-relaxed text-svarati-teal-dark sm:text-base ${muncul("delay-300")}`}
-          >
+          <p className="text-sm leading-relaxed text-svarati-teal-dark sm:text-base">
             {L.deskripsi.map((teks, i) => (
               <span key={i} className="block">
                 {teks}
@@ -227,7 +213,7 @@ export default function HelpDirectoryClient({
         </Card>
 
         <DirectoryFilter
-          className={`mb-6 pt-2 ${muncul("delay-500")}`}
+          className="mb-6 pt-2"
           cari={cari}
           onCariChange={setCari}
           provinsi={provinsi}
@@ -246,82 +232,80 @@ export default function HelpDirectoryClient({
         />
 
         {/* Hasil */}
-        <div className={muncul("delay-700")}>
-          <h2 className="sr-only">{L.hasil.judul}</h2>
+        <h2 className="sr-only">{L.hasil.judul}</h2>
 
-          {galat && (
-            <p
-              role="alert"
-              className="mb-4 rounded-xl bg-svarati-danger/10 p-4 text-sm text-svarati-danger-dark"
-            >
-              {galat === "unduh" ? L.csv.gagal : L.hasil.gagal}
+        {galat && (
+          <p
+            role="alert"
+            className="mb-4 rounded-xl bg-svarati-danger/10 p-4 text-sm text-svarati-danger-dark"
+          >
+            {galat === "unduh" ? L.csv.gagal : L.hasil.gagal}
+          </p>
+        )}
+
+        {kosong ? (
+          <div className="py-16 text-center text-svarati-lavender-dark">
+            <p className="mb-3 text-4xl" aria-hidden="true">
+              🔍
             </p>
-          )}
-
-          {kosong ? (
-            <div className="py-16 text-center text-svarati-lavender-dark">
-              <p className="mb-3 text-4xl" aria-hidden="true">
-                🔍
-              </p>
-              <p className="text-sm">{L.hasil.kosong}</p>
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                onClick={resetFilter}
-                className="mt-3"
-              >
-                {L.hasil.resetKosong}
-              </Button>
-            </div>
-          ) : (
-            <ul
-              aria-busy={memuat}
-              className={`grid items-start gap-4 transition-opacity sm:grid-cols-2 ${
-                memuat ? "opacity-60" : ""
-              }`}
+            <p className="text-sm">{L.hasil.kosong}</p>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={resetFilter}
+              className="mt-3"
             >
-              {hasil.map((s) => (
-                <li key={s.id}>
-                  <ServiceCard
-                    layanan={s}
-                    badgeVariant={TIPE[s.tipe]?.variant ?? "lavender"}
-                  />
-                </li>
-              ))}
-            </ul>
-          )}
+              {L.hasil.resetKosong}
+            </Button>
+          </div>
+        ) : (
+          <ul
+            aria-busy={memuat}
+            className={`grid items-start gap-4 transition-opacity sm:grid-cols-2 ${
+              memuat ? "opacity-60" : ""
+            }`}
+          >
+            {hasil.map((s) => (
+              <li key={s.id}>
+                <ServiceCard
+                  layanan={s}
+                  badgeVariant={TIPE[s.tipe]?.variant ?? "lavender"}
+                />
+              </li>
+            ))}
+          </ul>
+        )}
 
-          {/* Paginasi */}
-          {hasil.length > 0 && (
-            <div className="mt-6 flex flex-col items-center gap-3">
-              <p aria-live="polite" className="text-xs text-svarati-teal-dark">
-                {L.hasil.menampilkan(hasil.length, total)}
-              </p>
-              <PaginationHelpDirectory
-                halaman={halaman}
-                totalHalaman={totalHalaman}
-                onUbah={pindahHalaman}
-                disabled={memuat}
-              />
-            </div>
-          )}
+        {/* Paginasi */}
+        {hasil.length > 0 && (
+          <div className="mt-6 flex flex-col items-center gap-3">
+            <p aria-live="polite" className="text-xs text-svarati-teal-dark">
+              {L.hasil.menampilkan(hasil.length, total)}
+            </p>
+            <PaginationHelpDirectory
+              halaman={halaman}
+              totalHalaman={totalHalaman}
+              onUbah={pindahHalaman}
+              disabled={memuat}
+            />
+          </div>
+        )}
 
-          {/* Petunjuk agar tidak ada jalan buntu */}
-          {tampilPetunjukNasional && (
-            <div className="mt-6 flex flex-wrap items-center gap-2 text-sm text-svarati-teal-dark">
-              <p>{L.hasil.petunjukNasional}</p>
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                onClick={() => ubahProvinsi(NASIONAL)}
-              >
-                {L.hasil.lihatNasional}
-              </Button>
-            </div>
-          )}
-        </div>
+        {/* Petunjuk agar tidak ada jalan buntu */}
+        {tampilPetunjukNasional && (
+          <div className="mt-6 flex flex-wrap items-center gap-2 text-sm text-svarati-teal-dark">
+            <p>{L.hasil.petunjukNasional}</p>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={() => ubahProvinsi(NASIONAL)}
+            >
+              {L.hasil.lihatNasional}
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );

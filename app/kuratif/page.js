@@ -23,7 +23,7 @@ const ITEM_META = {
 
 export default function Page() {
   return (
-    <div className="w-full px-2 pb-12 pt-22 sm:px-3">
+    <div className="w-full px-4 pb-12 pt-22">
       <div className="relative mx-auto max-w-6xl">
         <Card
           variant="solid"
