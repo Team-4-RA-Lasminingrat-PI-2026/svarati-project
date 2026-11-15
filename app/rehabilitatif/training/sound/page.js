@@ -2,7 +2,6 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { AlertCircle, ArrowLeft, CheckCircle2, Music2, Pause, Play } from "lucide-react";
-import { buttonVariants } from "@/components/ui/button";
 import MiniPlayer from "./_components/MiniPlayer";
 
 // Bagian judul yang diberi coretan lengkung
@@ -890,14 +889,21 @@ export default function SoundPage() {
         // pt-20 menyamakan jarak atas dengan halaman latihan lain;
         // pb besar memberi ruang untuk pemutar yang menempel di bawah
         <main className="min-h-screen bg-svarati-cream px-4 pb-40 pt-20 font-sans md:px-8 lg:px-12">
-            <div className="mx-auto max-w-3xl">
-                <Link
-                    href="/rehabilitatif/training"
-                    className={buttonVariants({ variant: "ghost", size: "sm", className: "mb-6" })}
-                >
-                    <ArrowLeft className="size-4" /> Semua latihan
-                </Link>
+            {/* Di pojok kiri halaman, bukan di dalam kolom tengah.
+                Gayanya mengikuti tautan kembali di halaman Pendampingan. */}
+            <Link
+                href="/rehabilitatif/training"
+                aria-label="Kembali ke Semua latihan"
+                className="group mb-6 inline-flex items-center gap-1.5 rounded text-sm font-semibold text-svarati-teal hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-svarati-teal"
+            >
+                <ArrowLeft
+                    className="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-0.5"
+                    aria-hidden="true"
+                />
+                Semua latihan
+            </Link>
 
+            <div className="mx-auto max-w-3xl">
                 {/* Judul halaman */}
                 <header className="mb-8">
                     <p className="mb-3 flex items-center gap-2 text-sm font-semibold text-svarati-coral-dark">
