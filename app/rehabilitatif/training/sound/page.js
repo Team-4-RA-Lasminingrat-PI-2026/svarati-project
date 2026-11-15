@@ -887,12 +887,13 @@ export default function SoundPage() {
 
 
     return (
+        // pt-20 menyamakan jarak atas dengan halaman latihan lain;
         // pb besar memberi ruang untuk pemutar yang menempel di bawah
-        <main className="min-h-screen bg-svarati-cream px-4 pb-40 pt-28 font-sans md:px-8 md:pt-36">
+        <main className="min-h-screen bg-svarati-cream px-4 pb-40 pt-20 font-sans md:px-8 lg:px-12">
             <div className="mx-auto max-w-3xl">
                 <Link
                     href="/rehabilitatif/training"
-                    className={buttonVariants({ variant: "ghost", size: "sm", className: "mb-7" })}
+                    className={buttonVariants({ variant: "ghost", size: "sm", className: "mb-6" })}
                 >
                     <ArrowLeft className="size-4" /> Semua latihan
                 </Link>
