@@ -22,7 +22,7 @@ export async function GET(request) {
     return NextResponse.json(hasil, { headers: HEADER });
   } catch (e) {
     // Sengaja hanya mencatat pesan error, BUKAN parameter pencarian pengguna
-    console.error("GET /api/help-directory gagal:", e?.message);
+    console.error("GET /api/kuratif/help-directory gagal:", e?.message);
     return NextResponse.json(
       { error: "Gagal memuat data" },
       { status: 500, headers: HEADER }
