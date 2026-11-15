@@ -50,10 +50,10 @@ export default function MiniPlayer({
         <div
             role="region"
             aria-label="Pemutar suara"
-            className="fixed bottom-2.5 left-1/2 z-40 grid w-[min(48rem,calc(100%-1.5rem))] -translate-x-1/2 grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-2 rounded-3xl bg-svarati-teal p-2.5 text-white shadow-[0_12px_32px_rgba(15,76,92,0.28)] sm:gap-4 sm:p-3"
+            className="fixed bottom-2.5 left-1/2 z-40 flex w-[min(40rem,calc(100%-1.5rem))] -translate-x-1/2 items-center gap-2 rounded-3xl bg-svarati-teal p-2.5 text-white shadow-[0_12px_32px_rgba(15,76,92,0.28)] sm:gap-3 sm:p-3"
         >
             {/* Suara yang sedang diputar */}
-            <div className="flex min-w-0 items-center gap-3">
+            <div className="flex min-w-0 flex-1 items-center gap-3">
                 <span
                     aria-hidden="true"
                     className="hidden size-11 shrink-0 place-items-center rounded-xl bg-svarati-teal-light sm:grid"
@@ -69,7 +69,7 @@ export default function MiniPlayer({
             </div>
 
             {/* Kendali putar */}
-            <div className="order-3 flex items-center gap-1 sm:order-none">
+            <div className="order-3 flex shrink-0 items-center gap-1 sm:order-none">
                 <button
                     type="button"
                     onClick={onPrev}
@@ -103,7 +103,7 @@ export default function MiniPlayer({
             </div>
 
             {/* Volume dan timer */}
-            <div className="order-2 flex items-center gap-2.5 sm:order-none">
+            <div className="order-2 flex shrink-0 items-center gap-2.5 sm:order-none">
                 <label className="hidden items-center gap-2 sm:flex">
                     <Volume2 className="size-4.5 text-white/80" aria-hidden="true" />
                     <input

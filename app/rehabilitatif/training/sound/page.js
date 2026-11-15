@@ -846,13 +846,6 @@ export default function SoundPage() {
         return () => controller.abort();
     }, []);
 
-    // Tombol aksesibilitas dinaikkan selama pemutar tampil (aturan di globals.css)
-    useEffect(() => {
-        if (!currentSound) return;
-        document.body.classList.add("ada-pemutar");
-        return () => document.body.classList.remove("ada-pemutar");
-    }, [currentSound]);
-
     // Volume langsung berubah saat slider digeser
     useEffect(() => {
         if (gainRef.current && ctxRef.current) {
@@ -911,7 +904,8 @@ export default function SoundPage() {
                         Suara Terapi
                     </p>
 
-                    <h1 className="mb-4 text-3xl font-semibold leading-[1.18] tracking-tight text-svarati-teal md:text-4xl lg:text-5xl">
+                    {/* mb besar memberi ruang untuk coretan di bawah judul */}
+                    <h1 className="mb-9 text-3xl font-semibold leading-[1.18] tracking-tight text-svarati-teal md:text-4xl lg:text-5xl">
                         {JUDUL}
                         <span className="relative whitespace-nowrap">
                             {JUDUL_TEKANAN}
@@ -959,7 +953,7 @@ export default function SoundPage() {
                     <div className="space-y-8">
                         {GROUPS.filter((g) => sounds.some((s) => s.kategori === g.kategori)).map((group) => (
                             <section key={group.kategori}>
-                                <h2 className="mb-2.5 ml-1 text-sm font-semibold text-svarati-teal/70">
+                                <h2 className="mb-2.5 ml-1 font-sans text-sm font-semibold text-svarati-teal/70">
                                     {group.label}
                                 </h2>
 
@@ -975,10 +969,10 @@ export default function SoundPage() {
                                                 <button
                                                     onClick={() => (isActive ? pauseSound() : playSound(sound))}
                                                     aria-pressed={isActive}
-                                                    className={`grid w-full cursor-pointer grid-cols-[2.25rem_minmax(0,1fr)_auto] items-center gap-3 rounded-2xl px-3 py-3 text-left transition sm:grid-cols-[2.5rem_minmax(0,1fr)_auto] sm:gap-3.5 sm:px-3.5 ${isDipilih ? "bg-svarati-teal-soft" : "hover:bg-svarati-cream"}`}
+                                                    className={`flex w-full cursor-pointer items-center gap-3.5 rounded-2xl px-3 py-2.5 text-left transition ${isDipilih ? "bg-svarati-teal-soft" : "hover:bg-svarati-cream"}`}
                                                 >
                                                     <span
-                                                        className={`grid size-9 shrink-0 place-items-center rounded-full transition sm:size-10 ${isActive
+                                                        className={`flex size-10 shrink-0 items-center justify-center rounded-full transition ${isActive
                                                             ? "bg-svarati-teal text-white"
                                                             : "bg-svarati-cream text-svarati-teal"
                                                             }`}
@@ -990,7 +984,7 @@ export default function SoundPage() {
                                                         )}
                                                     </span>
 
-                                                    <span className="min-w-0">
+                                                    <span className="min-w-0 flex-1">
                                                         <span className="block font-semibold leading-snug text-svarati-teal">
                                                             {sound.label}
                                                         </span>
@@ -999,7 +993,7 @@ export default function SoundPage() {
                                                         </span>
                                                     </span>
 
-                                                    {isActive ? <Equalizer /> : <span />}
+                                                    {isActive && <Equalizer />}
                                                 </button>
                                             </li>
                                         );

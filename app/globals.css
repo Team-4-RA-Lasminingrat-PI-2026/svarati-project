@@ -471,19 +471,6 @@
   animation: eq-batang 1.1s ease-in-out infinite;
 }
 
-/* Saat pemutar menempel di bawah layar, tombol aksesibilitas dinaikkan
-   supaya keduanya tidak saling menutupi. Kelasnya dipasang di <body>
-   oleh halaman suara terapi. */
-body.ada-pemutar .fab-aksesibilitas {
-  bottom: 7rem;
-}
-
-@media (min-width: 640px) {
-  body.ada-pemutar .fab-aksesibilitas {
-    bottom: 7.5rem;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .eq-batang {
     animation: none;
