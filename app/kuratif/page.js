@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { MENU_UTAMA, KURATIF, serviceContent } from "@/content/labels";
-import { ArrowRight, Clock, Info, Users } from "lucide-react";
+import { ArrowRight, Clock, Users } from "lucide-react";
 
 // Ikon padat buatan sendiri. Warnanya ikut text-* dari pemanggil,
 // bagian putih sengaja putih karena ditaruh di atas ubin putih.
@@ -146,11 +146,14 @@ export default function Page() {
                   href={item.href}
                   className={`group flex items-center justify-between gap-5 rounded-3xl p-5 transition hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-svarati-teal sm:gap-8 sm:p-6 ${warna.kartu}`}
                 >
-                  <div className="min-w-0">
-                    <div className="mb-2.5 flex items-center gap-2.5">
-                      <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-white">
-                        <Icon className={`size-5 ${warna.ikon}`} />
-                      </span>
+                  {/* Ikon berdiri sendiri tanpa ubin latar */}
+                  <Icon className={`size-7 shrink-0 ${warna.ikon}`} />
+
+                  <div className="min-w-0 flex-1">
+                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+                      <h2 className={`text-xl font-semibold leading-snug ${warna.judul}`}>
+                        {item.nama}
+                      </h2>
                       <span
                         className={`inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-semibold leading-none ${warna.chip}`}
                       >
@@ -161,11 +164,7 @@ export default function Page() {
                       </span>
                     </div>
 
-                    <h2 className={`text-xl font-semibold leading-snug ${warna.judul}`}>
-                      {item.nama}
-                    </h2>
-
-                    <p className={`mt-1 text-sm leading-relaxed ${warna.teks}`}>
+                    <p className={`mt-1.5 text-sm leading-relaxed ${warna.teks}`}>
                       {menuKuratif.desc[item.id]}
                     </p>
                   </div>
@@ -186,12 +185,6 @@ export default function Page() {
             );
           })}
         </ul>
-
-        {/* Catatan kaki */}
-        <p className="mt-6 flex items-start gap-2 text-sm text-svarati-coral-dark">
-          <Info className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
-          <span>{menuKuratif.disclaimer}</span>
-        </p>
       </div>
     </div>
   );
