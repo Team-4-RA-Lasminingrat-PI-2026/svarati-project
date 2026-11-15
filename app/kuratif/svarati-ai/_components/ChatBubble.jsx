@@ -1,7 +1,8 @@
 import { KURATIF } from "@/content/labels";
+import LinkifiedText from "./LinkifiedText";
 
 const ai = KURATIF.ai;
-const DARURAT_PHRASE = "Bantuan Darurat";
+const EMERGENCY_PHRASE = "Bantuan Darurat";
 
 // Palet chat: teal sebagai warna dasar (bubble), lavender sebagai pelengkap interaksi
 // (input, chip, titik mengetik), coral sebagai aksen hangat (avatar, disclaimer).
@@ -24,20 +25,20 @@ export function BotAvatar({ large = false }) {
   );
 }
 
-// Satu pesan. Bot: teal lembut. Pengguna: lavender lembut.
+// Satu pesan. Bot: teal lembut, tautan nomor dan email aktif. Pengguna: lavender lembut.
 export function Message({ from, text }) {
   const isBot = from === "bot";
   return (
     <div className={`flex gap-3 ${isBot ? "" : "justify-end"}`}>
       {isBot && <BotAvatar />}
       <p
-        className={`max-w-[85%] whitespace-pre-wrap break-words rounded-2xl px-4 py-3 text-[15px] leading-relaxed ${
+        className={`max-w-[85%] whitespace-pre-wrap break-words rounded-2xl px-4 py-3 text-[15px] leading-normal ${
           isBot
             ? "rounded-bl-sm bg-svarati-teal-soft text-svarati-teal"
             : "rounded-br-sm bg-svarati-lavender-light text-svarati-lavender-dark"
         }`}
       >
-        {text}
+        {isBot ? <LinkifiedText text={text} /> : text}
       </p>
     </div>
   );
@@ -48,7 +49,7 @@ export function TypingIndicator() {
   return (
     <div className="flex gap-3" role="status">
       <BotAvatar />
-      <div className="flex items-center gap-1.5 rounded-2xl rounded-bl-sm bg-svarati-teal-soft px-4 py-4">
+      <div className="flex items-center gap-1.5 rounded-2xl rounded-bl-sm bg-svarati-teal-soft px-4 py-2.5">
         <span className="sr-only">{ai.typing}</span>
         {[0, 150, 300].map((delay) => (
           <span
@@ -65,22 +66,23 @@ export function TypingIndicator() {
 
 // Disclaimer dengan frasa "Bantuan Darurat" sebagai tombol pembuka modal.
 // Jika frasa itu hilang dari teks, disclaimer tampil tanpa tombol.
+// Memakai indexOf agar aman walau frasa muncul lebih dari sekali.
 export function AiDisclaimer({ onOpenEmergency }) {
   const text = KURATIF.common.aiDisclaimer;
-  const [before, after] = text.split(DARURAT_PHRASE);
-  if (after === undefined) return text;
+  const i = text.indexOf(EMERGENCY_PHRASE);
+  if (i === -1) return text;
 
   return (
     <>
-      {before}
+      {text.slice(0, i)}
       <button
         type="button"
         onClick={onOpenEmergency}
         className="cursor-pointer font-semibold underline underline-offset-2"
       >
-        {DARURAT_PHRASE}
+        {EMERGENCY_PHRASE}
       </button>
-      {after}
+      {text.slice(i + EMERGENCY_PHRASE.length)}
     </>
   );
 }
