@@ -6,6 +6,7 @@ import Badge from "@/components/Badge";
 import { Card, CardDescription, cardVariants } from "@/components/Card";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import MiniPlayer from "./_components/MiniPlayer";
 
 // Kode kategori di database (relaxation_tracks.category) dan judul yang tampil di halaman
 const GROUPS = [
@@ -677,7 +678,9 @@ async function ambilDaftarSuara(signal) {
 
 export default function SoundPage() {
     const [sounds, setSounds] = useState(null); // null = sedang dimuat
-    const [activeId, setActiveId] = useState(null);
+    // Suara yang sedang berbunyi, dan suara yang tadi dijeda (dipakai bilah pemutar)
+    const [activeSound, setActiveSound] = useState(null);
+    const [pausedSound, setPausedSound] = useState(null);
     const [volume, setVolume] = useState(0.5);
     const [timerMin, setTimerMin] = useState(0);
     // Timer berjalan: simpan waktu selesainya. Timer dijeda: simpan sisa detiknya.
@@ -692,7 +695,10 @@ export default function SoundPage() {
     const stopRef = useRef(null);
     const fadingRef = useRef(new Set()); // suara yang sedang memudar
 
-    const isPlaying = activeId !== null;
+    const activeId = activeSound?.id ?? null;
+    const isPlaying = activeSound !== null;
+    // Suara yang ditampilkan di bilah pemutar: yang berbunyi, atau yang dijeda
+    const currentSound = activeSound ?? pausedSound;
     const remaining =
         endAt !== null ? Math.max(0, Math.ceil((endAt - now) / 1000)) : pausedLeft;
     const isPaused = !isPlaying && pausedLeft !== null;
@@ -767,24 +773,41 @@ export default function SoundPage() {
             return;
         }
 
-        setActiveId(sound.id);
+        setActiveSound(sound);
         setError("");
         setNotice("");
 
-        // Timer: ganti suara = lanjut, dijeda = lanjut dari sisa, belum mulai = dari awal
-        if (timerMin > 0 && endAt === null) {
-            startCountdown(pausedLeft ?? timerMin * 60);
+        // Timer: melanjutkan suara yang tadi dijeda = lanjut dari sisa waktu.
+        // Memilih suara lain = hitung mundur diulang dari durasi penuh.
+        if (timerMin > 0) {
+            const lanjutkan = pausedLeft !== null && pausedSound?.id === sound.id;
+            startCountdown(lanjutkan ? pausedLeft : timerMin * 60);
+        } else {
+            setEndAt(null);
+            setPausedLeft(null);
         }
+        setPausedSound(null);
     };
 
     // Dijeda: suara berhenti dan sisa waktu disimpan
     const pauseSound = () => {
         stopAudio(true);
-        setActiveId(null);
+        setPausedSound(activeSound);
+        setActiveSound(null);
         if (endAt !== null) {
             setPausedLeft(sisaDetik(endAt));
             setEndAt(null);
         }
+    };
+
+    // Tutup bilah pemutar: suara berhenti dan hitung mundur dilupakan
+    const closePlayer = () => {
+        stopAudio(true);
+        setActiveSound(null);
+        setPausedSound(null);
+        setEndAt(null);
+        setPausedLeft(null);
+        setNotice("");
     };
 
     const chooseTimer = (minutes) => {
@@ -826,7 +849,8 @@ export default function SoundPage() {
             if (t >= endAt) {
                 clearInterval(interval);
                 stopAudio(true);
-                setActiveId(null);
+                setActiveSound(null);
+                setPausedSound(null);
                 setEndAt(null);
                 setPausedLeft(null);
                 setNotice(PESAN.timerSelesai);
@@ -1032,7 +1056,24 @@ export default function SoundPage() {
                         </p>
                     </div>
                 </Card>
+
+                {/* Ruang kosong supaya isi terakhir tidak tertutup bilah pemutar */}
+                {currentSound && <div aria-hidden="true" className="h-20" />}
             </div>
+
+            {currentSound && (
+                <MiniPlayer
+                    sound={currentSound}
+                    isPlaying={isPlaying}
+                    onToggle={() => (isPlaying ? pauseSound() : playSound(currentSound))}
+                    onClose={closePlayer}
+                    volume={volume}
+                    onVolume={setVolume}
+                    elapsed={remaining !== null ? timerMin * 60 - remaining : 0}
+                    total={remaining !== null ? timerMin * 60 : 0}
+                    formatTime={formatTime}
+                />
+            )}
         </main>
     );
 }
