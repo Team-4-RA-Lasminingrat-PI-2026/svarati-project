@@ -1,9 +1,25 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, MessageCircle } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/Card";
 import { svaratiAiContent as ai } from "@/content/labels";
+
+// Gelembung chat padat dengan tiga titik dan ekor di kiri bawah.
+// Warnanya ikut text-* dari pemanggil.
+function IkonBubble({ className }) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={className} fill="currentColor">
+      <path d="M6.5 17.5h3.2L6.3 21.4a.55.55 0 0 1-.96-.37V17.5h1.16Z" />
+      <rect x="2" y="3" width="20" height="14.5" rx="4.5" />
+      <g fill="#fff">
+        <circle cx="7.6" cy="10.25" r="1.55" />
+        <circle cx="12" cy="10.25" r="1.55" />
+        <circle cx="16.4" cy="10.25" r="1.55" />
+      </g>
+    </svg>
+  );
+}
 
 export default function SvaratiAiBanner() {
   return (
@@ -72,7 +88,7 @@ export default function SvaratiAiBanner() {
                   className="max-w-[125px] rounded-2xl border-svarati-lavender-light/80 bg-white/95 p-2 shadow-md backdrop-blur-sm sm:max-w-[175px] sm:p-2.5"
                 >
                   <div className="flex items-start gap-1.5">
-                    <MessageCircle className="mt-0.5 size-3.5 shrink-0 text-svarati-coral" />
+                    <IkonBubble className="mt-0.5 size-3.5 shrink-0 text-svarati-coral" />
                     <p className="text-[10px] font-medium leading-snug text-svarati-teal sm:text-xs">
                       {bubble.teks}
                     </p>

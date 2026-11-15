@@ -209,7 +209,7 @@ export const svaratiAiContent = {
   deskripsi:
     "Ceritakan secara anonim. Svarati AI hadir untuk memvalidasi ceritamu, menjelaskan hak hukummu dalam bahasa awam, dan memberikan checklist langkah pertama dengan aman tanpa menghakimi.",
   cta: { label: "Mulai Cerita", href: "/kuratif/svarati-ai" },
-  gambar: { src: "/svarati-ai-mascot.svg", alt: "Maskot robot Svarati AI" },
+  gambar: { src: "/cute-ai-robot-mascot.svg", alt: "Maskot robot Svarati AI" },
   bubbles: [
     {
       id: 1,

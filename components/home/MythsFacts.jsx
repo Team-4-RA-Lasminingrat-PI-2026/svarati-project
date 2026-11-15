@@ -47,10 +47,12 @@ export default function MythsFacts() {
                     <h3 className="text-lg font-black uppercase text-white">
                       {m.labelFakta}
                     </h3>
-                    {/* Petunjuk ketuk/arahkan. Hilang saat fakta sudah terbuka. */}
+                    {/* Petunjuk ketuk, hanya di layar kecil karena di desktop
+                        faktanya sudah terbuka saat kursor diarahkan.
+                        Hilang saat fakta terbuka. */}
                     <span
                       aria-hidden="true"
-                      className="flex shrink-0 items-center gap-1 text-xs font-medium text-white/80 transition-opacity duration-300 group-hover:opacity-0 group-focus-within:opacity-0"
+                      className="flex shrink-0 items-center gap-1 text-xs font-medium text-white/80 transition-opacity duration-300 group-hover:opacity-0 group-focus-within:opacity-0 md:hidden"
                     >
                       {m.labelLihat}
                       <ArrowUp className="size-3.5" />
