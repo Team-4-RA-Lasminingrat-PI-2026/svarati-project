@@ -1,6 +1,59 @@
 import Link from "next/link";
-import { Wind, Headphones, Anchor, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import BackToPemulihan from "@/components/BackToPemulihan";
+
+// Ikon padat buatan sendiri. Warnanya ikut text-* dari pemanggil,
+// dan bagian putih mengandalkan ubin di belakangnya yang berwarna putih.
+function IkonNapas({ className }) {
+    return (
+        <svg viewBox="0 0 24 24" aria-hidden="true" className={className} fill="none">
+            <path
+                d="M11.05 3.1a.95.95 0 0 1 1.9 0v4.3l3 1.85-1 1.6-2.95-1.8-2.95 1.8-1-1.6 3-1.85z"
+                fill="currentColor"
+            />
+            <path
+                d="M9.3 10.2v9.4c0 .8-.65 1.4-1.45 1.4H5.7c-1.75 0-3.1-1.55-2.85-3.3l.85-5.85c.2-1.45 1.25-2.65 2.65-3.05 1.5-.45 2.95.65 2.95 2.2z"
+                fill="currentColor"
+            />
+            <path
+                d="M14.7 10.2v9.4c0 .8.65 1.4 1.45 1.4h2.15c1.75 0 3.1-1.55 2.85-3.3l-.85-5.85c-.2-1.45-1.25-2.65-2.65-3.05-1.5-.45-2.95.65-2.95 2.2z"
+                fill="currentColor"
+            />
+        </svg>
+    );
+}
+
+function IkonHeadphone({ className }) {
+    return (
+        <svg viewBox="0 0 24 24" aria-hidden="true" className={className} fill="none">
+            <path
+                d="M4.5 13.6v-1.6a7.5 7.5 0 0 1 15 0v1.6"
+                stroke="currentColor"
+                strokeWidth="2.6"
+                strokeLinecap="round"
+            />
+            <rect x="2.2" y="13" width="5.2" height="8.2" rx="2.6" fill="currentColor" />
+            <rect x="16.6" y="13" width="5.2" height="8.2" rx="2.6" fill="currentColor" />
+        </svg>
+    );
+}
+
+function IkonJangkar({ className }) {
+    return (
+        <svg viewBox="0 0 24 24" aria-hidden="true" className={className} fill="none">
+            <circle cx="12" cy="4.3" r="2.9" fill="currentColor" />
+            <circle cx="12" cy="4.3" r="1.1" fill="#fff" />
+            <rect x="10.8" y="6.4" width="2.4" height="14.4" rx="1.2" fill="currentColor" />
+            <rect x="7.4" y="8.4" width="9.2" height="2.3" rx="1.15" fill="currentColor" />
+            <path
+                d="M4.4 12.8a7.6 7.6 0 0 0 15.2 0"
+                stroke="currentColor"
+                strokeWidth="2.6"
+                strokeLinecap="round"
+            />
+        </svg>
+    );
+}
 
 // Daftar memanjang: satu kartu bernuansa warna per latihan, ikon di kiri,
 // tombol panah bulat di kanan. Nama fitur, keterangan singkat "cocok saat",
@@ -9,7 +62,7 @@ const exercises = [
     {
         href: "/rehabilitatif/training/breathing",
         title: "Latihan Pernapasan",
-        Icon: Wind,
+        Icon: IkonNapas,
         cocok: "Saat cemas, stres, atau jantung berdebar.",
         takaran: "19 detik per putaran",
         warna: {
@@ -22,7 +75,7 @@ const exercises = [
     {
         href: "/rehabilitatif/training/sound",
         title: "Suara Terapi",
-        Icon: Headphones,
+        Icon: IkonHeadphone,
         cocok: "Saat susah tidur atau pikiran ramai.",
         takaran: "20 musik tenang, timer 15 sampai 60 menit",
         warna: {
@@ -35,7 +88,7 @@ const exercises = [
     {
         href: "/rehabilitatif/training/grounding",
         title: "Grounding 5-4-3-2-1",
-        Icon: Anchor,
+        Icon: IkonJangkar,
         cocok: "Saat panik atau kewalahan.",
         takaran: "5 langkah, sekitar 3 menit",
         warna: {
