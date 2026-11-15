@@ -85,8 +85,13 @@ export default function SvaratiAiBanner() {
                 <Card
                   variant="white"
                   size="sm"
-                  className="max-w-[125px] rounded-2xl border-svarati-lavender-light/80 bg-white/95 p-2 shadow-md backdrop-blur-sm sm:max-w-[175px] sm:p-2.5"
+                  className="max-w-[125px] overflow-visible rounded-2xl border-svarati-lavender-light/80 bg-white/95 p-2 shadow-md backdrop-blur-sm sm:max-w-[175px] sm:p-2.5"
                 >
+                  {/* Ekor lancip yang menunjuk ke maskot */}
+                  <span
+                    aria-hidden="true"
+                    className={`absolute size-3 rotate-45 border-svarati-lavender-light/80 bg-white/95 ${bubble.ekor}`}
+                  />
                   <div className="flex items-start gap-1.5">
                     <IkonBubble className="mt-0.5 size-3.5 shrink-0 text-svarati-coral" />
                     <p className="text-[10px] font-medium leading-snug text-svarati-teal sm:text-xs">

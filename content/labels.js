@@ -215,18 +215,23 @@ export const svaratiAiContent = {
       id: 1,
       teks: "Halo! Aku Svarati AI",
       posisi: "-top-3 -left-4 sm:-top-5 sm:-left-8",
+      // Ekor gelembung: kotak diputar 45 derajat, mengarah ke maskot.
+      // Sisi border yang dipakai adalah dua sisi luar setelah diputar.
+      ekor: "-bottom-1.5 right-8 border-b border-r",
       delay: "animate-float-slow",
     },
     {
       id: 2,
       teks: "Aku siap menjawab semua pertanyaanmu dengan ramah",
       posisi: "top-1/4 -right-20 sm:-right-28",
+      ekor: "-left-1.5 top-7 border-b border-l",
       delay: "animate-float-medium",
     },
     {
       id: 3,
       teks: "Tenang saja, semua rahasiamu aman terjaga denganku",
       posisi: "-bottom-6 -left-8 sm:-bottom-8 sm:-left-12 lg:-left-16",
+      ekor: "-top-1.5 right-8 border-l border-t",
       delay: "animate-float-fast",
     },
   ],
