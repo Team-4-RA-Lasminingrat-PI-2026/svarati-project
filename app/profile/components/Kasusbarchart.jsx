@@ -49,18 +49,22 @@ export default function KasusBarChart() {
         ref={ref}
         role="img"
         aria-label={`Grafik jumlah kasus kekerasan terhadap perempuan per tahun, dari ${data[0].kasus.toLocaleString("id-ID")} kasus pada ${data[0].tahun} menjadi ${data[data.length - 1].kasus.toLocaleString("id-ID")} kasus pada ${data[data.length - 1].tahun}`}
-        className="flex h-72 min-w-[560px] items-end gap-2 border-b border-svarati-teal/20 pb-2 sm:gap-4"
+        className="flex h-64 min-w-[560px] items-end gap-2 border-b border-svarati-teal/15 pb-2 sm:gap-4"
       >
         {data.map((d, i) => {
           const tinggi = (d.kasus / maks) * 100;
-          const terbaru = i >= data.length - 2;
+          const terbaru = i === data.length - 1;
           return (
             <div key={d.tahun} className="flex h-full flex-1 flex-col justify-end text-center">
-              <span className="mb-1 text-xs font-bold text-svarati-teal">
+              <span
+                className={`mb-1.5 text-xs font-semibold ${
+                  terbaru ? "text-svarati-coral-dark" : "text-svarati-teal/70"
+                }`}
+              >
                 {d.kasus.toLocaleString("id-ID")}
               </span>
               <div
-                className={`w-full rounded-t-lg transition-[height] duration-1000 ease-out ${
+                className={`w-full rounded-t-md transition-[height] duration-1000 ease-out ${
                   terbaru ? "bg-svarati-coral" : "bg-svarati-lavender"
                 }`}
                 style={{
@@ -75,7 +79,7 @@ export default function KasusBarChart() {
 
       <div aria-hidden="true" className="flex min-w-[560px] gap-2 pt-2 sm:gap-4">
         {data.map((d) => (
-          <span key={d.tahun} className="flex-1 text-center text-xs font-semibold text-svarati-teal/80">
+          <span key={d.tahun} className="flex-1 text-center text-xs text-svarati-teal/60">
             {d.tahun}
           </span>
         ))}
