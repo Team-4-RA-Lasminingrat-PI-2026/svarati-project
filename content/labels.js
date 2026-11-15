@@ -458,12 +458,24 @@ export const KURATIF = {
     title: "Dukungan untuk Kasus yang Kamu Alami.",
     intro: "Pilih langkah yang paling sesuai dengan kondisimu saat ini. Kamu bisa mulai dari mana saja.",
     disclaimer: "Layanan di halaman ini membantu kamu memahami situasi. Hasilnya bukan diagnosis dan bukan penilaian hukum.",
-    hintCekKondisi: "±2 menit",
+    // Bagian judul yang diberi coretan lengkung
+    judulTekanan: "Kamu Alami.",
     // Deskripsi per item, dicocokkan dengan id di submenu
     desc: {
       "cek-kondisi": "Enam pertanyaan singkat, satu per layar. Kamu bisa melewati atau kembali kapan saja.",
       "svarati-ai": "Ceritakan apa yang kamu alami, atau tanyakan langkah berikutnya.",
       "cari-layanan": "Daftar layanan pendampingan dan hukum yang sudah diverifikasi.",
+    },
+    // Label kecil di atas nama tiap layanan
+    chip: {
+      "cek-kondisi": "±2 menit",
+      "svarati-ai": "Anonim",
+      "cari-layanan": "Sudah diverifikasi",
+    },
+    cta: {
+      "cek-kondisi": "Mulai cek",
+      "svarati-ai": "Mulai bercerita",
+      "cari-layanan": "Lihat layanan",
     },
   },
 
