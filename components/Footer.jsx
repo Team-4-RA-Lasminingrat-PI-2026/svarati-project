@@ -5,8 +5,10 @@ import { Card } from "@/components/Card";
 import { BRAND, DARURAT, FOOTER, MENU_UTAMA } from "@/content/labels";
 
 export default function Footer() {
-  // Mengambil menu pilar (Pahami Hakmu, Pendampingan, Pemulihan) dari MENU_UTAMA
-  const pilarList = MENU_UTAMA.filter((item) => item.submenu && item.submenu.length > 0);
+  // Mengambil menu pilar (Pahami Hakmu, Pendampingan, Pemulihan) dari MENU_UTAMA.
+  // Penanda pilar adalah "subtitle" (Preventif/Kuratif/Rehabilitatif), bukan submenu,
+  // karena Pahami Hakmu tidak punya submenu.
+  const pilarList = MENU_UTAMA.filter((item) => item.subtitle);
   const nomorDarurat = Object.values(DARURAT.nomor);
 
   return (
@@ -36,10 +38,10 @@ export default function Footer() {
             {pilarList.map((p) => (
               <li key={p.id}>
                 <Link
-                  href={p.submenu[0].href}
+                  href={p.href}
                   className="text-sm text-svarati-lavender-light hover:text-white hover:underline transition"
                 >
-                  {p.nama} — {p.deskripsi}
+                  {p.nama}
                 </Link>
               </li>
             ))}

@@ -169,6 +169,7 @@ export const mitosContent = {
     "Mari pahami fakta objektif untuk mengikis stigma dan membangun ruang aman di masyarakat.",
   labelMitos: "Mitos",
   labelFakta: "Fakta",
+  labelLihat: "Lihat",
   cta: { label: "Pelajari lebih lanjut? Buka Edukasi", href: "/preventif" },
   items: [
     {
@@ -208,7 +209,7 @@ export const svaratiAiContent = {
   deskripsi:
     "Ceritakan secara anonim. Svarati AI hadir untuk memvalidasi ceritamu, menjelaskan hak hukummu dalam bahasa awam, dan memberikan checklist langkah pertama dengan aman tanpa menghakimi.",
   cta: { label: "Mulai Cerita", href: "/kuratif/svarati-ai" },
-  gambar: { src: "/cute-ai-robot-mascot.svg", alt: "Maskot robot Svarati AI" },
+  gambar: { src: "/svarati-ai-mascot.svg", alt: "Maskot robot Svarati AI" },
   bubbles: [
     {
       id: 1,

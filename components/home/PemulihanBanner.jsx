@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Heart } from "lucide-react";
-import Badge from "@/components/Badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardFooter } from "@/components/Card";
 import { pemulihanContent as p } from "@/content/labels";
@@ -38,14 +37,10 @@ export default function RuangPemulihan() {
         </div>
 
         {/* KANAN: teks */}
-          <div className="order-1 flex flex-col items-start lg:order-2 lg:pl-8">          <Badge
-            variant="coral"
-            styleType="white"
-            className="mb-4 gap-1.5 normal-case tracking-normal"
-          >
-            <Heart className="size-3.5" aria-hidden="true" />
+        <div className="order-1 flex flex-col items-start lg:order-2 lg:pl-8">
+          <p className="mb-3 text-sm font-bold text-svarati-coral-dark">
             {p.badge}
-          </Badge>
+          </p>
 
           <h2 className="text-3xl font-bold leading-tight text-svarati-teal md:text-4xl lg:text-[2.6rem]">
             {p.judul}

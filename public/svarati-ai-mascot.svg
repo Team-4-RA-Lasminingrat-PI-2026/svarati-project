@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none" role="img" aria-label="Maskot Svarati AI">
+  <!-- Antena -->
+  <path d="M100 38V25" stroke="#0F4C5C" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="100" cy="17" r="8" fill="#E07A5F"/>
+
+  <!-- Telinga kiri dan kanan -->
+  <rect x="30" y="76" width="14" height="30" rx="7" fill="#9D8FD6"/>
+  <rect x="156" y="76" width="14" height="30" rx="7" fill="#9D8FD6"/>
+
+  <!-- Badan, digambar lebih dulu agar tertutup kepala -->
+  <path d="M62 150h76a26 26 0 0 1 26 26v8H36v-8a26 26 0 0 1 26-26Z" fill="#9D8FD6"/>
+  <circle cx="100" cy="168" r="9" fill="#FAF8F5"/>
+
+  <!-- Kepala -->
+  <rect x="44" y="38" width="112" height="112" rx="34" fill="#FFFFFF" stroke="#0F4C5C" stroke-width="6"/>
+
+  <!-- Visor dan mata -->
+  <rect x="62" y="62" width="76" height="42" rx="21" fill="#0F4C5C"/>
+  <circle cx="84" cy="83" r="6.5" fill="#FAF8F5"/>
+  <circle cx="116" cy="83" r="6.5" fill="#FAF8F5"/>
+
+  <!-- Pipi -->
+  <circle cx="68" cy="119" r="5" fill="#E07A5F" opacity=".35"/>
+  <circle cx="132" cy="119" r="5" fill="#E07A5F" opacity=".35"/>
+
+  <!-- Senyum -->
+  <path d="M87 120q13 12 26 0" stroke="#E07A5F" stroke-width="6" stroke-linecap="round"/>
+</svg>

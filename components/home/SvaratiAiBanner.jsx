@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Bot, MessageCircle } from "lucide-react";
-import Badge from "@/components/Badge";
+import { ArrowRight, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/Card";
 import { svaratiAiContent as ai } from "@/content/labels";
@@ -15,14 +14,9 @@ export default function SvaratiAiBanner() {
       <div className="mx-auto grid w-full max-w-6xl items-center gap-10 lg:grid-cols-2 lg:gap-8">
         {/* KIRI: Teks Utama */}
         <div className="flex flex-col items-start lg:pr-8">
-          <Badge
-            variant="lavender"
-            styleType="white"
-            className="mb-4 gap-1.5 shadow-sm"
-          >
-            <Bot className="size-3.5" aria-hidden="true" />
+          <p className="mb-3 text-sm font-bold text-svarati-lavender-dark">
             {ai.badge}
-          </Badge>
+          </p>
 
           <h2 className="text-3xl font-bold leading-tight text-svarati-teal md:text-4xl lg:text-[2.6rem]">
             {ai.judul}
@@ -80,7 +74,7 @@ export default function SvaratiAiBanner() {
                   <div className="flex items-start gap-1.5">
                     <MessageCircle className="mt-0.5 size-3.5 shrink-0 text-svarati-coral" />
                     <p className="text-[10px] font-medium leading-snug text-svarati-teal sm:text-xs">
-                      "{bubble.teks}"
+                      {bubble.teks}
                     </p>
                   </div>
                 </Card>
