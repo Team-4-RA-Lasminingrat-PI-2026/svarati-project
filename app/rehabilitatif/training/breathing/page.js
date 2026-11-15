@@ -1,40 +1,42 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import { Card, CardDescription } from "@/components/Card";
-import { Button, buttonVariants } from "@/components/ui/button";
 
-const TECHNIQUES = {
-    box: {
-        label: "Box Breathing",
-        pattern: "4 - 4 - 4 - 4",
-        description: "Tarik, tahan, hembus, tahan, masing-masing 4 detik. Cocok untuk menenangkan pikiran yang berpacu.",
+// Ditulis sebagai larik supaya urutan tampilnya pasti: 4-7-8 lebih dulu.
+// "nama" dipakai sebagai label batang kemajuan di bawah lingkaran.
+const TECHNIQUES = [
+    {
+        key: "478",
+        label: "4-7-8",
+        description:
+            "Tarik 4 detik, tahan 7, hembus 8. Cocok untuk meredakan cemas dan sebelum tidur.",
         phases: [
-            { text: "Tarik napas perlahan lewat hidung", seconds: 4, scale: 1.7 },
-            { text: "Tahan napas...", seconds: 4, scale: 1.7 },
-            { text: "Hembuskan perlahan lewat mulut", seconds: 4, scale: 1 },
-            { text: "Tahan sebentar sebelum mengulang", seconds: 4, scale: 1 },
+            { nama: "Tarik napas", text: "Tarik napas perlahan lewat hidung", seconds: 4, scale: 1.7 },
+            { nama: "Tahan", text: "Tahan napas", seconds: 7, scale: 1.7 },
+            { nama: "Hembuskan", text: "Hembuskan perlahan lewat mulut", seconds: 8, scale: 1 },
         ],
     },
-    "478": {
-        label: "Teknik 4-7-8",
-        pattern: "4 - 7 - 8",
-        description: "Tarik 4 detik, tahan 7 detik, hembus 8 detik. Hembusan panjang membantu menurunkan detak jantung.",
+    {
+        key: "box",
+        label: "Kotak 4-4-4-4",
+        description:
+            "Tarik, tahan, hembus, tahan, masing-masing 4 detik. Cocok untuk menenangkan pikiran yang berpacu.",
         phases: [
-            { text: "Tarik napas perlahan lewat hidung", seconds: 4, scale: 1.7 },
-            { text: "Tahan napas...", seconds: 7, scale: 1.7 },
-            { text: "Hembuskan perlahan lewat mulut", seconds: 8, scale: 1 },
+            { nama: "Tarik napas", text: "Tarik napas perlahan lewat hidung", seconds: 4, scale: 1.7 },
+            { nama: "Tahan", text: "Tahan napas", seconds: 4, scale: 1.7 },
+            { nama: "Hembuskan", text: "Hembuskan perlahan lewat mulut", seconds: 4, scale: 1 },
+            { nama: "Tahan", text: "Tahan sebentar sebelum mengulang", seconds: 4, scale: 1 },
         ],
     },
-};
+];
 
 export default function BreathingPage() {
-    const [techniqueKey, setTechniqueKey] = useState("box");
+    const [techniqueKey, setTechniqueKey] = useState(TECHNIQUES[0].key);
     const [running, setRunning] = useState(false);
     const [state, setState] = useState({ phase: 0, left: 0, cycles: 0 });
 
-    const technique = TECHNIQUES[techniqueKey];
+    const technique = TECHNIQUES.find((t) => t.key === techniqueKey);
     const phases = technique.phases;
     const current = running ? phases[state.phase] : null;
 
@@ -55,104 +57,145 @@ export default function BreathingPage() {
         return () => clearInterval(interval);
     }, [running, phases]);
 
-    const handleStart = () => {
+    const toggleLatihan = () => {
+        if (running) {
+            setRunning(false);
+            return;
+        }
         setState({ phase: 0, left: phases[0].seconds, cycles: 0 });
         setRunning(true);
     };
 
-    const handleStop = () => setRunning(false);
+    const pilihTeknik = (key) => {
+        setRunning(false);
+        setTechniqueKey(key);
+    };
 
     const scale = current ? current.scale : 1;
     const duration = current ? current.seconds : 0.6;
 
+    // Batang kemajuan: fase lewat terisi penuh, fase berjalan mengisi,
+    // fase berikutnya masih kosong.
+    const lebarBatang = (i) => {
+        if (!running || i > state.phase) return "0%";
+        if (i < state.phase) return "100%";
+        const { seconds } = phases[i];
+        return `${((seconds - state.left + 1) / seconds) * 100}%`;
+    };
+
     return (
-        <main
-            className="min-h-screen bg-svarati-cream px-4 pb-12 md:px-8 lg:px-12 font-sans"
-            style={{ paddingTop: "5rem" }}
-        >
-            <div className="mx-auto max-w-4xl space-y-8">
-                <div>
-                    <Link
-                        href="/rehabilitatif/training"
-                        className={buttonVariants({ variant: "ghost", size: "sm", className: "mb-6" })}
-                    >
-                        <ArrowLeft className="size-4" /> Semua latihan
-                    </Link>
-                    <h1 className="text-4xl font-bold text-svarati-teal mb-4 font-heading">
-                        Latihan Pernapasan
-                    </h1>
-                    <p className="text-svarati-teal/80 text-lg leading-relaxed max-w-2xl">
-                        Panduan pernapasan interaktif untuk menurunkan ketegangan, menstabilkan
-                        detak jantung, dan memberi rasa tenang saat stres.
-                    </p>
+        <main className="min-h-screen bg-svarati-cream px-4 pb-12 pt-20 font-sans md:px-8 lg:px-12">
+            <Link
+                href="/rehabilitatif/training"
+                aria-label="Kembali ke Semua latihan"
+                className="group mb-6 inline-flex items-center gap-1.5 rounded text-sm font-semibold text-svarati-teal hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-svarati-teal"
+            >
+                <ArrowLeft
+                    className="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-0.5"
+                    aria-hidden="true"
+                />
+                Semua latihan
+            </Link>
+
+            <div className="mx-auto max-w-2xl">
+                <h1 className="mb-3 text-3xl font-semibold leading-[1.18] tracking-tight text-svarati-teal md:text-4xl">
+                    Latihan Pernapasan
+                </h1>
+                <p className="max-w-xl text-base leading-relaxed text-svarati-teal/80">
+                    Duduk dengan nyaman, lalu ikuti lingkarannya: membesar saat tarik napas,
+                    mengecil saat hembus.
+                </p>
+
+                {/* Pilihan teknik */}
+                <div
+                    role="group"
+                    aria-label="Pilih teknik pernapasan"
+                    className="mt-6 inline-flex gap-1 rounded-full bg-white p-1 shadow-sm"
+                >
+                    {TECHNIQUES.map((t) => {
+                        const aktif = t.key === techniqueKey;
+                        return (
+                            <button
+                                key={t.key}
+                                type="button"
+                                aria-pressed={aktif}
+                                onClick={() => pilihTeknik(t.key)}
+                                className={`cursor-pointer rounded-full px-4 py-2 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-svarati-teal ${aktif
+                                    ? "bg-svarati-teal text-white"
+                                    : "text-svarati-teal hover:bg-svarati-teal-soft"
+                                    }`}
+                            >
+                                {t.label}
+                            </button>
+                        );
+                    })}
                 </div>
 
-                <Card
-                    variant="white"
-                    size="lg"
-                    className="mx-auto flex min-h-[520px] max-w-2xl flex-col items-center text-center"
-                >
-                    {/* Pilihan teknik */}
-                    <div className="mb-2 flex flex-wrap justify-center gap-2">
-                        {Object.entries(TECHNIQUES).map(([key, t]) => (
-                            <Button
-                                key={key}
-                                variant={techniqueKey === key ? "secondary" : "ghost"}
-                                size="md"
-                                disabled={running}
-                                onClick={() => setTechniqueKey(key)}
-                            >
-                                {t.label} ({t.pattern})
-                            </Button>
-                        ))}
-                    </div>
-                    <CardDescription className="mx-auto mb-8 max-w-md">
-                        {technique.description}
-                    </CardDescription>
+                <p className="mt-3 text-sm leading-relaxed text-svarati-coral-dark">
+                    {technique.description}
+                </p>
 
-                    {/* Instruksi */}
-                    <h2
-                        aria-live="polite"
-                        className="mb-8 min-h-[2.5rem] text-xl font-bold text-svarati-teal sm:text-2xl"
+                {/* Lingkaran yang membesar dan mengecil */}
+                <div className="mt-10 flex flex-col items-center">
+                    <button
+                        type="button"
+                        onClick={toggleLatihan}
+                        aria-label={running ? "Hentikan latihan" : "Mulai latihan"}
+                        className="relative flex size-64 cursor-pointer items-center justify-center rounded-full bg-svarati-teal-soft focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-svarati-teal/40"
                     >
-                        {current ? current.text : "Duduk dengan nyaman, lalu tekan Mulai"}
-                    </h2>
-
-                    {/* Lingkaran animasi */}
-                    <div className="relative flex size-64 items-center justify-center">
-                        <div className="absolute inset-0 rounded-full bg-[#45B2A6]/10" />
-                        <div
-                            className="absolute size-36 rounded-full bg-[#45B2A6] shadow-lg"
+                        <span
+                            aria-hidden="true"
+                            className="absolute size-36 rounded-full bg-svarati-teal shadow-lg"
                             style={{
                                 transform: `scale(${scale})`,
                                 transition: `transform ${duration}s linear`,
                             }}
                         />
-                        <div className="relative z-10 text-6xl font-bold text-white drop-shadow-md">
-                            {running ? state.left : ""}
-                        </div>
-                    </div>
+                        <span className="relative z-10 font-semibold text-white drop-shadow-sm">
+                            {running ? (
+                                <span className="text-6xl font-bold tabular-nums">{state.left}</span>
+                            ) : (
+                                <span className="text-xl">Mulai</span>
+                            )}
+                        </span>
+                    </button>
 
-                    <p className="mt-6 h-5 text-sm text-svarati-teal/60">
-                        {running && state.cycles > 0 ? `${state.cycles} siklus selesai` : ""}
+                    <p className="mt-5 text-sm text-svarati-teal/70">
+                        {running ? "Ketuk lingkaran untuk berhenti." : "Ketuk lingkaran untuk mulai."}
                     </p>
+                </div>
 
-                    <div className="mt-6">
-                        {running ? (
-                            <Button variant="ghost" size="lg" onClick={handleStop}>
-                                Berhenti
-                            </Button>
-                        ) : (
-                            <Button variant="secondary" size="lg" onClick={handleStart}>
-                                Mulai Latihan
-                            </Button>
-                        )}
-                    </div>
+                {/* Fase: batang kemajuan dan takarannya */}
+                <ul
+                    className="mt-8 grid gap-x-4"
+                    style={{ gridTemplateColumns: `repeat(${phases.length}, minmax(0, 1fr))` }}
+                >
+                    {phases.map((p, i) => (
+                        <li key={`${p.nama}-${i}`}>
+                            <span
+                                aria-hidden="true"
+                                className="block h-1.5 overflow-hidden rounded-full bg-svarati-teal/15"
+                            >
+                                <span
+                                    className="block h-full rounded-full bg-svarati-teal transition-[width] duration-1000 ease-linear"
+                                    style={{ width: lebarBatang(i) }}
+                                />
+                            </span>
+                            <span className="mt-2 block text-xs leading-snug text-svarati-teal/70">
+                                {p.nama} {p.seconds}
+                            </span>
+                        </li>
+                    ))}
+                </ul>
 
-                    <CardDescription className="mx-auto mt-8 max-w-sm text-xs">
-                        Jika kamu merasa pusing atau tidak nyaman, berhenti dan bernapaslah seperti biasa.
-                    </CardDescription>
-                </Card>
+                {/* Hanya untuk pembaca layar: mengumumkan pergantian fase */}
+                <p aria-live="polite" className="sr-only">
+                    {current ? `${current.text}, ${state.left} detik` : ""}
+                </p>
+
+                <p className="mt-8 text-sm leading-relaxed text-svarati-coral-dark">
+                    Kalau pusing atau tidak nyaman, berhenti dan bernapaslah seperti biasa.
+                </p>
             </div>
         </main>
     );
