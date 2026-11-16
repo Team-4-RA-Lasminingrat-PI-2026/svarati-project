@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { ArrowRight, ArrowUp } from "lucide-react";
+import { ArrowRight, ChevronUp } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Card, CardTitle, CardDescription } from "@/components/Card";
 import { mitosContent as m } from "@/content/labels";
 
@@ -36,26 +37,38 @@ export default function MythsFacts() {
                   <CardTitle className="mb-2 text-lg font-black uppercase text-svarati-lavender-dark">
                     {m.labelMitos}
                   </CardTitle>
+
                   <CardDescription className="text-sm leading-relaxed text-svarati-lavender-dark">
-                    “{item.mitos}”
+                    <span
+                      aria-hidden="true"
+                      className="mr-0.5 select-none align-[-0.25em] font-serif text-4xl font-black leading-[0] text-svarati-lavender-dark/40"
+                    >
+                      “
+                    </span>
+                    {item.mitos}
+                    <span
+                      aria-hidden="true"
+                      className="ml-0.5 select-none align-[-0.25em] font-serif text-4xl font-black leading-[0] text-svarati-lavender-dark/40"
+                    >
+                      ”
+                    </span>
                   </CardDescription>
                 </Card>
 
                 {/* Fakta: lavender, teks putih. Naik saat hover/fokus */}
                 <div className="absolute inset-0 flex translate-y-[calc(100%-3.5rem)] flex-col bg-svarati-lavender-dark shadow-[0_-4px_20px_rgba(0,0,0,0.08)] transition-transform duration-500 ease-in-out group-hover:translate-y-0 group-focus-within:translate-y-0">
-                  <div className="flex h-14 shrink-0 items-center justify-between gap-3 px-5">
+                  <div className="flex h-14 shrink-0 items-center justify-between px-5">
                     <h3 className="text-lg font-black uppercase text-white">
                       {m.labelFakta}
                     </h3>
-                    {/* Petunjuk ketuk, hanya di layar kecil karena di desktop
-                        faktanya sudah terbuka saat kursor diarahkan.
-                        Hilang saat fakta terbuka. */}
+
+                    {/* Petunjuk tap: hanya di perangkat tanpa hover, hilang saat fakta terbuka */}
                     <span
                       aria-hidden="true"
-                      className="flex shrink-0 items-center gap-1 text-xs font-medium text-white/80 transition-opacity duration-300 group-hover:opacity-0 group-focus-within:opacity-0 md:hidden"
+                      className="hidden items-center gap-1 text-xs font-medium text-white/80 transition-opacity duration-300 group-focus-within:opacity-0 [@media(hover:none)]:flex"
                     >
                       {m.labelLihat}
-                      <ArrowUp className="size-3.5" />
+                      <ChevronUp className="size-3.5" />
                     </span>
                   </div>
                   <p className="flex-1 px-5 pb-5 pt-1 text-sm font-medium leading-relaxed text-white opacity-0 transition-opacity delay-100 duration-500 group-hover:opacity-100 group-focus-within:opacity-100">
@@ -69,13 +82,17 @@ export default function MythsFacts() {
 
         {/* CTA */}
         <div className="mt-6">
-          <Link
-            href={m.cta.href}
-            className="inline-flex items-center gap-2 text-sm font-bold text-svarati-lavender-dark underline underline-offset-4 transition hover:text-svarati-teal"
+          <Button
+            render={<Link href={m.cta.href} />}
+            nativeButton={false}
+            variant="tertiary"
+            size="lg"
+            className="gap-2 font-bold"
+            icon={<ArrowRight size={16} aria-hidden="true" />}
+            iconPosition="right"
           >
             {m.cta.label}
-            <ArrowRight size={16} aria-hidden="true" />
-          </Link>
+          </Button>
         </div>
       </div>
     </section>
