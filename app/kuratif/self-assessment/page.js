@@ -7,9 +7,11 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/Card";
 import Badge from "@/components/Badge";
 import ProgressBar from "@/components/ProgressBar";
-import Split from "@/components/kuratif/Split";
-import NomorDarurat from "@/components/kuratif/NomorDarurat";
-import Hasil from "@/components/kuratif/Hasil";
+import Split from "./_components/Split";
+import NomorDarurat from "./_components/NomorDarurat";
+import Hasil from "./_components/Hasil";
+import { useQuestions } from "@/lib/self-assessment/use-questions";
+import { bacaAsesmen, hapusAsesmen, simpanAsesmen } from "@/lib/self-assessment/storage";
 
 const common = KURATIF.common;
 const quiz = KURATIF.selfAssessment;
@@ -49,10 +51,31 @@ function KartuBesar({ danger, Icon, title, body, headingRef, children }) {
   );
 }
 
-export default function SelfAssessmentPage() {
-  const [answers, setAnswers] = useState({});
-  const [index, setIndex] = useState(0);
-  const [view, setView] = useState("quiz"); // quiz | darurat | edukasi | hasil
+// Layar saat pertanyaan sedang dimuat atau gagal dimuat
+function LayarMuat({ gagal, onCoba }) {
+  return (
+    <Split aside={asideSingkat}>
+      <Card variant="teal" className="p-6 sm:p-8" role={gagal ? "alert" : "status"}>
+        <p className="leading-relaxed text-svarati-teal">
+          {gagal
+            ? "Pertanyaan belum bisa dimuat. Periksa koneksimu lalu coba lagi."
+            : "Menyiapkan pertanyaan..."}
+        </p>
+        {gagal && (
+          <Button variant="secondary" size="lg" className="mt-4" onClick={onCoba}>
+            Coba lagi
+          </Button>
+        )}
+      </Card>
+    </Split>
+  );
+}
+
+function Kuis({ questions }) {
+  const [awal] = useState(() => bacaAsesmen(questions));
+  const [answers, setAnswers] = useState(awal?.answers ?? {});
+  const [index, setIndex] = useState(awal?.index ?? 0);
+  const [view, setView] = useState(awal?.selesai ? "hasil" : "quiz");
 
   // Fokus pindah ke judul setiap ganti langkah atau layar (untuk pembaca layar)
   const headingRef = useRef(null);
@@ -65,7 +88,11 @@ export default function SelfAssessmentPage() {
     headingRef.current?.focus();
   }, [index, view]);
 
-  const questions = quiz.questions;
+  // Simpan setiap jawaban berubah
+  useEffect(() => {
+    simpanAsesmen({ answers, index, selesai: view === "hasil" });
+  }, [answers, index, view]);
+
   const q = questions[index];
   const selected = answers[q.id];
   const bisaLanjut = q.multi ? (selected || []).length > 0 : !!selected;
@@ -101,6 +128,7 @@ export default function SelfAssessmentPage() {
   }
 
   function ulangi() {
+    hapusAsesmen();
     setAnswers({});
     setIndex(0);
     setView("quiz");
@@ -268,4 +296,11 @@ export default function SelfAssessmentPage() {
       </Card>
     </Split>
   );
+}
+
+export default function SelfAssessmentPage() {
+  const { questions, status, muatUlang } = useQuestions();
+  if (status === "error") return <LayarMuat gagal onCoba={muatUlang} />;
+  if (status !== "ready") return <LayarMuat />;
+  return <Kuis questions={questions} />;
 }

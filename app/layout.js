@@ -1,10 +1,13 @@
 import { Lora, Public_Sans } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { AccessibilityProvider } from "@/context/AccessibilityContext";
 import AccessibilityModal from "@/components/modals/AccessibilityModal";
 import ScreenReaderEnhancer from "@/components/ScreenReaderEnhancer";
+import AccessibilityFab from "@/components/AccessibilityFab";
+import SvaratiAiFab from "@/components/SvaratiAiFab";
 import SessionInit from "@/components/SessionInit";
 
 const lora = Lora({
@@ -28,9 +31,9 @@ export const metadata = {
     "Ruang digital anonim bagi perempuan untuk memahami hak, menemukan dukungan, dan melangkah menuju pemulihan.",
 };
 
-// Dijalankan sebelum halaman tampil, supaya tema kontras tinggi tidak "berkedip" saat refresh.
-// Key harus sama dengan A11Y_STORAGE_KEY di AccessibilityContext.
-const initAccessibility = `try{var s=JSON.parse(localStorage.getItem("svarati-accessibility"));if(s&&s.highContrast){document.documentElement.dataset.contrast="high";}}catch(e){}`;
+// Dijalankan sebelum halaman tampil, supaya tema kontras tinggi dan setelan teks tidak "berkedip" saat refresh.
+// Key dan nilai harus sama dengan AccessibilityContext.
+const initAccessibility = `try{var s=JSON.parse(localStorage.getItem("svarati-accessibility"));if(s){var d=document.documentElement.dataset;if(s.highContrast){d.contrast="high";}else if(s.darkMode){d.theme="dark";}["fontSize","lineHeight","letterSpacing"].forEach(function(k){if(s[k]==="kecil"||s[k]==="besar"){d[k]=s[k];}});if(["kiri","tengah","kanan","penuh"].indexOf(s.textAlign)>-1){d.textAlign=s.textAlign;}}}catch(e){}`;
 
 export default function RootLayout({ children }) {
   return (
@@ -61,13 +64,15 @@ export default function RootLayout({ children }) {
           <div className="flex flex-col min-h-screen w-full">
             <Navbar />
 
-            <main id="konten-utama" className="flex-1 w-full">
+            <main id="konten-utama" className="tepi-aman flex-1 w-full">
               {children}
             </main>
 
             <Footer />
           </div>
 
+          <SvaratiAiFab />
+          <AccessibilityFab />
           <AccessibilityModal />
           <ScreenReaderEnhancer />
         </AccessibilityProvider>

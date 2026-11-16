@@ -1,106 +1,161 @@
 import Link from "next/link";
 import { MENU_UTAMA, KURATIF, serviceContent } from "@/content/labels";
-import Badge from "@/components/Badge";
-import { Card, CardIcon, CardTitle, CardDescription } from "@/components/Card";
-import { ClipboardCheck, MapPin, MessageCircle, ChevronRight, Info } from "lucide-react";
+import { ArrowRight, Clock, Users } from "lucide-react";
+
+// Ikon padat buatan sendiri. Warnanya ikut text-* dari pemanggil,
+// bagian putih sengaja putih karena ditaruh di atas ubin putih.
+function IkonPapan({ className }) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={className} fill="none">
+      <rect x="4" y="3.6" width="16" height="18.4" rx="3.2" fill="currentColor" />
+      <rect x="8.4" y="1.4" width="7.2" height="4.2" rx="1.7" fill="currentColor" />
+      <path d="M7.6 10.6l1.5 1.5 2.6-2.9" stroke="#fff" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M14.2 10.4h2.3" stroke="#fff" strokeWidth="1.7" strokeLinecap="round" />
+      <path d="M7.6 16.4l1.5 1.5 2.6-2.9" stroke="#fff" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M14.2 16.2h2.3" stroke="#fff" strokeWidth="1.7" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function IkonRobot({ className }) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={className} fill="none">
+      <circle cx="12" cy="3.1" r="1.6" fill="currentColor" />
+      <path d="M12 4.5v2.3" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" />
+      <rect x="1.5" y="11" width="2.8" height="5.2" rx="1.4" fill="currentColor" />
+      <rect x="19.7" y="11" width="2.8" height="5.2" rx="1.4" fill="currentColor" />
+      <rect x="4" y="6.8" width="16" height="13.4" rx="4.6" fill="currentColor" />
+      <circle cx="9" cy="12.4" r="1.6" fill="#fff" />
+      <circle cx="15" cy="12.4" r="1.6" fill="#fff" />
+      <path d="M9.5 16.3c1.4 1.1 3.6 1.1 5 0" stroke="#fff" strokeWidth="1.7" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function IkonPenandaHati({ className }) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={className} fill="none">
+      <path d="M12 22.2s7.6-7.4 7.6-12.8a7.6 7.6 0 1 0-15.2 0c0 5.4 7.6 12.8 7.6 12.8z" fill="currentColor" />
+      <path d="M12 13.9 9.2 11.2c-1.1-1.1-.4-3 1.2-3 .6 0 1.2.3 1.6.9.4-.6 1-.9 1.6-.9 1.6 0 2.3 1.9 1.2 3z" fill="#fff" />
+    </svg>
+  );
+}
 
 const menuKuratif = KURATIF.menu;
 const daftarSubmenu = MENU_UTAMA.find((menu) => menu.id === "pendampingan").submenu;
 const badgeKuratif = serviceContent.items.find((item) => item.id === "kuratif").badge;
 
-// Warna deskripsi dan ikon
-const TONE_TEXT = {
-  teal: "text-svarati-teal",
-  lavender: "text-svarati-lavender-dark",
-  coral: "text-svarati-coral-dark",
-};
-
-const ITEM_META = {
-  "cek-kondisi": { icon: ClipboardCheck, variant: "teal" },
-  "svarati-ai": { icon: MessageCircle, variant: "lavender" },
-  "cari-layanan": { icon: MapPin, variant: "coral" },
+// Warna per layanan. Class ditulis lengkap agar terbaca oleh Tailwind.
+const TEMA = {
+  "cek-kondisi": {
+    icon: IkonPapan,
+    kartu: "bg-svarati-teal-soft",
+    ikon: "text-svarati-teal",
+    judul: "text-svarati-teal",
+    teks: "text-svarati-teal/80",
+    chip: "bg-svarati-teal/15 text-svarati-teal",
+    aksi: "text-svarati-teal",
+  },
+  "svarati-ai": {
+    icon: IkonRobot,
+    kartu: "bg-svarati-lavender/15",
+    ikon: "text-svarati-lavender-dark",
+    judul: "text-svarati-lavender-dark",
+    teks: "text-svarati-lavender-dark/85",
+    chip: "bg-white text-svarati-lavender-dark",
+    aksi: "text-svarati-lavender-dark",
+  },
+  "cari-layanan": {
+    icon: IkonPenandaHati,
+    // Coral paling muda di antara ketiganya, jadi dipertua satu tingkat
+    kartu: "bg-svarati-coral-soft",
+    ikon: "text-svarati-coral-dark",
+    judul: "text-svarati-coral-darker",
+    teks: "text-svarati-coral-dark",
+    chip: "bg-svarati-coral/15 text-svarati-coral-darker",
+    aksi: "text-svarati-coral-darker",
+  },
 };
 
 export default function Page() {
   return (
-    <div className="w-full px-2 pb-12 pt-22 sm:px-3">
-      <div className="relative mx-auto max-w-6xl">
-        <Card
-          variant="solid"
-          size="lg"
-          className="relative overflow-hidden bg-svarati-teal-dark"
-        >
-           <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-          {/* Lingkaran besar, pojok kanan atas */}
-          <div
-            className="absolute -right-16 -top-24 size-36 rounded-full bg-svarati-teal/18 sm:size-60 mix-blend-multiply"
-          />
-          {/* Lingkaran lebih gelap, kanan bawah */}
-          <div
-            className="absolute -bottom-20 right-16 size-36 rounded-full bg-svarati-teal/30 sm:right-24 sm:size-56 mix-blend-multiply"
-          />
-        </div>
-
-          <div className="relative">
-            <Badge variant="teal" styleType="white">{badgeKuratif}</Badge>
-            <h1 className="mt-4 text-3xl font-bold text-white">{menuKuratif.title}</h1>
-            <p className="mt-3 max-w-3xl leading-relaxed text-white/90">{menuKuratif.intro}</p>
+    // Banner dan ketiga kartu dirapatkan supaya muat satu layar di laptop
+    <div className="w-full px-4 pb-8 pt-20">
+      <div className="mx-auto max-w-4xl">
+        {/* Banner */}
+        <section className="relative overflow-hidden rounded-3xl bg-svarati-teal-dark px-6 py-7 sm:px-9 sm:py-8">
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+            <div className="absolute -right-16 -top-20 size-36 rounded-full bg-svarati-teal/30 sm:size-48" />
+            <div className="absolute -bottom-20 right-10 size-40 rounded-full bg-svarati-teal/25 sm:right-20 sm:size-56" />
           </div>
-        </Card>
 
-        {/* Daftar Kartu Menu */}
-        <ul className="mt-8 grid gap-4">
+          <div className="relative max-w-lg">
+            <p className="mb-2.5 flex items-center gap-2 text-sm font-semibold text-svarati-teal-soft/90">
+              <Users className="size-4" aria-hidden="true" />
+              {badgeKuratif}
+            </p>
+
+            <h1 className="text-2xl font-semibold leading-[1.18] tracking-tight text-white sm:text-3xl">
+              {menuKuratif.title}
+            </h1>
+
+            <p className="mt-5 max-w-md text-sm leading-relaxed text-white/80">
+              {menuKuratif.intro}
+            </p>
+          </div>
+        </section>
+
+        {/* Daftar layanan */}
+        <ul className="mt-4 grid gap-3">
           {daftarSubmenu.map((item) => {
-            const meta = ITEM_META[item.id];
-            const Icon = meta.icon;
-            const tone = TONE_TEXT[meta.variant];
-            
+            const warna = TEMA[item.id];
+            const Icon = warna.icon;
+
             return (
               <li key={item.id}>
                 <Link
                   href={item.href}
-                  className="group block rounded-3xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-svarati-teal"
+                  className={`group flex items-center justify-between gap-4 rounded-3xl p-4 transition hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-svarati-teal sm:gap-7 sm:p-5 ${warna.kartu}`}
                 >
-                  <Card
-                    variant={meta.variant}
-                    topBorder={meta.variant}
-                    interactive
-                    className="flex items-center gap-5 p-5 sm:p-6"
-                  >
-                    <CardIcon className={`mb-0 shrink-0 ${tone}`}>
-                      <Icon aria-hidden="true" />
-                    </CardIcon>
+                  {/* Ikon berdiri sendiri tanpa ubin latar */}
+                  <Icon className={`size-7 shrink-0 ${warna.ikon}`} />
 
-                    <div className="min-w-0 flex-1">
-                      <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-                        <CardTitle className="mb-0">{item.nama}</CardTitle>
-                        {item.id === "cek-kondisi" && (
-                          <Badge variant={meta.variant} styleType="white">
-                            {menuKuratif.hintCekKondisi}
-                          </Badge>
-                        )}
-                      </div>
-                      <CardDescription className={`mt-1 ${tone}`}>
-                        {menuKuratif.desc[item.id]}
-                      </CardDescription>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+                      <h2 className={`text-lg font-semibold leading-snug ${warna.judul}`}>
+                        {item.nama}
+                      </h2>
+                      {menuKuratif.chip[item.id] && (
+                        <span
+                          className={`inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-bold leading-none ${warna.chip}`}
+                        >
+                          <Clock className="size-3.5" aria-hidden="true" />
+                          {menuKuratif.chip[item.id]}
+                        </span>
+                      )}
                     </div>
 
-                    <ChevronRight
-                      className={`h-5 w-5 shrink-0 transition-transform duration-200 group-hover:translate-x-1 ${tone}`}
+                    <p className={`mt-1.5 text-sm leading-relaxed ${warna.teks}`}>
+                      {menuKuratif.desc[item.id]}
+                    </p>
+                  </div>
+
+                  <span
+                    className={`inline-flex shrink-0 items-center gap-2 whitespace-nowrap text-sm font-bold ${warna.aksi}`}
+                  >
+                    <span className="hidden underline-offset-4 group-hover:underline sm:inline">
+                      {menuKuratif.cta[item.id]}
+                    </span>
+                    <ArrowRight
+                      className="size-4 transition-transform group-hover:translate-x-1"
                       aria-hidden="true"
                     />
-                  </Card>
+                  </span>
                 </Link>
               </li>
             );
           })}
         </ul>
-
-        {/* Disclaimer / Catatan Kaki */}
-        <p className="mt-8 flex items-start gap-2 text-sm text-svarati-coral-dark">
-          <Info className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
-          <span>{menuKuratif.disclaimer}</span>
-        </p>
       </div>
     </div>
   );
