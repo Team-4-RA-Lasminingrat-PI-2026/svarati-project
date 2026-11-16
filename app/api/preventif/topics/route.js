@@ -5,7 +5,7 @@ export async function GET() {
   try {
     return NextResponse.json({ data: await getTopics() });
   } catch (err) {
-    console.error("GET /api/topics", err);
+    console.error("GET /api/preventif/topics", err);
     return NextResponse.json({ error: "Gagal memuat kategori" }, { status: 500 });
   }
 }

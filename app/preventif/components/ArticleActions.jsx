@@ -12,7 +12,7 @@ export default function ArticleActions({ title, slug, initialLikes = 0 }) {
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState("");
 
-  const url = `/api/articles/${slug}/like`;
+  const url = `/api/preventif/articles/${slug}/like`;
 
   // Saat dibuka: cek status hanya jika token sudah ada (tidak membuat sesi baru)
   useEffect(() => {
@@ -46,7 +46,7 @@ export default function ArticleActions({ title, slug, initialLikes = 0 }) {
     setLiked(!liked); // optimistic
     setLikes(likes + (liked ? -1 : 1));
     try {
-      const token = await ensureAnonymousSession(); // membuat sesi jika belum ada
+      const { token } = await ensureAnonymousSession(); // <- destructure
       if (!token) throw new Error("no session");
       const res = await fetch(url, {
         method: prev.liked ? "DELETE" : "POST",

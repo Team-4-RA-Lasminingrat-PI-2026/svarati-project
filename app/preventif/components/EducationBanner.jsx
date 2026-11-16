@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { BookOpen, ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import Badge from "@/components/Badge";
 import { Button } from "@/components/ui/button";
 import { educationContent as edu } from "@/content/labels";
@@ -45,10 +45,6 @@ export default function EducationBanner({ headlines }) {
             <span aria-hidden="true" className="pointer-events-none absolute -bottom-24 right-24 size-56 rounded-full bg-svarati-lavender-darker/60" />
 
             <div className="relative max-w-2xl">
-              <Badge variant="lavender" styleType="white" className="mb-4 gap-1.5">
-                <BookOpen className="size-3.5" aria-hidden="true" />
-                {edu.intro.badge}
-              </Badge>
               <h1 className="text-3xl font-bold leading-tight text-white md:text-4xl lg:text-5xl">
                 {edu.intro.title}
               </h1>

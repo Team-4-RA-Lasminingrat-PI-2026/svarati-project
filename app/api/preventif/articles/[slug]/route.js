@@ -16,7 +16,7 @@ export async function GET(_req, { params }) {
     }
     return NextResponse.json(article);
   } catch (err) {
-    console.error("GET /api/articles/[slug]", err);
+    console.error("GET /api/preventif/articles/[slug]", err);
     return NextResponse.json({ error: "Gagal memuat artikel" }, { status: 500 });
   }
 }
