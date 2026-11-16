@@ -41,13 +41,18 @@ export default function RootLayout({ children }) {
       suppressHydrationWarning
     >
       <head>
-        <script dangerouslySetInnerHTML={{ __html: initAccessibility }} />
+         {/* Dijalankan sebelum hydration supaya tema kontras tinggi tidak berkedip */}
+         <script
+          id="init-accessibility"
+          dangerouslySetInnerHTML={{ __html: initAccessibility }}
+        />
       </head>
       <body className="font-sans bg-svarati-cream text-svarati-teal antialiased h-full overflow-x-hidden">
+
         <SessionInit />
         <AccessibilityProvider>
           <a
-            href="#konten-utama"
+           href="#konten-utama"
             className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[70] focus:bg-white focus:text-svarati-teal focus:px-4 focus:py-2 focus:rounded-full focus:font-bold"
           >
             Lewati ke konten utama

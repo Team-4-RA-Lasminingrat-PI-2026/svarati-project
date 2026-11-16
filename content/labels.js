@@ -96,6 +96,13 @@ export const FOOTER = {
     "di bagian atas situs untuk langsung berpindah ke halaman aman. Gunakan mode penyamaran jika khawatir riwayat browser tersimpan.",
 };
 
+export const sessionNotice ={
+  message: (expiryText) =>
+    `Sesimu aktif sampai ${expiryText}. Setelah itu, data sementara di browser ini akan dibersihkan otomatis demi privasi.`,
+  note: "Jika kamu mengirim pesan di Pohon Harapan, pesan tersebut akan tetap tersimpan",
+  button: "Mengerti",
+};
+
 // Semua teks & gambar hero ada di sini. Warna mengikuti globals.css (palet Svarati).
 
 export const heroContent = {
@@ -169,6 +176,7 @@ export const mitosContent = {
     "Mari pahami fakta objektif untuk mengikis stigma dan membangun ruang aman di masyarakat.",
   labelMitos: "Mitos",
   labelFakta: "Fakta",
+  labelLihat: "Lihat",
   cta: { label: "Pelajari lebih lanjut? Buka Edukasi", href: "/preventif" },
   items: [
     {
@@ -278,13 +286,14 @@ export const privasiContent = {
 export const educationContent = {
   pageTitle: "Edukasi Svarati",
   intro: {
-    badge: "Pusat Edukasi",
     title: "Pahami Hakmu, Mulai dari Sini",
     description:
       "Kumpulan artikel tentang hak perempuan, hukum terkait kekerasan seksual, mengenali bentuk pelecehan, dan keamanan diri yang ditulis dengan bahasa yang mudah dipahami.",
   },
   basePath: "/preventif",
   carouselLabel: "Banner Edukasi",
+  featuredLabel: "Pilihan Svarati",
+  moreLabel: "Artikel lainnya",
   slideLabel: { prev: "Slide sebelumnya", next: "Slide berikutnya", goTo: "Ke slide" },
   readLabel: "Baca Artikel",
   filterLabel: "Filter kategori artikel",
