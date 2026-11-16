@@ -39,7 +39,7 @@ const cardVariants = cva(
         teal: "border-t-[6px] border-t-svarati-teal",
       },
       interactive: {
-        true: "cursor-pointer hover:-translate-y-1 hover:shadow-md",
+        true: "cursor-pointer hover:-translate-y-1.5 hover:shadow-lg",
         false: "",
       },
     },
@@ -135,17 +135,25 @@ function CardFooter({ className, children, ...props }) {
 }
 
 // Link CTA. Pakai `as` agar bisa jadi <a>/<Link>.
+// Saat di-hover: jarak teks ke panah melebar dan teksnya digarisbawahi.
+// Dua pemicu, karena CardLink dipakai dua cara:
+//   group-hover          -> card dibungkus <Link className="group"> (mis. Services)
+//   group-hover/cardlink -> CardLink sendiri yang jadi tautannya (as={Link})
+// Garis bawah hanya mengenai teks, panah tidak ikut digarisbawahi.
 function CardLink({ as: Comp = "span", className, children, ...props }) {
   return (
     <Comp
       className={cn(
-        "mt-5 inline-flex items-center gap-2 text-sm font-bold text-svarati-teal",
-        "transition-all group-hover:gap-3",
+        "group/cardlink mt-5 inline-flex items-center gap-2 text-sm font-bold text-svarati-teal",
+        "transition-all group-hover:gap-3 group-hover/cardlink:gap-3",
         className
       )}
       {...props}
     >
-      {children} <span aria-hidden="true">→</span>
+      <span className="underline-offset-4 group-hover:underline group-hover/cardlink:underline">
+        {children}
+      </span>{" "}
+      <span aria-hidden="true">→</span>
     </Comp>
   )
 }
