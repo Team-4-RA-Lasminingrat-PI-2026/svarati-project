@@ -92,7 +92,13 @@ export default function JurnalPemulihanPage() {
     const [notice, setNotice] = useState("");
 
     const dateKey = date ? format(date, "yyyy-MM-dd") : null;
-    const todayKey = format(new Date(), "yyyy-MM-dd");
+    const hariIni = new Date();
+    const todayKey = format(hariIni, "yyyy-MM-dd");
+    // Jurnal hanya untuk hari yang sudah dijalani. Kalender sudah menonaktifkan
+    // tanggal setelah hari ini, ini pengaman kedua kalau tanggal terpilih
+    // sempat melewati tengah malam selama halaman dibiarkan terbuka.
+    // Format yyyy-MM-dd aman dibandingkan sebagai teks.
+    const isMasaDepan = dateKey !== null && dateKey > todayKey;
 
     // Nilai turunan: dihitung langsung dari data, tanpa state tambahan
     const activeMoodEmoji = dateKey ? moodHistory[dateKey] ?? null : null;
@@ -103,13 +109,13 @@ export default function JurnalPemulihanPage() {
     const noteSaved = dateKey !== null && savedKey === dateKey;
 
     const handleSelectMood = (emoji) => {
-        if (!dateKey) return;
+        if (!dateKey || isMasaDepan) return;
         setMoodHistory((prev) => ({ ...prev, [dateKey]: emoji }));
     };
 
     // Draf disimpan selama isinya berbeda dari catatan tersimpan (termasuk kalau dikosongkan)
     const handleChangeNote = (value) => {
-        if (!dateKey) return;
+        if (!dateKey || isMasaDepan) return;
         const text = value.slice(0, MAX_NOTE);
         setSavedKey(null);
         setDraftHistory((prev) => {
@@ -129,7 +135,7 @@ export default function JurnalPemulihanPage() {
     };
 
     const handleSaveNote = () => {
-        if (!dateKey) return;
+        if (!dateKey || isMasaDepan) return;
         const text = noteDraft.trim();
         setNoteHistory((prev) => {
             const next = { ...prev };
@@ -192,15 +198,6 @@ export default function JurnalPemulihanPage() {
         Object.keys(moodHistory).length > 0 ||
         Object.keys(noteHistory).length > 0 ||
         Object.keys(draftHistory).length > 0;
-
-    // Ringkasan mengikuti bulan yang sedang tampil di kalender,
-    // bukan bulan tanggal terpilih
-    const bulanKey = format(bulanTampil, "yyyy-MM");
-    const jumlahBulanIni = new Set(
-        [...Object.keys(moodHistory), ...Object.keys(noteHistory)].filter((k) =>
-            k.startsWith(bulanKey)
-        )
-    ).size;
 
     const namaHari = date ? format(date, "EEEE", { locale: id }) : "";
     const labelHari = dateKey === todayKey ? `Hari ini, ${namaHari}` : namaHari;
@@ -313,7 +310,7 @@ export default function JurnalPemulihanPage() {
                                             onChange={(e) => handleChangeNote(e.target.value)}
                                             maxLength={MAX_NOTE}
                                             autoFocus={isEditing}
-                                            placeholder="Tulis di sini. Tidak wajib."
+                                            placeholder="Ketik di sini (opsional)"
                                             // Garis buku: diulang tiap 32px, sama dengan line-height
                                             style={{
                                                 lineHeight: "32px",
@@ -403,23 +400,11 @@ export default function JurnalPemulihanPage() {
                             onMonthChange={setBulanTampil}
                             locale={id}
                             moodData={moodHistory}
+                            disabled={{ after: hariIni }}
                         />
 
-                        <p className="mt-3 text-sm text-svarati-teal/70">
-                            {jumlahBulanIni > 0 ? (
-                                <>
-                                    <span className="font-bold text-svarati-coral-dark">
-                                        {jumlahBulanIni} catatan
-                                    </span>{" "}
-                                    pada {format(bulanTampil, "MMMM yyyy", { locale: id })}
-                                </>
-                            ) : (
-                                `Belum ada catatan pada ${format(bulanTampil, "MMMM yyyy", { locale: id })}`
-                            )}
-                        </p>
-
                         {hasAnyData && (
-                            <div className="mt-4 border-t border-svarati-lavender-light/60 pt-4">
+                            <div className="mt-6 border-t border-svarati-lavender-light/60 pt-4">
                                 <button
                                     type="button"
                                     onClick={() => setConfirmTarget("all")}
