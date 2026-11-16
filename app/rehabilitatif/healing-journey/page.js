@@ -92,7 +92,13 @@ export default function JurnalPemulihanPage() {
     const [notice, setNotice] = useState("");
 
     const dateKey = date ? format(date, "yyyy-MM-dd") : null;
-    const todayKey = format(new Date(), "yyyy-MM-dd");
+    const hariIni = new Date();
+    const todayKey = format(hariIni, "yyyy-MM-dd");
+    // Jurnal hanya untuk hari yang sudah dijalani. Kalender sudah menonaktifkan
+    // tanggal setelah hari ini, ini pengaman kedua kalau tanggal terpilih
+    // sempat melewati tengah malam selama halaman dibiarkan terbuka.
+    // Format yyyy-MM-dd aman dibandingkan sebagai teks.
+    const isMasaDepan = dateKey !== null && dateKey > todayKey;
 
     // Nilai turunan: dihitung langsung dari data, tanpa state tambahan
     const activeMoodEmoji = dateKey ? moodHistory[dateKey] ?? null : null;
@@ -103,13 +109,13 @@ export default function JurnalPemulihanPage() {
     const noteSaved = dateKey !== null && savedKey === dateKey;
 
     const handleSelectMood = (emoji) => {
-        if (!dateKey) return;
+        if (!dateKey || isMasaDepan) return;
         setMoodHistory((prev) => ({ ...prev, [dateKey]: emoji }));
     };
 
     // Draf disimpan selama isinya berbeda dari catatan tersimpan (termasuk kalau dikosongkan)
     const handleChangeNote = (value) => {
-        if (!dateKey) return;
+        if (!dateKey || isMasaDepan) return;
         const text = value.slice(0, MAX_NOTE);
         setSavedKey(null);
         setDraftHistory((prev) => {
@@ -129,7 +135,7 @@ export default function JurnalPemulihanPage() {
     };
 
     const handleSaveNote = () => {
-        if (!dateKey) return;
+        if (!dateKey || isMasaDepan) return;
         const text = noteDraft.trim();
         setNoteHistory((prev) => {
             const next = { ...prev };
@@ -403,6 +409,7 @@ export default function JurnalPemulihanPage() {
                             onMonthChange={setBulanTampil}
                             locale={id}
                             moodData={moodHistory}
+                            disabled={{ after: hariIni }}
                         />
 
                         <p className="mt-3 text-sm text-svarati-teal/70">
