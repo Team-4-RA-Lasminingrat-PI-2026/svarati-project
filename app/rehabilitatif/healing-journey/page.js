@@ -310,7 +310,7 @@ export default function JurnalPemulihanPage() {
                                             onChange={(e) => handleChangeNote(e.target.value)}
                                             maxLength={MAX_NOTE}
                                             autoFocus={isEditing}
-                                            placeholder="Tulis di sini. Tidak wajib."
+                                            placeholder="Ketik di sini (opsional)"
                                             // Garis buku: diulang tiap 32px, sama dengan line-height
                                             style={{
                                                 lineHeight: "32px",
