@@ -42,7 +42,7 @@ export const MENU_UTAMA = [
     submenu: [
       { id: "jurnal-pemulihan", nama: "Jurnal Pemulihan", href: "/rehabilitatif/healing-journey" },
       { id: "latihan-tenang", nama: "Latihan Tenang", href: "/rehabilitatif/training" },
-      { id: "cerita-dari-mereka", nama: "Cerita dari Mereka", href: "/rehabilitatif/tree-of-hope" },
+      { id: "pohon-harapan", nama: "Pohon Harapan", href: "/rehabilitatif/tree-of-hope" },
     ],
   },
   {
@@ -160,9 +160,9 @@ export const serviceContent = {
       href: "/rehabilitatif",
       variant: "coral",
       badge: "Pemulihan",
-      title: "Ruang Pemulihan & Tree of Hope",
+      title: "Ruang Pemulihan & Pohon Harapan",
       description:
-        "Buat jurnal harian tentang emosional diri, belajar cara menenangkan diri, serta baca pesan-pesan dukungan dari komunitas (Tree of Hope).",
+        "Buat jurnal harian tentang emosional diri, belajar cara menenangkan diri, serta baca pesan-pesan dukungan dari komunitas (Pohon Harapan).",
       cta: "Masuk Ruang Pulih",
       image: "/rehab2.jpg",
     },
@@ -217,27 +217,41 @@ export const svaratiAiContent = {
     "Ceritakan secara anonim. Svarati AI hadir untuk memvalidasi ceritamu, menjelaskan hak hukummu dalam bahasa awam, dan memberikan checklist langkah pertama dengan aman tanpa menghakimi.",
   cta: { label: "Mulai Cerita", href: "/kuratif/svarati-ai" },
   gambar: { src: "/cute-ai-robot-mascot.svg", alt: "Maskot robot Svarati AI" },
+  // Tombol melayang di atas tombol aksesibilitas (SvaratiAiFab)
+  fab: {
+    label: "Tanya Svarati AI",
+    gambar: { src: "/svarati-ai-fab.jpg", alt: "" },
+  },
   bubbles: [
     {
       id: 1,
       teks: "Halo! Aku Svarati AI",
       posisi: "-top-3 -left-4 sm:-top-5 sm:-left-8",
+      // Ekor gelembung: kotak diputar 45 derajat, mengarah ke maskot.
+      // Sisi border yang dipakai adalah dua sisi luar setelah diputar.
+      ekor: "-bottom-1.5 right-8 border-b border-r",
       delay: "animate-float-slow",
     },
     {
       id: 2,
       teks: "Aku siap menjawab semua pertanyaanmu dengan ramah",
       posisi: "top-1/4 -right-20 sm:-right-28",
+      ekor: "-left-1.5 top-7 border-b border-l",
       delay: "animate-float-medium",
     },
     {
       id: 3,
       teks: "Tenang saja, semua rahasiamu aman terjaga denganku",
       posisi: "-bottom-6 -left-8 sm:-bottom-8 sm:-left-12 lg:-left-16",
+      ekor: "-top-1.5 right-8 border-l border-t",
       delay: "animate-float-fast",
     },
   ],
 };
+
+// Rute fitur pemulihan diambil dari MENU_UTAMA agar tidak ditulis ganda.
+const SUBMENU_PEMULIHAN = MENU_UTAMA.find((menu) => menu.id === "pemulihan").submenu;
+const rutePemulihan = (id) => SUBMENU_PEMULIHAN.find((sub) => sub.id === id).href;
 
 export const pemulihanContent = {
   badge: "Ruang Pemulihan",
@@ -268,6 +282,43 @@ export const pemulihanContent = {
       penulis: "Pendamping • Surabaya",
       dukungan: 31,
       posisi: "left-[4%] bottom-[2%]",
+    },
+  ],
+
+  fitur: [
+    {
+      id: "jurnal-pemulihan",
+      variant: "lavender",
+      badge: "Ruang Pribadi",
+      title: "Jurnal Pemulihan",
+      description:
+        "Ruang aman dan privat untuk mencatat perasaanmu hari demi hari, melihat perkembangan emosionalmu, serta memproses pengalaman secara berkala.",
+      cta: "Buka Jurnal",
+      href: rutePemulihan("jurnal-pemulihan"),
+    },
+    {
+      id: "latihan-tenang",
+      variant: "teal",
+      badge: "Relaksasi & Grounding",
+      title: "Latihan Tenang",
+      description:
+        "Panduan teknik pernapasan dan grounding (5-4-3-2-1) interaktif untuk membantu meredakan kecemasan dan mengembalikan fokus.",
+      cta: "Mulai Latihan",
+      href: rutePemulihan("latihan-tenang"),
+    },
+    {
+      id: "pohon-harapan",
+      variant: "coral",
+      badge: "Dukungan Komunitas",
+      title: "Pohon Harapan",
+      // Bagian bertanda "tebal" ditampilkan sebagai teks tebal miring
+      description: [
+        { teks: "Pohon harapan berisi pesan saling menguatkan maupun cerita perjuangan penyintas lain sebagai pengingat bahwa " },
+        { teks: "Kamu Tidak Sendirian", tebal: true },
+        { teks: "." },
+      ],
+      cta: "Lihat Pohon Harapan",
+      href: rutePemulihan("pohon-harapan"),
     },
   ],
 };
@@ -415,15 +466,23 @@ export const KURATIF = {
   },
 
   menu: {
-    title: "Dukungan untuk Kasus yang Kamu Alami.",
+    title: "Dukungan untuk kamu menghadapi apa pun yang sedang kamu jalani.",
     intro: "Pilih langkah yang paling sesuai dengan kondisimu saat ini. Kamu bisa mulai dari mana saja.",
-    disclaimer: "Layanan di halaman ini membantu kamu memahami situasi. Hasilnya bukan diagnosis dan bukan penilaian hukum.",
-    hintCekKondisi: "±2 menit",
     // Deskripsi per item, dicocokkan dengan id di submenu
     desc: {
       "cek-kondisi": "Enam pertanyaan singkat, satu per layar. Kamu bisa melewati atau kembali kapan saja.",
       "svarati-ai": "Ceritakan apa yang kamu alami, atau tanyakan langkah berikutnya.",
       "cari-layanan": "Daftar layanan pendampingan dan hukum yang sudah diverifikasi.",
+    },
+    // Label kecil di samping nama layanan. Hanya Cek Kondisimu yang punya,
+    // karena hanya layanan itu yang punya takaran waktu.
+    chip: {
+      "cek-kondisi": "±2 menit",
+    },
+    cta: {
+      "cek-kondisi": "Mulai cek",
+      "svarati-ai": "Mulai bercerita",
+      "cari-layanan": "Lihat layanan",
     },
   },
 
@@ -596,13 +655,110 @@ export const KURATIF = {
       langkah: "Kalau kamu ingin tahu langkah berikutnya, kita bisa mulai dari yang paling mendesak. Apakah kamu sedang merasa aman sekarang?",
       istirahat: "Tidak apa-apa untuk berhenti dulu. Halaman ini akan tetap di sini saat kamu siap kembali.",
       hak: "Sebagai korban, kamu memiliki hak untuk mendapatkan perlindungan, bantuan, dan keadilan. Kamu berhak melaporkan kejadian ini dan meminta bantuan dari pihak berwenang.",
-      urgent: "Aku mendengarmu, dan keselamatanmu yang paling penting sekarang. Kalau kamu dalam bahaya, tekan tombol Bantuan Darurat di bawah ini. Kamu tidak harus menghadapinya sendirian.",
+      urgent: "Aku mendengarmu, dan keselamatanmu yang paling penting sekarang. Kalau kamu dalam bahaya, tekan tombol Bantuan Darurat di atas. Kamu tidak harus menghadapinya sendirian.",
       default: "Terima kasih sudah menuliskan itu. Kamu boleh melanjutkan kapan saja, atau memilih langkah lain di atas.",
     },
     errorText: "Maaf, balasan belum bisa dikirim. Coba lagi sebentar lagi, atau gunakan tombol bantuan darurat jika kamu butuh bantuan sekarang.",
-    urgentNotice: "Kedengarannya situasimu mendesak. Kamu tidak harus menghadapinya sendiri. Hubungi layanan bantuan sekarang.",
+    urgentNotice: "Situasimu mendesak. Hubungi layanan bantuan sekarang.",
+    feedback: {
+      question: "Boleh tahu alasannya? (opsional)",
+      group: "Alasan (opsional)",
+      // Kode harus sama dengan ALASAN_VALID di backend (storage.py)
+      options: [
+        { code: "tidak_sesuai", label: "Kurang sesuai dengan kondisiku" },
+        { code: "terlalu_panjang", label: "Terlalu panjang" },
+        { code: "kurang_jelas", label: "Kurang jelas" },
+        { code: "layanan_tidak_tepat", label: "Layanan yang disebut tidak tepat" },
+        { code: "lainnya", label: "Lainnya" },
+      ],
+      otherHint: (max) => `Tulis alasanmu (maks. ${max} karakter). Jangan tulis data pribadi atau identitasmu.`,
+      send: "Kirim",
+      skip: "Lewati",
+      thanks: "Terima kasih, masukanmu membantu kami memperbaiki jawaban.",
+    },
   },
 };
+
+
+// ===== DIREKTORI LAYANAN BANTUAN =====
+export const DIREKTORI = {
+  back: { label: "Pendampingan", href: MENU_PENDAMPINGAN.href },
+  badge: "Direktori Layanan Bantuan",
+  judul: "Temukan Bantuan Terdekat dari Lokasimu!",
+  deskripsi: [
+    "Tidak perlu ragu untuk mencari bantuan. Puluhan lembaga pemerintah, swasta, maupun organisasi masyarakat siap membantumu.",
+    "Temukan berbagai layanan dari lembaga bantuan hukum, psikologis, maupun medis di seluruh Indonesia pada fitur di bawah ini.",
+    "Filter berdasarkan provinsi dan kota untuk menemukan layanan bantuan terdekat.",
+  ],
+
+  alert: {
+    judul: "Dalam situasi darurat?",
+    isi: "Jangan tunggu daftar ini, hubungi langsung layanan darurat.",
+    tutup: "Tutup pesan darurat",
+  },
+
+  filter: {
+    judulLokasi: "Filter berdasarkan lokasi",
+    judulLayanan: "Filter berdasarkan layanan",
+    cariLabel: "Cari nama lembaga atau kota",
+    cariPlaceholder: "Cari nama lembaga atau kota...",
+    provinsiLabel: "Provinsi",
+    semuaProvinsi: "Semua Provinsi",
+    nilaiNasional: "__nasional__", // nilai internal, bukan teks tampilan
+    provinsiNasional: "Nasional / Pusat",
+    kotaLabel: "Kota",
+    semuaKota: "Semua Kota",
+    semua: "Semua",
+    jumlah: "layanan ditemukan",
+    reset: "Reset Filter",
+    unduh: "Unduh dokumen hasil pencarian (.csv)",
+  },
+
+  hasil: {
+    judul: "Hasil pencarian",
+    kosong: "Tidak ada layanan untuk filter ini.",
+    resetKosong: "Reset filter",
+    petunjukNasional: "Layanan nasional seperti SAPA 129 bisa dihubungi dari mana saja.",
+    lihatNasional: "Lihat layanan nasional",
+    gagal: `Daftar layanan belum bisa dimuat. Coba muat ulang halaman. Jika kamu butuh bantuan sekarang, hubungi ${DARURAT.nomor.pusat.nomor} atau ${DARURAT.nomor.sapa.nomor}.`,
+    muatLagi: "Muat lebih banyak",
+    sedangMemuat: "Memuat...",
+    menampilkan: (tampil, total) => `Menampilkan ${tampil} dari ${total} layanan`,
+  },
+
+  kartu: {
+  nasional: "Layanan nasional",
+  hubungi: "Hubungi Sekarang",
+  situs: "Kunjungi situs",
+  lihatDetail: "Lihat detail",
+  tutupDetail: "Tutup detail",
+  deskripsi: "Tentang lembaga",
+  jam: "Jam operasional",
+  email: "Email",
+  sosmed: "Media sosial",
+  peta: "Lokasi",
+  bukaPeta: "Buka di Google Maps",
+  verifikasi: "Verifikasi data",
+  terverifikasi: "Data terverifikasi",
+  terverifikasiPada: "Data terverifikasi pada",
+},
+
+  paginasi: {
+    label: "Paginasi daftar layanan",
+    sebelumnya: "Sebelumnya",
+    berikutnya: "Berikutnya",
+    halaman: (n) => `Halaman ${n}`,
+  },
+
+  csv: {
+    header: ["Nama", "Jenis", "Provinsi", "Kota", "Alamat", "Telepon"],
+    namaFile: "daftar-kontak.csv",
+    peringatan:
+      "File akan tersimpan di perangkat ini dan bisa dilihat orang lain yang memakai perangkat ini. Lanjutkan unduh?",
+    gagal: "File belum bisa diunduh. Coba lagi nanti ya.",
+  },
+};
+
 // ===== AKSESIBILITAS (RLA034) =====
 export const AKSESIBILITAS = {
   tombol: "Aksesibilitas",
@@ -610,11 +766,124 @@ export const AKSESIBILITAS = {
   kontras: {
     nama: "Tema kontras tinggi",
   },
+  gelap: {
+    nama: "Mode gelap",
+  },
   screenReader: {
     nama: "Mode screen reader",
+  },
+  // Pilihan ukuran untuk ukuran teks, tinggi baris, dan spasi teks
+  ukuran: { kecil: "Kecil", normal: "Normal", besar: "Besar" },
+  ukuranTeks: { nama: "Atur Ukuran Teks" },
+  tinggiBaris: { nama: "Atur Tinggi Baris" },
+  spasiTeks: { nama: "Atur Spasi Teks" },
+  rataTulisan: {
+    nama: "Atur Rata Tulisan",
+    bawaan: "bawaan halaman",
+    pilihan: {
+      kiri: "Rata kiri",
+      tengah: "Rata tengah",
+      kanan: "Rata kanan",
+      penuh: "Rata kiri-kanan",
+    },
   },
   aturUlang: "Atur ulang",
   tutup: "Tutup pengaturan aksesibilitas",
   statusAktif: "aktif",
   statusMati: "nonaktif",
+};
+
+// TREE OF HOPE
+export const treeOfHopeContent = {
+  back: { label: "Pemulihan", href: "/rehabilitatif", aria: "Kembali ke Pemulihan" },
+  badge: "DUKUNGAN KOMUNITAS",
+  title: "Kamu Tidak Sendirian!",
+  description:
+    "Temukan kehangatan melalui pesan-pesan dukungan dari komunitas Svarati di Pohon Harapan. Bagikan juga pesan penyemangatmu dan jadilah bagian dari tumbuhnya harapan bersama perempuan lainnya!",
+  scrollHint: "Geser ke bawah",
+  image: { src: "/tree-of-hope-transparent.svg", alt: "Ilustrasi pohon harapan" },
+  supportLabel: "Dukungan",
+  anonymous: "Anonim",
+  newLabel: "Baru",
+  // Nilai ini disimpan di database (user_role) dan dipakai validasi API.
+  roles: ["Penyintas", "Pendamping", "Keluarga", "Teman", "Aktivis"],
+
+  composeEnvelope: "Kirim pesan dukungan anonimmu sekarang!",
+  composeCta: "Klik di sini",
+  moreMessages: "Klik pesan atau amplop untuk membaca semua Pesan Dukungan",
+  readMore: "Baca pesan",
+
+  like: {
+    aria: (liked, count, label) =>
+      `${liked ? "Batalkan dukungan" : "Beri dukungan"}. Saat ini ${count} ${label}`,
+  },
+
+  pager: {
+    previous: "Halaman sebelumnya",
+    next: "Halaman berikutnya",
+    page: (n, total) => `Halaman ${n} dari ${total}`,
+  },
+
+  reader: {
+    position: (n, total) => `Pesan ${n} dari ${total}`,
+    close: "Tutup",
+    previous: "Pesan sebelumnya (lebih baru)",
+    next: "Pesan berikutnya (lebih lama)",
+    openFrom: (author) => `Buka pesan dari ${author}`,
+    readFull: (author) => `Baca pesan lengkap dari ${author}`,
+  },
+
+  form: {
+    title: "Kirim pesan dukunganmu",
+    info: "Pesan akan tampil secara anonim di Pohon Harapan Komunitas Svarati.",
+    messageLabel: "Pesan",
+    messagePlaceholder: "Tulis pesan dukungan di sini...",
+    roleLabel: "Peran (opsional)",
+    rolePlaceholder: "Tidak dipilih",
+    locationLabel: "Asal daerah (opsional)",
+    locationPlaceholder: "Contoh: Bandung",
+    submit: "Kirim Pesan",
+    sending: "Mengirim...",
+    cancel: "Batal",
+    editTitle: "Ubah pesanmu",
+    save: "Simpan perubahan",
+    note: (menit) =>
+      `Kamu dapat mengubah atau menghapus pesanmu sampai ${menit} menit setelah dikirim, dari perangkat dan peramban yang sama. Setelah itu, pesan akan tersimpan permanen di Pohon Harapan.`,
+    terms:
+      "Pesanku tidak mengandung unsur SARA, ujaran kebencian, atau kekerasan, dan tidak memuat data yang dapat mengidentifikasi seseorang (nama, nomor telepon, alamat, nama pelaku). Aku menulisnya untuk memberi motivasi atau inspirasi bagi rekan penyintas. Tim Svarati berhak menghapus pesan yang dinilai melanggar ketentuan ini.",
+      },
+
+  toast: {
+    empty: "Tulis pesanmu dulu sebelum mengirim.",
+    success: "Pesan anonimmu berhasil dikirim.",
+    sendFailed: "Maaf, Pesan  Dukunganmu belum bisa dikirim sekarang. Coba lagi dalam beberapa saat.",
+    loadFailed: "Maaf, Pesan Dukungan belum bisa dimuat. Coba muat ulang halaman.",
+    likeFailed: "Maaf, kamu belum bisa menyukai Pesan Dukungan ini sekarang. Coba lagi dalam beberapa saat.",
+    likeUnavailable: "Maaf, dukungan belum bisa disimpan untuk pesan ini.",
+    offline: "Maaf, jaringan sedang offline. Menampilkan pesan-pesan pilihan untukmu.",
+  },
+
+  manage: {
+    editButton: "Ubah pesan",
+    deleteButton: "Hapus pesan",
+    confirmDelete: "Hapus pesan ini? Tindakan ini tidak bisa dibatalkan.",
+    confirmYes: "Ya, hapus",
+    confirmNo: "Batal",
+    deleting: "Menghapus...",
+    deadline: (tanggal, jam) =>
+      `Kamu dapat mengubah atau menghapus pesanmu sampai tanggal ${tanggal} jam ${jam}. Setelah itu, pesan akan tersimpan permanen di Pohon Svarati.`,
+    editedToast: "Pesanmu berhasil diubah.",
+    deletedToast: "Pesanmu sudah dihapus.",
+  },
+  
+  location: {
+    placeholder: "Ketik nama kota atau provinsi",
+    none: "Tidak dipilih",
+    wholeProvince: "Seluruh provinsi",
+    notFound: "Daerah tidak ditemukan.",
+    typeHint: "Ketik untuk mencari kota atau kabupaten.",
+    notInList: (v) => `"${v}" tidak ada di daftar. Pilih daerah dari daftar, atau kosongkan.`,
+    city: "Kota",
+    regency: "Kabupaten",
+  },
 };

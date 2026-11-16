@@ -448,6 +448,36 @@
   animation: float 3.8s ease-in-out infinite 1s;
 }
 
+/*=====================================
+
+  Suara Terapi (RLA029)
+
+  ======================================*/
+
+/* Batang equalizer kecil di baris suara yang sedang diputar */
+@keyframes eq-batang {
+
+  0%,
+  100% {
+    height: 25%;
+  }
+
+  50% {
+    height: 100%;
+  }
+}
+
+.eq-batang {
+  animation: eq-batang 1.1s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eq-batang {
+    animation: none;
+    height: 60%;
+  }
+}
+
 /* ============================================================
    7. TEMA KONTRAS TINGGI (RLA034)
    Aktif lewat <html data-contrast="high">. Cukup menimpa palet
@@ -510,3 +540,233 @@ html[data-contrast="high"] footer :focus-visible {
 html[data-contrast="high"] footer {
   border-top: 2px solid #FFFFFF;
 }
+/* ============================================================
+   8. PENGATURAN TEKS (aksesibilitas)
+   Aktif lewat <html data-font-size / data-line-height /
+   data-letter-spacing / data-text-align>, dipasang oleh
+   AccessibilityContext. Tanpa atribut = tampilan bawaan.
+   ============================================================ */
+
+/* Ukuran teks: semua ukuran Tailwind memakai rem, jadi cukup ubah font-size <html> */
+html[data-font-size="kecil"] { font-size: 87.5%; }
+html[data-font-size="besar"] { font-size: 118.75%; }
+
+/* Tinggi baris: !important supaya menimpa utility seperti leading-tight / text-sm */
+html[data-line-height="kecil"] body * { line-height: 1.25 !important; }
+html[data-line-height="besar"] body * { line-height: 2 !important; }
+
+/* Spasi teks: nilai "besar" mengikuti WCAG 1.4.12 (huruf 0.12em, kata 0.16em) */
+html[data-letter-spacing="kecil"] body * { letter-spacing: -0.01em !important; word-spacing: -0.02em !important; }
+html[data-letter-spacing="besar"] body * { letter-spacing: 0.12em !important; word-spacing: 0.16em !important; }
+
+/* Rata tulisan: hanya elemen teks, supaya tombol dan ikon tetap di tempatnya */
+html[data-text-align] body :is(p, li, h1, h2, h3, h4, h5, h6, blockquote, dd, dt, figcaption, td, th, label) {
+  text-align: var(--a11y-text-align) !important;
+}
+html[data-text-align="kiri"] { --a11y-text-align: left; }
+html[data-text-align="tengah"] { --a11y-text-align: center; }
+html[data-text-align="kanan"] { --a11y-text-align: right; }
+html[data-text-align="penuh"] { --a11y-text-align: justify; }
+
+/* ============================================================
+   9. MODE GELAP (aksesibilitas)
+   Aktif lewat <html data-theme="dark">, dipasang oleh
+   AccessibilityContext (tidak bersamaan dengan kontras tinggi).
+   Strategi: seperti kontras tinggi, cukup menimpa palet.
+   Teks teal jadi terang, latar cream/putih jadi gelap.
+   Elemen berlatar pekat (tombol teal, footer, dll.) tetap
+   memakai palet aslinya supaya teks putihnya tetap terbaca.
+   ============================================================ */
+html[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* Permukaan gelap (pengganti cream dan putih) */
+  --sv-surface: #15303A;
+  --color-svarati-cream: #0D1F24;
+
+  /* Teal: dipakai terutama sebagai warna teks, jadi dibuat terang */
+  --color-svarati-teal: #E4EEF0;
+  --color-svarati-teal-light: #A9CBD3;
+  --color-svarati-teal-dark: #F2F7F8;
+  --color-svarati-teal-soft: #173A44;
+
+  /* Coral: teks lebih terang, latar lembut jadi gelap */
+  --color-svarati-coral: #E8876C;
+  --color-svarati-coral-medium: #F09A80;
+  --color-svarati-coral-dark: #F2A58E;
+  --color-svarati-coral-darker: #F5B5A1;
+  --color-svarati-coral-soft: #3A2520;
+
+  /* Lavender: yang pekat jadi terang (teks), yang muda jadi ungu gelap (latar) */
+  --color-svarati-lavender: #A99CE0;
+  --color-svarati-lavender-light: #2C2850;
+  --color-svarati-lavender-hover: #3A3466;
+  --color-svarati-lavender-dark: #C9BFF0;
+  --color-svarati-lavender-darker: #DCD5F7;
+  --color-svarati-lavender-border: #8C7FCB;
+
+  /* Danger */
+  --color-svarati-danger: #F08070;
+  --color-svarati-danger-dark: #F39A8D;
+  --color-svarati-danger-darker: #F6B0A6;
+  --color-svarati-danger-soft: #3A1F1C;
+
+  /* Abu-abu Tailwind dibalik (gelap <-> terang) */
+  --color-gray-50: #13262C;
+  --color-gray-100: #1A3038;
+  --color-gray-200: #24404A;
+  --color-gray-300: #34525C;
+  --color-gray-400: #8FA6AD;
+  --color-gray-500: #A3B7BD;
+  --color-gray-600: #B8C9CE;
+  --color-gray-700: #CFDCE0;
+  --color-gray-800: #E1EAEC;
+  --color-gray-900: #EEF3F4;
+
+  /* Variabel semantik shadcn */
+  --card: var(--sv-surface);
+  --popover: var(--sv-surface);
+  --primary: #E4EEF0;
+  --primary-foreground: #0D1F24;
+  --border: #2E4A54;
+}
+
+/* Elemen berlatar pekat: kembalikan palet asli di dalamnya */
+html[data-theme="dark"] :is(
+  [class~="bg-svarati-teal"], [class~="bg-svarati-teal-dark"], [class~="bg-svarati-teal-light"],
+  [class~="bg-svarati-lavender-dark"], [class~="bg-svarati-lavender-darker"],
+  [class~="bg-svarati-coral"], [class~="bg-svarati-coral-medium"], [class~="bg-svarati-coral-dark"], [class~="bg-svarati-coral-darker"],
+  [class~="bg-svarati-danger"], [class~="bg-svarati-danger-dark"], [class~="bg-svarati-danger-darker"]
+) {
+  --color-svarati-cream: #FAF8F5;
+  --color-svarati-teal: #0F4C5C;
+  --color-svarati-teal-light: #1D6577;
+  --color-svarati-teal-dark: #0B3B47;
+  --color-svarati-teal-soft: #E8F3F1;
+  --color-svarati-coral: #E07A5F;
+  --color-svarati-coral-medium: #C0502F;
+  --color-svarati-coral-dark: #B14A25;
+  --color-svarati-coral-darker: #9A3A1A;
+  --color-svarati-coral-soft: #FFF5F2;
+  --color-svarati-lavender: #9D8FD6;
+  --color-svarati-lavender-light: #D8D1F3;
+  --color-svarati-lavender-hover: #C6BCEB;
+  --color-svarati-lavender-dark: #5A4A9E;
+  --color-svarati-lavender-darker: #463A7C;
+  --color-svarati-danger: #C0392B;
+  --color-svarati-danger-dark: #A02A1F;
+  --color-svarati-danger-darker: #7F2218;
+  --color-svarati-danger-soft: #FBEAE8;
+}
+
+/* Latar putih jadi permukaan gelap. Di dalam layer utilities dengan
+   spesifisitas rendah (:where), supaya efek hover:bg-... tetap jalan. */
+@layer utilities {
+  :where(html[data-theme="dark"]) .bg-white {
+    background-color: var(--sv-surface);
+  }
+  :where(html[data-theme="dark"]) :is([class*="bg-white/4"], [class*="bg-white/6"], [class*="bg-white/7"], [class*="bg-white/8"], [class*="bg-white/9"]) {
+    background-color: rgb(21 48 58 / 0.85);
+  }
+  :where(html[data-theme="dark"]) :is(.border-white\/40, [class*="border-white/4"]) {
+    border-color: rgb(255 255 255 / 0.12);
+  }
+}
+
+/* ============================================================
+   10. JARAK TEPI UNTUK TOMBOL AKSESIBILITAS
+   Tombol aksesibilitas melayang di pojok kiri bawah. Supaya tidak
+   pernah menutupi tulisan, isi halaman & footer diberi jarak tepi:
+   - HP      : kiri & kanan sama 1.75rem (tombol 36px dekat pojok)
+   - >= 768px: kiri & kanan sama 3.5rem (tombol 44px). Isi selalu di tengah.
+   Bagian berlatar selebar layar diberi class "lebar-penuh": latarnya
+   tetap penuh, hanya isinya yang ikut bergeser. Jarak bawaan bagian
+   itu diisi lewat variabel --pad-x (contoh: [--pad-x:1rem]).
+   ============================================================ */
+:root {
+  --tepi-kiri: 1.75rem;
+  --tepi-kanan: 1.75rem;
+}
+@media (min-width: 768px) {
+  :root {
+    --tepi-kiri: 3.5rem;
+    --tepi-kanan: 3.5rem;
+  }
+}
+.tepi-aman {
+  padding-left: var(--tepi-kiri);
+  padding-right: var(--tepi-kanan);
+}
+/* Hanya keluar dari jarak tepi (latar penuh), isinya tidak ikut bergeser. Dipakai hero beranda. */
+.tepi-aman .keluar-tepi {
+  margin-left: calc(-1 * var(--tepi-kiri));
+  margin-right: calc(-1 * var(--tepi-kanan));
+}
+.tepi-aman .lebar-penuh {
+  margin-left: calc(-1 * var(--tepi-kiri));
+  margin-right: calc(-1 * var(--tepi-kanan));
+  padding-left: calc(var(--tepi-kiri) + var(--pad-x, 0px));
+  padding-right: calc(var(--tepi-kanan) + var(--pad-x, 0px));
+}
+
+/* ============================================================
+   11. TREE OF HOPE (responsive)
+   --toh-top : jarak navbar ke tulisan paling atas (5.5rem = pt-22 di kuratif/page.js)
+   --u       : 1% lebar panggung pohon. Ukuran kartu, amplop, dan tali memakai --u.
+   --fu      : satuan huruf, ikut --u tapi dibatasi bawah dan atas (seperti --u di .hero).
+   ============================================================ */
+.toh {
+  --toh-top: 5.5rem;
+  --toh-reserve: calc(var(--toh-top) + 11rem); /* jatah tinggi judul + deskripsi + petunjuk */
+}
+
+.toh-stage {
+  --tree-h: max(
+    20rem,
+    min(calc(100svh - var(--toh-reserve)), calc(min(100vw - 2rem, 84rem) / 1.8))
+  );
+  --u: calc(var(--tree-h) * 0.018);
+  --fu: clamp(0.58rem, var(--u), 1.05rem);
+}
+
+.toh-tree {
+  position: absolute;
+  bottom: 0;
+  width: calc(var(--tree-h) * 1.8);
+  height: var(--tree-h);
+  left: calc(50% - var(--tree-h) * 0.9);
+  overflow: hidden;
+  transform-origin: 50% 100%;
+  transform: translateY(calc((1 - var(--p)) * var(--tree-h) * 0.04))
+    scale(calc(0.9 + 0.1 * var(--p)));
+  will-change: transform;
+}
+
+.toh-title {
+  font-size: calc(clamp(2rem, min(3.4vw, 5.4svh), 3rem) * (1 - 0.35 * var(--p)));
+}
+.toh-desc {
+  font-size: calc(clamp(0.875rem, min(1.35vw, 2.3svh), 1.125rem) * (1 - 0.1 * var(--p)));
+  max-width: calc(42rem + 16rem * var(--p));
+}
+
+/* ============================================================
+   UKURAN HURUF KARTU (edit angka di sini)
+   Rumus tiap baris: clamp( TERKECIL , DASAR + LAJU × --u , TERBESAR )
+   - TERKECIL : ukuran huruf di layar kecil (laptop 1280×800). Mau lebih kecil? Kecilkan angka ini.
+   - TERBESAR : ukuran huruf di layar besar (monitor).
+   - DASAR + LAJU : seberapa cepat huruf membesar saat pohon membesar.
+   --u = 1% lebar panggung pohon (±6px di 1280×800, ±12px di 1920×1080).
+   ============================================================ */
+.toh-t-lg { font-size: clamp(0.62rem, calc(0.3rem + 0.74 * var(--u)), 0.95rem); }
+.toh-t-md { font-size: clamp(0.58rem, calc(0.28rem + 0.66 * var(--u)), 0.85rem); }
+.toh-t-sm { font-size: clamp(0.56rem, calc(0.26rem + 0.6 * var(--u)), 0.78rem); }
+.toh-f-lg { font-size: clamp(0.56rem, calc(0.25rem + 0.7 * var(--u)), 0.8rem); }
+.toh-f-md { font-size: clamp(0.54rem, calc(0.25rem + 0.62 * var(--u)), 0.74rem); }
+.toh-f-sm { font-size: clamp(0.54rem, calc(0.25rem + 0.56 * var(--u)), 0.7rem); }
+
+/* Tulisan petunjuk di bawah deskripsi */
+.toh-hint { font-size: clamp(0.72rem, min(1.1vw, 2svh), 0.875rem); }
+
+/* Tulisan di amplop besar "Kirim pesan dukungan..." (sebelumnya terpotong di layar kecil) */
+.toh-compose { font-size: clamp(0.62rem, calc(0.2rem + 0.95 * var(--u)), 1.1rem); }

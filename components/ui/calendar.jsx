@@ -55,10 +55,13 @@ function Calendar({
               {...buttonProps}
               className={cn(
                 "flex aspect-square w-full flex-col items-center justify-center rounded-xl text-sm transition-colors",
-                emoji ? "bg-svarati-cream" : "hover:bg-gray-100",
+                emoji ? "bg-svarati-coral-soft" : "hover:bg-gray-100",
                 modifiers.today && "font-bold text-svarati-coral",
-                modifiers.selected && "ring-2 ring-svarati-teal",
-                modifiers.outside && "pointer-events-none"
+                modifiers.selected && "ring-2 ring-svarati-coral-dark",
+                modifiers.outside && "pointer-events-none",
+                // Tanggal yang dinonaktifkan (mis. setelah hari ini di Jurnal
+                // Pemulihan) tidak menyala saat disentuh kursor
+                modifiers.disabled && "cursor-not-allowed hover:bg-transparent"
               )}
             >
               {emoji && <span className="text-xl leading-none">{emoji}</span>}

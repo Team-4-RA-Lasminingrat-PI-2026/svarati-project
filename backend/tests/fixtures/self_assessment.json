@@ -1,0 +1,357 @@
+[
+ {
+  "q_code": "q1",
+  "question_text": "Bagaimana kondisimu sekarang?",
+  "allows_multiple": false,
+  "option_code": "a",
+  "option_label": "Dalam bahaya (mengancam jiwa atau kesehatan)",
+  "query_text": null,
+  "topic_hints": [],
+  "entry_type": null,
+  "is_emergency": true
+ },
+ {
+  "q_code": "q1",
+  "question_text": "Bagaimana kondisimu sekarang?",
+  "allows_multiple": false,
+  "option_code": "b",
+  "option_label": "Aman, tapi bingung",
+  "query_text": null,
+  "topic_hints": [],
+  "entry_type": null,
+  "is_emergency": false
+ },
+ {
+  "q_code": "q1",
+  "question_text": "Bagaimana kondisimu sekarang?",
+  "allows_multiple": false,
+  "option_code": "c",
+  "option_label": "Aman, tapi masih trauma",
+  "query_text": null,
+  "topic_hints": [
+   "kesehatan_mental"
+  ],
+  "entry_type": "panduan_dukungan",
+  "is_emergency": false
+ },
+ {
+  "q_code": "q1",
+  "question_text": "Bagaimana kondisimu sekarang?",
+  "allows_multiple": false,
+  "option_code": "d",
+  "option_label": "Aman, hanya ingin tahu soal hukum atau hak perempuan",
+  "query_text": null,
+  "topic_hints": [],
+  "entry_type": null,
+  "is_emergency": false
+ },
+ {
+  "q_code": "q2",
+  "question_text": "Di mana kejadiannya?",
+  "allows_multiple": false,
+  "option_code": "a",
+  "option_label": "Online (chat, medsos)",
+  "query_text": "Lokasi: Online (chat, medsos).",
+  "topic_hints": [
+   "keamanan_diri"
+  ],
+  "entry_type": null,
+  "is_emergency": false
+ },
+ {
+  "q_code": "q2",
+  "question_text": "Di mana kejadiannya?",
+  "allows_multiple": false,
+  "option_code": "b",
+  "option_label": "Kampus, sekolah, magang, kos",
+  "query_text": "Lokasi: Kampus, sekolah, magang, kos.",
+  "topic_hints": [
+   "hak_perempuan"
+  ],
+  "entry_type": null,
+  "is_emergency": false
+ },
+ {
+  "q_code": "q2",
+  "question_text": "Di mana kejadiannya?",
+  "allows_multiple": false,
+  "option_code": "c",
+  "option_label": "Kantor atau tempat kerja",
+  "query_text": "Lokasi: Kantor atau tempat kerja.",
+  "topic_hints": [
+   "hak_perempuan"
+  ],
+  "entry_type": null,
+  "is_emergency": false
+ },
+ {
+  "q_code": "q2",
+  "question_text": "Di mana kejadiannya?",
+  "allows_multiple": false,
+  "option_code": "d",
+  "option_label": "Tempat umum",
+  "query_text": "Lokasi: Tempat umum.",
+  "topic_hints": [],
+  "entry_type": null,
+  "is_emergency": false
+ },
+ {
+  "q_code": "q2",
+  "question_text": "Di mana kejadiannya?",
+  "allows_multiple": false,
+  "option_code": "e",
+  "option_label": "Rumah atau keluarga",
+  "query_text": "Lokasi: Rumah atau keluarga.",
+  "topic_hints": [
+   "hak_perempuan"
+  ],
+  "entry_type": null,
+  "is_emergency": false
+ },
+ {
+  "q_code": "q3",
+  "question_text": "Siapa yang terlibat?",
+  "allows_multiple": false,
+  "option_code": "a",
+  "option_label": "Atasan atau dosen",
+  "query_text": "Pihak terlibat: Atasan atau dosen.",
+  "topic_hints": [
+   "hukum_tpks"
+  ],
+  "entry_type": null,
+  "is_emergency": false
+ },
+ {
+  "q_code": "q3",
+  "question_text": "Siapa yang terlibat?",
+  "allows_multiple": false,
+  "option_code": "b",
+  "option_label": "Teman atau rekan",
+  "query_text": "Pihak terlibat: Teman atau rekan.",
+  "topic_hints": [],
+  "entry_type": null,
+  "is_emergency": false
+ },
+ {
+  "q_code": "q3",
+  "question_text": "Siapa yang terlibat?",
+  "allows_multiple": false,
+  "option_code": "c",
+  "option_label": "Pacar, mantan, atau keluarga",
+  "query_text": "Pihak terlibat: Pacar, mantan, atau keluarga.",
+  "topic_hints": [
+   "hak_perempuan"
+  ],
+  "entry_type": null,
+  "is_emergency": false
+ },
+ {
+  "q_code": "q3",
+  "question_text": "Siapa yang terlibat?",
+  "allows_multiple": false,
+  "option_code": "d",
+  "option_label": "Orang yang baru dikenal",
+  "query_text": "Pihak terlibat: Orang yang baru dikenal.",
+  "topic_hints": [],
+  "entry_type": null,
+  "is_emergency": false
+ },
+ {
+  "q_code": "q4",
+  "question_text": "Apa yang terjadi?",
+  "allows_multiple": true,
+  "option_code": "a",
+  "option_label": "Ada candaan atau komentar bernuansa seksual",
+  "query_text": "Kejadian: ada candaan atau komentar bernuansa seksual.",
+  "topic_hints": [
+   "pelecehan_nonfisik"
+  ],
+  "entry_type": null,
+  "is_emergency": false
+ },
+ {
+  "q_code": "q4",
+  "question_text": "Apa yang terjadi?",
+  "allows_multiple": true,
+  "option_code": "b",
+  "option_label": "Dikomentari soal tubuh",
+  "query_text": "Kejadian: dikomentari soal tubuh.",
+  "topic_hints": [
+   "pelecehan_nonfisik"
+  ],
+  "entry_type": null,
+  "is_emergency": false
+ },
+ {
+  "q_code": "q4",
+  "question_text": "Apa yang terjadi?",
+  "allows_multiple": true,
+  "option_code": "c",
+  "option_label": "Dikirimi foto atau video tanpa izin",
+  "query_text": "Kejadian: dikirimi foto atau video tanpa izin.",
+  "topic_hints": [
+   "keamanan_diri"
+  ],
+  "entry_type": null,
+  "is_emergency": false
+ },
+ {
+  "q_code": "q4",
+  "question_text": "Apa yang terjadi?",
+  "allows_multiple": true,
+  "option_code": "d",
+  "option_label": "Diancam foto atau datanya disebar",
+  "query_text": "Kejadian: diancam foto atau datanya disebar.",
+  "topic_hints": [
+   "keamanan_diri"
+  ],
+  "entry_type": null,
+  "is_emergency": false
+ },
+ {
+  "q_code": "q4",
+  "question_text": "Apa yang terjadi?",
+  "allows_multiple": true,
+  "option_code": "e",
+  "option_label": "Diintip atau direkam diam-diam",
+  "query_text": "Kejadian: diintip atau direkam diam-diam.",
+  "topic_hints": [
+   "keamanan_diri"
+  ],
+  "entry_type": null,
+  "is_emergency": false
+ },
+ {
+  "q_code": "q4",
+  "question_text": "Apa yang terjadi?",
+  "allows_multiple": true,
+  "option_code": "f",
+  "option_label": "Disentuh tanpa izin",
+  "query_text": "Kejadian: disentuh tanpa izin.",
+  "topic_hints": [
+   "pelecehan_fisik"
+  ],
+  "entry_type": null,
+  "is_emergency": false
+ },
+ {
+  "q_code": "q4",
+  "question_text": "Apa yang terjadi?",
+  "allows_multiple": true,
+  "option_code": "g",
+  "option_label": "Dipaksa berhubungan intim",
+  "query_text": "Kejadian: dipaksa berhubungan intim.",
+  "topic_hints": [
+   "pemaksaan_hubungan"
+  ],
+  "entry_type": null,
+  "is_emergency": false
+ },
+ {
+  "q_code": "q4",
+  "question_text": "Apa yang terjadi?",
+  "allows_multiple": true,
+  "option_code": "h",
+  "option_label": "Nilai atau kerja dikaitkan dengan permintaan intim",
+  "query_text": "Kejadian: nilai atau kerja dikaitkan dengan permintaan intim.",
+  "topic_hints": [
+   "hukum_tpks"
+  ],
+  "entry_type": null,
+  "is_emergency": false
+ },
+ {
+  "q_code": "q5",
+  "question_text": "Bagaimana reaksimu saat itu?",
+  "allows_multiple": false,
+  "option_code": "a",
+  "option_label": "Sudah menolak, tapi tetap dilanjutkan",
+  "query_text": null,
+  "topic_hints": [],
+  "entry_type": null,
+  "is_emergency": false
+ },
+ {
+  "q_code": "q5",
+  "question_text": "Bagaimana reaksimu saat itu?",
+  "allows_multiple": false,
+  "option_code": "b",
+  "option_label": "Membeku atau takut",
+  "query_text": null,
+  "topic_hints": [
+   "kesehatan_mental"
+  ],
+  "entry_type": "panduan_dukungan",
+  "is_emergency": false
+ },
+ {
+  "q_code": "q5",
+  "question_text": "Bagaimana reaksimu saat itu?",
+  "allows_multiple": false,
+  "option_code": "c",
+  "option_label": "Menurut karena takut diancam",
+  "query_text": null,
+  "topic_hints": [],
+  "entry_type": null,
+  "is_emergency": false
+ },
+ {
+  "q_code": "q5",
+  "question_text": "Bagaimana reaksimu saat itu?",
+  "allows_multiple": false,
+  "option_code": "d",
+  "option_label": "Baru sadar setelah beberapa waktu",
+  "query_text": null,
+  "topic_hints": [
+   "kesehatan_mental"
+  ],
+  "entry_type": "panduan_dukungan",
+  "is_emergency": false
+ },
+ {
+  "q_code": "q6",
+  "question_text": "Ada bukti atau saksi?",
+  "allows_multiple": false,
+  "option_code": "a",
+  "option_label": "Ada bukti digital",
+  "query_text": "Bukti: ada bukti digital.",
+  "topic_hints": [
+   "keamanan_diri"
+  ],
+  "entry_type": "prosedur",
+  "is_emergency": false
+ },
+ {
+  "q_code": "q6",
+  "question_text": "Ada bukti atau saksi?",
+  "allows_multiple": false,
+  "option_code": "b",
+  "option_label": "Ada saksi",
+  "query_text": "Bukti: ada saksi.",
+  "topic_hints": [],
+  "entry_type": null,
+  "is_emergency": false
+ },
+ {
+  "q_code": "q6",
+  "question_text": "Ada bukti atau saksi?",
+  "allows_multiple": false,
+  "option_code": "c",
+  "option_label": "Tidak ada bukti, hanya ingatan",
+  "query_text": "Bukti: tidak ada bukti, hanya ingatan.",
+  "topic_hints": [],
+  "entry_type": "panduan_dukungan",
+  "is_emergency": false
+ },
+ {
+  "q_code": "q6",
+  "question_text": "Ada bukti atau saksi?",
+  "allows_multiple": false,
+  "option_code": "d",
+  "option_label": "Belum tahu",
+  "query_text": "Bukti: belum tahu.",
+  "topic_hints": [],
+  "entry_type": "panduan_dukungan",
+  "is_emergency": false
+ }
+]

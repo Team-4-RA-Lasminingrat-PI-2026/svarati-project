@@ -13,7 +13,7 @@ const toneClass = {
 
 export default function Hero() {
   return (
-    <section className="hero bg-linear-to-b from-svarati-lavender-light to-svarati-teal-soft text-svarati-teal">
+    <section className="hero keluar-tepi bg-linear-to-b from-svarati-lavender-light to-svarati-teal-soft text-svarati-teal">
       <div className="hero-grid">
         {/* TEKS */}
         <div className="hero-col">

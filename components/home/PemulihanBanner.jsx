@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Heart } from "lucide-react";
-import Badge from "@/components/Badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardFooter } from "@/components/Card";
 import { pemulihanContent as p } from "@/content/labels";
@@ -10,7 +9,7 @@ export default function RuangPemulihan() {
   return (
     <section
       id="ruang-pemulihan"
-      className="mt-5 sm:mt-10 lg:mt-15 overflow-hidden bg-svarati-coral-soft px-4 pb-12 pt-10 sm:px-6 lg:pb-16 lg:pt-12"
+      className="mt-5 sm:mt-10 lg:mt-15 lebar-penuh overflow-hidden bg-svarati-coral-soft px-4 pb-12 pt-10 sm:px-6 [--pad-x:1rem] sm:[--pad-x:1.5rem] lg:pb-16 lg:pt-12"
     >
       <div className="mx-auto grid w-full max-w-6xl items-center gap-8 lg:grid-cols-[1.15fr_1fr] lg:gap-6">
         {/* KIRI: pohon + kartu melayang (mobile dan desktop) */}
@@ -38,14 +37,10 @@ export default function RuangPemulihan() {
         </div>
 
         {/* KANAN: teks */}
-          <div className="order-1 flex flex-col items-start lg:order-2 lg:pl-8">          <Badge
-            variant="coral"
-            styleType="white"
-            className="mb-4 gap-1.5 normal-case tracking-normal"
-          >
-            <Heart className="size-3.5" aria-hidden="true" />
+        <div className="order-1 flex flex-col items-start lg:order-2 lg:pl-8">
+          <p className="mb-3 text-sm font-bold text-svarati-coral-dark">
             {p.badge}
-          </Badge>
+          </p>
 
           <h2 className="text-3xl font-bold leading-tight text-svarati-teal md:text-4xl lg:text-[2.6rem]">
             {p.judul}

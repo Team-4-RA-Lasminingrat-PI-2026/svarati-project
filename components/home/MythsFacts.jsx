@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, BookOpen, ChevronUp } from "lucide-react";
-import Badge from "@/components/Badge";
+import { ArrowRight, ChevronUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardTitle, CardDescription } from "@/components/Card";
 import { mitosContent as m } from "@/content/labels";
@@ -9,7 +8,7 @@ export default function MythsFacts() {
   return (
     <section
       id="mitos"
-      className="scroll-mt-24 bg-svarati-teal-soft px-4 pb-16 pt-10 sm:px-6 lg:pb-24 lg:pt-12"
+      className="lebar-penuh scroll-mt-24 bg-svarati-teal-soft px-4 pb-16 pt-10 sm:px-6 [--pad-x:1rem] sm:[--pad-x:1.5rem] lg:pb-24 lg:pt-12"
     >
       <div className="mx-auto w-full max-w-6xl">
         {/* Header */}
@@ -73,7 +72,7 @@ export default function MythsFacts() {
                     </span>
                   </div>
                   <p className="flex-1 px-5 pb-5 pt-1 text-sm font-medium leading-relaxed text-white opacity-0 transition-opacity delay-100 duration-500 group-hover:opacity-100 group-focus-within:opacity-100">
-                    {item.fakta}
+                    “{item.fakta}”
                   </p>
                 </div>
               </div>

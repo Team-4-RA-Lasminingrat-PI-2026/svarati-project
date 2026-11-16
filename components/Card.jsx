@@ -195,7 +195,7 @@ export default function CardDisplay() {
         
         /* Header 
         <div>
-          <h1 className="mb-2 text-3xl font-bold text-[#0f4c5c]">Test Tampilan Card Svarati</h1>
+          <h1 className="mb-2 text-3xl font-bold text-svarati-teal">Test Tampilan Card Svarati</h1>
           <p className="text-gray-600">Semua variasi komponen Card dan Badge yang digabungkan.</p>
         </div>*/
 
@@ -204,33 +204,33 @@ export default function CardDisplay() {
           <h2 className="mb-4 text-xl font-bold text-gray-800">1. Card Tinted (Informasi & Edukasi)</h2>
           <div className="grid gap-6 md:grid-cols-3">
             <Card variant="lavender" className="group h-full" interactive>
-              <CardIcon><HelpCircle className="text-[#5a4a9e]" /></CardIcon>
+              <CardIcon><HelpCircle className="text-svarati-lavender-dark" /></CardIcon>
               <Badge variant="lavender" className="mb-3">Preventif</Badge>
               <CardTitle>Edukasi & Simulasi Hukum</CardTitle>
-              <CardDescription className="text-[#5a4a9e]">
+              <CardDescription className="text-svarati-lavender-dark">
                 Pelajari hak-hakmu, kenali bentuk kekerasan berbasis UU TPKS dan cara menghadapinya.
               </CardDescription>
-              <CardLink className="text-[#5a4a9e]">Buka Edukasi</CardLink>
+              <CardLink className="text-svarati-lavender-dark">Buka Edukasi</CardLink>
             </Card>
 
             <Card variant="teal" className="group h-full" interactive>
-              <CardIcon><BookOpen className="text-[#0f4c5c]" /></CardIcon>
+              <CardIcon><BookOpen className="text-svarati-teal" /></CardIcon>
               <Badge variant="teal" className="mb-3">Kuratif</Badge>
               <CardTitle>Pendampingan Psikologis</CardTitle>
-              <CardDescription className="text-[#0f4c5c]">
+              <CardDescription className="text-svarati-teal">
                 Temukan layanan pendampingan terdekat untuk memulihkan trauma.
               </CardDescription>
-              <CardLink className="text-[#0f4c5c]">Cari Bantuan</CardLink>
+              <CardLink className="text-svarati-teal">Cari Bantuan</CardLink>
             </Card>
 
             <Card variant="coral" className="group h-full" interactive>
-              <CardIcon><ShieldAlert className="text-[#b14a25]" /></CardIcon>
+              <CardIcon><ShieldAlert className="text-svarati-coral-dark" /></CardIcon>
               <Badge variant="coral" className="mb-3">Rehabilitatif</Badge>
               <CardTitle>Bantuan Medis Darurat</CardTitle>
-              <CardDescription className="text-[#b14a25]">
+              <CardDescription className="text-svarati-coral-dark">
                 Akses cepat ke rumah sakit dan klinik rujukan penanganan kasus kekerasan.
               </CardDescription>
-              <CardLink className="text-[#b14a25]">Lihat Faskes</CardLink>
+              <CardLink className="text-svarati-coral-dark">Lihat Faskes</CardLink>
             </Card>
           </div>
         </section>*/
@@ -239,12 +239,12 @@ export default function CardDisplay() {
         <section>
           <h2 className="mb-4 text-xl font-bold text-gray-800">2. Card Kutipan (Testimoni)</h2>
           <Card variant="white" className="max-w-xl shadow-md">
-            <p className="font-medium italic leading-relaxed text-[#0f4c5c]">
+            <p className="font-medium italic leading-relaxed text-svarati-teal">
               "Keberanianmu untuk bertahan hidup hari ini sudah merupakan kemenangan besar. Jangan pernah merasa sendirian dalam perjuangan ini."
             </p>
             <CardFooter>
-              <span className="text-[#5a4a9e]">Anonim • Jakarta</span>
-              <span className="flex items-center gap-1.5 font-bold text-[#b14a25]">
+              <span className="text-svarati-lavender-dark">Anonim • Jakarta</span>
+              <span className="flex items-center gap-1.5 font-bold text-svarati-coral-dark">
                 <Heart className="size-4 fill-current" /> 24 Dukungan
               </span>
             </CardFooter>
@@ -260,10 +260,10 @@ export default function CardDisplay() {
                 <p className="mb-2 flex items-center gap-2 text-xs font-bold uppercase text-red-700">
                   <XCircle className="size-4" /> lorem ipsum
                 </p>
-                <p className="font-bold text-[#0f4c5c]">"lorem ipsum"</p>
+                <p className="font-bold text-svarati-teal">"lorem ipsum"</p>
               </Card>
               <Card variant="teal" size="sm">
-                <p className="mb-2 flex items-center gap-2 text-xs font-bold uppercase text-[#0f4c5c]">
+                <p className="mb-2 flex items-center gap-2 text-xs font-bold uppercase text-svarati-teal">
                   <CheckCircle2 className="size-4" /> Lorem ipsum
                 </p>
                 <CardDescription>
