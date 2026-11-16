@@ -1,12 +1,13 @@
 import { redirect } from "next/navigation";
-import EducationBanner from "@/components/education/EducationBanner";
-import EducationList from "@/components/education/EducationList";
+import EducationBanner from "@/app/preventif/components/EducationBanner";
+import EducationList from "@/app/preventif/components/EducationList";
 import { educationContent as edu } from "@/content/labels";
 import { getTopics, listArticles } from "@/lib/articles";
 
 export const metadata = { title: edu.pageTitle };
 
 const PAGE_SIZE = 12;
+const FEATURED_LIMIT = 5;
 
 const toPage = (v) => {
   const n = parseInt(Array.isArray(v) ? v[0] : v, 10);
@@ -38,12 +39,20 @@ export default async function EducationPage({ searchParams }) {
   const q = toText(sp.q, 100);
   const page = toPage(sp.page);
 
-  const result = await listArticles({
-    topic: topic || undefined,
-    keyword: q || undefined,
-    page,
-    limit: PAGE_SIZE,
-  });
+  // Pilihan Svarati hanya dipakai di tampilan awal (halaman 1, tanpa filter/pencarian)
+  const isDefaultView = page === 1 && !topic && !q;
+
+  const [result, featured] = await Promise.all([
+    listArticles({
+      topic: topic || undefined,
+      keyword: q || undefined,
+      page,
+      limit: PAGE_SIZE,
+    }),
+    isDefaultView
+      ? listArticles({ featured: true, page: 1, limit: FEATURED_LIMIT })
+      : Promise.resolve({ data: [] }),
+  ]);
 
   // Halaman di luar jangkauan: arahkan ke halaman terakhir
   const { total_pages } = result.meta;
@@ -61,6 +70,7 @@ export default async function EducationPage({ searchParams }) {
       <EducationBanner headlines={head.data} />
       <EducationList
         articles={result.data}
+        featured={featured.data}
         meta={result.meta}
         tabs={tabs}
         topic={topic}

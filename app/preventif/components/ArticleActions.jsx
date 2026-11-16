@@ -12,7 +12,7 @@ export default function ArticleActions({ title, slug, initialLikes = 0 }) {
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState("");
 
-  const url = `/api/articles/${slug}/like`;
+  const url = `/api/preventif/articles/${slug}/like`;
 
   // Saat dibuka: cek status hanya jika token sudah ada (tidak membuat sesi baru)
   useEffect(() => {
@@ -46,7 +46,7 @@ export default function ArticleActions({ title, slug, initialLikes = 0 }) {
     setLiked(!liked); // optimistic
     setLikes(likes + (liked ? -1 : 1));
     try {
-      const token = await ensureAnonymousSession(); // membuat sesi jika belum ada
+      const { token } = await ensureAnonymousSession(); // <- destructure
       if (!token) throw new Error("no session");
       const res = await fetch(url, {
         method: prev.liked ? "DELETE" : "POST",
@@ -83,7 +83,7 @@ export default function ArticleActions({ title, slug, initialLikes = 0 }) {
     "flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold text-svarati-lavender-dark transition hover:bg-svarati-lavender-light";
 
   return (
-    <div className="pointer-events-none fixed inset-x-0 bottom-24 z-30 sm:bottom-4 flex justify-center px-4">
+    <div className="pointer-events-none fixed inset-x-0 bottom-24 z-30 flex justify-center px-4 sm:bottom-4">
       <div className="pointer-events-auto flex items-center gap-1 rounded-full border border-svarati-lavender-light bg-white/90 p-1.5 shadow-lg backdrop-blur-md">
         <button
           type="button"

@@ -6,6 +6,7 @@ const querySchema = z.object({
   topic: z.string().regex(/^[a-z_]+$/).max(50).optional(),
   keyword: z.string().max(100).optional(),
   headline: z.enum(["true", "false"]).optional(),
+  featured: z.enum(["true", "false"]).optional(),
   page: z.coerce.number().int().min(1).default(1),
   limit: z.coerce.number().int().min(1).max(50).default(10),
 });
@@ -17,18 +18,19 @@ export async function GET(req) {
     return NextResponse.json({ error: "Parameter tidak valid" }, { status: 400 });
   }
 
-  const { topic, keyword, headline, page, limit } = parsed.data;
+  const { topic, keyword, headline, featured, page, limit } = parsed.data;
   try {
     const result = await listArticles({
       topic,
       keyword,
       headline: headline === "true",
+      featured: featured === "true",
       page,
       limit,
     });
     return NextResponse.json(result);
   } catch (err) {
-    console.error("GET /api/articles", err);
+    console.error("GET /api/preventif/articles", err);
     return NextResponse.json({ error: "Gagal memuat artikel" }, { status: 500 });
   }
 }

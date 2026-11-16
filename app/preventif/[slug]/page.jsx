@@ -3,11 +3,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
-import { Phone, X } from "lucide-react";
+import { Phone } from "lucide-react";
+import CloseArticleButton from "@/app/preventif/components/CloseArticleButton";
 import { Button } from "@/components/ui/button";
 import { Card, CardTitle, CardDescription } from "@/components/Card";
-import ArticleCard from "@/components/education/ArticleCard";
-import ArticleActions from "@/components/education/ArticleActions";
+import ArticleCard from "@/app/preventif/components/ArticleCard";
+import ArticleActions from "@/app/preventif/components/ArticleActions";
 import { educationContent as edu, categoryTheme } from "@/content/labels";
 import { getArticleBySlug, listArticles } from "@/lib/articles";
 
@@ -76,14 +77,7 @@ export default async function ArticlePage({ params }) {
         {/* Bar atas: tutup (kiri), logo (tengah) */}
         <div className="grid grid-cols-3 items-center border-b border-svarati-lavender-light px-4 py-3 sm:px-6">
           <div>
-            <Link
-              href={edu.basePath}
-              aria-label={edu.detail.back}
-              title={edu.detail.back}
-              className="flex size-11 items-center justify-center rounded-xl bg-svarati-cream text-svarati-teal transition hover:bg-svarati-lavender-light"
-            >
-              <X className="size-5" aria-hidden="true" />
-            </Link>
+            <CloseArticleButton />
           </div>
 
           <Link

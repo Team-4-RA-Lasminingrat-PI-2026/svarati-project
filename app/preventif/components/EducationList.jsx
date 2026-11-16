@@ -4,11 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { ChevronLeft, ChevronRight, Search } from "lucide-react";
-import ArticleCard from "@/components/education/ArticleCard";
+import ArticleCard from "@/app/preventif/components/ArticleCard";
+import ArticleCardCompact from "@/app/preventif/components/ArticleCardCompact";
 import Tabs from "@/components/Tabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import ScrollRow from "@/components/education/ScrollRow";
+import ScrollRow from "@/app/preventif/components/ScrollRow";
 import { educationContent as edu } from "@/content/labels";
 
 const DEFAULT_TAB = edu.tabs[0].id;
@@ -27,11 +28,12 @@ function pageItems(current, total) {
   return out;
 }
 
-export default function EducationList({ articles, meta, tabs, topic, q }) {
+export default function EducationList({ articles, featured = [], meta, tabs, topic, q }) {
   const router = useRouter();
   const pathname = usePathname();
   const [query, setQuery] = useState(q);
   const firstRun = useRef(true);
+  const tabsRef = useRef(null);
 
   const activeTab = topic || DEFAULT_TAB;
   const isFiltered = Boolean(topic) || Boolean(q);
@@ -60,6 +62,26 @@ export default function EducationList({ articles, meta, tabs, topic, q }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query]);
 
+  // Saat halaman dibuka: geser baris kategori seperlunya sampai tab aktif terlihat.
+  // Hanya sekali (saat mount): tidak menengahkan dan tidak menggeser saat user klik tab.
+  useEffect(() => {
+    const root = tabsRef.current;
+    if (!root) return;
+    const active = root.querySelector(
+      '[aria-selected="true"], [aria-current="true"], [data-state="active"], [data-active="true"]'
+    );
+    const scroller = root.querySelector(".overflow-x-auto"); // wadah geser milik ScrollRow
+    if (!active || !scroller) return;
+
+    const a = active.getBoundingClientRect();
+    const s = scroller.getBoundingClientRect();
+    const gap = 16; // sisa ruang di tepi supaya tab tidak mepet
+
+    if (a.right > s.right) scroller.scrollLeft += a.right - s.right + gap;
+    else if (a.left < s.left) scroller.scrollLeft -= s.left - a.left + gap;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const changeTab = (id) => {
     router.push(buildHref({ topic: id === DEFAULT_TAB ? "" : id, page: 1 }), {
       scroll: false,
@@ -72,6 +94,23 @@ export default function EducationList({ articles, meta, tabs, topic, q }) {
   };
 
   const { page, total, total_pages } = meta;
+
+  // Simpan URL daftar terakhir supaya tombol X di halaman artikel bisa kembali ke sini
+  useEffect(() => {
+    try {
+      sessionStorage.setItem("edu:last-list", buildHref({ page }));
+    } catch {
+      // sessionStorage tidak tersedia: abaikan
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname, topic, q, page]);
+
+  // Carousel hanya tampil jika ada artikel yang diberi flag is_featured
+  const showFeatured = featured.length > 0 && page === 1 && !isFiltered;
+
+  // Artikel yang sudah ada di carousel tidak diulang di list mobile
+  const featuredIds = new Set(featured.map((a) => a.id));
+  const rest = showFeatured ? articles.filter((a) => !featuredIds.has(a.id)) : articles;
 
   return (
     <section id={ANCHOR} className="scroll-mt-24 px-4 pb-6 pt-8 sm:px-6">
@@ -107,7 +146,7 @@ export default function EducationList({ articles, meta, tabs, topic, q }) {
         </div>
 
         {/* Tab kategori */}
-        <div className="mt-4" role="group" aria-label={edu.filterLabel}>
+        <div ref={tabsRef} className="mt-4" role="group" aria-label={edu.filterLabel}>
           <ScrollRow>
             <Tabs
               tabs={tabs}
@@ -133,13 +172,48 @@ export default function EducationList({ articles, meta, tabs, topic, q }) {
               </Button>
             </div>
           ) : (
-            <ul className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 sm:gap-5">
-              {articles.map((a) => (
-                <li key={a.id}>
-                  <ArticleCard article={a} categoryName={a.categoryLabel} />
-                </li>
-              ))}
-            </ul>
+            <>
+              {/* ===== Mobile (di bawah md) ===== */}
+              <div className="md:hidden">
+                {showFeatured && (
+                  <section aria-label={edu.featuredLabel} className="mb-6">
+                    <h2 className="mb-3 text-lg font-bold text-svarati-teal">
+                      {edu.featuredLabel}
+                    </h2>
+                    {/* -mx-4 px-4: carousel menempel ke tepi layar, kartu pertama tetap sejajar konten */}
+                    <ul className="-mx-4 flex snap-x snap-mandatory scroll-px-4 gap-3 overflow-x-auto px-4 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                      {featured.map((a) => (
+                        <li key={a.id} className="w-[78%] shrink-0 snap-start">
+                          <ArticleCard article={a} categoryName={a.categoryLabel} />
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                )}
+
+                {showFeatured && rest.length > 0 && (
+                  <h2 className="mb-1 text-lg font-bold text-svarati-teal">
+                    {edu.moreLabel}
+                  </h2>
+                )}
+                <ul className="divide-y divide-svarati-lavender-light">
+                  {rest.map((a) => (
+                    <li key={a.id}>
+                      <ArticleCardCompact article={a} categoryName={a.categoryLabel} />
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* ===== Tablet & desktop (md ke atas): grid seperti semula ===== */}
+              <ul className="hidden gap-5 md:grid md:grid-cols-2 lg:grid-cols-3">
+                {articles.map((a) => (
+                  <li key={a.id}>
+                    <ArticleCard article={a} categoryName={a.categoryLabel} />
+                  </li>
+                ))}
+              </ul>
+            </>
           )}
         </div>
 
