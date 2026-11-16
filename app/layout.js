@@ -7,6 +7,7 @@ import { AccessibilityProvider } from "@/context/AccessibilityContext";
 import AccessibilityModal from "@/components/modals/AccessibilityModal";
 import ScreenReaderEnhancer from "@/components/ScreenReaderEnhancer";
 import AccessibilityFab from "@/components/AccessibilityFab";
+import SvaratiAiFab from "@/components/SvaratiAiFab";
 import SessionInit from "@/components/SessionInit";
 
 const lora = Lora({
@@ -67,6 +68,7 @@ export default function RootLayout({ children }) {
             <Footer />
           </div>
 
+          <SvaratiAiFab />
           <AccessibilityFab />
           <AccessibilityModal />
           <ScreenReaderEnhancer />
