@@ -59,7 +59,7 @@ export default function MythsFacts() {
                     </span>
                   </div>
                   <p className="flex-1 px-5 pb-5 pt-1 text-sm font-medium leading-relaxed text-white opacity-0 transition-opacity delay-100 duration-500 group-hover:opacity-100 group-focus-within:opacity-100">
-                    {item.fakta}
+                    “{item.fakta}”
                   </p>
                 </div>
               </div>
