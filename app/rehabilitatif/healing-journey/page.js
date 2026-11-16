@@ -199,15 +199,6 @@ export default function JurnalPemulihanPage() {
         Object.keys(noteHistory).length > 0 ||
         Object.keys(draftHistory).length > 0;
 
-    // Ringkasan mengikuti bulan yang sedang tampil di kalender,
-    // bukan bulan tanggal terpilih
-    const bulanKey = format(bulanTampil, "yyyy-MM");
-    const jumlahBulanIni = new Set(
-        [...Object.keys(moodHistory), ...Object.keys(noteHistory)].filter((k) =>
-            k.startsWith(bulanKey)
-        )
-    ).size;
-
     const namaHari = date ? format(date, "EEEE", { locale: id }) : "";
     const labelHari = dateKey === todayKey ? `Hari ini, ${namaHari}` : namaHari;
 
@@ -412,21 +403,8 @@ export default function JurnalPemulihanPage() {
                             disabled={{ after: hariIni }}
                         />
 
-                        <p className="mt-3 text-sm text-svarati-teal/70">
-                            {jumlahBulanIni > 0 ? (
-                                <>
-                                    <span className="font-bold text-svarati-coral-dark">
-                                        {jumlahBulanIni} catatan
-                                    </span>{" "}
-                                    pada {format(bulanTampil, "MMMM yyyy", { locale: id })}
-                                </>
-                            ) : (
-                                `Belum ada catatan pada ${format(bulanTampil, "MMMM yyyy", { locale: id })}`
-                            )}
-                        </p>
-
                         {hasAnyData && (
-                            <div className="mt-4 border-t border-svarati-lavender-light/60 pt-4">
+                            <div className="mt-6 border-t border-svarati-lavender-light/60 pt-4">
                                 <button
                                     type="button"
                                     onClick={() => setConfirmTarget("all")}
