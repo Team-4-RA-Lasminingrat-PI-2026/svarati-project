@@ -71,7 +71,7 @@ export default async function ArticlePage({ params }) {
   const related = await getRelated(article);
 
   return (
-    <main className="min-h-svh px-4 pb-32 pt-24">
+    <main className="min-h-svh px-1.5 pb-32 pt-24 sm:px-4">
       {/* Kotak artikel */}
       <article className="mx-auto w-full max-w-6xl overflow-hidden rounded-3xl border border-svarati-lavender-light bg-white shadow-sm">
         {/* Bar atas: tutup (kiri), logo (tengah) */}
@@ -92,11 +92,11 @@ export default async function ArticlePage({ params }) {
         </div>
 
         {/* Header artikel */}
-        <header className="mx-auto w-full max-w-3xl px-5 pt-12 sm:px-6">
+        <header className="mx-auto w-full max-w-3xl px-4 pt-8 sm:px-6 sm:pt-12">
           <p className={`text-xs font-semibold uppercase tracking-wider ${theme.text}`}>
             {article.categoryLabel}
           </p>
-          <h1 className="mt-3 text-3xl font-bold leading-tight text-svarati-teal md:text-4xl lg:text-5xl">
+          <h1 className="mt-3 text-2xl font-bold leading-tight text-svarati-teal sm:text-3xl md:text-4xl lg:text-5xl">
             {article.title}
           </h1>
           {article.summary && (
@@ -125,7 +125,7 @@ export default async function ArticlePage({ params }) {
 
         {/* Gambar utama: tampil utuh sesuai rasio aslinya */}
         {article.image && (
-          <div className="mx-auto mt-12 w-full max-w-4xl px-5 sm:px-6">
+          <div className="mx-auto mt-8 w-full max-w-4xl px-4 sm:mt-12 sm:px-6">
             <Image
               src={article.image}
               alt=""
@@ -139,7 +139,7 @@ export default async function ArticlePage({ params }) {
         )}
 
         {/* Isi artikel (Markdown dari DOCX) */}
-        <div className="mx-auto w-full max-w-3xl px-5 pb-16 pt-6 text-base leading-8 text-svarati-teal/90 sm:px-6 md:text-lg">
+        <div className="mx-auto w-full max-w-3xl px-4 pb-16 pt-4 text-base leading-7 text-svarati-teal/90 sm:px-6 sm:pt-6 sm:leading-8 md:text-lg">
           <ReactMarkdown components={mdComponents}>{article.content}</ReactMarkdown>
 
           <Card variant="danger" className="mt-12 border-l-4 border-l-svarati-danger">
@@ -147,36 +147,38 @@ export default async function ArticlePage({ params }) {
             <CardDescription className="text-[15px] leading-relaxed">
               {edu.detail.help.text}
             </CardDescription>
-            <Button
-              render={<a href={edu.detail.help.href} />}
-              nativeButton={false}
-              variant="exit"
-              size="md"
-              className="mt-4 rounded-full px-5 font-bold"
-              icon={<Phone className="size-4" aria-hidden="true" />}
-            >
-              {edu.detail.help.cta}
-            </Button>
-            <Button
-              render={<a href={edu.detail.help.href2} />}
-              nativeButton={false}
-              variant="exit"
-              size="md"
-              className="rounded-full px-5 font-bold"
-              icon={<Phone className="size-4" aria-hidden="true" />}
-            >
-              {edu.detail.help.cta2}
-            </Button>
+            <div className="mt-4 flex flex-wrap gap-2">
+              <Button
+                render={<a href={edu.detail.help.href} />}
+                nativeButton={false}
+                variant="exit"
+                size="md"
+                className="rounded-full px-5 font-bold"
+                icon={<Phone className="size-4" aria-hidden="true" />}
+              >
+                {edu.detail.help.cta}
+              </Button>
+              <Button
+                render={<a href={edu.detail.help.href2} />}
+                nativeButton={false}
+                variant="exit"
+                size="md"
+                className="rounded-full px-5 font-bold"
+                icon={<Phone className="size-4" aria-hidden="true" />}
+              >
+                {edu.detail.help.cta2}
+              </Button>
+            </div>
           </Card>
         </div>
       </article>
 
       {/* Artikel terkait */}
       {related.length > 0 && (
-        <section className="mt-16 px-2 sm:px-3">
+        <section className="mt-12 px-2 sm:mt-6 sm:px-3">
           <div className="mx-auto w-full max-w-6xl">
             <h2 className="mb-5 text-2xl font-bold text-svarati-teal">{edu.detail.related}</h2>
-            <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <ul className="grid gap-5 sm:grid-cols-2 md:grid-cols-3">
               {related.map((a) => (
                 <li key={a.slug}>
                   <ArticleCard article={a} categoryName={a.categoryLabel} />

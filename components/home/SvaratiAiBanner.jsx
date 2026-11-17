@@ -6,7 +6,6 @@ import { Card } from "@/components/Card";
 import { svaratiAiContent as ai } from "@/content/labels";
 
 // Gelembung chat padat dengan tiga titik dan ekor di kiri bawah.
-// Warnanya ikut text-* dari pemanggil.
 function IkonBubble({ className }) {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true" className={className} fill="currentColor">
@@ -21,11 +20,38 @@ function IkonBubble({ className }) {
   );
 }
 
+// Posisi bubble relatif terhadap kotak robot
+// "box"  = posisi bubble di sekitar robot
+// "ekor" = posisi + arah ekor lancip yang menunjuk ke robot
+// "anim" = animasi melayang (keyframes ada di globals.css)
+const POSISI_BUBBLE = [
+  {
+    // Kiri atas, di atas bahu kiri robot
+    box: "-left-[12%] -top-[8%] max-w-[115px] sm:max-w-[160px]",
+    ekor: "-bottom-1.5 right-5 border-b border-r",
+    anim: "animate-float-slow",
+  },
+  {
+    // Kanan atas, di atas telinga kanan
+    box: "-right-[22%] top-[2%] max-w-[125px] sm:max-w-[170px]",
+    ekor: "-bottom-1.5 left-5 border-b border-r",
+    anim: "animate-float-medium",
+  },
+  {
+    // Kiri bawah
+    box: "-left-[22%] -bottom-[8%] max-w-[125px] sm:max-w-[170px]",
+    ekor: "-right-1.5 top-4 border-r border-t",
+    anim: "animate-float-fast",
+  },
+];
+
 export default function SvaratiAiBanner() {
+  const bubbles = ai.bubbles?.slice(0, POSISI_BUBBLE.length) ?? [];
+
   return (
     <section
       id="svarati-ai"
-      className="mt-5 sm:mt-10 lg:mt-15 lebar-penuh overflow-hidden bg-svarati-lavender-light/50 px-4 pb-14 pt-10 sm:px-6 [--pad-x:1rem] sm:[--pad-x:1.5rem] lg:pb-16 lg:pt-12"
+      className="relative left-1/2 mt-5 w-screen -translate-x-1/2 overflow-hidden bg-svarati-lavender-light/50 px-4 pb-14 pt-10 sm:mt-10 sm:px-6 lg:mt-15 lg:pb-16 lg:pt-12 [--pad-x:1rem] sm:[--pad-x:1.5rem]"
     >
       <div className="mx-auto grid w-full max-w-6xl items-center gap-10 lg:grid-cols-2 lg:gap-8">
         {/* KIRI: Teks Utama */}
@@ -56,8 +82,9 @@ export default function SvaratiAiBanner() {
         </div>
 
         {/* KANAN: Maskot Robot + Bubble Chat */}
-        <div className="flex w-full items-center justify-center px-6 py-6 sm:px-10">
-          <div className="relative flex aspect-square w-48 items-center justify-center sm:w-64 md:w-72 lg:w-80">
+        <div className="flex w-full items-center justify-center py-10 sm:py-12 lg:-translate-x-6">
+          {/* Kotak robot: bubble dipasang relatif terhadap kotak ini */}
+          <div className="relative size-52 sm:size-64 lg:size-72">
             {/* Glow Latar Belakang */}
             <span
               aria-hidden="true"
@@ -70,37 +97,40 @@ export default function SvaratiAiBanner() {
                 src={ai.gambar.src}
                 alt={ai.gambar.alt}
                 fill
-                sizes="(min-width: 1024px) 320px, 60vw"
+                sizes="(min-width: 1024px) 288px, (min-width: 640px) 256px, 208px"
                 className="object-contain drop-shadow-md"
                 priority
               />
             </div>
 
             {/* Floating Bubble Chat */}
-            {ai.bubbles?.map((bubble) => (
-              <div
-                key={bubble.id}
-                className={`absolute z-20 ${bubble.posisi} transition-all duration-300`}
-              >
-                <Card
-                  variant="white"
-                  size="sm"
-                  className="max-w-[125px] overflow-visible rounded-2xl border-svarati-lavender-light/80 bg-white/95 p-2 shadow-md backdrop-blur-sm sm:max-w-[175px] sm:p-2.5"
+            {bubbles.map((bubble, i) => {
+              const pos = POSISI_BUBBLE[i];
+              return (
+                <div
+                  key={bubble.id}
+                  className={`absolute z-20 w-max ${pos.box} ${pos.anim}`}
                 >
-                  {/* Ekor lancip yang menunjuk ke maskot */}
-                  <span
-                    aria-hidden="true"
-                    className={`absolute size-3 rotate-45 border-svarati-lavender-light/80 bg-white/95 ${bubble.ekor}`}
-                  />
-                  <div className="flex items-start gap-1.5">
-                    <IkonBubble className="mt-0.5 size-3.5 shrink-0 text-svarati-coral" />
-                    <p className="text-[10px] font-medium leading-snug text-svarati-teal sm:text-xs">
-                      {bubble.teks}
-                    </p>
-                  </div>
-                </Card>
-              </div>
-            ))}
+                  <Card
+                    variant="white"
+                    size="sm"
+                    className="relative w-fit overflow-visible rounded-2xl border-svarati-lavender-light/80 bg-white/95 p-2 shadow-md backdrop-blur-sm sm:p-2.5"
+                  >
+                    {/* Ekor lancip yang menunjuk ke maskot */}
+                    <span
+                      aria-hidden="true"
+                      className={`absolute size-3 rotate-45 border-svarati-lavender-light/80 bg-white/95 ${pos.ekor}`}
+                    />
+                    <div className="flex items-start gap-1.5">
+                      <IkonBubble className="mt-0.5 size-3.5 shrink-0 text-svarati-coral" />
+                      <p className="text-[10px] font-medium leading-snug text-svarati-teal sm:text-xs">
+                        {bubble.teks}
+                      </p>
+                    </div>
+                  </Card>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

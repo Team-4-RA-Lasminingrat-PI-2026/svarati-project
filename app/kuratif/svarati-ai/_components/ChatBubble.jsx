@@ -17,7 +17,7 @@ export function BotAvatar({ large = false }) {
       }`}
     >
       <img
-        src="/cute-ai-mascot.svg"
+        src="/lumie-chat-profile-circle-transparent.svg"
         alt=""
         className={large ? "h-6 w-6" : "h-5 w-5"}
       />
