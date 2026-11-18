@@ -10,6 +10,21 @@ export default function CloseArticleButton() {
   const router = useRouter();
 
   const close = () => {
+    try {
+      const raw = sessionStorage.getItem("edu:from-chat");
+      if (raw) {
+        sessionStorage.removeItem("edu:from-chat");
+        const { back, article } = JSON.parse(raw);
+        const aman = typeof back === "string" && back.startsWith("/") && !back.startsWith("//");
+        if (aman && article === window.location.pathname) {
+          router.push(back);
+          return;
+        }
+      }
+    } catch {
+      // abaikan
+    }
+    
     let last = null;
     try {
       last = sessionStorage.getItem("edu:last-list");

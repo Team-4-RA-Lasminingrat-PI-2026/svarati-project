@@ -1,6 +1,20 @@
 import { BookOpen, ChevronRight, ExternalLink } from "lucide-react";
 import { KURATIF } from "@/content/labels";
 
+const tandaiDariChat = (href) => {
+  try {
+    sessionStorage.setItem(
+      "edu:from-chat",
+      JSON.stringify({
+        back: window.location.pathname + window.location.search,
+        article: href,
+      })
+    );
+  } catch {
+    //abaikan
+  }
+};
+
 // Sumber dikelompokkan per dokumen. Pasal dan halaman tampil sebagai chip di bawah judul.
 // Seluruh kartu adalah tautan: artikel yang tayang di edukasi membuka halaman artikel,
 // selain itu membuka dokumen resmi di tab baru.
@@ -69,6 +83,7 @@ export default function SourceList({ sources }) {
                   href={link.href}
                   target={link.eksternal ? "_blank" : undefined}
                   rel={link.eksternal ? "noopener noreferrer" : undefined}
+                  onClick={link.eksternal ? undefined : () => tandaiDariChat(link.href)}
                   className={`${kelas} transition-colors hover:bg-svarati-teal-soft`}
                 >
                   {isi}
