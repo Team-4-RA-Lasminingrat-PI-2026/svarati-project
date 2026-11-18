@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { MapPin } from "lucide-react";
+import { MapPin, Sprout  } from "lucide-react";
 import { REFERENCE_SERVICES, REFERENCE_RECOVERY } from "../_lib/constants";
 
 // Artikel sudah tampil di kotak SUMBER. Di sini hanya bantuan lanjutan, tampil sebagai badge.
@@ -7,7 +7,7 @@ const TIPE_TAMPIL = ["layanan", "pemulihan"];
 
 const GAYA = {
   layanan: { Icon: MapPin, kelas: "bg-svarati-lavender-light text-svarati-lavender-dark" },
-  pemulihan: { Icon: null, kelas: "bg-svarati-coral/15 text-svarati-coral-medium" },
+  pemulihan: { Icon: Sprout, kelas: "bg-svarati-coral/15 text-svarati-coral-medium" },
 };
 
 function getDestination(r) {
