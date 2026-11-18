@@ -35,7 +35,7 @@ def get_emergency_message(conn):
     return build_emergency_text(contacts)
 
 
-def get_verified_providers(conn, city=None, limit=5):
+def get_verified_providers(conn, city=None, limit=12):
     """Layanan terverifikasi: semua yang nasional, plus yang berada di kota pengguna (jika diisi)."""
     from psycopg2.extras import RealDictCursor
 
@@ -43,5 +43,6 @@ def get_verified_providers(conn, city=None, limit=5):
         cur.execute("""SELECT provider_name, provider_type, city, address, phone_number, operating_hours, is_national
                        FROM public.service_providers
                        WHERE is_verified AND (is_national OR (%s::text IS NOT NULL AND lower(city) = lower(%s::text)))
-                       ORDER BY is_national ASC, provider_name LIMIT %s""", (city, city, limit))
+                       ORDER BY (phone_number IS NULL), is_national ASC, provider_name LIMIT %s""",
+                    (city, city, limit))
         return cur.fetchall()

@@ -1,10 +1,9 @@
 import { NextResponse } from "next/server";
+import { isValidSessionToken } from "@/lib/session/validate";
 import { callFastApi, getErrorMessage } from "../../../../lib/fastapi";
 
 export const dynamic = "force-dynamic";
 
-const UUID_RE =
-  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const VALID_REASON_CODES = new Set(["tidak_sesuai", "terlalu_panjang", "kurang_jelas", "layanan_tidak_tepat", "lainnya"]);
 const MAX_REASON_TEXT_LENGTH = 200;
 
@@ -21,7 +20,7 @@ export async function POST(request) {
     if (!Number.isInteger(messageId) || messageId <= 0) {
       return NextResponse.json({ error: "Data umpan balik tidak valid." }, { status: 400 });
     }
-    if (typeof sessionToken !== "string" || !UUID_RE.test(sessionToken)) {
+    if (typeof sessionToken !== "string" || !isValidSessionToken(sessionToken)) {
       return NextResponse.json({ error: "ID sesi tidak valid." }, { status: 400 });
     }
     if (!VALID_REASON_CODES.has(reasonCode)) {

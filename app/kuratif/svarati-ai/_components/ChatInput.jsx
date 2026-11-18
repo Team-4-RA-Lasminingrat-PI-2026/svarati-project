@@ -29,19 +29,24 @@ export default function ChatInput({
             maxLength={MAX_LENGTH}
             placeholder={placeholder}
             aria-label={label}
-            className="block field-sizing-content overflow-hidden min-h-0 resize-none rounded-2xl px-4 py-2 text-sm leading-snug placeholder:text-svarati-lavender-dark/80"
+            className="block field-sizing-content overflow-hidden min-h-11 resize-none rounded-2xl px-4 py-3 text-sm leading-5 placeholder:text-svarati-lavender-dark/80"
           />
         </div>
         <Button
           type="submit"
           variant="secondary"
           size="lg"
-          className="h-11 shrink-0 rounded-full bg-svarati-teal px-5 text-white hover:bg-svarati-teal-light disabled:bg-svarati-teal disabled:opacity-40"
-          icon={<Send aria-hidden="true" />}
+          className="relative h-11 w-11 shrink-0 items-center justify-center rounded-full bg-svarati-teal p-0 text-white hover:bg-svarati-teal-light disabled:bg-svarati-teal disabled:opacity-40 sm:w-auto sm:px-5"
+          icon={
+            <Send
+              aria-hidden="true"
+              className="max-sm:absolute max-sm:inset-0 max-sm:m-auto max-sm:!size-6 max-sm:-translate-x-px max-sm:translate-y-px sm:-translate-x-0.5 sm:translate-y-0.5"
+            />
+          }
           iconPosition="right"
           disabled={!value.trim() || typing || disabled}
         >
-          {sendLabel}
+          <span className="sr-only sm:not-sr-only">{sendLabel}</span>
         </Button>
       </form>
 

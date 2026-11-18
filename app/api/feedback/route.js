@@ -1,16 +1,14 @@
 import { NextResponse } from "next/server";
+import { isValidSessionToken } from "@/lib/session/validate";
 import { callFastApi, getErrorMessage } from "../../../lib/fastapi";
 
 export const dynamic = "force-dynamic";
-
-const UUID_RE =
-  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 async function validateRequest(body) {
   const messageId = body?.messageId;
   const sessionToken = body?.sessionToken;
   if (!Number.isInteger(messageId) || messageId <= 0) return { error: "Data umpan balik tidak valid." };
-  if (typeof sessionToken !== "string" || !UUID_RE.test(sessionToken)) return { error: "ID sesi tidak valid." };
+  if (typeof sessionToken !== "string" || !isValidSessionToken(sessionToken)) return { error: "ID sesi tidak valid." };
   return { messageId, sessionToken };
 }
 
@@ -43,7 +41,7 @@ export async function POST(request) {
     if (!Number.isInteger(messageId) || messageId <= 0 || typeof isHelpful !== "boolean") {
       return NextResponse.json({ error: "Data umpan balik tidak valid." }, { status: 400 });
     }
-    if (typeof sessionToken !== "string" || !UUID_RE.test(sessionToken)) {
+    if (typeof sessionToken !== "string" || !isValidSessionToken(sessionToken)) {
       return NextResponse.json({ error: "ID sesi tidak valid." }, { status: 400 });
     }
 

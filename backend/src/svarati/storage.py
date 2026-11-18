@@ -15,9 +15,13 @@ UUID_RE = re.compile(r"^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{
 VALID_REASON_CODES = {"tidak_sesuai", "terlalu_panjang", "kurang_jelas", "layanan_tidak_tepat", "lainnya"}
 MAX_REASON_TEXT_LENGTH = 200
 
+class SessionExpired(Exception):
+    """Token sudah kedaluwarsa dan tidak boleh dipakai lagi."""
+
+HEX64_RE = re.compile(r"^[0-9a-f]{64}$")
 
 def valid_token(token) -> bool:
-    return isinstance(token, str) and bool(UUID_RE.match(token))
+    return isinstance(token, str) and bool(UUID_RE.match(token) or HEX64_RE.match(token))
 
 
 def hash_token(token: str) -> str:
@@ -44,9 +48,8 @@ def ensure_session(conn, token) -> int:
             raise SessionExpired()
         if row:
             cur.execute("""UPDATE public.anonymous_sessions
-                           SET last_active_at = now(),
-                               expires_at = now() + make_interval(days => %s)
-                           WHERE session_id = %s""", (config.SESSION_TTL_DAYS, row[0]))
+                           SET last_active_at = now()
+                           WHERE session_id = %s""", (row[0],))
             return row[0]
         cur.execute("""INSERT INTO public.anonymous_sessions (session_token_hash, expires_at)
                        VALUES (%s, now() + make_interval(days => %s))
@@ -55,7 +58,7 @@ def ensure_session(conn, token) -> int:
         new_row = cur.fetchone()
         if new_row:
             return new_row[0]
-        raise SessionExpired()  # token baru dibuat request lain bersamaan; minta ulang
+        raise SessionExpired()
 
 
 def save_exchange(conn, session_id, user_text, answer, chunks, mode=None) -> int:

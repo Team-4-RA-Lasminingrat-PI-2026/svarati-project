@@ -1,5 +1,6 @@
 import { KURATIF } from "@/content/labels";
 import LinkifiedText from "./LinkifiedText";
+import SourceList from "./SourceList";
 
 const ai = KURATIF.ai;
 const EMERGENCY_PHRASE = "Bantuan Darurat";
@@ -25,21 +26,24 @@ export function BotAvatar({ large = false }) {
   );
 }
 
-// Satu pesan. Bot: teal lembut, tautan nomor dan email aktif. Pengguna: lavender lembut.
-export function Message({ from, text }) {
+// Satu pesan. Bot: teal lembut, tautan nomor dan email aktif, sumber dan rujukan di dalam bubble.
+// Pengguna: lavender lembut.
+export function Message({ from, text, sources, footer }) {
   const isBot = from === "bot";
   return (
     <div className={`flex gap-3 ${isBot ? "" : "justify-end"}`}>
-      {isBot && <BotAvatar />}
-      <p
-        className={`max-w-[85%] whitespace-pre-wrap break-words rounded-2xl px-4 py-3 text-[15px] leading-normal ${
+      {isBot && <span className="hidden sm:flex"><BotAvatar /></span>}
+      <div
+        className={`max-w-[85%] break-words rounded-2xl px-4 py-3 text-[15px] leading-normal ${
           isBot
             ? "rounded-bl-sm bg-svarati-teal-soft text-svarati-teal"
             : "rounded-br-sm bg-svarati-lavender-light text-svarati-lavender-dark"
         }`}
       >
-        {isBot ? <LinkifiedText text={text} /> : text}
-      </p>
+        <p className="whitespace-pre-wrap">{isBot ? <LinkifiedText text={text} /> : text}</p>
+        {isBot && <SourceList sources={sources} />}
+        {isBot && footer && <div className="mt-2">{footer}</div>}
+      </div>
     </div>
   );
 }
@@ -48,7 +52,7 @@ export function Message({ from, text }) {
 export function TypingIndicator() {
   return (
     <div className="flex gap-3" role="status">
-      <BotAvatar />
+      <span className="hidden sm:flex"><BotAvatar /></span>
       <div className="flex items-center gap-1.5 rounded-2xl rounded-bl-sm bg-svarati-teal-soft px-4 py-2.5">
         <span className="sr-only">{ai.typing}</span>
         {[0, 150, 300].map((delay) => (

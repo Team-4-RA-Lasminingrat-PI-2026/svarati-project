@@ -24,6 +24,17 @@ def _env_float(name: str, default: float) -> float:
 DATABASE_URL = os.getenv("DATABASE_URL", "")
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
 GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.5-flash")
+GEMINI_FALLBACK_MODEL = os.getenv("GEMINI_FALLBACK_MODEL", "gemini-3.5-flash-lite")
+# Kecepatan Gemini. Total terburuk ~ GEMINI_ATTEMPTS x GEMINI_TIMEOUT_SECONDS; jaga di bawah timeout proxy Next.js (60 dtk).
+GEMINI_TIMEOUT_SECONDS = _env_float("GEMINI_TIMEOUT_SECONDS", 20)
+GEMINI_ATTEMPTS = _env_int("GEMINI_ATTEMPTS", 2)
+# Hanya untuk model gemini-3.x: minimal | low | medium | high. (Model 2.5 memakai thinking_budget=0.)
+GEMINI_THINKING_LEVEL = os.getenv("GEMINI_THINKING_LEVEL", "low")
+# Token "berpikir" ikut terhitung; jangan terlalu kecil agar jawaban tidak terpotong.
+GEMINI_MAX_OUTPUT_TOKENS = _env_int("GEMINI_MAX_OUTPUT_TOKENS", 2048)
+# True = jika ada pasal/nomor tak bersumber, tulis ulang lewat panggilan Gemini kedua (2x lebih lama).
+# False = langsung dibuang oleh strip_unsourced.
+VERIFY_RETRY = _env_bool("VERIFY_RETRY", False)
 
 # --- Embedding
 EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "intfloat/multilingual-e5-base")

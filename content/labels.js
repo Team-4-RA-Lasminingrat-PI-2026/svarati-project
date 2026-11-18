@@ -639,9 +639,9 @@ export const KURATIF = {
     typing: "Svarati AI sedang mengetik",
     headerJudul: "Teman cerita",
     headerSub: "Asisten AI, bukan manusia",
-    greeting: "Hai. Kamu bisa memilih apa yang ingin dilakukan, atau langsung menulis sesuatu.",
+    greeting: "Halo! Aku Svarati AI. Aku hadir untuk menjawab semua pertanyaanmu dengan ramah. Tenang saja, semua rahasiamu aman terjaga denganku.",
     inputLabel: "Tulis pesan",
-    inputPlaceholder: "Bagikan apa yang kamu rasa nyaman...",
+    inputPlaceholder: "Tulis disini...",
     send: "Kirim",
     chips: [
       { label: "Saya ingin cerita", key: "cerita" },
@@ -660,6 +660,7 @@ export const KURATIF = {
     },
     errorText: "Maaf, balasan belum bisa dikirim. Coba lagi sebentar lagi, atau gunakan tombol bantuan darurat jika kamu butuh bantuan sekarang.",
     urgentNotice: "Situasimu mendesak. Hubungi layanan bantuan sekarang.",
+    sources: { title: "Sumber" },
     feedback: {
       question: "Boleh tahu alasannya? (opsional)",
       group: "Alasan (opsional)",

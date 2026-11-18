@@ -1,7 +1,8 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { KURATIF } from "@/content/labels";
-import { readConsent, saveConsent } from "../_lib/storage";
+import { readConsent, saveConsent } from "../_lib/consent";
+import { clearSession } from "@/lib/session/storage";
 import {
   deleteFeedback,
   importHistory,
@@ -95,6 +96,11 @@ export function useSvaratiChat(questions) {
     const pending = getUnsavedTurns(messages);
     if (pending.length > 0) {
       importHistory(pending.map((t) => t.turn)).then((data) => {
+        if (data?.expired) {
+          clearSession();
+          setExpiresAt(null);
+          return;
+        }
         if (!data) return; // tetap belum tersimpan; peringatan keluar halaman tetap aktif
         const idMap = new Map(pending.map((t, k) => [t.botId, data.message_ids[k]]));
         setMessages((m) => m.map((x) => (idMap.has(x.id) ? { ...x, serverId: idMap.get(x.id) } : x)));
@@ -155,6 +161,11 @@ export function useSvaratiChat(questions) {
     try {
       const r = await sendMessage(trimmed, consent === true, questions, isFirstTurn, history);
       if (r.expiresAt) setExpiresAt(r.expiresAt);
+      if (r.sessionExpired) {
+        clearSession();
+        setExpiresAt(null);
+        setChangeConsent(true); // minta persetujuan simpan lagi
+      }
       if (r.mode === "darurat") setShowUrgent(true); // keputusan darurat ada di backend
       setMessages((m) => [
         ...m,
@@ -165,6 +176,7 @@ export function useSvaratiChat(questions) {
           mode: r.mode,
           references: r.references,
           chunks: r.chunks,
+          sources: r.sources,
           serverId: r.serverId,
           feedback: null,
         },

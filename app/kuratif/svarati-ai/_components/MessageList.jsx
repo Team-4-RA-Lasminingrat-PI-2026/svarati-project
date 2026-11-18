@@ -1,6 +1,6 @@
 import { Message, TypingIndicator } from "./ChatBubble";
-import ReferenceList from "./ReferenceList";
 import FeedbackBar from "./FeedbackBar";
+import ReferenceList from "./ReferenceList";
 
 export default function MessageList({ logRef, onScroll, messages, typing, onFeedback, onReason }) {
   return (
@@ -14,9 +14,18 @@ export default function MessageList({ logRef, onScroll, messages, typing, onFeed
     >
       {messages.map((m) => (
         <div key={m.id} className="flex flex-col gap-2">
-          <Message from={m.from} text={m.text} />
-          {m.from === "bot" && <ReferenceList items={m.references} />}
-          {m.from === "bot" && <FeedbackBar msg={m} onSelect={onFeedback} onReason={onReason} />}
+          <Message
+            from={m.from}
+            text={m.text}
+            sources={m.sources}
+            footer={
+              m.from === "bot" ? (
+                <FeedbackBar msg={m} onSelect={onFeedback} onReason={onReason}>
+                  <ReferenceList items={m.references} />
+                </FeedbackBar>
+              ) : null
+            }
+          />
         </div>
       ))}
       {typing && <TypingIndicator />}
