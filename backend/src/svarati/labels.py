@@ -13,6 +13,7 @@ MODE_VERIFICATION_FAILED = "gagal_verifikasi"
 MODE_GREETING = "sapaan"
 MODE_LLM_ERROR = "error_llm"
 MODE_LLM_EMPTY = "llm_kosong"
+MODE_CLARIFY = "klarifikasi"
 
 # ---------------------------------------------------------------- balasan chat
 GREETING_REPLY = (
@@ -58,6 +59,7 @@ ERR_FEEDBACK_DELETE_FAILED = "Gagal menghapus umpan balik."
 ERR_UNKNOWN_REASON = "Alasan tidak dikenal."
 ERR_REASON_SAVE_FAILED = "Gagal menyimpan alasan."
 ERR_ANSWERS_TOO_LARGE = "answers terlalu besar"
+ERR_SESSION_EXPIRED = "Sesi sudah kedaluwarsa. Silakan mulai percakapan baru."
 
 # ---------------------------------------------------------------- label Cek Kondisi untuk query RAG
 QUERY_PREFIX = "Pertanyaan"
@@ -83,7 +85,9 @@ Prinsip:
 12. Jika pesan pengguna bukan pertanyaan tentang kekerasan atau layanan (misalnya keluhan ringan seperti ngantuk atau lelah), tanggapi singkat dan hangat tanpa mencantumkan pasal atau daftar kontak. Tawarkan bantuan dengan satu kalimat.
 13. Cocokkan pasal dengan situasi pengguna: pilih huruf/ayat yang sesuai kasusnya. Jika SUMBER memuat ayat tentang delik aduan atau pelaporan, sebutkan.
 14. Nomor telepon hanya dari LAYANAN TERVERIFIKASI atau SUMBER. Jangan menambah nomor WhatsApp atau nomor lain dari ingatanmu.
-15. RIWAYAT PERCAKAPAN hanya untuk memahami pertanyaan lanjutan. Jangan jadikan riwayat sebagai sumber pasal, nomor, atau fakta; fakta tetap hanya dari SUMBER."""
+15. RIWAYAT PERCAKAPAN hanya untuk memahami pertanyaan lanjutan. Jangan jadikan riwayat sebagai sumber pasal, nomor, atau fakta; fakta tetap hanya dari SUMBER.
+16. Saat menyebut pasal, sebutkan juga nama dokumennya persis seperti judul di SUMBER (misalnya UU TPKS).
+17. Di baris paling akhir jawaban, tulis tepat satu baris berisi nomor SUMBER yang benar-benar kamu pakai untuk menjawab, dengan format [[SUMBER: 1,3]] (nomor sesuai [n] di bagian SUMBER). Jika tidak memakai sumber, tulis [[SUMBER: ]]. Baris ini tidak dibaca pengguna."""
 
 # Kerangka isi prompt. Placeholder: {sources} {providers} {conditions} {history} {message}
 PROMPT_TEMPLATE = (
@@ -106,3 +110,5 @@ CORRECTION_TEMPLATE = (
 )
 # Pengganti rujukan pasal yang dibuang karena tidak ada di sumber.
 UNSOURCED_ARTICLE_REPLACEMENT = "ketentuan terkait"
+
+CLARIFY_REPLY = "Pesanmu terlihat belum lengkap. Coba tulis lagi apa yang ingin kamu tanyakan, ya."

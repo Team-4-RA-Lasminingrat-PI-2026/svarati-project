@@ -1,20 +1,36 @@
 import { useState } from "react";
-import { ThumbsDown, ThumbsUp } from "lucide-react";
+import { Check, Copy, Download, ThumbsDown, ThumbsUp } from "lucide-react";
 import { KURATIF } from "@/content/labels";
 import { MODE_FEEDBACK, MAX_REASON_LENGTH } from "../_lib/constants";
 
 const fb = KURATIF.ai.feedback;
 
-// Jempol atas/bawah. Setelah jempol bawah, pengguna boleh (opsional) memilih alasan.
-// Alasan tidak wajib dan tidak menghalangi penilaian yang sudah tersimpan.
-export default function FeedbackBar({ msg, onSelect, onReason }) {
+// Tooltip sederhana di atas ikon; muncul saat hover atau saat tombol difokus lewat keyboard.
+function Tip({ label, children }) {
+  return (
+    <span className="group relative inline-flex">
+      {children}
+      <span
+        role="tooltip"
+        className="pointer-events-none absolute bottom-full left-1/2 mb-1.5 -translate-x-1/2 whitespace-nowrap rounded-md bg-svarati-teal px-2 py-1 text-[11px] font-medium text-white opacity-0 shadow transition-opacity group-hover:opacity-100 group-focus-within:opacity-100"
+      >
+        {label}
+      </span>
+    </span>
+  );
+}
+
+// Baris aksi di dalam bubble bot: children (badge rujukan) di kiri, aksi di kanan.
+// Aksi: jempol atas/bawah (hanya jika jawaban tersimpan), salin, dan unduh sebagai .txt.
+// Setelah jempol bawah, pengguna boleh (opsional) memilih alasan di bawah baris ini.
+export default function FeedbackBar({ msg, onSelect, onReason, children }) {
   const [step, setStep] = useState("initial"); // initial | other | sent | closed
   const [text, setText] = useState("");
   const [isSending, setIsSending] = useState(false);
+  const [copied, setCopied] = useState(false);
 
-  if (!msg.serverId || !MODE_FEEDBACK.has(msg.mode)) return null;
-
-  const showReason = msg.feedback === false && step !== "closed";
+  const bisaNilai = Boolean(msg.serverId && MODE_FEEDBACK.has(msg.mode));
+  const showReason = bisaNilai && msg.feedback === false && step !== "closed";
 
   function select(value) {
     setStep("initial");
@@ -37,29 +53,66 @@ export default function FeedbackBar({ msg, onSelect, onReason }) {
     submit(code, null);
   }
 
+  async function salin() {
+    try {
+      await navigator.clipboard.writeText(msg.text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch {
+      // Clipboard tidak tersedia di browser ini: tidak ada yang perlu ditampilkan.
+    }
+  }
+
+  function unduh() {
+    const url = URL.createObjectURL(new Blob([msg.text], { type: "text/plain;charset=utf-8" }));
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "jawaban-svarati.txt";
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
   const renderButton = (value, Icon, label) => (
     <button
       type="button"
       onClick={() => select(value)}
       aria-pressed={msg.feedback === value}
       aria-label={label}
-      className={`rounded-full border p-1.5 ${
+      className={`rounded-full border p-1 ${
         msg.feedback === value
           ? "border-svarati-teal bg-svarati-teal-soft text-svarati-teal"
           : "border-svarati-lavender-light text-svarati-lavender-dark hover:bg-svarati-lavender-light/40"
       }`}
     >
-      <Icon className="h-4 w-4" aria-hidden="true" />
+      <Icon className="h-3.5 w-3.5" aria-hidden="true" />
     </button>
+  );
+
+  const iconBtn = "rounded-full border border-svarati-lavender-light p-1 text-svarati-lavender-dark hover:bg-svarati-lavender-light/40";
+
+  const baris = (
+    <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex min-w-0 flex-col items-start gap-1.5 sm:flex-row sm:flex-wrap">{children}</div>
+      <div className="ml-auto flex shrink-0 items-center gap-1">
+        {bisaNilai && <Tip label="Suka">{renderButton(true, ThumbsUp, "Jawaban membantu")}</Tip>}
+        {bisaNilai && <Tip label="Tidak suka">{renderButton(false, ThumbsDown, "Jawaban kurang membantu")}</Tip>}
+        <Tip label={copied ? "Tersalin" : "Salin"}>
+          <button type="button" onClick={salin} aria-label={copied ? "Tersalin" : "Salin jawaban"} className={iconBtn}>
+            {copied ? <Check className="h-3.5 w-3.5" aria-hidden="true" /> : <Copy className="h-3.5 w-3.5" aria-hidden="true" />}
+          </button>
+        </Tip>
+        <Tip label="Unduh">
+          <button type="button" onClick={unduh} aria-label="Unduh jawaban" className={iconBtn}>
+            <Download className="h-3.5 w-3.5" aria-hidden="true" />
+          </button>
+        </Tip>
+      </div>
+    </div>
   );
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex items-center gap-2">
-        <span className="text-xs text-svarati-lavender-dark">Jawaban ini membantu?</span>
-        {renderButton(true, ThumbsUp, "Jawaban membantu")}
-        {renderButton(false, ThumbsDown, "Jawaban kurang membantu")}
-      </div>
+      {baris}
 
       {showReason && step === "initial" && (
         <div className="flex flex-col gap-2" role="group" aria-label={fb.group}>

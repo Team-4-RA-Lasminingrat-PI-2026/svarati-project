@@ -152,32 +152,44 @@ def chat_endpoint(payload: ChatRequest):
             stage = chat.prepare(conn, get_embedder(), questionnaire, message, payload.answers, payload.city,
                                  is_first_turn=payload.pertama,
                                  history=[r.model_dump() for r in payload.history])
-            initial_sources = chat.list_sources(conn, stage.get("results") or [])
         # Koneksi sudah dikembalikan ke pool; menunggu Gemini tidak menahan koneksi database.
         result = chat.finish(stage)
-        sources = initial_sources if result["chunks"] else []
+
+        # Sumber = chunk yang benar-benar dipakai jawaban (dari baris [[SUMBER: ...]] model).
+        # Chunk yang sama disimpan agar riwayat dan rujukan sesuai dengan jawaban.
+        sources = []
+        shown_chunks = result.get("used_chunks", []) if result["mode"] == "rag" else []
+        if shown_chunks:
+            try:
+                with connection() as conn:
+                    sources = chat.list_sources(conn, shown_chunks)
+            except Exception as exc:  # sumber tetap opsional; jawaban tetap dikirim
+                _log_error("sumber gagal dimuat", exc)
     except Exception as exc:
         _log_error("chat gagal", exc)
         raise HTTPException(status_code=500, detail=labels.ERR_SERVICE_FAILED)
 
     references = []
-    if result["chunks"]:  # hanya jawaban RAG yang punya sumber
+    if shown_chunks:  # rujukan dihitung dari sumber yang dipakai jawaban
         try:
             with connection() as conn:
                 references = reference.get_references_for_chunks(
-                    conn, result["chunks"], result.get("mentions_provider", False))
+                    conn, shown_chunks, result.get("mentions_provider", False))
         except Exception as exc:  # rujukan hanya tambahan; jawaban tetap dikirim
             _log_error("rujukan gagal", exc)
 
     message_id = None
     expires_at = None
+    session_expired = False
     if should_save:
         try:
             with connection() as conn:
                 sid = storage.ensure_session(conn, payload.session_token)
                 message_id = storage.save_exchange(
-                    conn, sid, message, result["answer"], result["chunks"], result["mode"])
+                    conn, sid, message, result["answer"], shown_chunks, result["mode"])
                 expires_at = storage.get_session_expiry(conn, payload.session_token)
+        except storage.SessionExpired:
+            session_expired = True  # jawaban tetap dikirim, tapi tidak disimpan
         except Exception as exc:  # jawaban tetap dikembalikan walau penyimpanan gagal
             _log_error("simpan percakapan gagal", exc)
 
@@ -186,12 +198,14 @@ def chat_endpoint(payload: ChatRequest):
         "mode": result["mode"],
         "sources": sources,
         # Dipakai klien untuk menyimpan chat belakangan (POST /session/import).
+        # Sama dengan chunk yang disimpan di database.
         "chunks": [{"chunk_id": int(c["chunk_id"]), "similarity": round(float(c["sim"]), 4)}
-                   for c in result["chunks"]],
+                   for c in shown_chunks],
         "message_id": message_id,
         "warnings": result.get("warnings"),
         "rujukan": references,
         "berlaku_sampai": expires_at,
+        "session_expired": session_expired,
     }
 
 
@@ -206,6 +220,8 @@ def refresh_session(payload: SessionRequest):
         with connection() as conn:
             storage.ensure_session(conn, payload.session_token)
             expires_at = storage.get_session_expiry(conn, payload.session_token)
+    except storage.SessionExpired:
+        raise HTTPException(status_code=401, detail=labels.ERR_SESSION_EXPIRED)
     except Exception as exc:
         _log_error("perbarui sesi gagal", exc)
         raise HTTPException(status_code=500, detail=labels.ERR_SESSION_REFRESH_FAILED)
@@ -243,9 +259,17 @@ def get_session_history(payload: SessionRequest):
                 _log_error("rujukan riwayat gagal", exc)
                 conn.rollback()
                 reference_map = {}
+            try:
+                source_map = reference.get_sources_for_messages(conn, bot_ids)
+            except Exception as exc:  # riwayat tetap dikembalikan tanpa sumber
+                _log_error("sumber riwayat gagal", exc)
+                conn.rollback()
+                source_map = {}
         for m in messages:
+            m["sources"] = []
             if m["from"] == "bot":
                 m["rujukan"] = reference_map.get(m["id"], [])
+                m["sources"] = source_map.get(m["id"], [])
     except Exception as exc:
         _log_error("ambil riwayat gagal", exc)
         raise HTTPException(status_code=500, detail=labels.ERR_HISTORY_LOAD_FAILED)
@@ -264,6 +288,8 @@ def import_history(payload: ImportRequest):
             sid = storage.ensure_session(conn, payload.session_token)
             ids = storage.import_turns(conn, sid, [t.model_dump() for t in payload.turns])
             expires_at = storage.get_session_expiry(conn, payload.session_token)
+    except storage.SessionExpired:
+        raise HTTPException(status_code=401, detail=labels.ERR_SESSION_EXPIRED)
     except Exception as exc:
         _log_error("impor riwayat gagal", exc)
         raise HTTPException(status_code=500, detail=labels.ERR_HISTORY_SAVE_FAILED)
@@ -319,4 +345,3 @@ def submit_feedback_reason(payload: FeedbackReasonRequest):
     if not ok:
         raise HTTPException(status_code=404, detail=labels.ERR_MESSAGE_OR_SESSION_NOT_FOUND)
     return {"status": "ok", "disimpan": True}
-

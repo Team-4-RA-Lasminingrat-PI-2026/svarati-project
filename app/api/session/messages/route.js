@@ -1,16 +1,14 @@
 import { NextResponse } from "next/server";
+import { isValidSessionToken } from "@/lib/session/validate";
 import { callFastApi, getErrorMessage } from "../../../../lib/fastapi";
 
 export const dynamic = "force-dynamic";
-
-const UUID_RE =
-  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 export async function POST(request) {
   try {
     const body = await request.json();
     const token = typeof body?.session_token === "string" ? body.session_token : "";
-    if (!UUID_RE.test(token)) {
+    if (!isValidSessionToken(token)) {
       return NextResponse.json({ error: "ID sesi tidak valid." }, { status: 400 });
     }
     const { ok, status, data } = await callFastApi("/session/messages", {

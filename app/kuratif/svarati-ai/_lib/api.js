@@ -1,8 +1,16 @@
 // Semua pemanggilan ke route Next.js /api/* (yang meneruskan ke FastAPI).
 import { bacaAsesmen } from "@/lib/self-assessment/storage";
-import { getSessionToken } from "./storage";
+import { getStoredSession } from "@/lib/session/storage";
+import { ensureAnonymousSession } from "@/lib/session";
 
 const JSON_HEADERS = { "Content-Type": "application/json" };
+
+// Token sesi dari sistem sesi bersama (lib/session). Membuat sesi baru jika belum ada atau sudah kedaluwarsa.
+async function getToken() {
+  const stored = getStoredSession();
+  if (stored) return stored.token;
+  return ensureAnonymousSession();
+}
 
 // Jawaban cek kondisi dari localStorage. Kosong jika belum diisi (opsional).
 function getAssessmentAnswers(questions) {
@@ -12,7 +20,7 @@ function getAssessmentAnswers(questions) {
 
 // Perpanjang masa simpan sesi dan ambil tanggal kedaluwarsanya.
 export async function syncSession() {
-  const token = getSessionToken();
+  const token = await getToken();
   if (!token) return null;
   try {
     const res = await fetch("/api/session", {
@@ -30,7 +38,7 @@ export async function syncSession() {
 
 // Ambil riwayat percakapan tersimpan. Hanya dipanggil jika pengguna setuju.
 export async function loadHistory() {
-  const token = getSessionToken();
+  const token = await getToken();
   if (!token) return [];
   try {
     const res = await fetch("/api/session/messages", {
@@ -49,6 +57,7 @@ export async function loadHistory() {
           serverId: m.from === "bot" ? m.id : null,
           feedback: m.helpful ?? null,
           references: Array.isArray(m.rujukan) ? m.rujukan : [],
+          sources: Array.isArray(m.sources) ? m.sources : [],
         }))
       : [];
   } catch {
@@ -59,7 +68,7 @@ export async function loadHistory() {
 // Kirim satu pesan. Percakapan hanya disimpan jika pengguna setuju DAN ID sesi tersedia.
 // isFirstTurn: giliran pertama. history: beberapa giliran terakhir untuk pertanyaan lanjutan.
 export async function sendMessage(message, consented, questions, isFirstTurn, history) {
-  const token = consented ? getSessionToken() : null;
+  const token = consented ? await getToken() : null;
   const res = await fetch("/api/chat", {
     method: "POST",
     headers: JSON_HEADERS,
@@ -79,14 +88,16 @@ export async function sendMessage(message, consented, questions, isFirstTurn, hi
     mode: data.mode ?? null,
     references: Array.isArray(data.rujukan) ? data.rujukan : [],
     chunks: Array.isArray(data.chunks) ? data.chunks : [],
+    sources: Array.isArray(data.sources) ? data.sources : [],
     serverId: data.message_id ?? null,
     expiresAt: data.berlaku_sampai ?? null,
+    sessionExpired: data.session_expired === true,
   };
 }
 
 // Simpan giliran yang tertunda sekaligus. Mengembalikan { message_ids, berlaku_sampai } atau null.
 export async function importHistory(turns) {
-  const token = getSessionToken();
+  const token = await getToken();
   if (!token) return null;
   try {
     const res = await fetch("/api/session/import", {
@@ -94,6 +105,7 @@ export async function importHistory(turns) {
       headers: JSON_HEADERS,
       body: JSON.stringify({ session_token: token, turns }),
     });
+    if (res.status === 401) return { expired: true };
     if (!res.ok) return null;
     const data = await res.json();
     return Array.isArray(data?.message_ids) && data.message_ids.length === turns.length ? data : null;
@@ -103,7 +115,7 @@ export async function importHistory(turns) {
 }
 
 export async function sendFeedback(messageId, isHelpful) {
-  const token = getSessionToken();
+  const token = await getToken();
   if (!token) return false;
   try {
     const res = await fetch("/api/feedback", {
@@ -119,7 +131,7 @@ export async function sendFeedback(messageId, isHelpful) {
 
 // Kirim alasan penilaian. Backend hanya menyimpannya jika pengguna setuju menyimpan chat.
 export async function sendReason(messageId, code, text) {
-  const token = getSessionToken();
+  const token = await getToken();
   if (!token) return false;
   try {
     const res = await fetch("/api/feedback/alasan", {
@@ -135,7 +147,7 @@ export async function sendReason(messageId, code, text) {
 
 // Batalkan penilaian (klik tombol yang sudah aktif)
 export async function deleteFeedback(messageId) {
-  const token = getSessionToken();
+  const token = await getToken();
   if (!token) return false;
   try {
     const res = await fetch("/api/feedback", {

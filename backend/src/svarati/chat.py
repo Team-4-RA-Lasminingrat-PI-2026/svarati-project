@@ -8,7 +8,7 @@ Dibagi dua tahap agar koneksi database tidak ditahan selama menunggu Gemini:
 import logging
 import re
 
-from . import assessment, generation, labels, retrieval, services
+from . import assessment, config, generation, labels, retrieval, services
 from .safety import normalize_text
 
 log = logging.getLogger("svarati")
@@ -50,6 +50,11 @@ def _expand_query_with_history(message, history):
     return f"{previous[-1][:300]} {message}" if previous else message
 
 
+def _is_too_short(message):
+    """Pesan tanpa cukup huruf (misal 'd') tidak dicari, supaya tidak ikut konteks pertanyaan sebelumnya."""
+    return len(re.findall(r"[^\W\d_]", message or "")) < 3
+
+
 def _mentions_provider(answer, providers):
     """True jika jawaban menyebut salah satu layanan terverifikasi (nama atau nomor teleponnya)."""
     text = answer.lower()
@@ -76,6 +81,9 @@ def prepare(conn, embedder, questionnaire, message, answers=None, city=None, is_
     if _is_greeting_only(message):
         return {"done": {"mode": labels.MODE_GREETING, "answer": labels.GREETING_REPLY, "chunks": []}}
 
+    if _is_too_short(message):
+        return {"done": {"mode": labels.MODE_CLARIFY, "answer": labels.CLARIFY_REPLY, "chunks": []}}
+
     plan = assessment.build_search_plan(questionnaire, normalized_answers)
     query = assessment.compose_query(_expand_query_with_history(message, history), questionnaire,
                                      normalized_answers)
@@ -92,6 +100,26 @@ def prepare(conn, embedder, questionnaire, message, answers=None, city=None, is_
     return {"done": None, "prompt": prompt, "results": results, "providers": providers}
 
 
+SOURCE_TAG = re.compile(r"\[\[SUMBER:\s*([\d,\s]*)\]\]")
+
+
+def split_source_tag(answer, results):
+    """Pisahkan baris [[SUMBER: 1,3]] dari jawaban. Kembalikan (jawaban_bersih, chunk_yang_dipakai).
+    Jika tag tidak ada atau kosong: pakai chunk dengan pasal yang disebut, atau chunk teratas."""
+    clean = SOURCE_TAG.sub("", answer or "").strip()
+    indices = []
+    for m in SOURCE_TAG.finditer(answer or ""):
+        for part in m.group(1).split(","):
+            part = part.strip()
+            if part.isdigit() and 1 <= int(part) <= len(results) and int(part) not in indices:
+                indices.append(int(part))
+    used = [results[i - 1] for i in indices]
+    if not used and results:
+        cited = cited_articles(clean)
+        used = [r for r in results if str(r.get("article_number") or "") in cited] or results[:1]
+    return clean, used
+
+
 def finish(stage):
     """Tahap 2 (tanpa koneksi database): panggil Gemini lalu periksa Pasal dan nomor telepon."""
     if stage["done"] is not None:
@@ -102,6 +130,7 @@ def finish(stage):
     except Exception as exc:  # jangan bocorkan detail ke pengguna
         log.error("Pemanggilan Gemini gagal: %s", type(exc).__name__)
         return {"mode": labels.MODE_LLM_ERROR, "chunks": [], "answer": labels.LLM_ERROR_REPLY}
+    answer, used = split_source_tag(answer, results)
     if not answer:
         # Bisa karena filter keamanan Gemini; jangan dinyatakan sebagai "tidak ada informasi".
         return {"mode": labels.MODE_LLM_EMPTY, "answer": labels.ANSWER_FAILED_REPLY, "chunks": []}
@@ -115,15 +144,17 @@ def finish(stage):
                 generation.find_unsourced_phones(text, valid_text))
 
     articles, phones = verify_answer(answer)
-    if articles or phones:
+    if config.VERIFY_RETRY and (articles or phones):
         # Satu kali percobaan ulang dengan menyebut item yang tidak ada di sumber.
         try:
             retry = generation.call_gemini(stage["prompt"] + generation.build_correction(articles, phones))
         except Exception as exc:
             log.error("Percobaan ulang Gemini gagal: %s", type(exc).__name__)
             retry = ""
+        retry, retry_used = split_source_tag(retry, results)
         if retry:
             answer = retry
+            used = retry_used
             articles, phones = verify_answer(answer)
 
     if articles or phones:
@@ -137,7 +168,7 @@ def finish(stage):
         log.warning("Jawaban ditolak: %d pasal dan %d nomor tidak ada di sumber", len(articles), len(phones))
         return {"mode": labels.MODE_VERIFICATION_FAILED, "answer": labels.ANSWER_FAILED_REPLY, "chunks": []}
 
-    return {"mode": labels.MODE_RAG, "answer": answer, "chunks": results,
+    return {"mode": labels.MODE_RAG, "answer": answer, "chunks": results, "used_chunks": used,
             "mentions_provider": _mentions_provider(answer, providers),
             "warnings": {"pasal_tidak_ada_di_sumber": [], "nomor_tidak_ada_di_sumber": []}}
 
@@ -147,6 +178,9 @@ def answer_question(conn, embedder, questionnaire, message, answers=None, city=N
     """Kembalikan dict: mode, answer, chunks (hasil pencarian), dan warnings (mode 'rag')."""
     return finish(prepare(conn, embedder, questionnaire, message, answers, city, is_first_turn, history))
 
+def cited_articles(answer):
+    """Nomor pasal yang disebut di jawaban, misalnya {'68', '69'}."""
+    return set(re.findall(r"[Pp]asal\s+(\d+[A-Za-z]?)", answer))
 
 def list_sources(conn, chunks):
     """Ubah chunk hasil pencarian menjadi daftar sumber untuk UI (judul unik, plus slug dan link resmi)."""
@@ -158,7 +192,8 @@ def list_sources(conn, chunks):
         from psycopg2.extras import RealDictCursor
 
         with conn.cursor(cursor_factory=RealDictCursor) as cur:
-            cur.execute("""SELECT entry_id, slug, official_source_url
+            cur.execute("""SELECT entry_id, slug, official_source_url, show_in_education, is_active,
+                                  (content_md IS NOT NULL AND content_md <> '') AS has_content
                            FROM public.knowledge_entries WHERE entry_id = ANY(%s)""", (entry_ids,))
             extra = {r["entry_id"]: r for r in cur.fetchall()}
     except Exception as exc:  # sumber tetap tampil (tanpa tautan) walau metadata gagal dimuat
@@ -172,10 +207,14 @@ def list_sources(conn, chunks):
         entry = extra.get(chunk["entry_id"], {})
         sources.append({
             "title": chunk["display_title"],
+            "doc_title": chunk.get("title"),
             "entry_type": chunk.get("entry_type"),
             "article_number": chunk.get("article_number"),
             "page": chunk.get("page_number"),
             "slug": entry.get("slug"),
+            # Artikel yang tayang di edukasi: baris sumber menuju halaman artikel, bukan dokumen asli
+            "article_slug": entry.get("slug") if (entry.get("show_in_education") and entry.get("is_active")
+                                                  and entry.get("has_content")) else None,
             "official_source_url": entry.get("official_source_url"),
             "similarity": round(float(chunk["sim"]), 4),
         })
