@@ -80,11 +80,11 @@ export default function ArticleActions({ title, slug, initialLikes = 0 }) {
   };
 
   const btn =
-    "flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold text-svarati-lavender-dark transition hover:bg-svarati-lavender-light";
+  "flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold text-svarati-lavender-dark transition hover:bg-svarati-lavender-light sm:gap-2 sm:px-4 sm:py-2 sm:text-sm";
 
   return (
     <div className="pointer-events-none fixed inset-x-0 bottom-4 z-30 flex justify-center px-4 ">
-      <div className="pointer-events-auto flex items-center gap-1 rounded-full border border-svarati-lavender-light bg-white/90 p-1.5 shadow-lg backdrop-blur-md">
+      <div className="pointer-events-auto flex items-center gap-0.5 rounded-full border border-svarati-lavender-light bg-white/90 p-1 shadow-lg backdrop-blur-md sm:gap-1 sm:p-1.5">
         <button
           type="button"
           onClick={toggleLike}
@@ -105,7 +105,11 @@ export default function ArticleActions({ title, slug, initialLikes = 0 }) {
           {edu.detail.share}
         </button>
 
-        <span role="status" aria-live="polite" className="px-2 text-xs text-svarati-lavender-dark">
+        <span
+          role="status"
+          aria-live="polite"
+          className={`text-xs text-svarati-lavender-dark ${status ? "px-2" : ""}`}
+        >
           {status}
         </span>
       </div>

@@ -113,7 +113,7 @@ export default function EducationList({ articles, featured = [], meta, tabs, top
   const rest = showFeatured ? articles.filter((a) => !featuredIds.has(a.id)) : articles;
 
   return (
-    <section id={ANCHOR} className="scroll-mt-24 px-4 pb-6 pt-8 sm:px-6">
+    <section id={ANCHOR} className="scroll-mt-24 pb-6 pt-8 sm:px-6">
       <div className="mx-auto w-full max-w-6xl">
         {/* Pencarian + hapus filter */}
         <div className="flex flex-col gap-3 sm:flex-row">

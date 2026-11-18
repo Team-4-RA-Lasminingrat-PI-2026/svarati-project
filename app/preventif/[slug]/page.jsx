@@ -71,7 +71,7 @@ export default async function ArticlePage({ params }) {
   const related = await getRelated(article);
 
   return (
-    <main className="min-h-svh px-1.5 pb-32 pt-24 sm:px-4">
+    <main className="min-h-svh pb-32 pt-24 sm:px-4">
       {/* Kotak artikel */}
       <article className="mx-auto w-full max-w-6xl overflow-hidden rounded-3xl border border-svarati-lavender-light bg-white shadow-sm">
         {/* Bar atas: tutup (kiri), logo (tengah) */}
