@@ -3,6 +3,7 @@
 Bawaan: multilingual-e5-base (768 dimensi, diatur lewat EMBEDDING_MODEL).
 Dimensi model harus sama dengan kolom vector di database.
 """
+import os
 import threading
 
 from . import config
@@ -37,5 +38,9 @@ def get_embedder():
     global _embedder
     with _lock:
         if _embedder is None:
-            _embedder = Embedder()
+            if os.environ.get("EMBEDDING_BACKEND", "sentence-transformers") == "onnx":
+                from .embedding_onnx import OnnxEmbedder
+                _embedder = OnnxEmbedder(os.environ.get("ONNX_DIR", "onnx_model"))
+            else:
+                _embedder = Embedder()
         return _embedder

@@ -1,3 +1,4 @@
 -r requirements-serve.txt
+sentence-transformers>=2.7
 pypdf>=4.0
 python-docx>=1.1.0

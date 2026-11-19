@@ -50,3 +50,8 @@ __pycache__/
 
 __pycache__/
 *.pyc
+
+backend/onnx_model/
+backend/.venv/
+backend/.venv-serve/
+backend/.venv-export/
