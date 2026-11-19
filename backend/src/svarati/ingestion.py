@@ -1,4 +1,9 @@
-"""Ingestion: Drive -> chunk -> embedding -> knowledge_entries / knowledge_chunks."""
+"""Ingestion: Drive -> chunk -> embedding -> knowledge_entries / knowledge_chunks.
+
+Satu file untuk dua backend embedding:
+- EMBEDDING_BACKEND=sentence-transformers (default, e5): tulis chunk baru ke kolom embedding.
+- EMBEDDING_BACKEND=gemini: isi kolom embedding_gemini untuk chunk yang sudah ada (tidak hapus chunk).
+"""
 import hashlib
 
 from . import config
@@ -66,6 +71,7 @@ def ingest_entry(conn, embedder, entry, force=False):
     from psycopg2.extras import Json, execute_values
 
     entry_id = entry["entry_id"]
+    gemini = config.EMBEDDING_BACKEND == "gemini"
     try:
         data, file_type = download_file(entry["drive_file_id"])
         if file_type == "txt":
@@ -92,15 +98,37 @@ def ingest_entry(conn, embedder, entry, force=False):
         if not rows:
             raise RuntimeError("Tidak ada chunk yang dihasilkan (PDF hasil scan? perlu OCR).")
         vectors = embedder.docs([f"{r['title']}\n{r['text']}" for r in rows])
-        chunk_rows = [(entry_id, r["chunk_index"], r["page"], r["page_end"], r["article_number"], r["text"],
-                       vectors[i], config.EMBEDDING_MODEL, Json(r["meta"])) for i, r in enumerate(rows)]
+        model_name = embedder.name
+
         with conn.cursor() as cur:
-            cur.execute("DELETE FROM public.knowledge_chunks WHERE entry_id=%s", (entry_id,))
-            execute_values(cur, """
-                INSERT INTO public.knowledge_chunks
-                  (entry_id, chunk_index, page_number, page_end, article_number, chunk_text,
-                   embedding, embedding_model, metadata, created_at)
-                VALUES %s""", chunk_rows, template="(%s,%s,%s,%s,%s,%s,%s,%s,%s,now())")
+            if gemini:
+                # Gemini: jangan hapus chunk. Hanya isi kolom Gemini untuk chunk yang sudah ada.
+                cur.execute("SELECT chunk_id, chunk_index FROM public.knowledge_chunks WHERE entry_id=%s",
+                            (entry_id,))
+                existing = {idx: cid for cid, idx in cur.fetchall()}
+                if len(existing) != len(rows):
+                    raise RuntimeError(
+                        f"jumlah chunk tidak cocok ({len(existing)} di DB, {len(rows)} baru). "
+                        "Jalankan ingest e5 dulu, atau reembed_gemini.py --force.")
+                values = [(existing[r["chunk_index"]],
+                           "[" + ",".join(f"{x:.8f}" for x in vectors[i]) + "]", model_name)
+                          for i, r in enumerate(rows)]
+                execute_values(cur, """UPDATE public.knowledge_chunks AS k
+                                       SET embedding_gemini = v.vec::vector,
+                                           embedding_gemini_model = v.model
+                                       FROM (VALUES %s) AS v(chunk_id, vec, model)
+                                       WHERE k.chunk_id = v.chunk_id""", values)
+            else:
+                # e5: tulis ulang seluruh chunk entri ini.
+                chunk_rows = [(entry_id, r["chunk_index"], r["page"], r["page_end"], r["article_number"], r["text"],
+                               vectors[i], model_name, Json(r["meta"])) for i, r in enumerate(rows)]
+                cur.execute("DELETE FROM public.knowledge_chunks WHERE entry_id=%s", (entry_id,))
+                execute_values(cur, """
+                    INSERT INTO public.knowledge_chunks
+                      (entry_id, chunk_index, page_number, page_end, article_number, chunk_text,
+                       embedding, embedding_model, metadata, created_at)
+                    VALUES %s""", chunk_rows, template="(%s,%s,%s,%s,%s,%s,%s,%s,%s,now())")
+
             if _has_content_md_column(conn):
                 cur.execute("""UPDATE public.knowledge_entries
                                SET processing_status='done', last_successful_checksum=%s, content_md=%s,
@@ -115,7 +143,7 @@ def ingest_entry(conn, embedder, entry, force=False):
                                    ingested_at=now(), error_message=NULL, updated_at=now()
                                WHERE entry_id=%s""", (checksum, entry_id))
         conn.commit()
-        print(f"[ok] {entry['title']}: {len(rows)} chunk")
+        print(f"[ok] {entry['title']}: {len(rows)} chunk ({'gemini' if gemini else 'e5'})")
         return len(rows)
     except Exception as exc:
         conn.rollback()
