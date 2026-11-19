@@ -50,3 +50,14 @@ __pycache__/
 
 __pycache__/
 *.pyc
+
+
+# Backup database (berisi data nyata)
+backup_*.sql
+db_schema_utama.sql
+db_seed_utama.sql
+*.dump
+
+backend/onnx_model/
+backend/onnx_model_int8/
+backend/hasil_evaluasi*.csv

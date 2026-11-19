@@ -1,5 +1,12 @@
 """Pencarian: kandidat dari match_knowledge_chunks (pgvector) lalu re-rank di aplikasi."""
+import os
 from . import config
+
+# Fungsi pencarian mengikuti backend embedding: e5 pakai kolom embedding,
+# gemini pakai kolom embedding_gemini. Nilainya konstanta, bukan input user.
+MATCH_FN = ("match_knowledge_chunks_gemini"
+            if config.EMBEDDING_BACKEND == "gemini"
+            else "match_knowledge_chunks")
 
 
 def build_display_title(row):
@@ -54,7 +61,7 @@ def search_chunks(conn, embedder, query, plan, k=None, min_sim=None):
     min_sim = config.MIN_SIM if min_sim is None else min_sim
     query_vector = embedder.queries([query])[0]
     with conn.cursor(cursor_factory=RealDictCursor) as cur:
-        cur.execute("SELECT * FROM public.match_knowledge_chunks(%s::vector, %s, %s)",
+        cur.execute(f"SELECT * FROM public.{MATCH_FN}(%s::vector, %s, %s)",
                     (query_vector, config.CANDIDATE_LIMIT, config.REQUIRE_VERIFIED))
         rows = cur.fetchall()
     return rerank(rows, plan, k, min_sim)
@@ -64,7 +71,7 @@ def top_similarity(conn, embedder, text):
     """Skor kemiripan tertinggi untuk satu teks (untuk kalibrasi MIN_SIM)."""
     query_vector = embedder.queries([text])[0]
     with conn.cursor() as cur:
-        cur.execute("SELECT similarity FROM public.match_knowledge_chunks(%s::vector, 1, %s)",
+        cur.execute(f"SELECT similarity FROM public.{MATCH_FN}(%s::vector, 1, %s)",
                     (query_vector, config.REQUIRE_VERIFIED))
         row = cur.fetchone()
     return float(row[0]) if row else None
