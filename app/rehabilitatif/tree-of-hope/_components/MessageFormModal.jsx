@@ -15,7 +15,7 @@ let draft = { text: "", role: "", location: "", agreed: false }; // draf pesan b
 
 export default function MessageFormModal({ open, editing, onClose, onSubmit, onEmpty }) {
   return (
-    <Modal open={open} onClose={onClose} size="lg">
+    <Modal open={open} onClose={onClose} size="lg" bare>
       {open && (
         <MessageForm
           key={editing ? `edit-${editing.id}` : "new"} // pasang ulang tiap mode/pesan berganti
@@ -82,79 +82,82 @@ function MessageForm({ editing, onClose, onSubmit, onEmpty }) {
   const canSubmit = !sending && (Boolean(editing) || agreed);
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 p-6">
-      <h2 className="text-xl font-bold text-svarati-teal">{editing ? t.form.editTitle : t.form.title}</h2>
-      <p className="text-sm text-svarati-lavender-dark">{t.form.info}</p>
+    // Form mengisi tinggi dialog: bagian atas scroll, footer tetap di bawah (bukan sticky).
+    <form onSubmit={handleSubmit} className="flex min-h-0 flex-1 flex-col">
+      <div className="min-h-0 flex-1 space-y-4 overflow-y-auto overscroll-contain p-6">
+        <h2 className="text-xl font-bold text-svarati-teal">{editing ? t.form.editTitle : t.form.title}</h2>
+        <p className="text-sm text-svarati-lavender-dark">{t.form.info}</p>
 
-      <div className="space-y-1.5">
-        <Label htmlFor="toh-message" className="text-svarati-teal">
-          {t.form.messageLabel}
-        </Label>
-        <Input
-          id="toh-message"
-          variant="textarea"
-          tone="coral"
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          maxLength={MAX_MESSAGE_LENGTH}
-          placeholder={t.form.messagePlaceholder}
-        />
-        <p className="text-right text-xs text-svarati-lavender-dark">
-          {text.length}/{MAX_MESSAGE_LENGTH}
-        </p>
-      </div>
-
-      <div className="space-y-1.5">
-        <Label htmlFor="toh-role" className="text-svarati-teal">
-          {t.form.roleLabel}
-        </Label>
-        <select
-          id="toh-role"
-          value={role}
-          onChange={(e) => setRole(e.target.value)}
-          className="w-full rounded-xl border border-input bg-card px-3 py-2 text-svarati-teal"
-        >
-          <option value="">{t.form.rolePlaceholder}</option>
-          {t.roles.map((r) => (
-            <option key={r} value={r}>
-              {r}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div>
-        <LocationCombobox
-          label={t.form.locationLabel}
-          value={location}
-          onChange={(v) => {
-            setLocation(v);
-            setLocError("");
-          }}
-          groups={groups}
-          invalid={Boolean(locError)}
-        />
-        {locError && <p className="mt-1 text-xs text-destructive">{locError}</p>}
-      </div>
-
-      {!editing && (
-        <>
-          <p className="rounded-xl bg-svarati-lavender-light p-3 text-xs text-svarati-lavender-dark">
-            {t.form.note(EDIT_WINDOW_MINUTES)}
+        <div className="space-y-1.5">
+          <Label htmlFor="toh-message" className="text-svarati-teal">
+            {t.form.messageLabel}
+          </Label>
+          <Input
+            id="toh-message"
+            variant="textarea"
+            tone="coral"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            maxLength={MAX_MESSAGE_LENGTH}
+            placeholder={t.form.messagePlaceholder}
+          />
+          <p className="text-right text-xs text-svarati-lavender-dark">
+            {text.length}/{MAX_MESSAGE_LENGTH}
           </p>
-          <label className="flex items-start gap-2 text-sm text-svarati-teal">
-            <input
-              type="checkbox"
-              checked={agreed}
-              onChange={(e) => setAgreed(e.target.checked)}
-              className="mt-1 h-4 w-4 shrink-0 cursor-pointer accent-svarati-teal"
-            />
-            <span>{t.form.terms}</span>
-          </label>
-        </>
-      )}
+        </div>
 
-      <div className="flex gap-3">
+        <div className="space-y-1.5">
+          <Label htmlFor="toh-role" className="text-svarati-teal">
+            {t.form.roleLabel}
+          </Label>
+          <select
+            id="toh-role"
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+            className="w-full rounded-xl border border-input bg-card px-3 py-2 text-svarati-teal"
+          >
+            <option value="">{t.form.rolePlaceholder}</option>
+            {t.roles.map((r) => (
+              <option key={r} value={r}>
+                {r}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <LocationCombobox
+            label={t.form.locationLabel}
+            value={location}
+            onChange={(v) => {
+              setLocation(v);
+              setLocError("");
+            }}
+            groups={groups}
+            invalid={Boolean(locError)}
+          />
+          {locError && <p className="mt-1 text-xs text-destructive">{locError}</p>}
+        </div>
+
+        {!editing && (
+          <>
+            <p className="rounded-xl bg-svarati-lavender-light p-3 text-xs text-svarati-lavender-dark">
+              {t.form.note(EDIT_WINDOW_MINUTES)}
+            </p>
+            <label className="flex items-start gap-2 text-sm text-svarati-teal">
+              <input
+                type="checkbox"
+                checked={agreed}
+                onChange={(e) => setAgreed(e.target.checked)}
+                className="mt-1 h-4 w-4 shrink-0 cursor-pointer accent-svarati-teal"
+              />
+              <span>{t.form.terms}</span>
+            </label>
+          </>
+        )}
+      </div>
+
+      <div className="flex shrink-0 gap-3 border-t border-svarati-lavender-light bg-white px-6 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
         <Button
           type="submit"
           variant="primary"

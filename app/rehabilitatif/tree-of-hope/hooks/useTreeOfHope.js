@@ -10,7 +10,7 @@ import {
 } from "@/lib/tree-of-hope/constants";
 import { fetchMessagesPage } from "@/lib/tree-of-hope/client";
 import { editDeadlineText } from "@/lib/tree-of-hope/messageWarning";
-import { ensureAnonymousSession } from "@/lib/session";
+import { authFetch } from "@/lib/tree-of-hope/authFetch";
 
 export default function useTreeOfHope() {
   const [revealed, setRevealed] = useState(false);
@@ -44,6 +44,8 @@ export default function useTreeOfHope() {
   const showToast = useCallback((type, message) => {
     setToast({ open: true, type, message });
   }, []);
+
+  const [deleteTarget, setDeleteTarget] = useState(null); // pesan yang menunggu konfirmasi hapus
 
   function closeToast() {
     setToast((x) => ({ ...x, open: false }));
@@ -121,11 +123,6 @@ export default function useTreeOfHope() {
       showToast(TOAST_TYPE.WARNING, t.toast.likeUnavailable);
       return;
     }
-    const token = await ensureAnonymousSession();
-    if (!token) {
-      showToast(TOAST_TYPE.ERROR, t.toast.likeFailed);
-      return;
-    }
 
     const wasLiked = messages.find((m) => m.id === id)?.liked;
     const apply = (liked, delta) =>
@@ -139,11 +136,10 @@ export default function useTreeOfHope() {
 
     apply(!wasLiked, wasLiked ? -1 : 1); // update optimistis
     try {
-      const res = await fetch(`${API_URL}/${id}/reaction`, {
+      const res = await authFetch(`${API_URL}/${id}/reaction`, {
         method: wasLiked ? "DELETE" : "POST",
-        headers: { "x-session-token": token },
       });
-      if (!res.ok) throw new Error("bad response");
+      if (!res || !res.ok) throw new Error("bad response");
       const json = await res.json();
       setMessages((list) =>
         list.map((m) =>
@@ -153,7 +149,7 @@ export default function useTreeOfHope() {
         ),
       );
     } catch {
-      apply(!!wasLiked, wasLiked ? 1 : -1);
+      apply(!!wasLiked, wasLiked ? 1 : -1); // batalkan update optimistis
       showToast(TOAST_TYPE.ERROR, t.toast.likeFailed);
     }
   }
@@ -161,22 +157,21 @@ export default function useTreeOfHope() {
   // Membuat pesan baru, atau mengubah pesan kalau `editing` terisi.
   // Mengembalikan true jika berhasil.
   async function submit({ text, role, location }) {
-    const token = await ensureAnonymousSession();
-    if (!token) {
-      showToast(TOAST_TYPE.ERROR, t.toast.sendFailed);
-      return false; // form tetap terbuka, tulisan pengguna tidak hilang
-    }
-
     const isEdit = editing !== null;
     try {
-      const res = await fetch(isEdit ? `${API_URL}/${editing.id}` : API_URL, {
-        method: isEdit ? "PATCH" : "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-session-token": token,
+      const res = await authFetch(
+        isEdit ? `${API_URL}/${editing.id}` : API_URL,
+        {
+          method: isEdit ? "PATCH" : "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ content: text, role, location }),
         },
-        body: JSON.stringify({ content: text, role, location }),
-      });
+      );
+      if (!res) {
+        showToast(TOAST_TYPE.ERROR, t.toast.sendFailed);
+        return false; // form tetap terbuka, tulisan pengguna tidak hilang
+      }
+
       const json = await res.json().catch(() => ({}));
       if (!res.ok) {
         throw new Error(
@@ -198,7 +193,9 @@ export default function useTreeOfHope() {
         : "";
       showToast(
         TOAST_TYPE.SUCCESS,
-        isEdit ? `${t.manage.editedToast}${deadline}` : `${t.toast.success}${deadline}`
+        isEdit
+          ? `${t.manage.editedToast}${deadline}`
+          : `${t.toast.success}${deadline}`,
       );
 
       return true;
@@ -212,32 +209,33 @@ export default function useTreeOfHope() {
       return false;
     }
   }
-  async function remove(id) {
-  const token = await ensureAnonymousSession();
-  if (!token) {
-    showToast(TOAST_TYPE.ERROR, t.toast.sendFailed);
-    return false;
-  }
-  try {
-    const res = await fetch(`${API_URL}/${id}`, {
-      method: "DELETE",
-      headers: { "x-session-token": token },
-    });
-    const json = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(res.status === 403 ? json.error : t.toast.sendFailed);
 
-    setActiveIndex(null);
-    setReloadKey((n) => n + 1);
-    showToast(TOAST_TYPE.SUCCESS, t.manage.deletedToast);
-    return true;
-  } catch (err) {
-    showToast(
-      TOAST_TYPE.ERROR,
-      err instanceof TypeError ? t.toast.sendFailed : err.message || t.toast.sendFailed
-    );
-    return false;
+  async function remove(id) {
+    try {
+      const res = await authFetch(`${API_URL}/${id}`, { method: "DELETE" });
+      if (!res) {
+        showToast(TOAST_TYPE.ERROR, t.toast.sendFailed);
+        return false;
+      }
+
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok)
+        throw new Error(res.status === 403 ? json.error : t.toast.sendFailed);
+
+      setActiveIndex(null);
+      setReloadKey((n) => n + 1);
+      showToast(TOAST_TYPE.SUCCESS, t.manage.deletedToast);
+      return true;
+    } catch (err) {
+      showToast(
+        TOAST_TYPE.ERROR,
+        err instanceof TypeError
+          ? t.toast.sendFailed
+          : err.message || t.toast.sendFailed,
+      );
+      return false;
+    }
   }
-}
 
   return {
     revealed,
@@ -278,5 +276,12 @@ export default function useTreeOfHope() {
     toast,
     closeToast,
     remove,
+    deleteTarget,
+    askDelete: (m) => setDeleteTarget(m),
+    cancelDelete: () => setDeleteTarget(null),
+    confirmDelete: async () => {
+      if (deleteTarget) await remove(deleteTarget.id);
+      setDeleteTarget(null);
+    },
   };
 }

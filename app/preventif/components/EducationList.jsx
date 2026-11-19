@@ -9,7 +9,7 @@ import ArticleCardCompact from "@/app/preventif/components/ArticleCardCompact";
 import Tabs from "@/components/Tabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import ScrollRow from "@/app/preventif/components/ScrollRow";
+import ScrollRow from "@/components/ScrollRow";
 import { educationContent as edu } from "@/content/labels";
 
 const DEFAULT_TAB = edu.tabs[0].id;

@@ -9,6 +9,7 @@ import { BackLink, Intro } from "./Intro";
 import ComposeEnvelope from "./ComposeEnvelope";
 import LikeButton from "./LikeButton";
 import Pager from "./Pager";
+import ManageButtons from "./ManageButtons";
 
 const IMG_ASPECT = 2530 / 1280;
 
@@ -24,6 +25,8 @@ export default function TreeOfHopeMobile({
   onLike,
   onCompose,
   onChangePage,
+  onEdit,
+  onDelete,
 }) {
   const listRef = useRef(null);
   useRevealOnView(listRef, revealed, onReveal, 0.5, messages.length);
@@ -71,10 +74,21 @@ export default function TreeOfHopeMobile({
               variant="white"
               size="sm"
               topBorder="coral"
-              className={`shadow-lg ${m.id === pingId ? "ring-2 ring-ring" : ""}`}
+              className={`relative shadow-lg ${m.id === pingId ? "ring-2 ring-ring" : ""}`}
             >
+              {/* Tombol transparan (sama seperti desktop): seluruh kartu bisa diklik untuk
+                  membaca pesan lengkap. Tidak ikut urutan Tab karena tombol "Baca pesan"
+                  di footer sudah menjadi pintu masuk untuk keyboard dan pembaca layar. */}
+              <button
+                type="button"
+                tabIndex={-1}
+                aria-hidden="true"
+                onClick={() => onOpen(i)}
+                className="absolute inset-0 z-10 cursor-pointer rounded-[inherit] outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-svarati-coral-dark/30 active:bg-svarati-coral-dark/5"
+              />
+
               {m.id === newId && (
-                <span className="absolute right-3 top-3 rounded-full bg-svarati-coral-dark px-2 py-0.5 text-xs font-semibold text-white">
+                <span className="pointer-events-none absolute right-3 top-3 z-20 rounded-full bg-svarati-coral-dark px-2 py-0.5 text-xs font-semibold text-white">
                   {t.newLabel}
                 </span>
               )}
@@ -90,15 +104,25 @@ export default function TreeOfHopeMobile({
               <p className="mt-2 line-clamp-4 italic leading-relaxed text-svarati-coral-dark">
                 “{m.text}”
               </p>
+
+              {/* z-20: berada di atas tombol penutup kartu, jadi klik Ubah/Hapus berdiri sendiri */}
+              <ManageButtons
+                until={m.editableUntil}
+                className="relative z-20 mt-3"
+                onEdit={() => onEdit(m)}
+                onDelete={() => onDelete(m)}
+              />
+
               <CardFooter>
                 <button
                   type="button"
                   onClick={() => onOpen(i)}
                   aria-label={t.reader.readFull(m.author)}
-                  className="rounded-full py-1 text-sm font-semibold text-svarati-lavender-dark hover:underline"
+                  className="relative z-20 rounded-full py-1 text-sm font-semibold text-svarati-lavender-dark hover:underline"
                 >
                   {t.readMore}
                 </button>
+                {/* LikeButton sudah relative z-20 di dalamnya */}
                 <LikeButton
                   liked={m.liked}
                   count={m.supportCount}

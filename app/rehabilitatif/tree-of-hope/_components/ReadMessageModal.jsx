@@ -9,7 +9,7 @@ import { editDeadlineText } from "@/lib/tree-of-hope/messageWarning";
 import LikeButton from "./LikeButton";
 
 const ARROW =
-  "flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-full bg-svarati-coral-soft text-svarati-coral-dark transition-colors hover:bg-svarati-coral-hover disabled:pointer-events-none disabled:opacity-30";
+  "flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-full bg-svarati-coral-soft text-svarati-coral-dark transition-colors hover:bg-svarati-coral-dark disabled:pointer-events-none disabled:opacity-30";
 
 export default function ReadMessageModal({
   message,
@@ -42,7 +42,7 @@ export default function ReadMessageModal({
   return (
     <Modal open={Boolean(message)} onClose={onClose} size="md">
       {message && (
-        <div className="p-6">
+        <div>
           <div className="mb-4 flex items-center justify-between">
             <p className="text-xs font-semibold text-svarati-lavender-dark">
               {t.reader.position(number, total)}
@@ -51,7 +51,7 @@ export default function ReadMessageModal({
               type="button"
               onClick={onClose}
               aria-label={t.reader.close}
-              className="flex size-9 cursor-pointer items-center justify-center rounded-full bg-svarati-coral-light text-svarati-lavender-dark"
+              className="flex size-9 cursor-pointer items-center justify-center rounded-full bg-svarati-lavender/70 text-svarati-lavender-dark"
             >
               ✕
             </button>
