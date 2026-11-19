@@ -3,6 +3,7 @@
 Bawaan: multilingual-e5-base (768 dimensi, diatur lewat EMBEDDING_MODEL).
 Dimensi model harus sama dengan kolom vector di database.
 """
+import os
 import threading
 
 from . import config
@@ -37,5 +38,9 @@ def get_embedder():
     global _embedder
     with _lock:
         if _embedder is None:
-            _embedder = Embedder()
+            if config.EMBEDDING_BACKEND == "gemini":
+                from .embedding_gemini import GeminiEmbedder
+                _embedder = GeminiEmbedder()
+            else:
+                _embedder = Embedder()
         return _embedder
