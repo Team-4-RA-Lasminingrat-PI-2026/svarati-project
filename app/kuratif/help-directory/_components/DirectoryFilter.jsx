@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { DIREKTORI } from "@/content/labels";
+import ScrollRow from "@/components/ScrollRow";
 
 const F = DIREKTORI.filter;
 
@@ -98,14 +99,16 @@ export default function DirectoryFilter({
               {F.judulLayanan}
             </p>
 
-            <Tabs
-              tabs={opsiTipe}
-              activeTab={tipe}
-              onChange={onTipeChange}
-              variant="teal"
-              boxed={false}
-              className="w-full [&>button]:grow [&>button]:text-center"
-            />
+            <ScrollRow>
+              <Tabs
+                tabs={opsiTipe}
+                activeTab={tipe}
+                onChange={onTipeChange}
+                variant="teal"
+                boxed={false}
+                className="min-w-full [&>button]:grow [&>button]:text-center"
+              />
+            </ScrollRow>
           </div>
 
           <div className="flex flex-wrap items-center justify-between gap-2">

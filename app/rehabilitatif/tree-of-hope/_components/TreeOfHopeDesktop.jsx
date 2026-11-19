@@ -11,6 +11,7 @@ import { ChevronDownIcon } from "./icons";
 import ComposeEnvelope from "./ComposeEnvelope";
 import LikeButton from "./LikeButton";
 import Pager from "./Pager";
+import ManageButtons from "./ManageButtons";
 
 // Panggung berrasio tetap 1.8. Semua koordinat = persen panggung (1% lebar = 1 satuan --u).
 const STAGE_ASPECT = 1.8;
@@ -195,6 +196,8 @@ export default function TreeOfHopeDesktop({
   onLike,
   onCompose,
   onChangePage,
+  onEdit,
+  onDelete,
 }) {
   const trackRef = useRef(null);
   const stageRef = useRef(null);
@@ -364,6 +367,15 @@ export default function TreeOfHopeDesktop({
                 >
                   “{m.text}”
                 </CardDescription>
+
+                <ManageButtons
+                  until={m.editableUntil}
+                  compact
+                  onEdit={() => onEdit(m)}
+                  onDelete={() => onDelete(m)}
+                  className={`relative z-20 mt-[calc(var(--u)*0.4)] justify-end ${lv.foot}`}
+                />
+
                 <CardFooter
                   className={`mt-[calc(var(--u)*0.5)] gap-2 pt-[calc(var(--u)*0.5)] ${lv.foot}`}
                 >

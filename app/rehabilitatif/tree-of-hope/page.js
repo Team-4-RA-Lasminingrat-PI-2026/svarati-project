@@ -6,6 +6,7 @@ import TreeOfHopeDesktop from "@/app/rehabilitatif/tree-of-hope/_components/Tree
 import TreeOfHopeMobile from "@/app/rehabilitatif/tree-of-hope/_components/TreeOfHopeMobile";
 import ReadMessageModal from "@/app/rehabilitatif/tree-of-hope/_components/ReadMessageModal";
 import MessageFormModal from "@/app/rehabilitatif/tree-of-hope/_components/MessageFormModal";
+import DeleteConfirmModal from "@/app/rehabilitatif/tree-of-hope/_components/DeleteConfirmModal";
 
 export default function TreeOfHopePage() {
   const tree = useTreeOfHope();
@@ -23,6 +24,8 @@ export default function TreeOfHopePage() {
         onLike={tree.like}
         onCompose={tree.openForm}
         onChangePage={tree.changePage}
+        onEdit={tree.startEdit}
+        onDelete={tree.askDelete}
       />
 
       <TreeOfHopeMobile
@@ -37,6 +40,8 @@ export default function TreeOfHopePage() {
         onLike={tree.like}
         onCompose={tree.openForm}
         onChangePage={tree.changePage}
+        onEdit={tree.startEdit}
+        onDelete={tree.askDelete}
       />
 
       <ReadMessageModal
@@ -59,6 +64,12 @@ export default function TreeOfHopePage() {
         onClose={tree.closeForm}
         onSubmit={tree.submit}
         onEmpty={tree.warnEmpty}
+      />
+
+      <DeleteConfirmModal
+        message={tree.deleteTarget}
+        onConfirm={tree.confirmDelete}
+        onCancel={tree.cancelDelete}
       />
 
       <Toast

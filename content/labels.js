@@ -849,9 +849,9 @@ export const treeOfHopeContent = {
     editTitle: "Ubah pesanmu",
     save: "Simpan perubahan",
     note: (menit) =>
-      `Kamu dapat mengubah atau menghapus pesanmu sampai ${menit} menit setelah dikirim, dari perangkat dan peramban yang sama. Setelah itu, pesan akan tersimpan permanen di Pohon Harapan.`,
+      `Pesan dapat diubah atau dihapus sampai ${menit} menit setelah dikirim dari perangkat dan peramban yang sama. Setelah itu, pesan akan tersimpan permanen di Pohon Harapan.`,
     terms:
-      "Pesanku tidak mengandung unsur SARA, ujaran kebencian, atau kekerasan, dan tidak memuat data yang dapat mengidentifikasi seseorang (nama, nomor telepon, alamat, nama pelaku). Aku menulisnya untuk memberi motivasi atau inspirasi bagi rekan penyintas. Tim Svarati berhak menghapus pesan yang dinilai melanggar ketentuan ini.",
+      "Pesanku tidak mengandung unsur SARA, ujaran kebencian atau kekerasan, dan tidak memuat data yang dapat mengidentifikasi seseorang (seperti nama atau data pelaku). Aku menulisnya untuk memberi motivasi atau inspirasi bagi rekan penyintas. Tim Svarati berhak menghapus pesan yang dinilai melanggar ketentuan ini.",
       },
 
   toast: {
