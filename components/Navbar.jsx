@@ -7,7 +7,6 @@ import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import QuickOutButton from "@/components/QuickOutButton";
 import { BRAND, DARURAT, MENU_UTAMA, NAVBAR } from "@/content/labels";
-//Tambahan import untuk EmergencyModal-Gaby19Oct
 import EmergencyModal from "@/components/modals/EmergencyModal";
 import { Zap } from "lucide-react";
 
@@ -119,8 +118,8 @@ function NavItem({ item, pathname, isOpen, onToggle, onNavigate }) {
 function DesktopItem({ item, pathname }) {
   const [open, setOpen] = useState(false);
   const active = isPillarActive(pathname, item);
-  // ← UBAH (baris 122): tambah whitespace-nowrap agar label tetap satu baris
-  const triggerClass = `flex items-center gap-1 whitespace-nowrap rounded-full px-4 py-1.5 text-xs font-bold tracking-wide transition-all ${
+  //transition-all diganti transition spesifik (menghindari glitch di Safari)
+  const triggerClass = `flex items-center gap-1 whitespace-nowrap rounded-full px-4 py-1.5 text-xs font-bold tracking-wide transition-[background-color,color,transform,box-shadow] ${
     active ? `scale-105 shadow-md ${STATE.active}` : STATE.idle
   }`;
 
@@ -153,7 +152,8 @@ function DesktopItem({ item, pathname }) {
       </Link>
 
       {/* pt-1 menjembatani celah antara tombol dan dropdown agar hover tidak terputus */}
-      <div className="invisible absolute left-0 top-full z-50 min-w-48 pt-1 opacity-0 transition-all duration-200 group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
+      {/*transition-all → transition-[opacity,visibility] */}
+      <div className="invisible absolute left-0 top-full z-50 min-w-48 pt-1 opacity-0 transition-[opacity,visibility] duration-200 group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
         <ul className="rounded-2xl border border-svarati-teal/10 bg-white p-2 shadow-lg">
           {item.submenu.map((sub) => (
             <li key={sub.id}>
@@ -181,10 +181,12 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="fixed inset-x-0 top-3 z-40 overflow-x-clip px-2 sm:px-3">
-      <nav
+      {/*overflow-x-clip tetap aktif di mobile/tablet, dimatikan di xl (desktop) agar dropdown tidak terpotong di Safari */}
+      <header className="fixed inset-x-0 top-3 z-40 overflow-x-clip px-2 sm:px-3 xl:overflow-x-visible">
+        {/*tambah isolate + [transform:translateZ(0)] agar backdrop-blur stabil di Safari */}
+        <nav
           aria-label={NAVBAR.navigasiUtama}
-          className="mx-auto flex max-w-7xl items-center justify-between gap-1.5 rounded-full border border-white/40 bg-white/40 px-2.5 py-1 shadow-lg backdrop-blur-md min-[400px]:px-4 sm:gap-3 sm:px-5 lg:gap-4 lg:px-6"
+          className="isolate mx-auto flex max-w-7xl items-center justify-between gap-1.5 rounded-full border border-white/40 bg-white/40 px-2.5 py-1 shadow-lg backdrop-blur-md [transform:translateZ(0)] min-[400px]:px-4 sm:gap-3 sm:px-5 lg:gap-4 lg:px-6"
         >
           <div className="flex min-w-0 items-center gap-0.5 min-[400px]:gap-1">
             <Button
@@ -269,12 +271,10 @@ export default function Navbar() {
             <div
               aria-hidden="true"
               onClick={closeMobile}
-              // ← UBAH (baris 268): lg:hidden → xl:hidden
               className="fixed inset-0 -z-10 bg-black/30 xl:hidden"
             />
             <ul
               id="menu-mobile"
-              // ← UBAH (baris 272): lg:hidden → xl:hidden
               className="mx-2 mt-2 flex max-h-[70vh] max-w-6xl flex-col gap-1 overflow-y-auto rounded-3xl border border-svarati-teal/20 bg-white p-2 shadow-xl xl:hidden"
             >
               {MENU_UTAMA.map((item) => (

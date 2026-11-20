@@ -182,7 +182,7 @@ export default function TentangSvaratiPage() {
               </p>
             </div>
 
-            <div className="md:pt-[3.25rem]">
+            <div className="md:pt-13">
               <p className="font-heading text-3xl font-bold text-svarati-teal">
                 <CountUp to={37.51} decimals={2} suffix="%" />
               </p>
@@ -287,8 +287,7 @@ export default function TentangSvaratiPage() {
             </h2>
             <p className="mt-5 text-sm leading-relaxed text-svarati-teal/80">
               <strong>Kelompok 4 – RA Lasminingrat</strong>
-              <p className="mt-5 text-sm leading-relaxed text-svarati-teal/80"></p>
-              Bootcamp Perempuan Indonesia 2026
+              <br/>Bootcamp Perempuan Indonesia 2026
             </p>
             <blockquote className="mt-6 rounded-2xl border border-svarati-teal/20 p-5">
               <p lang="en" className="text-lg font-medium italic leading-snug text-svarati-teal">
