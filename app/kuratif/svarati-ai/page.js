@@ -23,7 +23,7 @@ export default function SvaratiAiPage() {
 
   return (
     <>
-      <div className="w-full px-2.5 pb-4 pt-22 min-[400px]:px-4 sm:px-5 lg:px-6">
+      <div className="w-full pb-4 pt-22">
         <div className="mx-auto max-w-6xl">
           <Link
             href={hub.href}
