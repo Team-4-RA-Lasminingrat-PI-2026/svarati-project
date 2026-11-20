@@ -73,7 +73,7 @@ export default function BreathingPage() {
     const duration = current ? current.seconds : 0.6;
 
     return (
-        <main className="min-h-screen bg-svarati-cream px-4 pb-8 pt-20 font-sans md:px-8 lg:px-12">
+        <main className="min-h-screen bg-svarati-cream pb-8 pt-20 font-sans">
             <Link
                 href="/rehabilitatif/training"
                 aria-label="Kembali ke Semua latihan"

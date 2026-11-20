@@ -110,7 +110,7 @@ export default function GroundingPage() {
 
     return (
         <main
-            className="min-h-screen bg-svarati-cream px-4 pb-8 md:px-8 lg:px-12 font-sans"
+            className="min-h-screen bg-svarati-cream pb-8 font-sans"
             style={{ paddingTop: "5rem" }}
         >
             {/* Jarak dirapatkan supaya satu langkah muat dalam satu layar

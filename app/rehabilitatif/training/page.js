@@ -123,7 +123,7 @@ const exercises = [
 
 export default function TrainingPage() {
     return (
-        <main className="relative min-h-screen bg-svarati-cream px-4 pb-10 pt-24 font-sans md:px-8 lg:px-12">
+        <main className="relative min-h-screen bg-svarati-cream pb-10 pt-24 font-sans">
             <BackToPemulihan />
 
             <div className="mx-auto max-w-3xl">

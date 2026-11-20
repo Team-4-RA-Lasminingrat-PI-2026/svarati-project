@@ -29,7 +29,7 @@ export default function EducationBanner({ headlines }) {
     "absolute top-1/2 hidden size-10 -translate-y-1/2 items-center justify-center rounded-full bg-white text-svarati-lavender-dark shadow-md transition hover:bg-svarati-lavender-light disabled:opacity-30 md:flex";
 
   return (
-    <section aria-roledescription="carousel" aria-label={edu.carouselLabel} className="sm:px-3">
+    <section aria-roledescription="carousel" aria-label={edu.carouselLabel}>
       <div className="relative mx-auto w-full max-w-6xl overflow-hidden rounded-3xl shadow-sm">
         <div
           ref={trackRef}

@@ -93,7 +93,7 @@ export default function PemulihanPage() {
   }, []);
 
   return (
-    <div className="relative scroll-mt-28 px-4 pb-10 pt-24 sm:pt-20">
+    <div className="relative scroll-mt-28 pb-10 pt-24 sm:pt-20">
       <div className="mx-auto max-w-6xl">
         {/* Banner Utama. Dibuat ringkas supaya banner dan ketiga kartu
             muat dalam satu layar tanpa perlu menggulir. */}
