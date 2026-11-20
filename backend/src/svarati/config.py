@@ -24,7 +24,7 @@ def _env_float(name: str, default: float) -> float:
 DATABASE_URL = os.getenv("DATABASE_URL", "")
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
 GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.5-flash-lite")
-GEMINI_FALLBACK_MODEL = os.getenv("GEMINI_FALLBACK_MODEL", "gemini-3.8-flash")
+GEMINI_FALLBACK_MODEL = os.getenv("GEMINI_FALLBACK_MODEL", "gemini-3-flash-preview")
 # Kecepatan Gemini. Total terburuk ~ GEMINI_ATTEMPTS x GEMINI_TIMEOUT_SECONDS; jaga di bawah timeout proxy Next.js (60 dtk).
 GEMINI_TIMEOUT_SECONDS = _env_float("GEMINI_TIMEOUT_SECONDS", 20)
 GEMINI_ATTEMPTS = _env_int("GEMINI_ATTEMPTS", 2)
