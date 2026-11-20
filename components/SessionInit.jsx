@@ -86,7 +86,7 @@ export default function SessionInit() {
     <div
       role="status"
       aria-live="polite"
-      className="fixed inset-x-4 bottom-4 z-50 ml-auto max-w-sm rounded-xl bg-svarati-teal-dark p-4 text-sm leading-relaxed text-white shadow-lg sm:inset-x-auto sm:right-4"
+      className="fixed inset-x-4 top-24 z-[60] mx-auto max-w-sm rounded-xl bg-svarati-teal-dark p-4 text-sm leading-relaxed text-white shadow-lg md:inset-x-auto md:top-auto md:bottom-4 md:right-4 md:mx-0"
     >
       <p>{sessionNotice.message(formatExpiry(expiresAt))}</p>
       <p className="mt-1.5 opacity-85">{sessionNotice.note}</p>
