@@ -80,8 +80,8 @@ const TEMA = {
 export default function Page() {
   return (
     // Banner dan ketiga kartu dirapatkan supaya muat satu layar di laptop
-    <div className="w-full pb-8 pt-20">
-      <div className="mx-auto max-w-4xl">
+    <div className="w-full pb-8 pt-24">
+      <div className="mx-auto max-w-6xl">
         {/* Banner */}
         <section className="relative overflow-hidden rounded-3xl bg-svarati-teal-dark px-6 py-7 sm:px-9 sm:py-8">
           <div aria-hidden="true" className="pointer-events-none absolute inset-0">
@@ -89,17 +89,17 @@ export default function Page() {
             <div className="absolute -bottom-20 right-10 size-40 rounded-full bg-svarati-teal/25 sm:right-20 sm:size-56" />
           </div>
 
-          <div className="relative max-w-lg">
+          <div className="relative max-w-2xl lg:max-w-3xl">
             <p className="mb-2.5 flex items-center gap-2 text-sm font-semibold text-svarati-teal-soft/90">
               <Users className="size-4" aria-hidden="true" />
               {badgeKuratif}
             </p>
 
-            <h1 className="text-2xl font-semibold leading-[1.18] tracking-tight text-white sm:text-3xl">
+            <h1 className="text-2xl font-bold leading-[1.18] tracking-tight text-white sm:text-3xl">
               {menuKuratif.title}
             </h1>
 
-            <p className="mt-5 max-w-md text-sm leading-relaxed text-white/80">
+            <p className="mt-5 max-w-xl text-sm leading-relaxed text-white/80 lg:max-w-2xl">
               {menuKuratif.intro}
             </p>
           </div>

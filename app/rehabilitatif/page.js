@@ -93,28 +93,28 @@ export default function PemulihanPage() {
   }, []);
 
   return (
-    <div className="relative scroll-mt-28 pb-10 pt-24 sm:pt-20">
+    <div className="relative scroll-mt-28 pb-10 pt-24">
       <div className="mx-auto max-w-6xl">
         {/* Banner Utama. Dibuat ringkas supaya banner dan ketiga kartu
             muat dalam satu layar tanpa perlu menggulir. */}
-        <section className="relative mb-5 overflow-hidden rounded-3xl border border-svarati-coral/20 bg-svarati-coral-soft px-6 py-7 sm:px-10 sm:py-9">
+        <section className="relative mb-5 overflow-hidden rounded-3xl border border-svarati-coral/20 bg-svarati-coral-soft py-7 sm:px-10 sm:py-9">
           {/* Lingkaran dekoratif */}
           <div aria-hidden="true" className="pointer-events-none absolute inset-0">
             <div className="absolute -right-24 -top-28 size-48 rounded-full bg-svarati-coral/20 sm:size-64" />
             <div className="absolute -bottom-24 right-0 size-40 rounded-full bg-svarati-coral/25 sm:right-12 sm:size-56" />
           </div>
 
-          <div className="relative z-10 max-w-xl">
+          <div className="relative z-10 max-w-2xl lg:max-w-4xl">
             <p className="mb-2.5 flex items-center gap-2 text-sm font-semibold text-svarati-coral-dark">
               <Sprout className="size-4.5" aria-hidden="true" />
               {t.badge}
             </p>
 
-            <h1 className="mb-5 text-2xl font-semibold leading-[1.18] tracking-tight text-svarati-teal sm:text-3xl lg:text-4xl">
+            <h1 className="mb-5 text-2xl font-bold leading-[1.18] tracking-tight text-svarati-teal sm:text-3xl lg:text-4xl">
               {t.judul}
             </h1>
 
-            <p className="max-w-lg text-sm leading-relaxed text-svarati-coral-dark sm:text-base">
+            <p className="max-w-xl text-sm leading-relaxed text-svarati-coral-dark sm:text-base lg:max-w-2xl">
               {t.deskripsi}
             </p>
           </div>
