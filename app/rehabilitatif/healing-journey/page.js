@@ -205,7 +205,7 @@ export default function JurnalPemulihanPage() {
     return (
         // lg:pt-36 memberi ruang untuk tautan "Pemulihan" yang di layar lebar
         // melayang absolut di atas konten, supaya tidak menempel ke judul
-        <main className="relative min-h-screen bg-svarati-cream px-4 pb-12 pt-24 font-sans md:px-8 lg:px-12 lg:pt-36">
+        <main className="relative min-h-screen bg-svarati-cream pb-12 pt-24 font-sans lg:pt-36">
             <BackToPemulihan />
 
             <div className="mx-auto max-w-5xl">

@@ -180,7 +180,7 @@ export default function HelpDirectoryClient({
   const kosong = !galat && !memuat && hasil.length === 0;
 
   return (
-    <div className="relative scroll-mt-28 px-2 pb-4 pt-28 sm:px-3 sm:pb-10 sm:pt-22">
+    <div className="relative scroll-mt-28 pb-4 pt-28 sm:pb-10 sm:pt-22">
       <EmergencyAlert
         judul={L.alert.judul}
         isi={L.alert.isi}

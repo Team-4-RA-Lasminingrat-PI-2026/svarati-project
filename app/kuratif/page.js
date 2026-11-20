@@ -80,7 +80,7 @@ const TEMA = {
 export default function Page() {
   return (
     // Banner dan ketiga kartu dirapatkan supaya muat satu layar di laptop
-    <div className="w-full px-4 pb-8 pt-20">
+    <div className="w-full pb-8 pt-20">
       <div className="mx-auto max-w-4xl">
         {/* Banner */}
         <section className="relative overflow-hidden rounded-3xl bg-svarati-teal-dark px-6 py-7 sm:px-9 sm:py-8">
