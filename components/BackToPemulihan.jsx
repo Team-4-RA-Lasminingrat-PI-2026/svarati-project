@@ -12,7 +12,7 @@ export default function BackToPemulihan() {
       {/* Desktop: melayang di atas konten, tidak menggeser tata letak halaman */}
       <div className="pointer-events-none absolute inset-x-0 top-0 hidden px-4 lg:block">
         <div className="relative">
-          <header className="absolute inset-x-0 top-0 z-20 px-4 pt-22">
+          <header className="absolute inset-x-0 top-0 z-20 px-4 pt-24">
             <div className="relative mx-auto flex w-full max-w-[84rem] items-center justify-center">
               <div className="pointer-events-auto absolute left-0 top-1/2 -translate-y-1/2">
                 <BackLink />

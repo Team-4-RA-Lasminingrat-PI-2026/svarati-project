@@ -10,7 +10,7 @@ const hub = MENU_UTAMA.find((menu) => menu.id === "pendampingan");
 // sembunyikanAsideDiMobile = true menyembunyikan panel kiri di layar kecil (tautan kembali tetap tampil).
 export default function Split({ aside, children, sembunyikanAsideDiMobile = false }) {
   return (
-    <div className="w-full pb-12 pt-22">
+    <div className="w-full pb-12 pt-24">
       <div
         className={`mx-auto grid max-w-6xl items-start lg:grid-cols-[18rem_minmax(0,1fr)] lg:gap-8 ${
           sembunyikanAsideDiMobile ? "" : "gap-6"
