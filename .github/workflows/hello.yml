@@ -1,0 +1,11 @@
+name: hello-actions
+
+on:
+  workflow_dispatch:
+
+jobs:
+  hello:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "GitHub Actions jalan"
+      - run: ls -la
