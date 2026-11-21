@@ -44,8 +44,8 @@ export default function EducationBanner({ headlines }) {
             <span aria-hidden="true" className="pointer-events-none absolute -right-16 -top-16 size-72 rounded-full bg-svarati-lavender/40" />
             <span aria-hidden="true" className="pointer-events-none absolute -bottom-24 right-24 size-56 rounded-full bg-svarati-lavender-darker/60" />
 
-            <div className="relative max-w-2xl">
-              <h1 className="text-3xl font-bold leading-tight text-white md:text-4xl lg:text-5xl">
+            <div className="relative max-w-2xl lg:max-w-4xl">
+              <h1 className="text-3xl font-bold leading-tight text-white md:text-4xl lg:text-5xl lg:whitespace-nowrap">
                 {edu.intro.title}
               </h1>
               <p className="mt-4 max-w-xl text-lg leading-relaxed text-white/85 md:text-base">
