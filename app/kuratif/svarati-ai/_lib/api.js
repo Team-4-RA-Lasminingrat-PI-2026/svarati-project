@@ -23,7 +23,7 @@ export async function syncSession() {
   const token = await getToken();
   if (!token) return null;
   try {
-    const res = await fetch("/api/session", {
+    const res = await fetch("/api/kuratif/svarati-ai/session", {
       method: "POST",
       headers: JSON_HEADERS,
       body: JSON.stringify({ session_token: token }),
@@ -41,7 +41,7 @@ export async function loadHistory() {
   const token = await getToken();
   if (!token) return [];
   try {
-    const res = await fetch("/api/session/messages", {
+    const res = await fetch("/api/kuratif/svarati-ai/session/messages", {
       method: "POST",
       headers: JSON_HEADERS,
       body: JSON.stringify({ session_token: token }),
@@ -69,7 +69,7 @@ export async function loadHistory() {
 // isFirstTurn: giliran pertama. history: beberapa giliran terakhir untuk pertanyaan lanjutan.
 export async function sendMessage(message, consented, questions, isFirstTurn, history) {
   const token = consented ? await getToken() : null;
-  const res = await fetch("/api/chat", {
+  const res = await fetch("/api/kuratif/svarati-ai/chat", {
     method: "POST",
     headers: JSON_HEADERS,
     body: JSON.stringify({
@@ -100,7 +100,7 @@ export async function importHistory(turns) {
   const token = await getToken();
   if (!token) return null;
   try {
-    const res = await fetch("/api/session/import", {
+    const res = await fetch("/api/kuratif/svarati-ai/session/import", {
       method: "POST",
       headers: JSON_HEADERS,
       body: JSON.stringify({ session_token: token, turns }),
@@ -118,7 +118,7 @@ export async function sendFeedback(messageId, isHelpful) {
   const token = await getToken();
   if (!token) return false;
   try {
-    const res = await fetch("/api/feedback", {
+    const res = await fetch("/api/kuratif/svarati-ai/feedback", {
       method: "POST",
       headers: JSON_HEADERS,
       body: JSON.stringify({ messageId, isHelpful, sessionToken: token }),
@@ -134,7 +134,7 @@ export async function sendReason(messageId, code, text) {
   const token = await getToken();
   if (!token) return false;
   try {
-    const res = await fetch("/api/feedback/alasan", {
+    const res = await fetch("/api/kuratif/svarati-ai/feedback/alasan", {
       method: "POST",
       headers: JSON_HEADERS,
       body: JSON.stringify({ messageId, sessionToken: token, reasonCode: code, reasonText: text }),
@@ -150,7 +150,7 @@ export async function deleteFeedback(messageId) {
   const token = await getToken();
   if (!token) return false;
   try {
-    const res = await fetch("/api/feedback", {
+    const res = await fetch("/api/kuratif/svarati-ai/feedback", {
       method: "DELETE",
       headers: JSON_HEADERS,
       body: JSON.stringify({ messageId, sessionToken: token }),
