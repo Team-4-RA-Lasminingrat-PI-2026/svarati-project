@@ -40,7 +40,7 @@ export async function GET() {
       { headers: { "Cache-Control": "public, s-maxage=300, stale-while-revalidate=600" } }
     );
   } catch (err) {
-    console.error("[GET /api/self-assessment/questions]", err);
+    console.error("[GET /api/kuratif/self-assessment/questions]", err);
     return NextResponse.json(
       { error: "Pertanyaan belum bisa dimuat" },
       { status: 500 }

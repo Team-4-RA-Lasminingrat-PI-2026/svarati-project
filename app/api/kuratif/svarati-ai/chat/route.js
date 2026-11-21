@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { isValidSessionToken } from "@/lib/session/validate";
-import { callFastApi, getErrorMessage } from "../../../lib/fastapi";
+import { callFastApi, getErrorMessage } from "@/lib/fastapi";
 
 export const dynamic = "force-dynamic";
 
