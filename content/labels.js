@@ -119,7 +119,7 @@ export const heroContent = {
 
    optionsLabel: "Apa yang kamu butuhkan saat ini?",
   options: [
-    { label: "Cek Kondisimu dan Cari Bantuan yang Tepat", href: "/kuratif/self-assessment", variant: "primary" },
+    { label: "Cek Kondisi dan Cari Bantuan", href: "/kuratif/self-assessment", variant: "primary" },
     { label: "Ceritakan pada Svarati AI", href: "/kuratif/svarati-ai", variant: "secondary" },
     { label: "Jelajahi fitur lainnya", href: "#fitur", variant: "tertiary" },
   ],
