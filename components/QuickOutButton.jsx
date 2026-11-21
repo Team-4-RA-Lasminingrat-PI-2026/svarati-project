@@ -5,11 +5,11 @@ import { Button } from "@/components/ui/button";
 import { DARURAT } from "@/content/labels";
 import { LogOut } from "lucide-react";
 
-const QUICK_EXIT_URL = "https://id.wikipedia.org/wiki/Halaman_Utama";
+const QUICK_EXIT_URL = "https://translate.google.com/?hl=id";
 
 export default function QuickOutButton({ className = "" }) {
   const quickExit = useCallback(() => {
-     // 1. Tab baru tanpa riwayat: panah Back-nya kosong
+    // 1. Tab baru tanpa riwayat: panah Back-nya kosong
     window.open(QUICK_EXIT_URL, "_blank", "noopener,noreferrer");
     // 2. Tab Svarati langsung dikosongkan dan diganti halaman netral
     document.documentElement.style.display = "none";
@@ -18,9 +18,9 @@ export default function QuickOutButton({ className = "" }) {
 
   useEffect(() => {
     const onKeyDown = (e) => {
-      if (e.key !== "Escape"|| e.repeat)return;
+      if (e.key !== "Escape" || e.repeat) return;
       if (document.querySelector('[role="dialog"]')) return; // Escape menutup dialog, bukan keluar
-        quickExit();
+      quickExit();
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
@@ -33,7 +33,7 @@ export default function QuickOutButton({ className = "" }) {
       aria-label={DARURAT.ariaKeluarCepat}
       className={`h-auto gap-1.5 rounded-full border-2 border-white bg-svarati-danger-darker px-4 py-2.5 text-xs font-bold tracking-wide text-white shadow-md hover:bg-svarati-danger-dark sm:text-sm ${className}`}
     >
-  <LogOut aria-hidden="true" className="size-4" />
+      <LogOut aria-hidden="true" className="size-4" />
       {DARURAT.keluarCepat}
     </Button>
   );
