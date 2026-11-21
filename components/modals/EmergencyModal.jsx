@@ -30,28 +30,30 @@ const KARTU_CLASS =
 
 export default function EmergencyModal({ open, onClose }) {
   return (
-    <Modal open={open} onClose={onClose} size="lg">
-      <div className="max-h-[90vh] overflow-y-auto p-6">
-        <div className="flex items-center justify-between border-b border-svarati-lavender-light pb-4">
-          <div className="flex items-center gap-3">
-            <Zap className="size-5 fill-current text-svarati-coral" />
-            <h2 className="text-2xl font-bold text-svarati-teal">Bantuan Darurat</h2>
-          </div>
-          <Button
-            type="button"
-            variant="ghost"
-            onClick={onClose}
-            aria-label="Tutup"
-            className="size-10 rounded-full border-0 bg-svarati-lavender-light p-0 text-svarati-lavender-dark hover:bg-svarati-lavender-hover"
-          >
-            <X className="size-5" />
-          </Button>
+    <Modal open={open} onClose={onClose} size="lg" bare label="Bantuan Darurat">
+    {/* Header tetap */}
+      <div className="flex shrink-0 items-center justify-between border-b border-svarati-lavender-light p-6 pb-4">
+        <div className="flex items-center gap-3">
+          <Zap className="size-5 fill-current text-svarati-coral" />
+          <h2 className="text-2xl font-bold text-svarati-teal">Bantuan Darurat</h2>
         </div>
-
-        <p className="mt-4 text-svarati-lavender-dark">
+        <Button
+          type="button"
+          variant="ghost"
+          onClick={onClose}
+          aria-label="Tutup"
+          className="size-10 rounded-full border-0 bg-svarati-lavender-light p-0 text-svarati-lavender-dark hover:bg-svarati-lavender-hover"
+        >
+          <X className="size-5" />
+        </Button>
+      </div>
+    
+      {/* Isi yang tergulir */}
+      <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-6 pb-6">
+      <p className="mt-4 text-svarati-lavender-dark">
           Pilih tindakan cepat saat kamu berada dalam situasi mendesak atau butuh bantuan:
         </p>
-
+        
         <div className="mt-4 grid grid-cols-2 gap-3">
           <a
             href="tel:112"
