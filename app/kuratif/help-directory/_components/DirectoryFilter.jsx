@@ -111,18 +111,13 @@ export default function DirectoryFilter({
             </ScrollRow>
           </div>
 
-          <div className="flex flex-wrap items-center justify-between gap-2">
+          <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
             <p aria-live="polite" className="text-xs text-svarati-teal-dark">
               {jumlahHasil} {F.jumlah}
             </p>
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
               {adaFilter && (
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={onReset}
-                >
+                <Button type="button" variant="ghost" size="sm" onClick={onReset}>
                   {F.reset}
                 </Button>
               )}
@@ -132,7 +127,7 @@ export default function DirectoryFilter({
                 size="sm"
                 icon={<Download className="size-3.5" aria-hidden="true" />}
                 onClick={onUnduh}
-                className="text-xs font-semibold"
+                className="h-auto max-w-full whitespace-normal text-left text-xs font-semibold"
               >
                 {F.unduh}
               </Button>
