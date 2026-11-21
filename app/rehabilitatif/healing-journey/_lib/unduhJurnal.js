@@ -25,13 +25,11 @@ const LEBAR_ISI = HALAMAN_LEBAR - MARGIN * 2;
  * @param {Record<string, string>} moodHistory  { "yyyy-MM-dd": emoji }
  * @param {Record<string, string>} noteHistory  { "yyyy-MM-dd": teks }
  * @param {(emoji: string) => string} labelMood  emoji -> "Marah", "Sedih", ...
- * @param {(kunci: string) => boolean} [filter]  batasi ke rentang tertentu
  */
-export function kumpulkanEntri(moodHistory, noteHistory, labelMood, filter) {
+export function kumpulkanEntri(moodHistory, noteHistory, labelMood) {
     const kunci = new Set([...Object.keys(moodHistory), ...Object.keys(noteHistory)]);
 
     return [...kunci]
-        .filter((k) => (filter ? filter(k) : true))
         .sort() // format yyyy-MM-dd aman diurutkan sebagai teks
         .map((k) => ({
             kunci: k,
@@ -49,14 +47,11 @@ export function kumpulkanEntri(moodHistory, noteHistory, labelMood, filter) {
  * netral. Periodenya pakai angka (yyyy-MM) supaya berkas berurut sendiri saat
  * folder diurutkan berdasarkan nama.
  *
- * @param {"hari"|"bulan"|"semua"} lingkup
- * @param {{ kunciTanggal?: string, bulan?: Date, entri?: Array }} opsi
+ * @param {Array} entri  hasil kumpulkanEntri, sudah terurut
  */
-export function namaBerkas(lingkup, { kunciTanggal, bulan, entri = [] } = {}) {
-    if (lingkup === "hari") return `catatan-${kunciTanggal}.pdf`;
-    if (lingkup === "bulan") return `catatan-${format(bulan, "yyyy-MM")}.pdf`;
-
+export function namaBerkas(entri = []) {
     if (entri.length === 0) return "catatan.pdf";
+
     const awal = entri[0].kunci.slice(0, 7);
     const akhir = entri[entri.length - 1].kunci.slice(0, 7);
     return awal === akhir ? `catatan-${awal}.pdf` : `catatan-${awal}-sd-${akhir}.pdf`;
@@ -65,11 +60,9 @@ export function namaBerkas(lingkup, { kunciTanggal, bulan, entri = [] } = {}) {
 /**
  * Judul periode yang tampil di dalam dokumen.
  */
-export function labelPeriode(lingkup, { tanggal, bulan, entri = [] } = {}) {
-    if (lingkup === "hari") return format(tanggal, "EEEE, d MMMM yyyy", { locale: id });
-    if (lingkup === "bulan") return format(bulan, "MMMM yyyy", { locale: id });
-
+export function labelPeriode(entri = []) {
     if (entri.length === 0) return "";
+
     const awal = format(parseISO(entri[0].kunci), "MMMM yyyy", { locale: id });
     const akhir = format(parseISO(entri[entri.length - 1].kunci), "MMMM yyyy", { locale: id });
     return awal === akhir ? awal : `${awal} sampai ${akhir}`;
