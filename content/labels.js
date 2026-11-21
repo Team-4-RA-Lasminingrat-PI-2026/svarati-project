@@ -57,6 +57,8 @@ export const DARURAT = {
   tombolRingkas: "Bantuan",
   keluarCepat: "Keluar Cepat",
   ariaKeluarCepat: "Keluar cepat dari situs ini langsung ke halaman aman",
+  tooltipKeluarCepat:
+    "Klik tombol ini atau tekan Esc untuk langsung berpindah ke halaman aman.",
 
   nomor: {
     pusat: { nomor: "112", nama: "Pusat Darurat" },
