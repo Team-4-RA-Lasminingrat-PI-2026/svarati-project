@@ -12,6 +12,9 @@ export default function ConfirmDialog({
     description,
     confirmLabel = "Hapus",
     cancelLabel = "Batal",
+    // Default merah, karena dialog ini paling sering dipakai untuk menghapus.
+    // Aksi yang tidak merusak (misalnya mengunduh) mengirim variant lain.
+    confirmVariant = "exit",
     onConfirm,
 }) {
     const handleConfirm = () => {
@@ -34,7 +37,7 @@ export default function ConfirmDialog({
                         <AlertDialog.Close className={buttonVariants({ variant: "ghost", size: "lg" })}>
                             {cancelLabel}
                         </AlertDialog.Close>
-                        <Button variant="exit" size="lg" onClick={handleConfirm}>
+                        <Button variant={confirmVariant} size="lg" onClick={handleConfirm}>
                             {confirmLabel}
                         </Button>
                     </div>
