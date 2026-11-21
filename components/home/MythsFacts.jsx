@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, ChevronUp } from "lucide-react";
+import { ArrowRight, ChevronUp, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardTitle, CardDescription } from "@/components/Card";
 import { mitosContent as m } from "@/content/labels";
@@ -62,13 +62,19 @@ export default function MythsFacts() {
                       {m.labelFakta}
                     </h3>
 
-                    {/* Petunjuk tap: hanya di perangkat tanpa hover, hilang saat fakta terbuka */}
+                   {/* Petunjuk tap: hanya di perangkat tanpa hover. Tertutup: "Lihat ↑", terbuka: "Tutup ↓" */}
                     <span
                       aria-hidden="true"
-                      className="hidden items-center gap-1 text-xs font-medium text-white/80 transition-opacity duration-300 group-focus-within:opacity-0 [@media(hover:none)]:flex"
+                      className="hidden text-xs font-medium text-white/80 [@media(hover:none)]:flex"
                     >
-                      {m.labelLihat}
-                      <ChevronUp className="size-3.5" />
+                      <span className="flex items-center gap-1 group-focus-within:hidden">
+                        {m.labelLihat}
+                        <ChevronUp className="size-3.5" />
+                      </span>
+                      <span className="hidden items-center gap-1 group-focus-within:flex">
+                        {m.labelTutup}
+                        <ChevronDown className="size-3.5" />
+                      </span>
                     </span>
                   </div>
                   <p className="flex-1 px-5 pb-5 pt-1 text-sm font-medium leading-relaxed text-white opacity-0 transition-opacity delay-100 duration-500 group-hover:opacity-100 group-focus-within:opacity-100">
