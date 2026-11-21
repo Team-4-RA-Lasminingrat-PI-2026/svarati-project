@@ -886,9 +886,9 @@ export default function SoundPage() {
 
 
     return (
-        // pt-20 menyamakan jarak atas dengan halaman latihan lain;
+        // pt-24 menyamakan jarak atas dengan halaman latihan lain;
         // pb besar memberi ruang untuk pemutar yang menempel di bawah
-        <main className="min-h-screen bg-svarati-cream px-4 pb-40 pt-20 font-sans md:px-8 lg:px-12">
+        <main className="min-h-screen bg-svarati-cream px-4 pb-40 pt-24 font-sans md:px-8 lg:px-12">
             {/* Di pojok kiri halaman, bukan di dalam kolom tengah.
                 Gayanya mengikuti tautan kembali di halaman Pendampingan. */}
             <Link

@@ -106,7 +106,7 @@ export default function TentangSvaratiPage() {
   return (
     <main>
       {/* 1. Hero */}
-      <section className="mx-auto grid max-w-6xl items-center gap-10 px-6 pb-16 pt-22 lg:grid-cols-[1.05fr_1fr]">
+      <section className="mx-auto grid max-w-6xl items-center gap-10 px-6 pb-16 pt-24 lg:grid-cols-[1.05fr_1fr]">
         <div>
           <Label>Tentang Svarati</Label>
           <h1 className="mt-4 font-heading text-4xl font-bold leading-[1.15] text-svarati-teal md:text-5xl">
@@ -129,7 +129,7 @@ export default function TentangSvaratiPage() {
       </section>
 
       {/* 2. Urgensi */}
-      <section className="lebar-penuh bg-svarati-teal-soft px-6 py-20 [--pad-x:1.5rem]">
+      <section className="lebar-penuh bg-svarati-teal-soft py-20">
         <div className="mx-auto max-w-6xl">
           <div className="grid gap-8 lg:grid-cols-[1.1fr_1fr] lg:items-end">
             <h2 className="font-heading text-3xl font-bold leading-tight text-svarati-teal md:text-4xl">
@@ -201,7 +201,7 @@ export default function TentangSvaratiPage() {
       </section>
 
       {/* 3. Visi dan Misi */}
-      <section className="mx-auto grid max-w-6xl items-center gap-12 px-6 py-24 lg:grid-cols-2">
+      <section className="mx-auto grid max-w-6xl items-center gap-12 py-24 lg:grid-cols-2">
         <Image
           src="/profile-img2.png"
           alt="Ilustrasi seorang perempuan berhijab menutup wajah dengan kedua tangan"
@@ -233,7 +233,7 @@ export default function TentangSvaratiPage() {
       </section>
 
       {/* 4. Tiga pilar */}
-      <section className="mx-auto max-w-6xl px-6 pb-24">
+      <section className="mx-auto max-w-6xl pb-24">
         <div className="grid gap-6 lg:grid-cols-[1.5fr_1fr] lg:items-end">
           <h2 className="font-heading text-3xl font-bold leading-tight text-svarati-teal md:text-4xl">
             Yang bisa kamu lakukan di Svarati
@@ -279,7 +279,7 @@ export default function TentangSvaratiPage() {
       </section>
 
       {/* 5. Tim Pengembang */}
-      <section className="lebar-penuh bg-svarati-teal-soft px-6 py-20 [--pad-x:1.5rem]">
+      <section className="lebar-penuh bg-svarati-teal-soft py-20">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1fr_1.2fr]">
           <div>
             <h2 className="font-heading text-3xl font-bold leading-tight text-svarati-teal md:text-4xl">
@@ -287,7 +287,7 @@ export default function TentangSvaratiPage() {
             </h2>
             <p className="mt-5 text-sm leading-relaxed text-svarati-teal/80">
               <strong>Kelompok 4 – RA Lasminingrat</strong>
-              <br/>Bootcamp Perempuan Indonesia 2026
+              <br/>Bootcamp Perempuan Inovasi 2026
             </p>
             <blockquote className="mt-6 rounded-2xl border border-svarati-teal/20 p-5">
               <p lang="en" className="text-lg font-medium italic leading-snug text-svarati-teal">

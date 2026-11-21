@@ -117,7 +117,7 @@ export const heroContent = {
 
    optionsLabel: "Apa yang kamu butuhkan saat ini?",
   options: [
-    { label: "Cek apakah yang saya alami termasuk kekerasan", href: "/kuratif/self-assessment", variant: "primary" },
+    { label: "Cek Kondisimu dan Temukan Bantuan yang Sesuai.", href: "/kuratif/self-assessment", variant: "primary" },
     { label: "Ceritakan pada Svarati AI", href: "/kuratif/svarati-ai", variant: "secondary" },
     { label: "Jelajahi fitur lainnya", href: "#fitur", variant: "tertiary" },
   ],

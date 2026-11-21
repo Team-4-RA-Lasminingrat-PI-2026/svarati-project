@@ -111,18 +111,23 @@ export default function GroundingPage() {
     return (
         <main
             className="min-h-screen bg-svarati-cream px-4 pb-8 md:px-8 lg:px-12 font-sans"
-            style={{ paddingTop: "5rem" }}
+            style={{ paddingTop: "6rem" }}
         >
             {/* Jarak dirapatkan supaya satu langkah muat dalam satu layar
                 dan tombol Lanjut tidak perlu digulir */}
             <div className="mx-auto max-w-4xl space-y-5">
                 <div>
-                    <Link
-                        href="/rehabilitatif/training"
-                        className={buttonVariants({ variant: "ghost", size: "sm", className: "mb-4" })}
-                    >
-                        <ArrowLeft className="size-4" /> Semua latihan
-                    </Link>
+                <Link
+                    href="/rehabilitatif/training"
+                    aria-label="Kembali ke Semua latihan"
+                    className="group mb-6 inline-flex items-center gap-1.5 rounded text-sm font-semibold text-svarati-teal hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-svarati-teal"
+                >
+                    <ArrowLeft
+                        className="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-0.5"
+                        aria-hidden="true"
+                    />
+                    Semua latihan
+                </Link>
                     <h1 className="text-3xl font-bold text-svarati-teal mb-2 font-heading">
                         Grounding 5-4-3-2-1
                     </h1>
