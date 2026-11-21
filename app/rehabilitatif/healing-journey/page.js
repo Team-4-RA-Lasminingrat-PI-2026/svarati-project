@@ -465,7 +465,7 @@ export default function JurnalPemulihanPage() {
                                     className="cursor-pointer inline-flex items-center gap-1.5 text-sm text-svarati-teal underline underline-offset-4 hover:text-svarati-teal-light disabled:cursor-not-allowed disabled:no-underline disabled:opacity-50"
                                 >
                                     <Download className="size-4" aria-hidden="true" />
-                                    Unduh {format(bulanTampil, "MMMM yyyy", { locale: id })}
+                                    Unduh catatan {format(bulanTampil, "MMMM yyyy", { locale: id })}
                                 </button>
                                 <button
                                     type="button"
