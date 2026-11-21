@@ -179,6 +179,7 @@ export const mitosContent = {
   labelMitos: "Mitos",
   labelFakta: "Fakta",
   labelLihat: "Lihat",
+  labelTutup: "Tutup",
   cta: { label: "Pelajari lebih lanjut? Buka Edukasi", href: "/preventif" },
   items: [
     {
