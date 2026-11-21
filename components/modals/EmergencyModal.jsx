@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 
 function kirimSOS() {
   const kirim = (lokasi) => {
-    const pesan = `SOS! Tolong saya perlu bantuan! ${lokasi ? ` Lokasi saya: ${lokasi}` : ""}`;
+    const pesan = `SOS! Tolong, saya perlu bantuan! ${lokasi ? ` Lokasi saya: ${lokasi}` : ""}`;
     window.location.href = `https://wa.me/?text=${encodeURIComponent(pesan)}`;
   };
 
@@ -95,7 +95,7 @@ export default function EmergencyModal({ open, onClose }) {
           <span className="flex-1">
             <span className="block font-bold">Kirim Pesan Darurat (Silent SOS)</span>
             <span className="block text-sm font-normal">
-              Cara cepat buka Whatsapp dan kirim pesan "Saya butuh bantuan darurat" beserta lokasimu. Kamu hanya perlu memilih kontak penerima pesan dan menekan tombol kirim.
+              Cara cepat buka Whatsapp dan kirim pesan "SOS! Tolong, saya perlu bantuan!" beserta lokasimu. Kamu hanya perlu memilih kontak penerima pesan dan menekan tombol kirim.
             </span>
           </span>
           <ArrowRight className="size-5 shrink-0" />
