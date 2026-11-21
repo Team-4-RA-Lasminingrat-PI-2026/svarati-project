@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 
 function kirimSOS() {
   const kirim = (lokasi) => {
-    const pesan = `Saya butuh bantuan darurat.${lokasi ? ` Lokasi saya: ${lokasi}` : ""}`;
+    const pesan = `SOS! Tolong aku perlu bantuan. ${lokasi ? ` Lokasi saya: ${lokasi}` : ""}`;
     window.location.href = `https://wa.me/?text=${encodeURIComponent(pesan)}`;
   };
 
