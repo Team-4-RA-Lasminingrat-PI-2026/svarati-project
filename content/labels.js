@@ -71,6 +71,15 @@ export const DARURAT = {
     telepon: "Telepon",
     judulTips: "Tips Keselamatan Ringkas:",
     tutup: "Tutup",
+    ariaTutup: "Tutup",
+    direktori: {
+      judul: "Direktori Bantuan & Rumah Aman",
+      deskripsi: "Lihat lokasi layanan pendampingan terdekat",
+    },
+    tips: [
+      "Pindah ke area publik/keramaian jika situasi tidak aman.",
+      "Pesan Darurat (Silent SOS) tersimpan di riwayat WhatsApp. Hapus chat jika perangkatmu mungkin dilihat orang lain dan membuatmu tidak aman.",
+    ],
   },
   sos: {
     nama: "Silent SOS",
@@ -78,6 +87,10 @@ export const DARURAT = {
     alert: "Menghubungkan ke Silent SOS...",
     mencariLokasi: "Mengambil lokasimu…",
     keterangan: "Membuka WhatsApp dengan pesan + lokasimu.",
+    deskripsi:
+      "Cara cepat buka Whatsapp dan kirim pesan \"SOS! Tolong, saya perlu bantuan!\" beserta lokasimu. Kamu hanya perlu memilih kontak penerima pesan dan menekan tombol kirim.",
+    pesan: "SOS! Tolong, saya perlu bantuan!",
+    pesanLokasi: (lokasi) => ` Lokasi saya: ${lokasi}`,
   },
 };
 

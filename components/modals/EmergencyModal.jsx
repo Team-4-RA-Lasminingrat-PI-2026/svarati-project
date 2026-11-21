@@ -5,10 +5,11 @@ import { ArrowRight, Building2, MessageCircle, Phone, X, Zap } from "lucide-reac
 import Modal from "@/components/modals/Modal";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { DARURAT } from "@/content/labels";
 
-function kirimSOS() {
+export function kirimSOS() {
   const kirim = (lokasi) => {
-    const pesan = `SOS! Tolong, saya perlu bantuan! ${lokasi ? ` Lokasi saya: ${lokasi}` : ""}`;
+    const pesan = `${DARURAT.sos.pesan}${lokasi ? DARURAT.sos.pesanLokasi(lokasi) : ""}`;
     window.location.href = `https://wa.me/?text=${encodeURIComponent(pesan)}`;
   };
 
@@ -30,18 +31,18 @@ const KARTU_CLASS =
 
 export default function EmergencyModal({ open, onClose }) {
   return (
-    <Modal open={open} onClose={onClose} size="lg" bare label="Bantuan Darurat">
+    <Modal open={open} onClose={onClose} size="lg" bare label={DARURAT.modal.judul}>
     {/* Header tetap */}
       <div className="flex shrink-0 items-center justify-between border-b border-svarati-lavender-light p-6 pb-4">
         <div className="flex items-center gap-3">
           <Zap className="size-5 fill-current text-svarati-coral" />
-          <h2 className="text-2xl font-bold text-svarati-teal">Bantuan Darurat</h2>
+          <h2 className="text-2xl font-bold text-svarati-teal">{DARURAT.modal.judul}</h2>
         </div>
         <Button
           type="button"
           variant="ghost"
           onClick={onClose}
-          aria-label="Tutup"
+          aria-label={DARURAT.modal.ariaTutup}
           className="size-10 rounded-full border-0 bg-svarati-lavender-light p-0 text-svarati-lavender-dark hover:bg-svarati-lavender-hover"
         >
           <X className="size-5" />
@@ -51,24 +52,24 @@ export default function EmergencyModal({ open, onClose }) {
       {/* Isi yang tergulir */}
       <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-6 pb-6">
       <p className="mt-4 text-svarati-lavender-dark">
-          Pilih tindakan cepat saat kamu berada dalam situasi mendesak atau butuh bantuan:
+          {DARURAT.modal.pembuka}
         </p>
         
         <div className="mt-4 grid grid-cols-2 gap-3">
           <a
-            href="tel:112"
+            href={`tel:${DARURAT.nomor.pusat.nomor}`}
             className={cn(
               buttonVariants({ variant: "exit", size: "xl" }),
               TELEPON_CLASS
             )}
           >
             <span className="flex items-center justify-center gap-2 font-bold">
-              <Phone className="size-4" /> Telepon 112
+              <Phone className="size-4" /> {DARURAT.modal.telepon} {DARURAT.nomor.pusat.nomor}
             </span>
-            <span className="block text-sm font-normal">Pusat Darurat</span>
+            <span className="block text-sm font-normal">{DARURAT.nomor.pusat.nama}</span>
           </a>
           <a
-            href="tel:129"
+            href={`tel:${DARURAT.nomor.sapa.nomor}`}
             className={cn(
               buttonVariants({ variant: "exit", size: "xl" }),
               TELEPON_CLASS,
@@ -76,9 +77,9 @@ export default function EmergencyModal({ open, onClose }) {
             )}
           >
             <span className="flex items-center justify-center gap-2 font-bold">
-              <Phone className="size-4" /> Telepon 129
+              <Phone className="size-4" /> {DARURAT.modal.telepon} {DARURAT.nomor.sapa.nomor}
             </span>
-            <span className="block text-sm font-normal">SAPA KemenPPPA</span>
+            <span className="block text-sm font-normal">{DARURAT.nomor.sapa.nama}</span>
           </a>
         </div>
 
@@ -93,9 +94,9 @@ export default function EmergencyModal({ open, onClose }) {
         >
           <MessageCircle className="size-6 shrink-0" />
           <span className="flex-1">
-            <span className="block font-bold">Kirim Pesan Darurat (Silent SOS)</span>
+            <span className="block font-bold">{DARURAT.sos.judul}</span>
             <span className="block text-sm font-normal">
-              Cara cepat buka Whatsapp dan kirim pesan "SOS! Tolong, saya perlu bantuan!" beserta lokasimu. Kamu hanya perlu memilih kontak penerima pesan dan menekan tombol kirim.
+              {DARURAT.sos.deskripsi}
             </span>
           </span>
           <ArrowRight className="size-5 shrink-0" />
@@ -112,22 +113,20 @@ export default function EmergencyModal({ open, onClose }) {
         >
           <Building2 className="size-6 shrink-0" />
           <span className="flex-1">
-            <span className="block font-bold">Direktori Bantuan &amp; Rumah Aman</span>
+            <span className="block font-bold">{DARURAT.modal.direktori.judul}</span>
             <span className="block text-sm font-normal text-svarati-teal-dark">
-              Lihat lokasi layanan pendampingan terdekat
+              {DARURAT.modal.direktori.deskripsi}
             </span>
           </span>
           <ArrowRight className="size-5 shrink-0" />
         </Link>
 
         <div className="mt-4 rounded-2xl border border-svarati-lavender bg-svarati-lavender-light p-4 text-sm text-svarati-lavender-dark">
-          <p className="mb-2 font-bold">💡 Tips Keselamatan Ringkas:</p>
+          <p className="mb-2 font-bold">💡 {DARURAT.modal.judulTips}</p>
           <ul className="list-disc space-y-1 pl-5">
-            <li>Pindah ke area publik/keramaian jika situasi tidak aman.</li>
-            <li>
-              Pesan Darurat (Silent SOS) tersimpan di riwayat WhatsApp. Hapus chat jika perangkatmu mungkin
-              dilihat orang lain dan membuatmu tidak aman.
-            </li>
+            {DARURAT.modal.tips.map((tip) => (
+              <li key={tip}>{tip}</li>
+            ))}
           </ul>
         </div>
 
@@ -139,7 +138,7 @@ export default function EmergencyModal({ open, onClose }) {
           onClick={onClose}
           className="mt-4"
         >
-          Tutup
+          {DARURAT.modal.tutup}
         </Button>
       </div>
     </Modal>

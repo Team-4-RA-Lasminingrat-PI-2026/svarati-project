@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Card } from "@/components/Card";
 import { BRAND, DARURAT, FOOTER, MENU_UTAMA } from "@/content/labels";
+import { kirimSOS } from "@/components/modals/EmergencyModal";
 
 export default function Footer() {
   // Mengambil menu pilar (Pahami Hakmu, Pendampingan, Pemulihan) dari MENU_UTAMA.
@@ -54,11 +55,11 @@ export default function Footer() {
             {FOOTER.kolomDarurat}
           </h2>
           <ul className="space-y-2 text-sm">
-            {/* Silent SOS: sementara masih alert placeholder, fitur aslinya menyusul */}
+            {/* Silent SOS: langsung membuka WhatsApp dengan pesan + lokasi */}
             <li>
               <button
                 type="button"
-                onClick={() => alert(DARURAT.sos.alert)}
+                onClick={kirimSOS}
                 className="text-left text-svarati-lavender-light hover:text-white hover:underline transition cursor-pointer"
               >
                 {DARURAT.sos.nama}
