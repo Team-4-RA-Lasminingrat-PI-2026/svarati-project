@@ -716,7 +716,7 @@ export const DIREKTORI = {
     jumlah: "layanan ditemukan",
     reset: "Reset Filter",
     unduh: "Unduh dokumen hasil pencarian (.csv)",
-    unduhRingkas: "Unduh hasil(.csv),
+    unduhRingkas: "Unduh hasil(.csv)",
   },
 
   hasil: {
