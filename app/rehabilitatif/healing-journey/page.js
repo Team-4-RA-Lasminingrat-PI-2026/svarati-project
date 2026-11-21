@@ -3,12 +3,13 @@ import { useState } from "react";
 import { useLocalStorageState } from "@/lib/useLocalStorageState";
 import Link from "next/link";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { Check, Pencil } from "lucide-react";
+import { Check, Pencil, Download } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import ConfirmDialog from "@/components/modals/ConfirmDialog";
 import BackToPemulihan from "@/components/BackToPemulihan";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
+import { kumpulkanEntri, namaBerkas, labelPeriode, unduhPdf } from "./_lib/unduhJurnal";
 
 const STORAGE_KEY = "svarati-mood-history";
 const NOTES_KEY = "svarati-mood-notes";
@@ -89,6 +90,8 @@ export default function JurnalPemulihanPage() {
     const [editingKey, setEditingKey] = useState(null);
     const [savedKey, setSavedKey] = useState(null);
     const [confirmTarget, setConfirmTarget] = useState(null); // "day" | "all" | null
+    const [unduhTarget, setUnduhTarget] = useState(null); // "hari" | "bulan" | "semua" | null
+    const [sedangUnduh, setSedangUnduh] = useState(false);
     const [notice, setNotice] = useState("");
 
     const dateKey = date ? format(date, "yyyy-MM-dd") : null;
@@ -188,6 +191,45 @@ export default function JurnalPemulihanPage() {
         setEditingKey(null);
         setSavedKey(null);
         showNotice("Semua data mood dan catatan sudah dihapus dari perangkat ini.");
+    };
+
+    // --- Unduh PDF -------------------------------------------------------
+    // Hanya mood dan catatan yang sudah disimpan yang ikut diunduh. Draf yang
+    // belum ditekan "Simpan catatan" sengaja dilewati.
+    const labelMood = (emoji) => moodDetails[emoji]?.label ?? "Tidak tercatat";
+    const prefixBulan = format(bulanTampil, "yyyy-MM");
+    const punyaData = (cocok) =>
+        Object.keys(moodHistory).some(cocok) || Object.keys(noteHistory).some(cocok);
+
+    const adaDataHari = Boolean(activeMoodEmoji || savedNote);
+    const adaDataBulan = punyaData((k) => k.startsWith(prefixBulan));
+    const adaDataSemua = punyaData(() => true);
+
+    const jalankanUnduh = async (lingkup) => {
+        const filter =
+            lingkup === "hari"
+                ? (k) => k === dateKey
+                : lingkup === "bulan"
+                  ? (k) => k.startsWith(prefixBulan)
+                  : null;
+
+        const entri = kumpulkanEntri(moodHistory, noteHistory, labelMood, filter);
+        if (entri.length === 0) return;
+
+        setSedangUnduh(true);
+        try {
+            await unduhPdf({
+                entri,
+                judulPeriode: labelPeriode(lingkup, { tanggal: date, bulan: bulanTampil, entri }),
+                namaFile: namaBerkas(lingkup, { kunciTanggal: dateKey, bulan: bulanTampil, entri }),
+            });
+            showNotice("Berkas sudah diunduh ke perangkat ini.");
+        } catch (err) {
+            console.warn("[jurnal] gagal membuat PDF:", err?.name);
+            showNotice("Berkas gagal dibuat. Coba lagi sebentar lagi.");
+        } finally {
+            setSedangUnduh(false);
+        }
     };
 
     const currentDetail = activeMoodEmoji ? moodDetails[activeMoodEmoji] : null;
@@ -371,7 +413,18 @@ export default function JurnalPemulihanPage() {
                         )}
 
                         {hasDayData && (
-                            <div className="mt-6 border-t border-svarati-lavender-light/60 pt-4">
+                            <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-svarati-lavender-light/60 pt-4">
+                                {adaDataHari && (
+                                    <button
+                                        type="button"
+                                        onClick={() => setUnduhTarget("hari")}
+                                        disabled={sedangUnduh}
+                                        className="cursor-pointer inline-flex items-center gap-1.5 text-sm text-svarati-teal underline underline-offset-4 hover:text-svarati-teal-light disabled:cursor-not-allowed disabled:no-underline disabled:opacity-50"
+                                    >
+                                        <Download className="size-4" aria-hidden="true" />
+                                        Unduh catatan tanggal ini
+                                    </button>
+                                )}
                                 <button
                                     type="button"
                                     onClick={() => setConfirmTarget("day")}
@@ -403,8 +456,31 @@ export default function JurnalPemulihanPage() {
                             disabled={{ after: hariIni }}
                         />
 
+                        {(adaDataBulan || adaDataSemua) && (
+                            <div className="mt-6 flex flex-col items-start gap-3 border-t border-svarati-lavender-light/60 pt-4">
+                                <button
+                                    type="button"
+                                    onClick={() => setUnduhTarget("bulan")}
+                                    disabled={sedangUnduh || !adaDataBulan}
+                                    className="cursor-pointer inline-flex items-center gap-1.5 text-sm text-svarati-teal underline underline-offset-4 hover:text-svarati-teal-light disabled:cursor-not-allowed disabled:no-underline disabled:opacity-50"
+                                >
+                                    <Download className="size-4" aria-hidden="true" />
+                                    Unduh {format(bulanTampil, "MMMM yyyy", { locale: id })}
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setUnduhTarget("semua")}
+                                    disabled={sedangUnduh || !adaDataSemua}
+                                    className="cursor-pointer inline-flex items-center gap-1.5 text-sm text-svarati-teal underline underline-offset-4 hover:text-svarati-teal-light disabled:cursor-not-allowed disabled:no-underline disabled:opacity-50"
+                                >
+                                    <Download className="size-4" aria-hidden="true" />
+                                    Unduh semua catatan
+                                </button>
+                            </div>
+                        )}
+
                         {hasAnyData && (
-                            <div className="mt-6 border-t border-svarati-lavender-light/60 pt-4">
+                            <div className="mt-4 border-t border-svarati-lavender-light/60 pt-4">
                                 <button
                                     type="button"
                                     onClick={() => setConfirmTarget("all")}
@@ -429,6 +505,23 @@ export default function JurnalPemulihanPage() {
                     )}
                 </p>
             </div>
+
+            {/* Unduhan tersimpan di folder unduhan perangkat dan bisa terlihat
+                orang lain yang memakai perangkat yang sama. Pengguna diberi tahu
+                dulu, lalu dia sendiri yang memutuskan. */}
+            <ConfirmDialog
+                open={unduhTarget !== null}
+                onOpenChange={(buka) => !buka && setUnduhTarget(null)}
+                title="Simpan catatan ke perangkat ini?"
+                description="Berkas PDF akan tersimpan di folder unduhan dan bisa dibuka siapa pun yang memakai perangkat ini. Nama berkasnya dibuat netral, tapi isinya tidak terkunci. Hapus berkasnya kalau kamu merasa kurang aman."
+                confirmLabel="Unduh PDF"
+                confirmVariant="secondary"
+                onConfirm={() => {
+                    const lingkup = unduhTarget;
+                    setUnduhTarget(null);
+                    jalankanUnduh(lingkup);
+                }}
+            />
 
             <ConfirmDialog
                 open={confirmTarget === "day"}
