@@ -5,7 +5,7 @@
 - **Demo:** [svarati-project.vercel.app](https://svarati-project.vercel.app/)
 - **Tim:** Team 4 RA Lasminingrat, PI 2026
 
-_Terakhir diperbarui: 8 November 2026_
+_Terakhir diperbarui: 23 November 2026_
 
 ## Daftar isi
 
@@ -13,6 +13,7 @@ _Terakhir diperbarui: 8 November 2026_
 - [Fitur](#fitur)
 - [Teknologi](#teknologi)
 - [Memulai](#memulai)
+- [Backend (FastAPI)](#backend-fastapi)
 - [Struktur folder](#struktur-folder)
 - [Halaman](#halaman)
 - [API](#api)
@@ -22,7 +23,6 @@ _Terakhir diperbarui: 8 November 2026_
 - [Komponen](#komponen)
 - [Desain](#desain)
 - [Alur kerja tim](#alur-kerja-tim)
-- Backend
 
 ## Prinsip produk
 
@@ -49,9 +49,11 @@ Setiap fitur Svarati dibuat dengan tiga prinsip ini. Pegang ketiganya saat menam
 | Styling | Tailwind CSS v4, token warna di `app/globals.css` |
 | Komponen dasar | shadcn/ui berbasis Base UI (`@base-ui/react`), varian dengan class-variance-authority (cva) |
 | Database | [Supabase](https://supabase.com/) (`@supabase/supabase-js`) |
+| Backend | FastAPI (Python) di Railway, folder `backend/` (lihat [Backend](#backend-fastapi)) |
+| Embedding dan LLM | Gemini API (`gemini-embedding-001`, `gemini-3.5-flash-lite`), multilingual-e5-base sebagai embedding open source |
 | Ikon dan font | lucide-react; Lora (judul) dan Public Sans (isi) lewat `next/font/google` |
 | Lainnya | date-fns dan react-day-picker (kalender), framer-motion (animasi), Web Audio API (suara terapi), Web Speech API (screen reader bersuara) |
-| Hosting | Vercel |
+| Hosting | Vercel (frontend), Railway (backend), GitHub Actions (ingestion harian) |
 
 > **Penting untuk developer dan AI coding assistant:** Next.js 16 punya banyak perubahan dibanding versi sebelumnya. Baca dokumentasi di `node_modules/next/dist/docs/` sebelum menulis kode (lihat `AGENTS.md`).
 
@@ -62,6 +64,8 @@ Setiap fitur Svarati dibuat dengan tiga prinsip ini. Pegang ketiganya saat menam
 - Node.js **20.9 atau lebih baru**
 - npm
 - Akses ke project Supabase tim (minta ke anggota tim yang memegang database)
+
+Untuk menjalankan fitur Svarati AI secara lokal, juga diperlukan backend. Lihat [Backend (FastAPI)](#backend-fastapi).
 
 ### Langkah
 
@@ -83,9 +87,15 @@ Setiap fitur Svarati dibuat dengan tiga prinsip ini. Pegang ketiganya saat menam
    # Dipakai di server (API direktori layanan, provinsi, kota)
    SUPABASE_URL=
    SUPABASE_ANON_KEY=
+
+   # Dipakai di server (route Svarati AI, meneruskan ke backend FastAPI)
+   FASTAPI_BASE_URL=
+   BACKEND_API_KEY=
    ```
 
-   Nilainya ada di dashboard Supabase: **Project Settings → API** (Project URL dan key `anon`/`public`). Biasanya keempatnya bernilai sama. Jangan pakai key `service_role`.
+   Nilai Supabase ada di dashboard Supabase: **Project Settings → API** (Project URL dan key `anon`/`public`). Biasanya keempatnya bernilai sama. Jangan pakai key `service_role`.
+
+   Untuk `FASTAPI_BASE_URL` dan `BACKEND_API_KEY`, isi dengan nilai yang diberikan tim untuk backend. Saat develop lokal, `FASTAPI_BASE_URL` biasanya `http://localhost:8000`.
 
    File `.env*` sudah ada di `.gitignore`, jadi tidak akan ikut ter-commit. **Jangan pernah menaruh key di dalam kode.**
 
@@ -113,6 +123,115 @@ Setiap fitur Svarati dibuat dengan tiga prinsip ini. Pegang ketiganya saat menam
 | `Module not found: Can't resolve '...'` | Ada paket baru di `package.json` setelah pindah branch atau pull. Jalankan `npm install`. |
 | `supabaseUrl is required` | File `.env.local` belum ada atau belum lengkap. Lihat langkah 2. |
 | Perubahan `.env.local` tidak terbaca | Hentikan `npm run dev` (Ctrl+C), lalu jalankan lagi. |
+
+## Backend (FastAPI)
+
+Backend Svarati AI ada di folder `backend/`. Ini layanan Python (FastAPI) yang menjalankan pencarian dokumen (RAG), deteksi tanda bahaya, dan verifikasi jawaban. Frontend Next.js tidak mengakses Gemini atau database secara langsung, tetapi meneruskan permintaan ke backend ini.
+
+### Arsitektur singkat
+
+- **Frontend (Next.js di Vercel)** memvalidasi input, lalu meneruskan permintaan ke backend dengan header `x-api-key`.
+- **Backend (FastAPI di Railway)** memeriksa tanda bahaya lebih dulu, mencari potongan dokumen di pgvector, memanggil Gemini, dan memverifikasi setiap pasal dan nomor telepon sebelum jawaban dikirim.
+- **Database (PostgreSQL + pgvector di Supabase)** menyimpan basis pengetahuan dan embedding.
+- **Ingestion** berjalan terjadwal lewat GitHub Actions setiap hari pukul 03.00 WIB dan hanya memproses entri yang berubah.
+
+### Kebutuhan
+
+- Python 3.11 atau lebih baru
+- Akses ke database Supabase tim dan API key Gemini (minta ke anggota tim yang memegang konfigurasi)
+
+### Langkah menjalankan lokal
+
+1. **Masuk ke folder backend dan buat virtual environment**
+
+   ```bash
+   cd backend
+   python -m venv .venv
+   source .venv/bin/activate        # Windows: .venv\Scripts\activate
+   pip install -r requirements.txt
+   ```
+
+2. **Buat file `.env`** di folder `backend/`:
+
+   ```env
+   GEMINI_API_KEY=
+   DATABASE_URL=
+   BACKEND_API_KEY=
+   MIN_SIM=0.64
+   VERIFY_RETRY=false
+   ```
+
+   Nilai asli tidak boleh ditulis di README, kode, atau commit. Jika `BACKEND_API_KEY` kosong, pengecekan header `x-api-key` tidak berjalan. Di production, variabel ini wajib diisi.
+
+3. **Jalankan server**
+
+   ```bash
+   uvicorn svarati.api:app --reload --app-dir src
+   ```
+
+   Sesuaikan `svarati.api:app` dengan nama modul dan objek FastAPI yang ada di `src/svarati/`.
+
+4. **Cek server berjalan**
+
+   ```bash
+   curl http://localhost:8000/health
+   ```
+
+   Hasil yang diharapkan: `{"status":"ok"}`.
+
+### Menjalankan unit test
+
+Dari folder `backend/`, dengan virtual environment aktif:
+
+```bash
+python -m unittest discover -s tests -p "test_*.py"
+```
+
+Ada 67 test yang mencakup retrieval, deteksi darurat, alur chat, chunking, pembacaan docx, asesmen, alasan umpan balik, sesi, generation, dan storage. Hasil yang diharapkan: `Ran 67 tests` dan `OK`.
+
+### Endpoint
+
+| Endpoint | Autentikasi | Fungsi |
+|---|---|---|
+| `GET /health` | Tidak perlu | Mengecek server hidup. Mengembalikan `{"status":"ok"}`. |
+| `GET /health/db` | Header `x-api-key` | Mengecek koneksi database. Mengembalikan jumlah `entri_aktif` dan `chunk`. |
+
+Endpoint chat dipanggil dari route Next.js, bukan langsung dari browser. Kalau ingin mengujinya langsung, kirim request dengan header `x-api-key` yang benar.
+
+Contoh cek database:
+
+```bash
+curl -H "x-api-key: <API_KEY>" http://localhost:8000/health/db
+```
+
+Tanpa key atau dengan key yang salah, respons yang benar adalah `401`.
+
+### Mode respons
+
+Setiap respons chat memiliki field `mode`:
+
+| Mode | Arti |
+|---|---|
+| `rag` | Jawaban disusun dari potongan dokumen dan sudah diverifikasi |
+| `darurat` | Tanda bahaya terdeteksi, panduan 112 dan 129 ditampilkan tanpa memanggil model |
+| `tanpa_sumber` | Informasi tidak ditemukan di basis pengetahuan |
+| `sapaan` | Sapaan, tanpa pencarian |
+| `klarifikasi` | Pertanyaan terlalu pendek, diminta menulis ulang |
+| `error_llm` | Gemini gagal setelah percobaan ulang |
+| `llm_kosong` | Model tidak menghasilkan teks yang bisa dipakai |
+| `gagal_verifikasi` | Pasal atau nomor telepon tidak cocok dengan sumber |
+
+### Deploy
+
+- **Railway** menjalankan FastAPI. Variabel `GEMINI_API_KEY`, `DATABASE_URL`, dan `BACKEND_API_KEY` diatur di dashboard Railway, bukan di file.
+- **Vercel** menjalankan frontend dan menyimpan `FASTAPI_BASE_URL` serta `BACKEND_API_KEY` sebagai environment variable server (tanpa awalan `NEXT_PUBLIC_`).
+- **GitHub Actions** menjalankan ingestion harian. Jika ada entri berstatus `failed`, job akan gagal sehingga masalahnya terlihat di tab Actions.
+
+### Catatan keamanan
+
+- Jangan pernah menulis `GEMINI_API_KEY`, `DATABASE_URL`, atau `BACKEND_API_KEY` di dalam kode.
+- Jangan mencatat isi pertanyaan pengguna di log server.
+- Saat menyalin respons error ke issue atau dokumen, hapus bagian yang memuat data pengguna.
 
 ## Struktur folder
 
@@ -151,6 +270,11 @@ svarati-project/
 │   └── profile/
 │       ├── page.js                   tentang kami
 │       └── components/               CountUp.jsx, Kasusbarchart.jsx
+├── backend/                          layanan FastAPI (RAG, deteksi darurat, verifikasi)
+│   ├── src/svarati/                  kode utama (safety.py, api, retrieval)
+│   ├── tests/                        67 unit test
+│   ├── requirements.txt              dependensi Python
+│   └── .venv/                        virtual environment lokal (tidak ikut ter-commit)
 ├── components/                       komponen UI yang dipakai ulang
 │   ├── Navbar.jsx, Footer.jsx
 │   ├── Card.jsx, Badge.jsx, Tabs.jsx
@@ -193,6 +317,7 @@ svarati-project/
 | `services` | `lib/` | Supabase, sesi anonim, query direktori, dan fungsi bantu |
 | `state` | `context/` | State global (pengaturan aksesibilitas) |
 | `api` | `app/api/` | Endpoint backend (Route Handlers Next.js) |
+| `backend` | `backend/` | Layanan FastAPI untuk Svarati AI (RAG dan deteksi darurat) |
 
 ## Halaman
 
@@ -434,115 +559,6 @@ RLA054: hapus data jurnal di localStorage
 - [ ] Teks baru ditaruh di `content/labels.js`
 - [ ] Warna memakai token `svarati-*`, bukan kode hex
 - [ ] Tidak ada key, password, atau data pribadi di dalam kode
+- [ ] Untuk perubahan di `backend/`, unit test dijalankan dan hasilnya `OK`
 
 Pull Request ditujukan ke `main`. Tuliskan ringkasan perubahan dan langkah tes untuk QA di deskripsi PR.
-
-##Backend
-## Backend (FastAPI)
-
-Backend Svarati AI ada di folder `backend/`. Ini layanan Python (FastAPI) yang menjalankan pencarian dokumen (RAG), deteksi tanda bahaya, dan verifikasi jawaban. Frontend Next.js tidak mengakses Gemini atau database secara langsung, tetapi meneruskan permintaan ke backend ini.
-
-### Arsitektur singkat
-
-- **Frontend (Next.js di Vercel)** memvalidasi input, lalu meneruskan permintaan ke backend dengan header `x-api-key`.
-- **Backend (FastAPI di Railway)** memeriksa tanda bahaya lebih dulu, mencari potongan dokumen di pgvector, memanggil Gemini, dan memverifikasi setiap pasal dan nomor telepon sebelum jawaban dikirim.
-- **Database (PostgreSQL + pgvector di Supabase)** menyimpan basis pengetahuan dan embedding.
-- **Ingestion** berjalan terjadwal lewat GitHub Actions setiap hari pukul 03.00 WIB dan hanya memproses entri yang berubah.
-
-### Kebutuhan
-
-- Python 3.11 atau lebih baru
-- Akses ke database Supabase tim dan API key Gemini (minta ke anggota tim yang memegang konfigurasi)
-
-### Langkah menjalankan lokal
-
-1. **Masuk ke folder backend dan buat virtual environment**
-
-   ```bash
-   cd backend
-   python -m venv .venv
-   source .venv/bin/activate        # Windows: .venv\Scripts\activate
-   pip install -r requirements.txt
-   ```
-
-2. **Buat file `.env`** di folder `backend/`:
-
-   ```env
-   GEMINI_API_KEY=
-   DATABASE_URL=
-   BACKEND_API_KEY=
-   MIN_SIM=0.64
-   VERIFY_RETRY=false
-   ```
-
-   Nilai asli tidak boleh ditulis di README, kode, atau commit. Jika `BACKEND_API_KEY` kosong, pengecekan header `x-api-key` tidak berjalan. Di production, variabel ini wajib diisi.
-
-3. **Jalankan server**
-
-   ```bash
-   uvicorn svarati.api:app --reload --app-dir src
-   ```
-
-   Sesuaikan `svarati.api:app` dengan nama modul dan objek FastAPI di `src/svarati/`.
-
-4. **Cek server berjalan**
-
-   ```bash
-   curl http://localhost:8000/health
-   ```
-
-   Hasil yang diharapkan: `{"status":"ok"}`.
-
-### Menjalankan unit test
-
-Dari folder `backend/`, dengan virtual environment aktif:
-
-```bash
-python -m unittest discover -s tests -p "test_*.py"
-```
-
-Ada 67 test yang mencakup retrieval, deteksi darurat, alur chat, chunking, pembacaan docx, asesmen, alasan umpan balik, sesi, generation, dan storage. Hasil yang diharapkan: `Ran 67 tests` dan `OK`.
-
-### Endpoint
-
-| Endpoint | Autentikasi | Fungsi |
-|---|---|---|
-| `GET /health` | Tidak perlu | Mengecek server hidup. Mengembalikan `{"status":"ok"}`. |
-| `GET /health/db` | Header `x-api-key` | Mengecek koneksi database. Mengembalikan jumlah `entri_aktif` dan `chunk`. |
-
-Endpoint chat dipanggil dari route Next.js, bukan langsung dari browser. Kalau ingin mengujinya langsung, kirim request dengan header `x-api-key` yang benar.
-
-Contoh cek database:
-
-```bash
-curl -H "x-api-key: <API_KEY>" http://localhost:8000/health/db
-```
-
-Tanpa key atau dengan key yang salah, respons yang benar adalah `401`.
-
-### Mode respons
-
-Setiap respons chat memiliki field `mode`:
-
-| Mode | Arti |
-|---|---|
-| `rag` | Jawaban disusun dari potongan dokumen dan sudah diverifikasi |
-| `darurat` | Tanda bahaya terdeteksi, panduan 112 dan 129 ditampilkan tanpa memanggil model |
-| `tanpa_sumber` | Informasi tidak ditemukan di basis pengetahuan |
-| `sapaan` | Sapaan, tanpa pencarian |
-| `klarifikasi` | Pertanyaan terlalu pendek, diminta menulis ulang |
-| `error_llm` | Gemini gagal setelah percobaan ulang |
-| `llm_kosong` | Model tidak menghasilkan teks yang bisa dipakai |
-| `gagal_verifikasi` | Pasal atau nomor telepon tidak cocok dengan sumber |
-
-### Deploy
-
-- **Railway** menjalankan FastAPI. Variabel `GEMINI_API_KEY`, `DATABASE_URL`, dan `BACKEND_API_KEY` diatur di dashboard Railway, bukan di file.
-- **Vercel** menjalankan frontend dan menyimpan `FASTAPI_BASE_URL` serta `BACKEND_API_KEY` sebagai environment variable server (tanpa awalan `NEXT_PUBLIC_`).
-- **GitHub Actions** menjalankan ingestion harian. Jika ada entri berstatus `failed`, job akan gagal sehingga masalahnya terlihat di tab Actions.
-
-### Catatan keamanan
-
-- Jangan pernah menulis `GEMINI_API_KEY`, `DATABASE_URL`, atau `BACKEND_API_KEY` di dalam kode.
-- Jangan mencatat isi pertanyaan pengguna di log server.
-- Saat menyalin respons error ke issue atau dokumen, hapus bagian yang memuat data pengguna.
