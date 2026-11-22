@@ -116,17 +116,17 @@ export default function MythsFacts() {
 
         {/* CTA */}
         <div className="mt-6">
-          <Button
-            render={<Link href={m.cta.href} />}
-            nativeButton={false}
-            variant="tertiary"
-            size="lg"
-            className="gap-2 font-bold"
-            icon={<ArrowRight size={16} aria-hidden="true" />}
-            iconPosition="right"
-          >
-            {m.cta.label}
-          </Button>
+        <Button
+          render={<Link href={m.cta.href} />}
+          nativeButton={false}
+          variant="tertiary"
+          size="lg"
+          className="h-auto max-w-full gap-2 whitespace-normal text-left font-bold"
+          icon={<ArrowRight size={16} aria-hidden="true" />}
+          iconPosition="right"
+        >
+          {m.cta.label}
+        </Button>
         </div>
       </div>
     </section>

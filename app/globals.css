@@ -701,10 +701,14 @@ html[data-theme="dark"] :is(
 .tepi-aman .keluar-tepi {
   margin-left: calc(-1 * var(--tepi-kiri));
   margin-right: calc(-1 * var(--tepi-kanan));
+  width: calc(100% + var(--tepi-kiri) + var(--tepi-kanan));
+  max-width: none;
 }
 .tepi-aman .lebar-penuh {
   margin-left: calc(-1 * var(--tepi-kiri));
   margin-right: calc(-1 * var(--tepi-kanan));
+  width: calc(100% + var(--tepi-kiri) + var(--tepi-kanan));
+  max-width: none;
   padding-left: calc(var(--tepi-kiri) + var(--pad-x, 0px));
   padding-right: calc(var(--tepi-kanan) + var(--pad-x, 0px));
 }

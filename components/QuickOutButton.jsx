@@ -38,7 +38,7 @@ export default function QuickOutButton({ className = "" }) {
         className={`h-auto gap-1.5 rounded-full border-2 border-white bg-svarati-danger-darker px-4 py-2.5 text-xs font-bold tracking-wide text-white shadow-md hover:bg-svarati-danger-dark sm:text-sm ${className}`}
       >
         <LogOut aria-hidden="true" className="size-4" />
-        {DARURAT.keluarCepat}
+        <span className="max-[375px]:hidden">{DARURAT.keluarCepat}</span>
       </Button>
 
       <span

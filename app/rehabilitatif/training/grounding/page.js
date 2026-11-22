@@ -128,8 +128,8 @@ export default function GroundingPage() {
                     />
                     Semua latihan
                 </Link>
-                    <h1 className="text-3xl font-bold text-svarati-teal mb-2 font-heading">
-                        Grounding 5-4-3-2-1
+                    <h1 className="mb-2 text-balance font-heading text-3xl font-bold text-svarati-teal">
+                        Grounding <span className="whitespace-nowrap">5-4-3-2-1</span>
                     </h1>
                     <p className="text-svarati-teal/80 leading-relaxed max-w-2xl">
                         Membantumu mengendalikan panik atau kecemasan dengan mengalihkan fokus ke
