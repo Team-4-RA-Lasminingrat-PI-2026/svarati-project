@@ -57,6 +57,9 @@ export const DARURAT = {
   tombolRingkas: "Bantuan",
   keluarCepat: "Keluar Cepat",
   ariaKeluarCepat: "Keluar cepat dari situs ini langsung ke halaman aman",
+  teleponDesktop: (nomor) =>
+    `Komputer ini tidak bisa menelepon langsung. Telepon ${nomor} dari ponselmu. Nomornya sudah disalin.`,
+  tutupPemberitahuan: "Tutup pemberitahuan",
   tooltipKeluarCepat:
     "Gunakan tombol ini untuk berpindah ke halaman aman.",
 
