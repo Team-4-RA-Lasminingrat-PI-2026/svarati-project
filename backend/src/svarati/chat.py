@@ -47,11 +47,24 @@ def _expand_query_with_history(message, history):
     if len(message) >= 80 or not history:
         return message
     previous = [h["text"] for h in history if h.get("role") == "user"]
-    return f"{previous[-1][:300]} {message}" if previous else message
+    if not previous:
+        return message
+    # Jawaban singkat ("ya") membawa sedikit makna; pakai dua pesan pengguna terakhir agar topiknya tidak hilang.
+    short = normalize_text(message) in _SHORT_REPLIES or len(message) < 15
+    context = " ".join(t[:200] for t in previous[-2:]) if short else previous[-1][:300]
+    return f"{context} {message}"
 
 
-def _is_too_short(message):
-    """Pesan tanpa cukup huruf (misal 'd') tidak dicari, supaya tidak ikut konteks pertanyaan sebelumnya."""
+# Jawaban singkat yang wajar sebagai balasan atas tawaran atau pertanyaan Svarati ("ya", "mau", "ga").
+_SHORT_REPLIES = {"ya", "yaa", "y", "iya", "iyaa", "ok", "oke", "okey", "sip", "siap", "yuk", "mau", "boleh",
+                  "gak", "ga", "nggak", "ngga", "enggak", "tidak", "lanjut", "tolong"}
+
+
+def _is_too_short(message, history=None):
+    """Pesan tanpa cukup huruf (misal 'd') tidak dicari, supaya tidak ikut konteks pertanyaan sebelumnya.
+    Pengecualian: jawaban singkat seperti "ya" boleh lolos jika sudah ada riwayat percakapan."""
+    if history and normalize_text(message) in _SHORT_REPLIES:
+        return False
     return len(re.findall(r"[^\W\d_]", message or "")) < 3
 
 
@@ -81,7 +94,7 @@ def prepare(conn, embedder, questionnaire, message, answers=None, city=None, is_
     if _is_greeting_only(message):
         return {"done": {"mode": labels.MODE_GREETING, "answer": labels.GREETING_REPLY, "chunks": []}}
 
-    if _is_too_short(message):
+    if _is_too_short(message, history):
         return {"done": {"mode": labels.MODE_CLARIFY, "answer": labels.CLARIFY_REPLY, "chunks": []}}
 
     plan = assessment.build_search_plan(questionnaire, normalized_answers)
@@ -100,12 +113,13 @@ def prepare(conn, embedder, questionnaire, message, answers=None, city=None, is_
     return {"done": None, "prompt": prompt, "results": results, "providers": providers}
 
 
-SOURCE_TAG = re.compile(r"\[\[SUMBER:\s*([\d,\s]*)\]\]")
+SOURCE_TAG = re.compile(r"\[\[\s*SUMBER\s*:\s*([\d,\s]*)\]\]", re.IGNORECASE)
 
 
 def split_source_tag(answer, results):
     """Pisahkan baris [[SUMBER: 1,3]] dari jawaban. Kembalikan (jawaban_bersih, chunk_yang_dipakai).
-    Jika tag tidak ada atau kosong: pakai chunk dengan pasal yang disebut, atau chunk teratas."""
+    Tag kosong = tanpa sumber (kecuali pasal yang disebut di jawaban cocok dengan chunk).
+    Tag hilang sama sekali = pakai chunk dengan pasal yang disebut, atau chunk teratas."""
     clean = SOURCE_TAG.sub("", answer or "").strip()
     indices = []
     for m in SOURCE_TAG.finditer(answer or ""):
@@ -116,8 +130,20 @@ def split_source_tag(answer, results):
     used = [results[i - 1] for i in indices]
     if not used and results:
         cited = cited_articles(clean)
-        used = [r for r in results if str(r.get("article_number") or "") in cited] or results[:1]
+        used = [r for r in results if str(r.get("article_number") or "") in cited]
+        if not used and not SOURCE_TAG.search(answer or ""):
+            # Tag hilang sama sekali (model lupa): pakai chunk teratas supaya jawaban bersumber artikel tetap
+            # punya kartu sumber. Tag kosong ([[SUMBER: ]]) adalah keputusan sengaja: tidak ada sumber.
+            used = results[:1]
     return clean, used
+
+
+# Proses berpikir model yang bocor ke jawaban ("Drafting:", "Periksa aturan", "Aturan 17: ...").
+_LEAK_RE = re.compile(r"(?im)^\s*(drafting|periksa aturan|mode (dukungan|informasi|pesan ringan|luar topik)\b|"
+                      r"aturan \d+\s*:|pesan ringan\.|luar topik\.|pengguna (?:membuat|menulis|bertanya|menanyakan|"
+                      r"bercerita|mengatakan|menyebut|meminta|mengungkapkan)\b)")
+_LEAK_CORRECTION = ("\n\nKOREKSI: Tulis HANYA jawaban akhir untuk pengguna, tanpa proses berpikir, "
+                    "nama mode, atau nomor aturan.")
 
 
 def finish(stage):
@@ -131,13 +157,24 @@ def finish(stage):
         log.error("Pemanggilan Gemini gagal: %s", type(exc).__name__)
         return {"mode": labels.MODE_LLM_ERROR, "chunks": [], "answer": labels.LLM_ERROR_REPLY}
     answer, used = split_source_tag(answer, results)
+    if answer and _LEAK_RE.search(answer):
+        log.warning("Jawaban memuat proses berpikir; mencoba ulang sekali")
+        try:
+            retry = generation.call_gemini(stage["prompt"] + _LEAK_CORRECTION)
+        except Exception as exc:
+            log.error("Percobaan ulang Gemini gagal: %s", type(exc).__name__)
+            retry = ""
+        answer, used = split_source_tag(retry, results)
+        if answer and _LEAK_RE.search(answer):
+            answer = ""  # tetap bocor: jangan tampilkan teks mentah
     if not answer:
         # Bisa karena filter keamanan Gemini; jangan dinyatakan sebagai "tidak ada informasi".
         return {"mode": labels.MODE_LLM_EMPTY, "answer": labels.ANSWER_FAILED_REPLY, "chunks": []}
 
     # Judul ikut dihitung: pasal yang terpecah jadi beberapa bagian hanya memuat "Pasal N" di judulnya.
     valid_text = "\n".join(f"{r['display_title']}\n{r['chunk_text']}" for r in results) + "\n" + "\n".join(
-        f"{p['provider_name']} {p.get('phone_number') or ''} {p.get('address') or ''}" for p in providers)
+        f"{p['provider_name']} {p.get('phone_number') or ''} {p.get('address') or ''} "
+        f"{p.get('operating_hours') or ''}" for p in providers)
 
     def verify_answer(text):
         return (generation.find_unsourced_articles(text, valid_text),

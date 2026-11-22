@@ -9,7 +9,7 @@ const TONE = {
 
 export default function PrivasiNote() {
   return (
-    <section id="privasi" className="px-4 pb-12 pt-10 sm:px-6 lg:pb-16 lg:pt-12">
+    <section id="privasi" className="pb-12 pt-10 lg:pb-16 lg:pt-12">
       <div className="mx-auto w-full max-w-2xl">
         <Card
           variant="white"

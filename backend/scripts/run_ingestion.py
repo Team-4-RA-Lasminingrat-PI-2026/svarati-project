@@ -31,6 +31,19 @@ def print_status(conn):
         print(f"#{r[0]} | {r[1]} | {r[2]} | topik={r[3]} | aktif={r[4]} | status={r[5]} | chunk={r[6]}")
 
 
+def build_embedders():
+    """e5 selalu dibuat. Gemini ditambahkan jika EMBEDDING_BACKEND=gemini."""
+    from svarati.config import EMBEDDING_BACKEND
+    from svarati.embedding import Embedder
+
+    embedders = {"e5": Embedder()}
+    if EMBEDDING_BACKEND == "gemini":
+        from svarati.embedding_gemini import GeminiEmbedder
+
+        embedders["gemini"] = GeminiEmbedder()
+    return embedders
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--register", metavar="FILE.json", help="daftarkan sumber dari file JSON sebelum ingest")
@@ -48,17 +61,15 @@ def main():
             if args.register:
                 sources = json.loads(Path(args.register).read_text(encoding="utf-8"))
                 register_sources(conn, sources, active=not args.inactive)
-                print(f"{len(sources)} sumber didaftarkan" + (" (is_active=false)." if args.inactive else
-                      " dengan is_active=true. Pastikan sudah ditinjau sebelum dipakai publik; untuk menonaktifkan, "
-                      "jalankan ulang dengan --inactive."))
+                print(f"{len(sources)} sumber didaftarkan"
+                      + (" (is_active=false)." if args.inactive else
+                         " dengan is_active=true. Pastikan sudah ditinjau sebelum dipakai publik."))
             entries = read_entries(conn, args.entry)
             if not entries:
                 print("Tidak ada entri untuk diproses.")
                 return
-            from svarati.embedding import get_embedder
-
-            emb = get_embedder()
-            total = sum(ingest_entry(conn, emb, e, force=args.force) for e in entries)
+            embedders = build_embedders()
+            total = sum(ingest_entry(conn, embedders, e, force=args.force) for e in entries)
             print(f"Selesai. Total chunk ditulis: {total}")
             print_status(conn)
     finally:

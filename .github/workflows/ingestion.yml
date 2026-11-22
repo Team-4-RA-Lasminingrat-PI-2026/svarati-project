@@ -1,0 +1,58 @@
+name: ingestion-harian
+
+on:
+  schedule:
+    - cron: "0 20 * * *"   # 20.00 UTC = 03.00 WIB
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Proses ulang semua entri (jangan dicentang untuk run biasa)"
+        type: boolean
+        default: false
+
+concurrency:
+  group: ingestion
+  cancel-in-progress: false
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      EMBEDDING_BACKEND: gemini
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install PyTorch CPU
+        run: pip install torch --index-url https://download.pytorch.org/whl/cpu
+
+      - name: Install dependensi
+        run: pip install -r requirements.txt
+
+      - name: Cache model e5
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: hf-e5-base-v1
+
+      - name: Ingestion
+        run: python scripts/run_ingestion.py ${{ inputs.force && '--force' || '' }}
+
+      - name: Cek entri gagal
+        if: always()
+        run: |
+          python scripts/run_ingestion.py --status | tee status.txt
+          if grep -q "status=failed" status.txt; then
+            echo "Ada entri yang gagal. Cek log di atas."
+            exit 1
+          fi

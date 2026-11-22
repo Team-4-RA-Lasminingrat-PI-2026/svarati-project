@@ -29,7 +29,7 @@ export default function EducationBanner({ headlines }) {
     "absolute top-1/2 hidden size-10 -translate-y-1/2 items-center justify-center rounded-full bg-white text-svarati-lavender-dark shadow-md transition hover:bg-svarati-lavender-light disabled:opacity-30 md:flex";
 
   return (
-    <section aria-roledescription="carousel" aria-label={edu.carouselLabel} className="sm:px-3">
+    <section aria-roledescription="carousel" aria-label={edu.carouselLabel}>
       <div className="relative mx-auto w-full max-w-6xl overflow-hidden rounded-3xl shadow-sm">
         <div
           ref={trackRef}
@@ -44,8 +44,8 @@ export default function EducationBanner({ headlines }) {
             <span aria-hidden="true" className="pointer-events-none absolute -right-16 -top-16 size-72 rounded-full bg-svarati-lavender/40" />
             <span aria-hidden="true" className="pointer-events-none absolute -bottom-24 right-24 size-56 rounded-full bg-svarati-lavender-darker/60" />
 
-            <div className="relative max-w-2xl">
-              <h1 className="text-3xl font-bold leading-tight text-white md:text-4xl lg:text-5xl">
+            <div className="relative max-w-2xl lg:max-w-4xl">
+              <h1 className="text-3xl font-bold leading-tight text-white md:text-4xl lg:text-5xl lg:whitespace-nowrap">
                 {edu.intro.title}
               </h1>
               <p className="mt-4 max-w-xl text-lg leading-relaxed text-white/85 md:text-base">

@@ -170,15 +170,20 @@ function Kuis({ questions }) {
           body={quiz.education.isi}
           headingRef={headingRef}
         >
-          <div className="mt-6 flex items-center gap-4">
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
             <Link
               href={quiz.education.route}
-              className={`${buttonVariants({ variant: "secondary", size: "lg" })} flex-1`}
+              className={`${buttonVariants({ variant: "secondary", size: "lg" })} w-full sm:flex-1`}
             >
               {quiz.education.tombol}
               <ArrowRight aria-hidden="true" className="ml-1.5" />
             </Link>
-            <Button variant="tertiary" size="lg" onClick={() => setView("quiz")}>
+            <Button
+              variant="tertiary"
+              size="lg"
+              className="w-full sm:w-auto"
+              onClick={() => setView("quiz")}
+            >
               {common.backToQuiz}
             </Button>
           </div>

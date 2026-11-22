@@ -117,12 +117,7 @@ export default function DirectoryFilter({
             </p>
             <div className="flex items-center gap-3">
               {adaFilter && (
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={onReset}
-                >
+                <Button type="button" variant="ghost" size="sm" onClick={onReset}>
                   {F.reset}
                 </Button>
               )}
@@ -132,9 +127,11 @@ export default function DirectoryFilter({
                 size="sm"
                 icon={<Download className="size-3.5" aria-hidden="true" />}
                 onClick={onUnduh}
+                aria-label={F.unduh}
                 className="text-xs font-semibold"
               >
-                {F.unduh}
+                <span className="sm:hidden">{F.unduhRingkas}</span>
+                <span className="hidden sm:inline">{F.unduh}</span>
               </Button>
             </div>
           </div>

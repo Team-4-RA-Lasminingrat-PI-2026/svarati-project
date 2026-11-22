@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Send } from "lucide-react";
+import { Send, ChevronDown} from "lucide-react";
 import Modal from "@/components/modals/Modal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -110,19 +110,25 @@ function MessageForm({ editing, onClose, onSubmit, onEmpty }) {
           <Label htmlFor="toh-role" className="text-svarati-teal">
             {t.form.roleLabel}
           </Label>
-          <select
-            id="toh-role"
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
-            className="w-full rounded-xl border border-input bg-card px-3 py-2 text-svarati-teal"
-          >
-            <option value="">{t.form.rolePlaceholder}</option>
-            {t.roles.map((r) => (
-              <option key={r} value={r}>
-                {r}
-              </option>
-            ))}
-          </select>
+          <div className="relative">
+            <select
+              id="toh-role"
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+              className="w-full appearance-none rounded-xl border border-input bg-card py-2 pl-3 pr-10 text-svarati-teal"
+            >
+              <option value="">{t.form.rolePlaceholder}</option>
+              {t.roles.map((r) => (
+                <option key={r} value={r}>
+                  {r}
+                </option>
+              ))}
+            </select>
+            <ChevronDown
+              aria-hidden="true"
+              className="pointer-events-none absolute right-4 top-1/2 size-4 -translate-y-1/2 text-svarati-teal"
+            />
+          </div>
         </div>
 
         <div>

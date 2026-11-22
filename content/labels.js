@@ -60,6 +60,8 @@ export const DARURAT = {
   teleponDesktop: (nomor) =>
     `Komputer ini tidak bisa menelepon langsung. Telepon ${nomor} dari ponselmu. Nomornya sudah disalin.`,
   tutupPemberitahuan: "Tutup pemberitahuan",
+  tooltipKeluarCepat:
+    "Gunakan tombol ini untuk berpindah ke halaman aman.",
 
   nomor: {
     pusat: { nomor: "112", nama: "Pusat Darurat" },
@@ -72,6 +74,15 @@ export const DARURAT = {
     telepon: "Telepon",
     judulTips: "Tips Keselamatan Ringkas:",
     tutup: "Tutup",
+    ariaTutup: "Tutup",
+    direktori: {
+      judul: "Direktori Bantuan & Rumah Aman",
+      deskripsi: "Lihat lokasi layanan pendampingan terdekat",
+    },
+    tips: [
+      "Pindah ke area publik/keramaian jika situasi tidak aman.",
+      "Pesan Darurat (Silent SOS) tersimpan di riwayat WhatsApp. Hapus chat jika perangkatmu mungkin dilihat orang lain dan membuatmu tidak aman.",
+    ],
   },
   sos: {
     nama: "Silent SOS",
@@ -79,6 +90,10 @@ export const DARURAT = {
     alert: "Menghubungkan ke Silent SOS...",
     mencariLokasi: "Mengambil lokasimu…",
     keterangan: "Membuka WhatsApp dengan pesan + lokasimu.",
+    deskripsi:
+      "Cara cepat buka Whatsapp dan kirim pesan \"SOS! Tolong, saya perlu bantuan!\" beserta lokasimu. Kamu hanya perlu memilih kontak penerima pesan dan menekan tombol kirim.",
+    pesan: "SOS! Tolong, saya perlu bantuan!",
+    pesanLokasi: (lokasi) => ` Lokasi saya: ${lokasi}`,
   },
 };
 
@@ -120,7 +135,7 @@ export const heroContent = {
 
    optionsLabel: "Apa yang kamu butuhkan saat ini?",
   options: [
-    { label: "Cek apakah yang saya alami termasuk kekerasan", href: "/kuratif/self-assessment", variant: "primary" },
+    { label: "Cek Kondisi dan Cari Bantuan", href: "/kuratif/self-assessment", variant: "primary" },
     { label: "Ceritakan pada Svarati AI", href: "/kuratif/svarati-ai", variant: "secondary" },
     { label: "Jelajahi fitur lainnya", href: "#fitur", variant: "tertiary" },
   ],
@@ -180,6 +195,7 @@ export const mitosContent = {
   labelMitos: "Mitos",
   labelFakta: "Fakta",
   labelLihat: "Lihat",
+  labelTutup: "Tutup",
   cta: { label: "Pelajari lebih lanjut? Buka Edukasi", href: "/preventif" },
   items: [
     {
@@ -260,7 +276,7 @@ export const pemulihanContent = {
   badge: "Ruang Pemulihan",
   judul: "Mari Sembuh Bersama, Perlahan-lahan",
   deskripsi:
-    "Ambil jeda sejenak untuk dirimu. Pilih fitur yang paling sesuai dengan kondisimu. Kamu tidak berjuang sendirian.",
+    "Ambil jeda sejenak untuk dirimu. Pilih cara pemulihan yang terasa paling nyaman buatmu. Kamu tidak sendirian.",
   cta: { label: "Mulai Pemulihan", href: "/rehabilitatif" },
   gambar: { src: "/tree-of-hope-transparent.svg", alt: "Ilustrasi pohon harapan" },
   labelDukungan: "Dukungan",
@@ -716,6 +732,7 @@ export const DIREKTORI = {
     jumlah: "layanan ditemukan",
     reset: "Reset Filter",
     unduh: "Unduh dokumen hasil pencarian (.csv)",
+    unduhRingkas: "Unduh hasil(.csv)",
   },
 
   hasil: {
