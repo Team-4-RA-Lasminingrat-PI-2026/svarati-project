@@ -37,7 +37,7 @@ export default function AccessibilityFab() {
       aria-haspopup="dialog"
       aria-label={T.judul}
       title={T.judul}
-      className="fixed bottom-1.5 left-1.5 z-50 flex size-9 cursor-pointer items-center justify-center rounded-full bg-svarati-teal text-white shadow-lg ring-2 ring-svarati-lavender-light transition hover:scale-105 hover:bg-svarati-teal-light focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-svarati-lavender-dark md:bottom-5 md:left-5 md:size-11 md:ring-4"
+      className="fixed bottom-[calc(0.375rem+var(--player-h,0px))] left-1.5 z-50 flex size-9 cursor-pointer items-center justify-center rounded-full bg-svarati-teal text-white shadow-lg ring-2 ring-svarati-lavender-light transition-[bottom,transform,background-color] duration-300 hover:scale-105 hover:bg-svarati-teal-light focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-svarati-lavender-dark md:bottom-[calc(1.25rem+var(--player-h,0px))] md:left-5 md:size-11 md:ring-4"
     >
       <span className="flex size-7 items-center justify-center rounded-full border-2 border-white/80 md:size-9">
         <IkonAksesibilitas className="size-5 md:size-6" />

@@ -21,8 +21,7 @@ export default function SvaratiAiFab() {
 
   return (
     // Pembungkus ikut melebar saat label muncul, jadi klik hanya aktif di tombolnya
-    <div className="group pointer-events-none fixed bottom-12 left-0.5 z-50 flex items-center md:bottom-19 md:left-3.5">
-      <Link
+      <div className="group pointer-events-none fixed bottom-[calc(3rem+var(--player-h,0px))] left-0.5 z-50 flex items-center transition-[bottom] duration-300 md:bottom-[calc(4.75rem+var(--player-h,0px))] md:left-3.5">      <Link
         href={ai.cta.href}
         aria-label={F.label}
         title={F.label}

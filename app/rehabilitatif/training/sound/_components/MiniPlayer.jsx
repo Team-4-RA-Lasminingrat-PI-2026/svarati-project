@@ -24,6 +24,25 @@ export default function MiniPlayer({
 }) {
     const [menuTerbuka, setMenuTerbuka] = useState(false);
     const menuRef = useRef(null);
+    const playerRef = useRef(null);
+
+    // Beri tahu FAB (Svarati AI dan Aksesibilitas) seberapa tinggi area yang
+    // dipakai pemutar, supaya mereka naik dan tidak menutupi pemutar.
+    // Nilai = jarak bawah pemutar (10px) + tingginya + jarak aman (8px).
+    useEffect(() => {
+        const el = playerRef.current;
+        if (!el) return;
+        const root = document.documentElement;
+        const set = () =>
+            root.style.setProperty("--player-h", `${el.offsetHeight + 18}px`);
+        set();
+        const ro = new ResizeObserver(set);
+        ro.observe(el);
+        return () => {
+            ro.disconnect();
+            root.style.removeProperty("--player-h");
+        };
+    }, []);
 
     // Tutup menu timer saat mengklik di luar atau menekan Esc
     useEffect(() => {
@@ -48,6 +67,7 @@ export default function MiniPlayer({
 
     return (
         <div
+            ref={playerRef}
             role="region"
             aria-label="Pemutar suara"
             className="fixed bottom-2.5 left-1/2 z-40 flex w-[min(40rem,calc(100%-1.5rem))] -translate-x-1/2 items-center gap-2 rounded-3xl bg-svarati-teal p-2.5 text-white shadow-[0_12px_32px_rgba(15,76,92,0.28)] sm:gap-3 sm:p-3"
